@@ -11,9 +11,9 @@ A fully functional compiler developed in **Java** as part of the Computer Engine
 ## 👥 Team Members
 This project was a collaborative effort developed by 4 members for a UIB academic assignment:
 * **Aaron Tudor** ([@AaronTudor-tester](https://github.com/AaronTudor-tester))
-* **Nombre Compañero 1** ([@TheStargate](https://github.com/TheStargate))
-* **Nombre Compañero 2** ([@Toni908](https://github.com/Toni908))
-* **Nombre Compañero 3** ([@Katia-ob](https://github.com/Katia-ob))
+* **Jaume Juan** ([@TheStargate](https://github.com/TheStargate))
+* **Antonio García** ([@Toni908](https://github.com/Toni908))
+* **Katia Ostrovsky** ([@Katia-ob](https://github.com/Katia-ob))
 
 ## 🎓 Academic Context
 * **Institution:** Universitat de les Illes Balears (UIB)
