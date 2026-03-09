@@ -1,0 +1,97 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 11/02/2026 8:54:36
+
+00001000                             1              ORG $1000
+00001000                             2  START:
+00001000  4FF9 00005000              3              LEA STACKPTR, A7
+00001006  4EF9 00001028              4              JMP main
+0000100C                             5  
+0000100C                             6  ; ===== RUTINAS AUXILIARES =====
+0000100C                             7  PRINT_SIGNED:
+0000100C  4A41                       8              TST.W D1
+0000100E  6A00 0010                  9              BPL PRINT_UNSIGNED
+00001012  103C 000E                 10              MOVE.B #14, D0
+00001016  43F9 0000109B             11              LEA MINUS_SIGN, A1
+0000101C  4E4F                      12              TRAP #15
+0000101E  4441                      13              NEG.W D1
+00001020                            14  PRINT_UNSIGNED:
+00001020  103C 0003                 15              MOVE.B #3, D0
+00001024  4E4F                      16              TRAP #15
+00001026  4E75                      17              RTS
+00001028                            18  
+00001028                            19  main:
+00001028                            20              ; t0 = 10
+00001028  33FC 000A 000010AE        21              MOVE.W #10, t0
+00001030                            22              ; output t0
+00001030  3239 000010AE             23              MOVE.W t0, D1
+00001036  4EB8 100C                 24              JSR PRINT_SIGNED
+0000103A                            25              ; output "\n"
+0000103A  43F9 00001098             26              LEA NEWLINE, A1
+00001040  103C 000E                 27              MOVE.B #14, D0
+00001044  4E4F                      28              TRAP #15
+00001046                            29              ; output "Hola"
+00001046  43F9 000010A8             30              LEA str0, A1
+0000104C  103C 000E                 31              MOVE.B #14, D0
+00001050  4E4F                      32              TRAP #15
+00001052                            33              ; output "\n"
+00001052  43F9 00001098             34              LEA NEWLINE, A1
+00001058  103C 000E                 35              MOVE.B #14, D0
+0000105C  4E4F                      36              TRAP #15
+0000105E                            37              ; t1 = 20
+0000105E  33FC 0014 000010B0        38              MOVE.W #20, t1
+00001066                            39              ; output t1
+00001066  3239 000010B0             40              MOVE.W t1, D1
+0000106C  4EB8 100C                 41              JSR PRINT_SIGNED
+00001070                            42              ; output "\n"
+00001070  43F9 00001098             43              LEA NEWLINE, A1
+00001076  103C 000E                 44              MOVE.B #14, D0
+0000107A  4E4F                      45              TRAP #15
+0000107C                            46              ; output "Mundo"
+0000107C  43F9 000010A2             47              LEA str1, A1
+00001082  103C 000E                 48              MOVE.B #14, D0
+00001086  4E4F                      49              TRAP #15
+00001088                            50              ; output "\n"
+00001088  43F9 00001098             51              LEA NEWLINE, A1
+0000108E  103C 000E                 52              MOVE.B #14, D0
+00001092  4E4F                      53              TRAP #15
+00001094                            54  end:
+00001094  6000 001C                 55              BRA HALT
+00001098                            56  
+00001098                            57              ; DATA SECTION
+00001098= 0D 0A 00                  58  NEWLINE:    DC.B 13,10,0
+0000109B= 2D 00                     59  MINUS_SIGN: DC.B '-',0
+0000109E= 00008000                  60  HEAP_PTR:   DC.L $8000
+000010A2= 4D 75 6E 64 6F 00         61  str1:       DC.B 'Mundo',0
+000010A8= 48 6F 6C 61 00            62  str0:       DC.B 'Hola',0
+000010AE                            63  t0:         DS.W 1
+000010B0                            64  t1:         DS.W 1
+000010B2                            65  
+000010B2                            66  HALT:
+000010B2  FFFF FFFF                 67              SIMHALT
+000010B6                            68  
+00005000                            69              ORG $5000
+00005000                            70  STACKPTR:
+00005000                            71              END START
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+END                 1094
+HALT                10B2
+HEAP_PTR            109E
+MAIN                1028
+MINUS_SIGN          109B
+NEWLINE             1098
+PRINT_SIGNED        100C
+PRINT_UNSIGNED      1020
+STACKPTR            5000
+START               1000
+STR0                10A8
+STR1                10A2
+T0                  10AE
+T1                  10B0

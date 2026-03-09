@@ -1,0 +1,10 @@
+===== ERRORES DETECTADOS EN LA COMPILACIÓN =====
+
+Archivo: .\programas\test_array_18_indice_negativo\test_array_18_indice_negativo.txt
+Fecha: 2026-02-11T20:35:50.275931600
+
+3 error(es) encontrado(s):
+
+1. [Línea 10, Columna 38] ERROR LEXICO: Token inesperado '-'
+2. [Línea 12, Columna 19] ERROR SEMANTICO: Variable no declarada: valor
+3. [Línea 13, Columna 1] ERROR SINTACTICO: Expresión inválida en OUTPUTN: tipo incompatible o error en la expresión

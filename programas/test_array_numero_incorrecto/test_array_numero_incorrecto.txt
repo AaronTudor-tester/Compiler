@@ -1,0 +1,10 @@
+// Test: asignar array a variable numerica (debe producir error semántico)
+principal {
+    escribeN "=== TEST: asignar array a numero ===".
+
+    lista de numero v es [1, 2, 3].
+
+    numero x es v.
+
+    escribeN "Si ves esto, la asignación no fue detectada como error".
+}

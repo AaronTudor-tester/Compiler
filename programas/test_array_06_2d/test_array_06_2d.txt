@@ -1,0 +1,34 @@
+// TEST ARRAY 06: Array 2D completo
+// Objetivo: Verificar arrays bidimensionales con múltiples operaciones
+
+principal {
+    escribeN "=== TEST: Array 2D completo ===".
+    
+    lista de numero matriz de longitud 2, 2.
+    
+    escribeN "Inicializando matriz 2x2:".
+    matriz posicion (0, 0) es 1.
+    matriz posicion (0, 1) es 2.
+    matriz posicion (1, 0) es 3.
+    matriz posicion (1, 1) es 4.
+    
+    escribeN "Leyendo matriz con bucle:".
+    numero i es 0.
+    mientras (i es menor que 2) {
+        numero j es 0.
+        mientras (j es menor que 2) {
+            numero valor es matriz posicion (i, j).
+            escribeN valor.
+            j es j mas 1.
+        }
+        i es i mas 1.
+    }
+    
+    escribeN "Operacion: matriz[0,0] + matriz[1,1]:".
+    numero a es matriz posicion (0, 0).
+    numero b es matriz posicion (1, 1).
+    numero suma es a mas b.
+    escribeN suma.
+    
+    escribeN "Test completado".
+}

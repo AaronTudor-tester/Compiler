@@ -1,0 +1,6 @@
+===== TABLA DE SÍMBOLOS =====
+
+  VARIABLE: Simbolo{nombre='vocales', tipo=CHAR, valor=[a, e, i, o, u], linea=9, inicializada=true}
+  VARIABLE: Simbolo{nombre='primera', tipo=CHAR, valor=null, linea=11, inicializada=true}
+  VARIABLE: Simbolo{nombre='tercera', tipo=CHAR, valor=null, linea=14, inicializada=true}
+  VARIABLE: Simbolo{nombre='nueva', tipo=CHAR, valor=null, linea=19, inicializada=true}

@@ -1,0 +1,43 @@
+strict digraph {
+20	[label="Programa"];
+20->1
+20->2
+20->3
+20->5
+20->7
+20->9
+20->10
+20->11
+20->15
+20->17
+20->19
+1	[label="print"];
+1->0
+0	[label="Introduce un numero entero:",shape=plaintext];
+2	[label="decl: miNumero (INT)"];
+3	[label="input(miNumero)"];
+5	[label="print"];
+5->4
+4	[label="Has introducido: ",shape=plaintext];
+7	[label="print"];
+7->6
+6	[label="miNumero",shape=plaintext];
+9	[label="print"];
+9->8
+8	[label="Introduce otro numero:",shape=plaintext];
+10	[label="decl: otroNumero (INT)"];
+11	[label="input(otroNumero)"];
+15	[label="=(suma)"]
+15->14
+14	[label="SUMA"];
+14->12
+14->13
+12	[label="miNumero",shape=plaintext];
+13	[label="otroNumero",shape=plaintext];
+17	[label="print"];
+17->16
+16	[label="La suma es: ",shape=plaintext];
+19	[label="print"];
+19->18
+18	[label="suma",shape=plaintext];
+}

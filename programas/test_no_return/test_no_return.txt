@@ -1,0 +1,8 @@
+numero suma(numero a, numero b) {
+    numero resultado.
+    resultado es a mas b.
+}
+
+principal {
+    escribe suma(2, 3).
+}

@@ -1,0 +1,123 @@
+===== TABLAS DE VARIABLES Y PROCEDIMIENTOS =====
+
+--- TABLA DE VARIABLES ---
+
+Variables del programa:
+  res
+  temp
+  i
+  j
+  n
+
+Variables temporales generadas:
+  t50
+  t52
+  t51
+  t54
+  t53
+  t56
+  t55
+  t58
+  t57
+  t59
+  t61
+  t60
+  t63
+  t62
+  t65
+  t64
+  t67
+  t104
+  t66
+  t103
+  t69
+  t106
+  t68
+  t105
+  t0
+  t1
+  t2
+  t3
+  t4
+  t5
+  t6
+  t7
+  t8
+  t9
+  t70
+  t72
+  t71
+  t74
+  t73
+  t76
+  t75
+  t78
+  t77
+  t79
+  t81
+  t80
+  t83
+  t82
+  t85
+  t84
+  t87
+  t86
+  t89
+  t88
+  t90
+  t92
+  t91
+  t94
+  t93
+  t96
+  t95
+  t10
+  t98
+  t97
+  t12
+  t11
+  t99
+  t14
+  t13
+  t16
+  t15
+  t18
+  t17
+  t19
+  t21
+  t20
+  t23
+  t22
+  t25
+  t24
+  t27
+  t26
+  t29
+  t28
+  t100
+  t102
+  t101
+  t30
+  t32
+  t31
+  t34
+  t33
+  t36
+  t35
+  t38
+  t37
+  t39
+  t41
+  t40
+  t43
+  t42
+  t45
+  t44
+  t47
+  t46
+  t49
+  t48
+
+--- TABLA DE PROCEDIMIENTOS ---
+
+(ningun procedimiento definido)

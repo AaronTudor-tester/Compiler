@@ -1,0 +1,689 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 11/02/2026 8:55:40
+
+00000000                             1  ; Easy68K Assembly Generated
+00001000                             2              ORG $1000
+00001000                             3  START:
+00001000  4FF9 00005000              4              LEA STACKPTR, A7                ; Initialize stack pointer
+00001006  4EF9 000010CA              5              JMP main; Jump to main program
+0000100C                             6  
+0000100C                             7  ; ===== RUTINAS AUXILIARES =====
+0000100C                             8  PRINT_SIGNED:
+0000100C                             9              ; D1 contiene el número a mostrar (con signo)
+0000100C                            10              ; Si es negativo, muestra '-' y el valor absoluto
+0000100C  4A41                      11              TST.W D1; Probar el signo
+0000100E  6A00 0010                 12              BPL PRINT_UNSIGNED              ; Si es positivo, saltar
+00001012                            13              ; Es negativo: mostrar '-'
+00001012  103C 000E                 14              MOVE.B #14, D0
+00001016  43F9 00001603             15              LEA MINUS_SIGN, A1
+0000101C  4E4F                      16              TRAP #15
+0000101E                            17              ; Negar el valor
+0000101E  4441                      18              NEG.W D1
+00001020                            19  PRINT_UNSIGNED:
+00001020                            20              ; Mostrar el número (ahora positivo) usando Task #3
+00001020  103C 0003                 21              MOVE.B #3, D0                   ; Task 3 = Display number
+00001024  4E4F                      22              TRAP #15
+00001026  4E75                      23              RTS
+00001028                            24  
+00001028                            25  PRINT_SIGNED_LONG:
+00001028                            26              ; D1 contiene el número de 32 bits a mostrar (con signo)
+00001028  4A81                      27              TST.L D1; Probar el signo
+0000102A  6A00 0010                 28              BPL PRINT_UNSIGNED_LONG         ; Si es positivo, saltar
+0000102E                            29              ; Es negativo: mostrar '-'
+0000102E  103C 000E                 30              MOVE.B #14, D0
+00001032  43F9 00001603             31              LEA MINUS_SIGN, A1
+00001038  4E4F                      32              TRAP #15
+0000103A                            33              ; Negar el valor
+0000103A  4481                      34              NEG.L D1
+0000103C                            35  PRINT_UNSIGNED_LONG:
+0000103C                            36              ; Mostrar el número de 32 bits (ahora positivo)
+0000103C  103C 0003                 37              MOVE.B #3, D0                   ; Task 3 = Display signed number at D1.L
+00001040  4E4F                      38              TRAP #15
+00001042  4E75                      39              RTS
+00001044                            40  
+00001044                            41  PRINT_DECIMAL_2:
+00001044                            42              ; D1 = numero escalado x100 (ej: 350 = 3.50)
+00001044                            43              ; Guardar original en D3 (32-bit)
+00001044  2601                      44              MOVE.L D1, D3
+00001046                            45              ; Manejar signo: si negativo, imprimir '-' y tomar abs
+00001046  4A83                      46              TST.L D3
+00001048  6A00 0010                 47              BPL .PD2_POSITIVE
+0000104C                            48              ; imprimir '-'
+0000104C  103C 000E                 49              MOVE.B #14, D0
+00001050  43F9 00001603             50              LEA MINUS_SIGN, A1
+00001056  4E4F                      51              TRAP #15
+00001058  4483                      52              NEG.L D3
+0000105A                            53  .PD2_POSITIVE:
+0000105A                            54              ; Calcular parte entera: D2 = original / 100
+0000105A  2403                      55              MOVE.L D3, D2
+0000105C  383C 0064                 56              MOVE.W #100, D4
+00001060  85C4                      57              DIVS D4, D2
+00001062                            58              ; Calcular fracción: D3 = remainder = original - (parte_entera*100)
+00001062  2A02                      59              MOVE.L D2, D5
+00001064  383C 0064                 60              MOVE.W #100, D4
+00001068  2C05                      61              MOVE.L D5, D6
+0000106A  4280                      62              CLR.L D0
+0000106C  3004                      63              MOVE.W D4, D0
+0000106E  CDC0                      64              MULS D0, D6
+00001070  9686                      65              SUB.L D6, D3
+00001072                            66              ; Imprimir parte entera usando Task 3
+00001072  4281                      67              CLR.L D1
+00001074  3202                      68              MOVE.W D2, D1
+00001076  103C 0003                 69              MOVE.B #3, D0
+0000107A  4E4F                      70              TRAP #15
+0000107C                            71              ; Imprimir punto decimal
+0000107C  43F9 00001605             72              LEA DECIMAL_POINT, A1
+00001082  103C 000E                 73              MOVE.B #14, D0
+00001086  4E4F                      74              TRAP #15
+00001088                            75              ; Imprimir fracción con 2 dígitos
+00001088  4280                      76              CLR.L D0
+0000108A  3003                      77              MOVE.W D3, D0
+0000108C  B07C 000A                 78              CMP.W #10, D0
+00001090  6C00 000E                 79              BGE .PD2_SKIP_ZERO
+00001094                            80              ; imprimir '0' si <10
+00001094  43F9 00001607             81              LEA ZERO_CHAR, A1
+0000109A  103C 000E                 82              MOVE.B #14, D0
+0000109E  4E4F                      83              TRAP #15
+000010A0                            84  .PD2_SKIP_ZERO:
+000010A0  4281                      85              CLR.L D1
+000010A2  3203                      86              MOVE.W D3, D1
+000010A4  103C 0003                 87              MOVE.B #3, D0
+000010A8  4E4F                      88              TRAP #15
+000010AA  4E75                      89              RTS
+000010AC                            90  
+000010AC                            91  PRINT_BOOL:
+000010AC                            92              ; D1 contiene el valor booleano (0=mentira, 1=cierto)
+000010AC  4A41                      93              TST.W D1; Probar si es 0
+000010AE  6700 000C                 94              BEQ .PRINT_MENTIRA              ; Si es 0, imprimir 'mentira'
+000010B2                            95              ; Es cierto (1)
+000010B2  43F9 00001626             96              LEA STR_CIERTO, A1
+000010B8  6000 0008                 97              BRA .PRINT_BOOL_STR
+000010BC                            98  .PRINT_MENTIRA:
+000010BC  43F9 0000162D             99              LEA STR_MENTIRA, A1
+000010C2                           100  .PRINT_BOOL_STR:
+000010C2  103C 000E                101              MOVE.B #14, D0                  ; Task 14 = Display string
+000010C6  4E4F                     102              TRAP #15
+000010C8  4E75                     103              RTS
+000010CA                           104  
+000010CA                           105  main:
+000010CA                           106              ; output "=== PRUEBA DE OPERADORES LOGICOS ==="
+000010CA  43F9 000017BF            107              LEA str0, A1
+000010D0  103C 000E                108              MOVE.B #14, D0                  ; Task 14 = Display string
+000010D4  4E4F                     109              TRAP #15
+000010D6                           110              ; output "\n"
+000010D6  43F9 00001600            111              LEA NEWLINE, A1
+000010DC  103C 000E                112              MOVE.B #14, D0                  ; Task 14 = Display string
+000010E0  4E4F                     113              TRAP #15
+000010E2                           114              ; t0 = 5
+000010E2  33FC 0005 000017FC       115              MOVE.W #5, t0
+000010EA                           116              ; x = t0
+000010EA  33F9 000017FC 0000181C   117              MOVE.W t0, x
+000010F4                           118              ; t1 = 10
+000010F4  33FC 000A 000017FE       119              MOVE.W #10, t1
+000010FC                           120              ; y = t1
+000010FC  33F9 000017FE 0000181E   121              MOVE.W t1, y
+00001106                           122              ; t2 = 15
+00001106  33FC 000F 00001800       123              MOVE.W #15, t2
+0000110E                           124              ; z = t2
+0000110E  33F9 00001800 00001820   125              MOVE.W t2, z
+00001118                           126              ; output "TEST 1: AND (y ademas)"
+00001118  43F9 000016DC            127              LEA str1, A1
+0000111E  103C 000E                128              MOVE.B #14, D0                  ; Task 14 = Display string
+00001122  4E4F                     129              TRAP #15
+00001124                           130              ; output "\n"
+00001124  43F9 00001600            131              LEA NEWLINE, A1
+0000112A  103C 000E                132              MOVE.B #14, D0                  ; Task 14 = Display string
+0000112E  4E4F                     133              TRAP #15
+00001130                           134              ; t3 = x
+00001130  33F9 0000181C 00001802   135              MOVE.W x, t3
+0000113A                           136              ; t4 = y
+0000113A  33F9 0000181E 00001804   137              MOVE.W y, t4
+00001144                           138              ; t5 = t3 < t4
+00001144  33FC 0000 00001806       139              MOVE.W #0, t5
+0000114C  3039 00001802            140              MOVE.W t3, D0
+00001152  B079 00001804            141              CMP.W t4, D0
+00001158  6D00 0008                142              BLT t5_true
+0000115C  4EF9 0000116A            143              JMP t5_false
+00001162                           144  t5_true:
+00001162  33FC 0001 00001806       145              MOVE.W #1, t5
+0000116A                           146  t5_false:
+0000116A                           147              ; t6 = y
+0000116A  33F9 0000181E 00001808   148              MOVE.W y, t6
+00001174                           149              ; t7 = z
+00001174  33F9 00001820 0000180A   150              MOVE.W z, t7
+0000117E                           151              ; t8 = t6 < t7
+0000117E  33FC 0000 0000180C       152              MOVE.W #0, t8
+00001186  3039 00001808            153              MOVE.W t6, D0
+0000118C  B079 0000180A            154              CMP.W t7, D0
+00001192  6D00 0008                155              BLT t8_true
+00001196  4EF9 000011A4            156              JMP t8_false
+0000119C                           157  t8_true:
+0000119C  33FC 0001 0000180C       158              MOVE.W #1, t8
+000011A4                           159  t8_false:
+000011A4                           160              ; t9 = t5 && t8
+000011A4  33FC 0000 0000180E       161              MOVE.W #0, t9
+000011AC  3039 00001806            162              MOVE.W t5, D0
+000011B2  B07C 0000                163              CMP.W #0, D0
+000011B6  6700 0018                164              BEQ t9_false
+000011BA  3039 0000180C            165              MOVE.W t8, D0
+000011C0  B07C 0000                166              CMP.W #0, D0
+000011C4  6700 000A                167              BEQ t9_false
+000011C8  33FC 0001 0000180E       168              MOVE.W #1, t9
+000011D0                           169  t9_false:
+000011D0                           170              ; if !(t9) goto e0
+000011D0  3039 0000180E            171              MOVE.W t9, D0
+000011D6  B07C 0000                172              CMP.W #0, D0
+000011DA  6700 0020                173              BEQ e0
+000011DE                           174              ; output "5 < 10 AND 10 < 15: VERDADERO"
+000011DE  43F9 000016F8            175              LEA str2, A1
+000011E4  103C 000E                176              MOVE.B #14, D0                  ; Task 14 = Display string
+000011E8  4E4F                     177              TRAP #15
+000011EA                           178              ; output "\n"
+000011EA  43F9 00001600            179              LEA NEWLINE, A1
+000011F0  103C 000E                180              MOVE.B #14, D0                  ; Task 14 = Display string
+000011F4  4E4F                     181              TRAP #15
+000011F6                           182              ; goto e1
+000011F6  4EF9 00001214            183              JMP e1
+000011FC                           184  e0:
+000011FC                           185              ; output "5 < 10 AND 10 < 15: FALSO"
+000011FC  43F9 000016A0            186              LEA str3, A1
+00001202  103C 000E                187              MOVE.B #14, D0                  ; Task 14 = Display string
+00001206  4E4F                     188              TRAP #15
+00001208                           189              ; output "\n"
+00001208  43F9 00001600            190              LEA NEWLINE, A1
+0000120E  103C 000E                191              MOVE.B #14, D0                  ; Task 14 = Display string
+00001212  4E4F                     192              TRAP #15
+00001214                           193  e1:
+00001214                           194              ; t10 = x
+00001214  33F9 0000181C 00001670   195              MOVE.W x, t10
+0000121E                           196              ; t11 = y
+0000121E  33F9 0000181E 000016BC   197              MOVE.W y, t11
+00001228                           198              ; t12 = t10 > t11
+00001228  33FC 0000 000016BA       199              MOVE.W #0, t12
+00001230  3039 00001670            200              MOVE.W t10, D0
+00001236  B079 000016BC            201              CMP.W t11, D0
+0000123C  6E00 0008                202              BGT t12_true
+00001240  4EF9 0000124E            203              JMP t12_false
+00001246                           204  t12_true:
+00001246  33FC 0001 000016BA       205              MOVE.W #1, t12
+0000124E                           206  t12_false:
+0000124E                           207              ; t13 = y
+0000124E  33F9 0000181E 00001716   208              MOVE.W y, t13
+00001258                           209              ; t14 = z
+00001258  33F9 00001820 000016F4   210              MOVE.W z, t14
+00001262                           211              ; t15 = t13 < t14
+00001262  33FC 0000 00001730       212              MOVE.W #0, t15
+0000126A  3039 00001716            213              MOVE.W t13, D0
+00001270  B079 000016F4            214              CMP.W t14, D0
+00001276  6D00 0008                215              BLT t15_true
+0000127A  4EF9 00001288            216              JMP t15_false
+00001280                           217  t15_true:
+00001280  33FC 0001 00001730       218              MOVE.W #1, t15
+00001288                           219  t15_false:
+00001288                           220              ; t16 = t12 && t15
+00001288  33FC 0000 00001718       221              MOVE.W #0, t16
+00001290  3039 000016BA            222              MOVE.W t12, D0
+00001296  B07C 0000                223              CMP.W #0, D0
+0000129A  6700 0018                224              BEQ t16_false
+0000129E  3039 00001730            225              MOVE.W t15, D0
+000012A4  B07C 0000                226              CMP.W #0, D0
+000012A8  6700 000A                227              BEQ t16_false
+000012AC  33FC 0001 00001718       228              MOVE.W #1, t16
+000012B4                           229  t16_false:
+000012B4                           230              ; if !(t16) goto e2
+000012B4  3039 00001718            231              MOVE.W t16, D0
+000012BA  B07C 0000                232              CMP.W #0, D0
+000012BE  6700 0020                233              BEQ e2
+000012C2                           234              ; output "5 > 10 AND 10 < 15: VERDADERO"
+000012C2  43F9 000016BE            235              LEA str4, A1
+000012C8  103C 000E                236              MOVE.B #14, D0                  ; Task 14 = Display string
+000012CC  4E4F                     237              TRAP #15
+000012CE                           238              ; output "\n"
+000012CE  43F9 00001600            239              LEA NEWLINE, A1
+000012D4  103C 000E                240              MOVE.B #14, D0                  ; Task 14 = Display string
+000012D8  4E4F                     241              TRAP #15
+000012DA                           242              ; goto e3
+000012DA  4EF9 000012F8            243              JMP e3
+000012E0                           244  e2:
+000012E0                           245              ; output "5 > 10 AND 10 < 15: FALSO"
+000012E0  43F9 00001672            246              LEA str5, A1
+000012E6  103C 000E                247              MOVE.B #14, D0                  ; Task 14 = Display string
+000012EA  4E4F                     248              TRAP #15
+000012EC                           249              ; output "\n"
+000012EC  43F9 00001600            250              LEA NEWLINE, A1
+000012F2  103C 000E                251              MOVE.B #14, D0                  ; Task 14 = Display string
+000012F6  4E4F                     252              TRAP #15
+000012F8                           253  e3:
+000012F8                           254              ; output "TEST 2: OR (o bien)"
+000012F8  43F9 0000168C            255              LEA str6, A1
+000012FE  103C 000E                256              MOVE.B #14, D0                  ; Task 14 = Display string
+00001302  4E4F                     257              TRAP #15
+00001304                           258              ; output "\n"
+00001304  43F9 00001600            259              LEA NEWLINE, A1
+0000130A  103C 000E                260              MOVE.B #14, D0                  ; Task 14 = Display string
+0000130E  4E4F                     261              TRAP #15
+00001310                           262              ; t17 = x
+00001310  33F9 0000181C 00001760   263              MOVE.W x, t17
+0000131A                           264              ; t18 = y
+0000131A  33F9 0000181E 00001744   265              MOVE.W y, t18
+00001324                           266              ; t19 = t17 > t18
+00001324  33FC 0000 00001778       267              MOVE.W #0, t19
+0000132C  3039 00001760            268              MOVE.W t17, D0
+00001332  B079 00001744            269              CMP.W t18, D0
+00001338  6E00 0008                270              BGT t19_true
+0000133C  4EF9 0000134A            271              JMP t19_false
+00001342                           272  t19_true:
+00001342  33FC 0001 00001778       273              MOVE.W #1, t19
+0000134A                           274  t19_false:
+0000134A                           275              ; t20 = y
+0000134A  33F9 0000181E 000017E8   276              MOVE.W y, t20
+00001354                           277              ; t21 = z
+00001354  33F9 00001820 000017E6   278              MOVE.W z, t21
+0000135E                           279              ; t22 = t20 < t21
+0000135E  33FC 0000 000017EC       280              MOVE.W #0, t22
+00001366  3039 000017E8            281              MOVE.W t20, D0
+0000136C  B079 000017E6            282              CMP.W t21, D0
+00001372  6D00 0008                283              BLT t22_true
+00001376  4EF9 00001384            284              JMP t22_false
+0000137C                           285  t22_true:
+0000137C  33FC 0001 000017EC       286              MOVE.W #1, t22
+00001384                           287  t22_false:
+00001384                           288              ; t23 = t19 || t22
+00001384  33FC 0000 000017EA       289              MOVE.W #0, t23
+0000138C  3039 00001778            290              MOVE.W t19, D0
+00001392  B07C 0000                291              CMP.W #0, D0
+00001396  6600 0016                292              BNE t23_true
+0000139A  3039 000017EC            293              MOVE.W t22, D0
+000013A0  B07C 0000                294              CMP.W #0, D0
+000013A4  6600 0008                295              BNE t23_true
+000013A8  4EF9 000013B6            296              JMP t23_false
+000013AE                           297  t23_true:
+000013AE  33FC 0001 000017EA       298              MOVE.W #1, t23
+000013B6                           299  t23_false:
+000013B6                           300              ; if !(t23) goto e4
+000013B6  3039 000017EA            301              MOVE.W t23, D0
+000013BC  B07C 0000                302              CMP.W #0, D0
+000013C0  6700 0020                303              BEQ e4
+000013C4                           304              ; output "5 > 10 OR 10 < 15: VERDADERO"
+000013C4  43F9 0000163A            305              LEA str7, A1
+000013CA  103C 000E                306              MOVE.B #14, D0                  ; Task 14 = Display string
+000013CE  4E4F                     307              TRAP #15
+000013D0                           308              ; output "\n"
+000013D0  43F9 00001600            309              LEA NEWLINE, A1
+000013D6  103C 000E                310              MOVE.B #14, D0                  ; Task 14 = Display string
+000013DA  4E4F                     311              TRAP #15
+000013DC                           312              ; goto e5
+000013DC  4EF9 000013FA            313              JMP e5
+000013E2                           314  e4:
+000013E2                           315              ; output "5 > 10 OR 10 < 15: FALSO"
+000013E2  43F9 00001657            316              LEA str8, A1
+000013E8  103C 000E                317              MOVE.B #14, D0                  ; Task 14 = Display string
+000013EC  4E4F                     318              TRAP #15
+000013EE                           319              ; output "\n"
+000013EE  43F9 00001600            320              LEA NEWLINE, A1
+000013F4  103C 000E                321              MOVE.B #14, D0                  ; Task 14 = Display string
+000013F8  4E4F                     322              TRAP #15
+000013FA                           323  e5:
+000013FA                           324              ; t24 = x
+000013FA  33F9 0000181C 000017F0   325              MOVE.W x, t24
+00001404                           326              ; t25 = y
+00001404  33F9 0000181E 000017EE   327              MOVE.W y, t25
+0000140E                           328              ; t26 = t24 > t25
+0000140E  33FC 0000 000017F6       329              MOVE.W #0, t26
+00001416  3039 000017F0            330              MOVE.W t24, D0
+0000141C  B079 000017EE            331              CMP.W t25, D0
+00001422  6E00 0008                332              BGT t26_true
+00001426  4EF9 00001434            333              JMP t26_false
+0000142C                           334  t26_true:
+0000142C  33FC 0001 000017F6       335              MOVE.W #1, t26
+00001434                           336  t26_false:
+00001434                           337              ; t27 = y
+00001434  33F9 0000181E 000017F2   338              MOVE.W y, t27
+0000143E                           339              ; t28 = z
+0000143E  33F9 00001820 000017FA   340              MOVE.W z, t28
+00001448                           341              ; t29 = t27 > t28
+00001448  33FC 0000 000017F8       342              MOVE.W #0, t29
+00001450  3039 000017F2            343              MOVE.W t27, D0
+00001456  B079 000017FA            344              CMP.W t28, D0
+0000145C  6E00 0008                345              BGT t29_true
+00001460  4EF9 0000146E            346              JMP t29_false
+00001466                           347  t29_true:
+00001466  33FC 0001 000017F8       348              MOVE.W #1, t29
+0000146E                           349  t29_false:
+0000146E                           350              ; t30 = t26 || t29
+0000146E  33FC 0000 00001810       351              MOVE.W #0, t30
+00001476  3039 000017F6            352              MOVE.W t26, D0
+0000147C  B07C 0000                353              CMP.W #0, D0
+00001480  6600 0016                354              BNE t30_true
+00001484  3039 000017F8            355              MOVE.W t29, D0
+0000148A  B07C 0000                356              CMP.W #0, D0
+0000148E  6600 0008                357              BNE t30_true
+00001492  4EF9 000014A0            358              JMP t30_false
+00001498                           359  t30_true:
+00001498  33FC 0001 00001810       360              MOVE.W #1, t30
+000014A0                           361  t30_false:
+000014A0                           362              ; if !(t30) goto e6
+000014A0  3039 00001810            363              MOVE.W t30, D0
+000014A6  B07C 0000                364              CMP.W #0, D0
+000014AA  6700 0020                365              BEQ e6
+000014AE                           366              ; output "5 > 10 OR 10 > 15: VERDADERO"
+000014AE  43F9 0000177A            367              LEA str9, A1
+000014B4  103C 000E                368              MOVE.B #14, D0                  ; Task 14 = Display string
+000014B8  4E4F                     369              TRAP #15
+000014BA                           370              ; output "\n"
+000014BA  43F9 00001600            371              LEA NEWLINE, A1
+000014C0  103C 000E                372              MOVE.B #14, D0                  ; Task 14 = Display string
+000014C4  4E4F                     373              TRAP #15
+000014C6                           374              ; goto e7
+000014C6  4EF9 000014E4            375              JMP e7
+000014CC                           376  e6:
+000014CC                           377              ; output "5 > 10 OR 10 > 15: FALSO"
+000014CC  43F9 00001746            378              LEA str10, A1
+000014D2  103C 000E                379              MOVE.B #14, D0                  ; Task 14 = Display string
+000014D6  4E4F                     380              TRAP #15
+000014D8                           381              ; output "\n"
+000014D8  43F9 00001600            382              LEA NEWLINE, A1
+000014DE  103C 000E                383              MOVE.B #14, D0                  ; Task 14 = Display string
+000014E2  4E4F                     384              TRAP #15
+000014E4                           385  e7:
+000014E4                           386              ; output "TEST 3: NOT (no)"
+000014E4  43F9 00001762            387              LEA str11, A1
+000014EA  103C 000E                388              MOVE.B #14, D0                  ; Task 14 = Display string
+000014EE  4E4F                     389              TRAP #15
+000014F0                           390              ; output "\n"
+000014F0  43F9 00001600            391              LEA NEWLINE, A1
+000014F6  103C 000E                392              MOVE.B #14, D0                  ; Task 14 = Display string
+000014FA  4E4F                     393              TRAP #15
+000014FC                           394              ; t31 = true
+000014FC  33FC 0001 00001814       395              MOVE.W #1, t31
+00001504                           396              ; verd = t31
+00001504  33F9 00001814 000016F6   397              MOVE.W t31, verd
+0000150E                           398              ; t32 = false
+0000150E  33FC 0000 00001812       399              MOVE.W #0, t32
+00001516                           400              ; fals = t32
+00001516  33F9 00001812 000017E4   401              MOVE.W t32, fals
+00001520                           402              ; t33 = ! verd
+00001520  3039 000016F6            403              MOVE.W verd, D0
+00001526  B07C 0000                404              CMP.W #0, D0
+0000152A  6700 0010                405              BEQ t33_not_true
+0000152E  33FC 0000 00001818       406              MOVE.W #0, t33
+00001536  4EF9 00001544            407              JMP t33_not_end
+0000153C                           408  t33_not_true:
+0000153C  33FC 0001 00001818       409              MOVE.W #1, t33
+00001544                           410  t33_not_end:
+00001544                           411              ; if !(t33) goto e8
+00001544  3039 00001818            412              MOVE.W t33, D0
+0000154A  B07C 0000                413              CMP.W #0, D0
+0000154E  6700 0020                414              BEQ e8
+00001552                           415              ; output "NOT(true): VERDADERO"
+00001552  43F9 0000171A            416              LEA str12, A1
+00001558  103C 000E                417              MOVE.B #14, D0                  ; Task 14 = Display string
+0000155C  4E4F                     418              TRAP #15
+0000155E                           419              ; output "\n"
+0000155E  43F9 00001600            420              LEA NEWLINE, A1
+00001564  103C 000E                421              MOVE.B #14, D0                  ; Task 14 = Display string
+00001568  4E4F                     422              TRAP #15
+0000156A                           423              ; goto e9
+0000156A  4EF9 00001588            424              JMP e9
+00001570                           425  e8:
+00001570                           426              ; output "NOT(true): FALSO"
+00001570  43F9 00001732            427              LEA str13, A1
+00001576  103C 000E                428              MOVE.B #14, D0                  ; Task 14 = Display string
+0000157A  4E4F                     429              TRAP #15
+0000157C                           430              ; output "\n"
+0000157C  43F9 00001600            431              LEA NEWLINE, A1
+00001582  103C 000E                432              MOVE.B #14, D0                  ; Task 14 = Display string
+00001586  4E4F                     433              TRAP #15
+00001588                           434  e9:
+00001588                           435              ; t34 = ! fals
+00001588  3039 000017E4            436              MOVE.W fals, D0
+0000158E  B07C 0000                437              CMP.W #0, D0
+00001592  6700 0010                438              BEQ t34_not_true
+00001596  33FC 0000 00001816       439              MOVE.W #0, t34
+0000159E  4EF9 000015AC            440              JMP t34_not_end
+000015A4                           441  t34_not_true:
+000015A4  33FC 0001 00001816       442              MOVE.W #1, t34
+000015AC                           443  t34_not_end:
+000015AC                           444              ; if !(t34) goto e10
+000015AC  3039 00001816            445              MOVE.W t34, D0
+000015B2  B07C 0000                446              CMP.W #0, D0
+000015B6  6700 0020                447              BEQ e10
+000015BA                           448              ; output "NOT(false): VERDADERO"
+000015BA  43F9 00001797            449              LEA str14, A1
+000015C0  103C 000E                450              MOVE.B #14, D0                  ; Task 14 = Display string
+000015C4  4E4F                     451              TRAP #15
+000015C6                           452              ; output "\n"
+000015C6  43F9 00001600            453              LEA NEWLINE, A1
+000015CC  103C 000E                454              MOVE.B #14, D0                  ; Task 14 = Display string
+000015D0  4E4F                     455              TRAP #15
+000015D2                           456              ; goto e11
+000015D2  4EF9 000015F0            457              JMP e11
+000015D8                           458  e10:
+000015D8                           459              ; output "NOT(false): FALSO"
+000015D8  43F9 000017AD            460              LEA str15, A1
+000015DE  103C 000E                461              MOVE.B #14, D0                  ; Task 14 = Display string
+000015E2  4E4F                     462              TRAP #15
+000015E4                           463              ; output "\n"
+000015E4  43F9 00001600            464              LEA NEWLINE, A1
+000015EA  103C 000E                465              MOVE.B #14, D0                  ; Task 14 = Display string
+000015EE  4E4F                     466              TRAP #15
+000015F0                           467  e11:
+000015F0                           468              ; output "FIN"
+000015F0  43F9 00001773            469              LEA str16, A1
+000015F6  103C 000E                470              MOVE.B #14, D0                  ; Task 14 = Display string
+000015FA  4E4F                     471              TRAP #15
+000015FC                           472  end:
+000015FC  6000 0232                473              BRA HALT
+00001600                           474  
+00001600                           475              ; DATA SECTION
+00001600= 0D 0A 00                 476  NEWLINE:    DC.B 13,10,0
+00001603= 2D 00                    477  MINUS_SIGN: DC.B '-',0
+00001605= 2E 00                    478  DECIMAL_POINT:      DC.B '.',0
+00001607= 30 00                    479  ZERO_CHAR:  DC.B '0',0
+00001609= 45 52 52 4F 52 3A ...    480  DIV_ZERO_MSG:       DC.B 'ERROR: Division entre cero',13,10,0
+00001626= 63 69 65 72 74 6F 00     481  STR_CIERTO: DC.B 'cierto',0
+0000162D= 6D 65 6E 74 69 72 ...    482  STR_MENTIRA:DC.B 'mentira',0
+00001636= 00008000                 483  HEAP_PTR:   DC.L $8000                      ; Inicio del heap para arrays
+0000163A= 35 20 3E 20 31 30 ...    484  str7:       DC.B '5 > 10 OR 10 < 15: VERDADERO',0
+00001657= 35 20 3E 20 31 30 ...    485  str8:       DC.B '5 > 10 OR 10 < 15: FALSO',0
+00001670                           486  t10:        DS.W 1
+00001672= 35 20 3E 20 31 30 ...    487  str5:       DC.B '5 > 10 AND 10 < 15: FALSO',0
+0000168C= 54 45 53 54 20 32 ...    488  str6:       DC.B 'TEST 2: OR (o bien)',0
+000016A0= 35 20 3C 20 31 30 ...    489  str3:       DC.B '5 < 10 AND 10 < 15: FALSO',0
+000016BA                           490  t12:        DS.W 1
+000016BC                           491  t11:        DS.W 1
+000016BE= 35 20 3E 20 31 30 ...    492  str4:       DC.B '5 > 10 AND 10 < 15: VERDADERO',0
+000016DC= 54 45 53 54 20 31 ...    493  str1:       DC.B 'TEST 1: AND (y ademas)',0
+000016F4                           494  t14:        DS.W 1
+000016F6                           495  verd:       DS.W 1
+000016F8= 35 20 3C 20 31 30 ...    496  str2:       DC.B '5 < 10 AND 10 < 15: VERDADERO',0
+00001716                           497  t13:        DS.W 1
+00001718                           498  t16:        DS.W 1
+0000171A= 4E 4F 54 28 74 72 ...    499  str12:      DC.B 'NOT(true): VERDADERO',0
+00001730                           500  t15:        DS.W 1
+00001732= 4E 4F 54 28 74 72 ...    501  str13:      DC.B 'NOT(true): FALSO',0
+00001744                           502  t18:        DS.W 1
+00001746= 35 20 3E 20 31 30 ...    503  str10:      DC.B '5 > 10 OR 10 > 15: FALSO',0
+00001760                           504  t17:        DS.W 1
+00001762= 54 45 53 54 20 33 ...    505  str11:      DC.B 'TEST 3: NOT (no)',0
+00001773= 46 49 4E 00              506  str16:      DC.B 'FIN',0
+00001778                           507  t19:        DS.W 1
+0000177A= 35 20 3E 20 31 30 ...    508  str9:       DC.B '5 > 10 OR 10 > 15: VERDADERO',0
+00001797= 4E 4F 54 28 66 61 ...    509  str14:      DC.B 'NOT(false): VERDADERO',0
+000017AD= 4E 4F 54 28 66 61 ...    510  str15:      DC.B 'NOT(false): FALSO',0
+000017BF= 3D 3D 3D 20 50 52 ...    511  str0:       DC.B '=== PRUEBA DE OPERADORES LOGICOS ===',0
+000017E4                           512  fals:       DS.W 1
+000017E6                           513  t21:        DS.W 1
+000017E8                           514  t20:        DS.W 1
+000017EA                           515  t23:        DS.W 1
+000017EC                           516  t22:        DS.W 1
+000017EE                           517  t25:        DS.W 1
+000017F0                           518  t24:        DS.W 1
+000017F2                           519  t27:        DS.W 1
+000017F4                           520  true:       DS.W 1
+000017F6                           521  t26:        DS.W 1
+000017F8                           522  t29:        DS.W 1
+000017FA                           523  t28:        DS.W 1
+000017FC                           524  t0:         DS.W 1
+000017FE                           525  t1:         DS.W 1
+00001800                           526  t2:         DS.W 1
+00001802                           527  t3:         DS.W 1
+00001804                           528  t4:         DS.W 1
+00001806                           529  t5:         DS.W 1
+00001808                           530  t6:         DS.W 1
+0000180A                           531  t7:         DS.W 1
+0000180C                           532  t8:         DS.W 1
+0000180E                           533  t9:         DS.W 1
+00001810                           534  t30:        DS.W 1
+00001812                           535  t32:        DS.W 1
+00001814                           536  t31:        DS.W 1
+00001816                           537  t34:        DS.W 1
+00001818                           538  t33:        DS.W 1
+0000181A                           539  false:      DS.W 1
+0000181C                           540  x:          DS.W 1
+0000181E                           541  y:          DS.W 1
+00001820                           542  z:          DS.W 1
+00001822                           543  
+00001822                           544  ; ===== MANEJADOR DE ERROR DE DIVISION ENTRE CERO =====
+00001822                           545  DIV_ZERO_ERROR:
+00001822  43F8 1609                546              LEA DIV_ZERO_MSG, A1
+00001826  103C 000E                547              MOVE.B #14, D0                  ; Task 14 = Display string
+0000182A  4E4F                     548              TRAP #15
+0000182C  6000 0002                549              BRA HALT
+00001830                           550  
+00001830                           551  HALT:
+00001830  FFFF FFFF                552              SIMHALT
+00001834                           553  
+00005000                           554              ORG $5000
+00005000                           555  STACKPTR:
+00005000                           556              END START
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+DECIMAL_POINT       1605
+DIV_ZERO_ERROR      1822
+DIV_ZERO_MSG        1609
+E0                  11FC
+E1                  1214
+E10                 15D8
+E11                 15F0
+E2                  12E0
+E3                  12F8
+E4                  13E2
+E5                  13FA
+E6                  14CC
+E7                  14E4
+E8                  1570
+E9                  1588
+END                 15FC
+FALS                17E4
+FALSE               181A
+HALT                1830
+HEAP_PTR            1636
+MAIN                10CA
+MINUS_SIGN          1603
+NEWLINE             1600
+PRINT_BOOL          10AC
+PRINT_BOOL:PRINT_BOOL_STR  10C2
+PRINT_BOOL:PRINT_MENTIRA  10BC
+PRINT_DECIMAL_2     1044
+PRINT_DECIMAL_2:PD2_POSITIVE  105A
+PRINT_DECIMAL_2:PD2_SKIP_ZERO  10A0
+PRINT_SIGNED        100C
+PRINT_SIGNED_LONG   1028
+PRINT_UNSIGNED      1020
+PRINT_UNSIGNED_LONG  103C
+STACKPTR            5000
+START               1000
+STR0                17BF
+STR1                16DC
+STR10               1746
+STR11               1762
+STR12               171A
+STR13               1732
+STR14               1797
+STR15               17AD
+STR16               1773
+STR2                16F8
+STR3                16A0
+STR4                16BE
+STR5                1672
+STR6                168C
+STR7                163A
+STR8                1657
+STR9                177A
+STR_CIERTO          1626
+STR_MENTIRA         162D
+T0                  17FC
+T1                  17FE
+T10                 1670
+T11                 16BC
+T12                 16BA
+T12_FALSE           124E
+T12_TRUE            1246
+T13                 1716
+T14                 16F4
+T15                 1730
+T15_FALSE           1288
+T15_TRUE            1280
+T16                 1718
+T16_FALSE           12B4
+T17                 1760
+T18                 1744
+T19                 1778
+T19_FALSE           134A
+T19_TRUE            1342
+T2                  1800
+T20                 17E8
+T21                 17E6
+T22                 17EC
+T22_FALSE           1384
+T22_TRUE            137C
+T23                 17EA
+T23_FALSE           13B6
+T23_TRUE            13AE
+T24                 17F0
+T25                 17EE
+T26                 17F6
+T26_FALSE           1434
+T26_TRUE            142C
+T27                 17F2
+T28                 17FA
+T29                 17F8
+T29_FALSE           146E
+T29_TRUE            1466
+T3                  1802
+T30                 1810
+T30_FALSE           14A0
+T30_TRUE            1498
+T31                 1814
+T32                 1812
+T33                 1818
+T33_NOT_END         1544
+T33_NOT_TRUE        153C
+T34                 1816
+T34_NOT_END         15AC
+T34_NOT_TRUE        15A4
+T4                  1804
+T5                  1806
+T5_FALSE            116A
+T5_TRUE             1162
+T6                  1808
+T7                  180A
+T8                  180C
+T8_FALSE            11A4
+T8_TRUE             119C
+T9                  180E
+T9_FALSE            11D0
+TRUE                17F4
+VERD                16F6
+X                   181C
+Y                   181E
+Z                   1820
+ZERO_CHAR           1607

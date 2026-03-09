@@ -1,0 +1,12 @@
+principal {
+    decimal x es 10.5.
+    decimal y es 0.0.
+    decimal z es 2.0.
+    decimal resultado es 0.0.
+    
+    resultado es x dividido z.
+    escribeN resultado.
+    
+    resultado es x dividido y.
+    escribe resultado.
+}

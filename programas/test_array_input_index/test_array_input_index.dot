@@ -1,0 +1,37 @@
+strict digraph {
+18	[label="Programa"];
+18->1
+18->2
+18->3
+18->8
+18->10
+18->12
+18->14
+18->17
+1	[label="print"];
+1->0
+0	[label="Introduce un indice (0-2):",shape=plaintext];
+2	[label="decl: idx (INT)"];
+3	[label="input(idx)"];
+8	[label="array: arr[3](INT)"];
+8->4
+8->5
+8->6
+4	[label="10",shape=plaintext];
+5	[label="20",shape=plaintext];
+6	[label="30",shape=plaintext];
+10	[label="print"];
+10->9
+9	[label="Valor en arr[",shape=plaintext];
+12	[label="print"];
+12->11
+11	[label="idx",shape=plaintext];
+14	[label="print"];
+14->13
+13	[label="]: ",shape=plaintext];
+17	[label="print"];
+17->16
+16	[label="Acceso Array\n(arr)"]
+16->15
+15	[label="idx",shape=plaintext];
+}

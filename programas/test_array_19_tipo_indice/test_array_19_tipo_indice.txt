@@ -1,0 +1,18 @@
+// TEST ARRAY 19: Tipo de índice incorrecto - ERROR
+// Objetivo: Verificar que el compilador rechaza índices que no son números
+
+principal {
+    escribeN "=== TEST: Tipo de indice incorrecto (debe fallar) ===".
+    
+    lista de numero datos es [100, 200, 300].
+    
+    // ERROR: Usar una frase como índice
+    numero resultado es datos posicion ("primero").
+    
+    escribeN resultado.
+}
+
+// ERRORES ESPERADOS:
+// 1. Error semántico: El índice debe ser de tipo numero
+//    - Se intenta usar una frase como índice
+//    - Solo se permiten expresiones de tipo INT/numero

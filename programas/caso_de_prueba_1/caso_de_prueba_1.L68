@@ -1,0 +1,277 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 11/02/2026 21:12:58
+
+00001000                             1              ORG $1000
+00001000                             2  START:
+00001000  4FF9 00005000              3              LEA STACKPTR, A7
+00001006  4EF9 00001028              4              JMP main
+0000100C                             5  
+0000100C                             6  ; ===== RUTINAS AUXILIARES =====
+0000100C                             7  PRINT_SIGNED:
+0000100C  4A41                       8              TST.W D1
+0000100E  6A00 0010                  9              BPL PRINT_UNSIGNED
+00001012  103C 000E                 10              MOVE.B #14, D0
+00001016  43F9 00001255             11              LEA MINUS_SIGN, A1
+0000101C  4E4F                      12              TRAP #15
+0000101E  4441                      13              NEG.W D1
+00001020                            14  PRINT_UNSIGNED:
+00001020  103C 0003                 15              MOVE.B #3, D0
+00001024  4E4F                      16              TRAP #15
+00001026  4E75                      17              RTS
+00001028                            18  
+00001028                            19  main:
+00001028                            20              ; output "=== CASO 1: OPERACIONES BASICAS ==="
+00001028  43F9 000012DA             21              LEA str0, A1
+0000102E  103C 000E                 22              MOVE.B #14, D0
+00001032  4E4F                      23              TRAP #15
+00001034                            24              ; output "\n"
+00001034  43F9 00001252             25              LEA NEWLINE, A1
+0000103A  103C 000E                 26              MOVE.B #14, D0
+0000103E  4E4F                      27              TRAP #15
+00001040                            28              ; t0 = 10
+00001040  33FC 000A 00001304        29              MOVE.W #10, t0
+00001048                            30              ; a = t0
+00001048  33F9 00001304 000012D4    31              MOVE.W t0, a
+00001052                            32              ; t1 = 5
+00001052  33FC 0005 00001306        33              MOVE.W #5, t1
+0000105A                            34              ; b = t1
+0000105A  33F9 00001306 000012D8    35              MOVE.W t1, b
+00001064                            36              ; t2 = a
+00001064  33F9 000012D4 0000130A    37              MOVE.W a, t2
+0000106E                            38              ; t3 = b
+0000106E  33F9 000012D8 0000130C    39              MOVE.W b, t3
+00001078                            40              ; t4 = t2 + t3
+00001078  3039 0000130A             41              MOVE.W t2, D0
+0000107E  D079 0000130C             42              ADD.W t3, D0
+00001084  33C0 00001278             43              MOVE.W D0, t4
+0000108A                            44              ; suma = t4
+0000108A  33F9 00001278 0000127A    45              MOVE.W t4, suma
+00001094                            46              ; output "Suma: "
+00001094  43F9 000012B6             47              LEA str1, A1
+0000109A  103C 000E                 48              MOVE.B #14, D0
+0000109E  4E4F                      49              TRAP #15
+000010A0                            50              ; t5 = suma
+000010A0  33F9 0000127A 0000127C    51              MOVE.W suma, t5
+000010AA                            52              ; output t5
+000010AA  3239 0000127C             53              MOVE.W t5, D1
+000010B0  4EB8 100C                 54              JSR PRINT_SIGNED
+000010B4                            55              ; output "\n"
+000010B4  43F9 00001252             56              LEA NEWLINE, A1
+000010BA  103C 000E                 57              MOVE.B #14, D0
+000010BE  4E4F                      58              TRAP #15
+000010C0                            59              ; t6 = a
+000010C0  33F9 000012D4 0000127E    60              MOVE.W a, t6
+000010CA                            61              ; t7 = b
+000010CA  33F9 000012D8 00001280    62              MOVE.W b, t7
+000010D4                            63              ; t8 = t6 - t7
+000010D4  3039 0000127E             64              MOVE.W t6, D0
+000010DA  9079 00001280             65              SUB.W t7, D0
+000010E0  33C0 00001282             66              MOVE.W D0, t8
+000010E6                            67              ; resta = t8
+000010E6  33F9 00001282 00001302    68              MOVE.W t8, resta
+000010F0                            69              ; output "Resta: "
+000010F0  43F9 000012C0             70              LEA str2, A1
+000010F6  103C 000E                 71              MOVE.B #14, D0
+000010FA  4E4F                      72              TRAP #15
+000010FC                            73              ; t9 = resta
+000010FC  33F9 00001302 00001284    74              MOVE.W resta, t9
+00001106                            75              ; output t9
+00001106  3239 00001284             76              MOVE.W t9, D1
+0000110C  4EB8 100C                 77              JSR PRINT_SIGNED
+00001110                            78              ; output "\n"
+00001110  43F9 00001252             79              LEA NEWLINE, A1
+00001116  103C 000E                 80              MOVE.B #14, D0
+0000111A  4E4F                      81              TRAP #15
+0000111C                            82              ; t10 = a
+0000111C  33F9 000012D4 00001288    83              MOVE.W a, t10
+00001126                            84              ; t11 = b
+00001126  33F9 000012D8 000012A8    85              MOVE.W b, t11
+00001130                            86              ; t12 = t10 * t11
+00001130  3039 00001288             87              MOVE.W t10, D0
+00001136  C1F9 000012A8             88              MULS t11, D0
+0000113C  33C0 00001294             89              MOVE.W D0, t12
+00001142                            90              ; multiplicacion = t12
+00001142  33F9 00001294 000012D6    91              MOVE.W t12, multiplicacion
+0000114C                            92              ; output "Multiplicación: "
+0000114C  43F9 00001296             93              LEA str3, A1
+00001152  103C 000E                 94              MOVE.B #14, D0
+00001156  4E4F                      95              TRAP #15
+00001158                            96              ; t13 = multiplicacion
+00001158  33F9 000012D6 000012C8    97              MOVE.W multiplicacion, t13
+00001162                            98              ; output t13
+00001162  3239 000012C8             99              MOVE.W t13, D1
+00001168  4EB8 100C                100              JSR PRINT_SIGNED
+0000116C                           101              ; output "\n"
+0000116C  43F9 00001252            102              LEA NEWLINE, A1
+00001172  103C 000E                103              MOVE.B #14, D0
+00001176  4E4F                     104              TRAP #15
+00001178                           105              ; t14 = a
+00001178  33F9 000012D4 000012BE   106              MOVE.W a, t14
+00001182                           107              ; t15 = b
+00001182  33F9 000012D8 000012CC   108              MOVE.W b, t15
+0000118C                           109              ; t16 = t14 / t15
+0000118C  3039 000012BE            110              MOVE.W t14, D0
+00001192  4A79 000012CC            111              TST.W t15
+00001198  6700 0174                112              BEQ DIV_ZERO_ERROR
+0000119C  81F9 000012CC            113              DIVS t15, D0
+000011A2  33C0 000012CA            114              MOVE.W D0, t16
+000011A8                           115              ; division = t16
+000011A8  33F9 000012CA 00001286   116              MOVE.W t16, division
+000011B2                           117              ; output "División: "
+000011B2  43F9 000012AA            118              LEA str4, A1
+000011B8  103C 000E                119              MOVE.B #14, D0
+000011BC  4E4F                     120              TRAP #15
+000011BE                           121              ; t17 = division
+000011BE  33F9 00001286 000012D0   122              MOVE.W division, t17
+000011C8                           123              ; output t17
+000011C8  3239 000012D0            124              MOVE.W t17, D1
+000011CE  4EB8 100C                125              JSR PRINT_SIGNED
+000011D2                           126              ; output "\n"
+000011D2  43F9 00001252            127              LEA NEWLINE, A1
+000011D8  103C 000E                128              MOVE.B #14, D0
+000011DC  4E4F                     129              TRAP #15
+000011DE                           130              ; t18 = a
+000011DE  33F9 000012D4 000012CE   131              MOVE.W a, t18
+000011E8                           132              ; t19 = b
+000011E8  33F9 000012D8 000012D2   133              MOVE.W b, t19
+000011F2                           134              ; t20 = t18 % t19
+000011F2  3039 000012CE            135              MOVE.W t18, D0
+000011F8  3239 000012D2            136              MOVE.W t19, D1
+000011FE  4A41                     137              TST.W D1
+00001200  6700 010C                138              BEQ DIV_ZERO_ERROR
+00001204  48C0                     139              EXT.L D0
+00001206  2400                     140              MOVE.L D0, D2
+00001208  81C1                     141              DIVS D1, D0
+0000120A  4283                     142              CLR.L D3
+0000120C  3600                     143              MOVE.W D0, D3
+0000120E  C7C1                     144              MULS D1, D3
+00001210  9483                     145              SUB.L D3, D2
+00001212  33C2 00001300            146              MOVE.W D2, t20
+00001218                           147              ; modulo = t20
+00001218  33F9 00001300 00001308   148              MOVE.W t20, modulo
+00001222                           149              ; output "Módulo: "
+00001222  43F9 0000128A            150              LEA str5, A1
+00001228  103C 000E                151              MOVE.B #14, D0
+0000122C  4E4F                     152              TRAP #15
+0000122E                           153              ; t21 = modulo
+0000122E  33F9 00001308 000012FE   154              MOVE.W modulo, t21
+00001238                           155              ; output t21
+00001238  3239 000012FE            156              MOVE.W t21, D1
+0000123E  4EB8 100C                157              JSR PRINT_SIGNED
+00001242                           158              ; output "\n"
+00001242  43F9 00001252            159              LEA NEWLINE, A1
+00001248  103C 000E                160              MOVE.B #14, D0
+0000124C  4E4F                     161              TRAP #15
+0000124E                           162  end:
+0000124E  6000 00CC                163              BRA HALT
+00001252                           164  
+00001252                           165              ; DATA SECTION
+00001252= 0D 0A 00                 166  NEWLINE:    DC.B 13,10,0
+00001255= 2D 00                    167  MINUS_SIGN: DC.B '-',0
+00001257= 45 52 52 4F 52 3A ...    168  DIV_ZERO_MSG:       DC.B 'ERROR: Division entre cero',13,10,0
+00001274= 00008000                 169  HEAP_PTR:   DC.L $8000
+00001278                           170  t4:         DS.W 1
+0000127A                           171  suma:       DS.W 1
+0000127C                           172  t5:         DS.W 1
+0000127E                           173  t6:         DS.W 1
+00001280                           174  t7:         DS.W 1
+00001282                           175  t8:         DS.W 1
+00001284                           176  t9:         DS.W 1
+00001286                           177  division:   DS.W 1
+00001288                           178  t10:        DS.W 1
+0000128A= 4D C3 B3 64 75 6C ...    179  str5:       DC.B 'Módulo: ',0
+00001294                           180  t12:        DS.W 1
+00001296= 4D 75 6C 74 69 70 ...    181  str3:       DC.B 'Multiplicación: ',0
+000012A8                           182  t11:        DS.W 1
+000012AA= 44 69 76 69 73 69 ...    183  str4:       DC.B 'División: ',0
+000012B6= 53 75 6D 61 3A 20 00     184  str1:       DC.B 'Suma: ',0
+000012BE                           185  t14:        DS.W 1
+000012C0= 52 65 73 74 61 3A ...    186  str2:       DC.B 'Resta: ',0
+000012C8                           187  t13:        DS.W 1
+000012CA                           188  t16:        DS.W 1
+000012CC                           189  t15:        DS.W 1
+000012CE                           190  t18:        DS.W 1
+000012D0                           191  t17:        DS.W 1
+000012D2                           192  t19:        DS.W 1
+000012D4                           193  a:          DS.W 1
+000012D6                           194  multiplicacion:     DS.W 1
+000012D8                           195  b:          DS.W 1
+000012DA= 3D 3D 3D 20 43 41 ...    196  str0:       DC.B '=== CASO 1: OPERACIONES BASICAS ===',0
+000012FE                           197  t21:        DS.W 1
+00001300                           198  t20:        DS.W 1
+00001302                           199  resta:      DS.W 1
+00001304                           200  t0:         DS.W 1
+00001306                           201  t1:         DS.W 1
+00001308                           202  modulo:     DS.W 1
+0000130A                           203  t2:         DS.W 1
+0000130C                           204  t3:         DS.W 1
+0000130E                           205  
+0000130E                           206  ; ===== MANEJADOR DE ERROR DE DIVISION ENTRE CERO =====
+0000130E                           207  DIV_ZERO_ERROR:
+0000130E  43F8 1257                208              LEA DIV_ZERO_MSG, A1
+00001312  103C 000E                209              MOVE.B #14, D0
+00001316  4E4F                     210              TRAP #15
+00001318  6000 0002                211              BRA HALT
+0000131C                           212  
+0000131C                           213  HALT:
+0000131C  FFFF FFFF                214              SIMHALT
+00001320                           215  
+00005000                           216              ORG $5000
+00005000                           217  STACKPTR:
+00005000                           218              END START
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+A                   12D4
+B                   12D8
+DIVISION            1286
+DIV_ZERO_ERROR      130E
+DIV_ZERO_MSG        1257
+END                 124E
+HALT                131C
+HEAP_PTR            1274
+MAIN                1028
+MINUS_SIGN          1255
+MODULO              1308
+MULTIPLICACION      12D6
+NEWLINE             1252
+PRINT_SIGNED        100C
+PRINT_UNSIGNED      1020
+RESTA               1302
+STACKPTR            5000
+START               1000
+STR0                12DA
+STR1                12B6
+STR2                12C0
+STR3                1296
+STR4                12AA
+STR5                128A
+SUMA                127A
+T0                  1304
+T1                  1306
+T10                 1288
+T11                 12A8
+T12                 1294
+T13                 12C8
+T14                 12BE
+T15                 12CC
+T16                 12CA
+T17                 12D0
+T18                 12CE
+T19                 12D2
+T2                  130A
+T20                 1300
+T21                 12FE
+T3                  130C
+T4                  1278
+T5                  127C
+T6                  127E
+T7                  1280
+T8                  1282
+T9                  1284

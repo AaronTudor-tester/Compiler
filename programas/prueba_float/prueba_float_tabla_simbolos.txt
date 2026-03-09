@@ -1,0 +1,8 @@
+===== TABLA DE SÍMBOLOS =====
+
+FUNCION: Simbolo{nombre='sumaDosDecimales', tipoRetorno=FLOAT, parametros=[FLOAT, FLOAT], linea=5}
+  VARIABLE: Simbolo{nombre='a', tipo=FLOAT, valor=null, linea=1, inicializada=true}
+  VARIABLE: Simbolo{nombre='b', tipo=FLOAT, valor=null, linea=1, inicializada=true}
+  VARIABLE: Simbolo{nombre='x', tipo=FLOAT, valor=3.5, linea=9, inicializada=true}
+  VARIABLE: Simbolo{nombre='y', tipo=FLOAT, valor=2.25, linea=10, inicializada=true}
+  VARIABLE: Simbolo{nombre='z', tipo=FLOAT, valor=null, linea=12, inicializada=true}

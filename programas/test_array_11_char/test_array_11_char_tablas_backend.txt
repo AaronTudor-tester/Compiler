@@ -1,0 +1,63 @@
+===== TABLAS DE VARIABLES Y PROCEDIMIENTOS =====
+
+--- TABLA DE VARIABLES ---
+
+Variables del programa:
+  primera
+  tercera
+  vocales
+  nueva
+
+Variables temporales generadas:
+  t4
+  t5
+  t6
+  t7
+  t8
+  t9
+  t30
+  t10
+  t32
+  t31
+  t12
+  t34
+  t11
+  t33
+  t14
+  t36
+  t13
+  t35
+  t16
+  t38
+  t15
+  t37
+  t18
+  t17
+  t39
+  t19
+  t41
+  t40
+  t21
+  t43
+  t20
+  t42
+  t23
+  t45
+  t22
+  t44
+  t25
+  t47
+  t24
+  t46
+  t27
+  t26
+  t29
+  t28
+  t0
+  t1
+  t2
+  t3
+
+--- TABLA DE PROCEDIMIENTOS ---
+
+(ningun procedimiento definido)

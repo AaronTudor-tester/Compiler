@@ -1,0 +1,189 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 11/02/2026 9:02:19
+
+00000000                             1  ; Easy68K Assembly Generated
+00001000                             2              ORG $1000
+00001000                             3  START:
+00001000  4FF9 00005000              4              LEA STACKPTR, A7                ; Initialize stack pointer
+00001006  4EF9 00001090              5              JMP main; Jump to main program
+0000100C                             6  
+0000100C                             7  ; ===== RUTINAS AUXILIARES =====
+0000100C                             8  PRINT_SIGNED:
+0000100C                             9              ; D1 contiene el número a mostrar (con signo)
+0000100C                            10              ; Si es negativo, muestra '-' y el valor absoluto
+0000100C  4A41                      11              TST.W D1; Probar el signo
+0000100E  6A00 0010                 12              BPL PRINT_UNSIGNED              ; Si es positivo, saltar
+00001012                            13              ; Es negativo: mostrar '-'
+00001012  103C 000E                 14              MOVE.B #14, D0
+00001016  43F9 00001141             15              LEA MINUS_SIGN, A1
+0000101C  4E4F                      16              TRAP #15
+0000101E                            17              ; Negar el valor
+0000101E  4441                      18              NEG.W D1
+00001020                            19  PRINT_UNSIGNED:
+00001020                            20              ; Mostrar el número (ahora positivo) usando Task #3
+00001020  103C 0003                 21              MOVE.B #3, D0                   ; Task 3 = Display number
+00001024  4E4F                      22              TRAP #15
+00001026  4E75                      23              RTS
+00001028                            24  
+00001028                            25  PRINT_DECIMAL_2:
+00001028                            26              ; D1 = numero escalado x100 (ej: 350 = 3.50)
+00001028                            27              ; Guardar original en D3 (32-bit)
+00001028  2601                      28              MOVE.L D1, D3
+0000102A                            29              ; Manejar signo: si negativo, imprimir '-' y tomar abs
+0000102A  4A83                      30              TST.L D3
+0000102C  6A00 0010                 31              BPL .PD2_POSITIVE
+00001030                            32              ; imprimir '-'
+00001030  103C 000E                 33              MOVE.B #14, D0
+00001034  43F9 00001141             34              LEA MINUS_SIGN, A1
+0000103A  4E4F                      35              TRAP #15
+0000103C  4483                      36              NEG.L D3
+0000103E                            37  .PD2_POSITIVE:
+0000103E                            38              ; Calcular parte entera: D2 = original / 100
+0000103E  2403                      39              MOVE.L D3, D2
+00001040  383C 0064                 40              MOVE.W #100, D4
+00001044  85C4                      41              DIVS D4, D2
+00001046                            42              ; Calcular fracción: D3 = remainder = original - (parte_entera*100)
+00001046  2A02                      43              MOVE.L D2, D5
+00001048  383C 0064                 44              MOVE.W #100, D4
+0000104C  2C05                      45              MOVE.L D5, D6
+0000104E  4280                      46              CLR.L D0
+00001050  3004                      47              MOVE.W D4, D0
+00001052  CDC0                      48              MULS D0, D6
+00001054  9686                      49              SUB.L D6, D3
+00001056                            50              ; Imprimir parte entera usando Task 3
+00001056  4281                      51              CLR.L D1
+00001058  3202                      52              MOVE.W D2, D1
+0000105A  103C 0003                 53              MOVE.B #3, D0
+0000105E  4E4F                      54              TRAP #15
+00001060                            55              ; Imprimir punto decimal
+00001060  43F9 00001143             56              LEA DECIMAL_POINT, A1
+00001066  103C 000E                 57              MOVE.B #14, D0
+0000106A  4E4F                      58              TRAP #15
+0000106C                            59              ; Imprimir fracción con 2 dígitos
+0000106C  4280                      60              CLR.L D0
+0000106E  3003                      61              MOVE.W D3, D0
+00001070  B07C 000A                 62              CMP.W #10, D0
+00001074  6C00 000E                 63              BGE .PD2_SKIP_ZERO
+00001078                            64              ; imprimir '0' si <10
+00001078  43F9 00001145             65              LEA ZERO_CHAR, A1
+0000107E  103C 000E                 66              MOVE.B #14, D0
+00001082  4E4F                      67              TRAP #15
+00001084                            68  .PD2_SKIP_ZERO:
+00001084  4281                      69              CLR.L D1
+00001086  3203                      70              MOVE.W D3, D1
+00001088  103C 0003                 71              MOVE.B #3, D0
+0000108C  4E4F                      72              TRAP #15
+0000108E  4E75                      73              RTS
+00001090                            74  
+00001090                            75  main:
+00001090                            76              ; output "Hola"
+00001090  43F9 000011A6             77              LEA str0, A1
+00001096  103C 000E                 78              MOVE.B #14, D0                  ; Task 14 = Display string
+0000109A  4E4F                      79              TRAP #15
+0000109C                            80              ; output " mundo"
+0000109C  43F9 00001189             81              LEA str1, A1
+000010A2  103C 000E                 82              MOVE.B #14, D0                  ; Task 14 = Display string
+000010A6  4E4F                      83              TRAP #15
+000010A8                            84              ; output " sin salto de linea"
+000010A8  43F9 00001190             85              LEA str2, A1
+000010AE  103C 000E                 86              MOVE.B #14, D0                  ; Task 14 = Display string
+000010B2  4E4F                      87              TRAP #15
+000010B4                            88              ; output "Con salto de linea"
+000010B4  43F9 00001168             89              LEA str3, A1
+000010BA  103C 000E                 90              MOVE.B #14, D0                  ; Task 14 = Display string
+000010BE  4E4F                      91              TRAP #15
+000010C0                            92              ; output "\n"
+000010C0  43F9 0000113E             93              LEA NEWLINE, A1
+000010C6  103C 000E                 94              MOVE.B #14, D0                  ; Task 14 = Display string
+000010CA  4E4F                      95              TRAP #15
+000010CC                            96              ; output "Segunda linea"
+000010CC  43F9 0000117B             97              LEA str4, A1
+000010D2  103C 000E                 98              MOVE.B #14, D0                  ; Task 14 = Display string
+000010D6  4E4F                      99              TRAP #15
+000010D8                           100              ; output "\n"
+000010D8  43F9 0000113E            101              LEA NEWLINE, A1
+000010DE  103C 000E                102              MOVE.B #14, D0                  ; Task 14 = Display string
+000010E2  4E4F                     103              TRAP #15
+000010E4                           104              ; t0 = 42
+000010E4  33FC 002A 000011AC       105              MOVE.W #42, t0
+000010EC                           106              ; x = t0
+000010EC  33F9 000011AC 000011A4   107              MOVE.W t0, x
+000010F6                           108              ; output "El valor es: "
+000010F6  43F9 00001147            109              LEA str5, A1
+000010FC  103C 000E                110              MOVE.B #14, D0                  ; Task 14 = Display string
+00001100  4E4F                     111              TRAP #15
+00001102                           112              ; t1 = x
+00001102  33F9 000011A4 000011AE   113              MOVE.W x, t1
+0000110C                           114              ; output t1
+0000110C  3239 000011AE            115              MOVE.W t1, D1
+00001112  4EB8 100C                116              JSR PRINT_SIGNED
+00001116                           117              ; output "\n"
+00001116  43F9 0000113E            118              LEA NEWLINE, A1
+0000111C  103C 000E                119              MOVE.B #14, D0                  ; Task 14 = Display string
+00001120  4E4F                     120              TRAP #15
+00001122                           121              ; output "Final del programa"
+00001122  43F9 00001155            122              LEA str6, A1
+00001128  103C 000E                123              MOVE.B #14, D0                  ; Task 14 = Display string
+0000112C  4E4F                     124              TRAP #15
+0000112E                           125              ; output "\n"
+0000112E  43F9 0000113E            126              LEA NEWLINE, A1
+00001134  103C 000E                127              MOVE.B #14, D0                  ; Task 14 = Display string
+00001138  4E4F                     128              TRAP #15
+0000113A                           129  end:
+0000113A  6000 0074                130              BRA HALT
+0000113E                           131  
+0000113E                           132              ; DATA SECTION
+0000113E= 0D 0A 00                 133  NEWLINE:    DC.B 13,10,0
+00001141= 2D 00                    134  MINUS_SIGN: DC.B '-',0
+00001143= 2E 00                    135  DECIMAL_POINT:      DC.B '.',0
+00001145= 30 00                    136  ZERO_CHAR:  DC.B '0',0
+00001147= 45 6C 20 76 61 6C ...    137  str5:       DC.B 'El valor es: ',0
+00001155= 46 69 6E 61 6C 20 ...    138  str6:       DC.B 'Final del programa',0
+00001168= 43 6F 6E 20 73 61 ...    139  str3:       DC.B 'Con salto de linea',0
+0000117B= 53 65 67 75 6E 64 ...    140  str4:       DC.B 'Segunda linea',0
+00001189= 20 6D 75 6E 64 6F 00     141  str1:       DC.B ' mundo',0
+00001190= 20 73 69 6E 20 73 ...    142  str2:       DC.B ' sin salto de linea',0
+000011A4                           143  x:          DS.W 1
+000011A6= 48 6F 6C 61 00           144  str0:       DC.B 'Hola',0
+000011AC                           145  t0:         DS.W 1
+000011AE                           146  t1:         DS.W 1
+000011B0                           147  
+000011B0                           148  HALT:
+000011B0  FFFF FFFF                149              SIMHALT
+000011B4                           150  
+00005000                           151              ORG $5000
+00005000                           152  STACKPTR:
+00005000                           153              END START
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+DECIMAL_POINT       1143
+END                 113A
+HALT                11B0
+MAIN                1090
+MINUS_SIGN          1141
+NEWLINE             113E
+PRINT_DECIMAL_2     1028
+PRINT_DECIMAL_2:PD2_POSITIVE  103E
+PRINT_DECIMAL_2:PD2_SKIP_ZERO  1084
+PRINT_SIGNED        100C
+PRINT_UNSIGNED      1020
+STACKPTR            5000
+START               1000
+STR0                11A6
+STR1                1189
+STR2                1190
+STR3                1168
+STR4                117B
+STR5                1147
+STR6                1155
+T0                  11AC
+T1                  11AE
+X                   11A4
+ZERO_CHAR           1145

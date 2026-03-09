@@ -1,0 +1,46 @@
+===== OPTIMIZACIONES REALIZADAS =====
+
+Archivo: programas\test_validacion_input\test_validacion_input.txt
+Fecha: 2026-02-04T12:30:13.624784400
+
+--- ESTADISTICAS DE CODIGO INTERMEDIO ---
+
+Instrucciones originales: 15
+Instrucciones optimizadas: 15
+Instrucciones eliminadas: 0
+Reduccion: 0,00%
+
+--- ESTADISTICAS DE ENSAMBLADOR ---
+
+Archivo original (.x68): 6086 bytes
+Archivo optimizado (_optimizado.x68): 5933 bytes
+Bytes reducidos: 153 bytes
+Reduccion en ensamblador: 2,51%
+
+--- CODIGO OPTIMIZADO ---
+
+main:
+output "Introduce un numero entero:"
+output "\n"
+input miNumero
+output "Has introducido: "
+output miNumero
+output "\n"
+output "Introduce otro numero:"
+output "\n"
+input otroNumero
+t3 = miNumero + otroNumero
+suma = t3
+output "La suma es: "
+output suma
+output "\n"
+
+--- CAMBIOS REALIZADOS POR EL OPTIMIZADOR ---
+
+Asignación diferida:
+  - Línea 5: t0 eliminado y sustituido por miNumero
+  - Línea 10: t1 eliminado y sustituido por miNumero
+  - Línea 10: t2 eliminado y sustituido por otroNumero
+  - Línea 13: t4 eliminado y sustituido por suma
+Eliminación de etiquetas muertas:
+  - Línea 15: Se ha eliminado la etiqueta end

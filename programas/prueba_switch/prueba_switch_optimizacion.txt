@@ -1,0 +1,84 @@
+===== OPTIMIZACIONES REALIZADAS =====
+
+Archivo: .\programas\prueba_switch\prueba_switch.txt
+Fecha: 2026-02-11T09:14:11.779746100
+
+--- ESTADÍSTICAS DE CÓDIGO INTERMEDIO ---
+
+Instrucciones originales: 54
+Instrucciones optimizadas: 54
+Instrucciones eliminadas: 0
+Reducción: 0,00%
+
+--- ESTADÍSTICAS DE ENSAMBLADOR ---
+
+Archivo original (.x68): 3343 bytes
+Archivo optimizado (_optimizado.x68): 3222 bytes
+Bytes reducidos: 121 bytes
+Reducción en ensamblador: 3,62%
+
+--- CÓDIGO OPTIMIZADO ---
+
+main:
+output "=== PRUEBA DE SWITCH-CASE ==="
+output "\n"
+opcion = 1
+output "Opcion = 1:"
+output "\n"
+t1 = opcion
+t2 = 1
+if t1 != t2 goto e1
+output "Seleccionaste 1"
+e1:
+t3 = 2
+if t1 != t3 goto e2
+output "Seleccionaste 2"
+e2:
+t4 = 3
+if t1 != t4 goto e0
+output "Seleccionaste 3"
+e0:
+output "\n"
+opcion2 = 2
+output "Opcion = 2:"
+output "\n"
+t6 = opcion2
+t7 = 1
+if t6 != t7 goto e4
+output "Opcion 1"
+e4:
+t8 = 2
+if t6 != t8 goto e5
+output "Opcion 2"
+e5:
+t9 = 3
+if t6 != t9 goto e3
+output "Opcion 3"
+e3:
+output "\n"
+opcion3 = 5
+output "Opcion = 5 (no existe):"
+output "\n"
+t11 = opcion3
+t12 = 1
+if t11 != t12 goto e7
+output "Uno"
+e7:
+t13 = 2
+if t11 != t13 goto e8
+output "Dos"
+e8:
+t14 = 3
+if t11 != t14 goto e6
+output "Tres"
+e6:
+output "FIN"
+
+--- CAMBIOS REALIZADOS POR EL OPTIMIZADOR ---
+
+Asignación diferida:
+  - Línea 3: t0 eliminado y sustituido por 1
+  - Línea 20: t5 eliminado y sustituido por 2
+  - Línea 37: t10 eliminado y sustituido por 5
+Eliminación de etiquetas muertas:
+  - Línea 54: Se ha eliminado la etiqueta end

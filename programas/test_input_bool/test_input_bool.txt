@@ -1,0 +1,15 @@
+// TEST: Entrada por teclado de valores booleanos
+// Objetivo: Verificar que se puedan leer booleanos del teclado
+
+principal {
+    escribeN "=== TEST: Lectura de booleanos ===".
+    
+    escribeN "Introduce un valor booleano (cierto/mentira):".
+    pregunta usuario.
+    lee usuario.
+    
+    escribe "Has introducido: ".
+    escribeN usuario.
+    
+    escribeN "Test completado".
+}

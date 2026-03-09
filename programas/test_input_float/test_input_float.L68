@@ -1,0 +1,248 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 11/02/2026 16:39:57
+
+00001000                             1              ORG $1000
+00001000                             2  START:
+00001000  4FF9 00005000              3              LEA STACKPTR, A7
+00001006  4EF9 00001176              4              JMP main
+0000100C                             5  
+0000100C                             6  ; ===== RUTINAS AUXILIARES =====
+0000100C                             7  PRINT_SIGNED:
+0000100C  4A41                       8              TST.W D1
+0000100E  6A00 0010                  9              BPL PRINT_UNSIGNED
+00001012  103C 000E                 10              MOVE.B #14, D0
+00001016  43F9 000011FF             11              LEA MINUS_SIGN, A1
+0000101C  4E4F                      12              TRAP #15
+0000101E  4441                      13              NEG.W D1
+00001020                            14  PRINT_UNSIGNED:
+00001020  103C 0003                 15              MOVE.B #3, D0
+00001024  4E4F                      16              TRAP #15
+00001026  4E75                      17              RTS
+00001028                            18  
+00001028                            19  PRINT_DECIMAL_2:
+00001028  2601                      20              MOVE.L D1, D3
+0000102A  4A83                      21              TST.L D3
+0000102C  6A00 0010                 22              BPL .PD2_POSITIVE
+00001030  103C 000E                 23              MOVE.B #14, D0
+00001034  43F9 000011FF             24              LEA MINUS_SIGN, A1
+0000103A  4E4F                      25              TRAP #15
+0000103C  4483                      26              NEG.L D3
+0000103E                            27  .PD2_POSITIVE:
+0000103E  2403                      28              MOVE.L D3, D2
+00001040  383C 0064                 29              MOVE.W #100, D4
+00001044  85C4                      30              DIVS D4, D2
+00001046  2A02                      31              MOVE.L D2, D5
+00001048  383C 0064                 32              MOVE.W #100, D4
+0000104C  2C05                      33              MOVE.L D5, D6
+0000104E  4280                      34              CLR.L D0
+00001050  3004                      35              MOVE.W D4, D0
+00001052  CDC0                      36              MULS D0, D6
+00001054  9686                      37              SUB.L D6, D3
+00001056  4281                      38              CLR.L D1
+00001058  3202                      39              MOVE.W D2, D1
+0000105A  103C 0003                 40              MOVE.B #3, D0
+0000105E  4E4F                      41              TRAP #15
+00001060  43F9 00001201             42              LEA DECIMAL_POINT, A1
+00001066  103C 000E                 43              MOVE.B #14, D0
+0000106A  4E4F                      44              TRAP #15
+0000106C  4280                      45              CLR.L D0
+0000106E  3003                      46              MOVE.W D3, D0
+00001070  B07C 000A                 47              CMP.W #10, D0
+00001074  6C00 000E                 48              BGE .PD2_SKIP_ZERO
+00001078  43F9 00001203             49              LEA ZERO_CHAR, A1
+0000107E  103C 000E                 50              MOVE.B #14, D0
+00001082  4E4F                      51              TRAP #15
+00001084                            52  .PD2_SKIP_ZERO:
+00001084  4281                      53              CLR.L D1
+00001086  3203                      54              MOVE.W D3, D1
+00001088  103C 0003                 55              MOVE.B #3, D0
+0000108C  4E4F                      56              TRAP #15
+0000108E  4E75                      57              RTS
+00001090                            58  
+00001090                            59  READ_FLOAT:
+00001090                            60  .RF_RETRY:
+00001090  43F9 00001246             61              LEA INPUT_BUFFER, A1
+00001096  103C 0002                 62              MOVE.B #2, D0
+0000109A  4E4F                      63              TRAP #15
+0000109C  43F9 00001246             64              LEA INPUT_BUFFER, A1
+000010A2  4242                      65              CLR.W D2
+000010A4  4243                      66              CLR.W D3
+000010A6  4244                      67              CLR.W D4
+000010A8  4245                      68              CLR.W D5
+000010AA  1C11                      69              MOVE.B (A1), D6
+000010AC  BC3C 0000                 70              CMP.B #0, D6
+000010B0  6700 00B4                 71              BEQ .RF_ERROR
+000010B4  BC3C 002D                 72              CMP.B #'-', D6
+000010B8  6600 0008                 73              BNE .RF_PARSE_INT
+000010BC  343C 0001                 74              MOVE.W #1, D2
+000010C0  5289                      75              ADDA.L #1, A1
+000010C2                            76  .RF_PARSE_INT:
+000010C2  1C19                      77              MOVE.B (A1)+, D6
+000010C4  BC3C 0000                 78              CMP.B #0, D6
+000010C8  6700 007A                 79              BEQ .RF_FINISH
+000010CC  BC3C 000A                 80              CMP.B #10, D6
+000010D0  6700 0072                 81              BEQ .RF_FINISH
+000010D4  BC3C 000D                 82              CMP.B #13, D6
+000010D8  6700 006A                 83              BEQ .RF_FINISH
+000010DC  BC3C 002E                 84              CMP.B #'.', D6
+000010E0  6700 0020                 85              BEQ .RF_PARSE_DEC
+000010E4  BC3C 0030                 86              CMP.B #'0', D6
+000010E8  6D00 007C                 87              BLT .RF_ERROR
+000010EC  BC3C 0039                 88              CMP.B #'9', D6
+000010F0  6E00 0074                 89              BGT .RF_ERROR
+000010F4  0406 0030                 90              SUB.B #'0', D6
+000010F8  3E3C 000A                 91              MOVE.W #10, D7
+000010FC  C7C7                      92              MULS D7, D3
+000010FE  D646                      93              ADD.W D6, D3
+00001100  60C0                      94              BRA .RF_PARSE_INT
+00001102                            95  .RF_PARSE_DEC:
+00001102  4245                      96              CLR.W D5
+00001104                            97  .RF_DEC_LOOP:
+00001104  1C19                      98              MOVE.B (A1)+, D6
+00001106  BC3C 0000                 99              CMP.B #0, D6
+0000110A  6700 0038                100              BEQ .RF_FINISH
+0000110E  BC3C 000A                101              CMP.B #10, D6
+00001112  6700 0030                102              BEQ .RF_FINISH
+00001116  BC3C 000D                103              CMP.B #13, D6
+0000111A  6700 0028                104              BEQ .RF_FINISH
+0000111E  BC3C 0030                105              CMP.B #'0', D6
+00001122  6D00 0042                106              BLT .RF_ERROR
+00001126  BC3C 0039                107              CMP.B #'9', D6
+0000112A  6E00 003A                108              BGT .RF_ERROR
+0000112E  BA7C 0002                109              CMP.W #2, D5
+00001132  6CD0                     110              BGE .RF_DEC_LOOP
+00001134  0406 0030                111              SUB.B #'0', D6
+00001138  3E3C 000A                112              MOVE.W #10, D7
+0000113C  C9C7                     113              MULS D7, D4
+0000113E  D846                     114              ADD.W D6, D4
+00001140  5245                     115              ADD.W #1, D5
+00001142  60C0                     116              BRA .RF_DEC_LOOP
+00001144                           117  .RF_FINISH:
+00001144  3E3C 0064                118              MOVE.W #100, D7
+00001148  C7C7                     119              MULS D7, D3
+0000114A  BA7C 0001                120              CMP.W #1, D5
+0000114E  6600 0008                121              BNE .RF_TWO_DIGITS
+00001152  3E3C 000A                122              MOVE.W #10, D7
+00001156  C9C7                     123              MULS D7, D4
+00001158                           124  .RF_TWO_DIGITS:
+00001158  D644                     125              ADD.W D4, D3
+0000115A  4A42                     126              TST.W D2
+0000115C  6700 0004                127              BEQ .RF_POSITIVE
+00001160  4443                     128              NEG.W D3
+00001162                           129  .RF_POSITIVE:
+00001162  3203                     130              MOVE.W D3, D1
+00001164  4E75                     131              RTS
+00001166                           132  .RF_ERROR:
+00001166  43F9 00001205            133              LEA ERROR_FLOAT_MSG, A1
+0000116C  103C 000E                134              MOVE.B #14, D0
+00001170  4E4F                     135              TRAP #15
+00001172  6000 FF1C                136              BRA .RF_RETRY
+00001176                           137  
+00001176                           138  main:
+00001176                           139              ; output "=== TEST: Lectura de decimales ==="
+00001176  43F9 000012E7            140              LEA str0, A1
+0000117C  103C 000E                141              MOVE.B #14, D0
+00001180  4E4F                     142              TRAP #15
+00001182                           143              ; output "\n"
+00001182  43F9 000011FC            144              LEA NEWLINE, A1
+00001188  103C 000E                145              MOVE.B #14, D0
+0000118C  4E4F                     146              TRAP #15
+0000118E                           147              ; output "Introduce un numero decimal (ej: 12.34):"
+0000118E  43F9 000012AC            148              LEA str1, A1
+00001194  103C 000E                149              MOVE.B #14, D0
+00001198  4E4F                     150              TRAP #15
+0000119A                           151              ; output "\n"
+0000119A  43F9 000011FC            152              LEA NEWLINE, A1
+000011A0  103C 000E                153              MOVE.B #14, D0
+000011A4  4E4F                     154              TRAP #15
+000011A6                           155              ; input numero1
+000011A6  4EB8 1090                156              JSR READ_FLOAT
+000011AA  33C1 0000129A            157              MOVE.W D1, numero1
+000011B0                           158              ; output "Has introducido: "
+000011B0  43F9 000012D5            159              LEA str2, A1
+000011B6  103C 000E                160              MOVE.B #14, D0
+000011BA  4E4F                     161              TRAP #15
+000011BC                           162              ; t0 = numero1
+000011BC  33F9 0000129A 0000130A   163              MOVE.W numero1, t0
+000011C6                           164              ; output t0
+000011C6  4281                     165              CLR.L D1
+000011C8  3239 0000130A            166              MOVE.W t0, D1
+000011CE  48C1                     167              EXT.L D1
+000011D0  4EB8 1028                168              JSR PRINT_DECIMAL_2
+000011D4                           169              ; output "\n"
+000011D4  43F9 000011FC            170              LEA NEWLINE, A1
+000011DA  103C 000E                171              MOVE.B #14, D0
+000011DE  4E4F                     172              TRAP #15
+000011E0                           173              ; output "Test completado"
+000011E0  43F9 0000129C            174              LEA str3, A1
+000011E6  103C 000E                175              MOVE.B #14, D0
+000011EA  4E4F                     176              TRAP #15
+000011EC                           177              ; output "\n"
+000011EC  43F9 000011FC            178              LEA NEWLINE, A1
+000011F2  103C 000E                179              MOVE.B #14, D0
+000011F6  4E4F                     180              TRAP #15
+000011F8                           181  end:
+000011F8  6000 0112                182              BRA HALT
+000011FC                           183  
+000011FC                           184              ; DATA SECTION
+000011FC= 0D 0A 00                 185  NEWLINE:    DC.B 13,10,0
+000011FF= 2D 00                    186  MINUS_SIGN: DC.B '-',0
+00001201= 2E 00                    187  DECIMAL_POINT:      DC.B '.',0
+00001203= 30 00                    188  ZERO_CHAR:  DC.B '0',0
+00001205= 45 52 52 4F 52 3A ...    189  ERROR_FLOAT_MSG:    DC.B 'ERROR: Entrada invalida. Ingrese un decimal valido (ej: 12.34): ',0
+00001246                           190  INPUT_BUFFER:       DS.B 80
+00001296= 00008000                 191  HEAP_PTR:   DC.L $8000
+0000129A                           192  numero1:    DS.W 1
+0000129C= 54 65 73 74 20 63 ...    193  str3:       DC.B 'Test completado',0
+000012AC= 49 6E 74 72 6F 64 ...    194  str1:       DC.B 'Introduce un numero decimal (ej: 12.34):',0
+000012D5= 48 61 73 20 69 6E ...    195  str2:       DC.B 'Has introducido: ',0
+000012E7= 3D 3D 3D 20 54 45 ...    196  str0:       DC.B '=== TEST: Lectura de decimales ===',0
+0000130A                           197  t0:         DS.W 1
+0000130C                           198  
+0000130C                           199  HALT:
+0000130C  FFFF FFFF                200              SIMHALT
+00001310                           201  
+00005000                           202              ORG $5000
+00005000                           203  STACKPTR:
+00005000                           204              END START
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+DECIMAL_POINT       1201
+END                 11F8
+ERROR_FLOAT_MSG     1205
+HALT                130C
+HEAP_PTR            1296
+INPUT_BUFFER        1246
+MAIN                1176
+MINUS_SIGN          11FF
+NEWLINE             11FC
+NUMERO1             129A
+PRINT_DECIMAL_2     1028
+PRINT_DECIMAL_2:PD2_POSITIVE  103E
+PRINT_DECIMAL_2:PD2_SKIP_ZERO  1084
+PRINT_SIGNED        100C
+PRINT_UNSIGNED      1020
+READ_FLOAT          1090
+READ_FLOAT:RF_DEC_LOOP  1104
+READ_FLOAT:RF_ERROR  1166
+READ_FLOAT:RF_FINISH  1144
+READ_FLOAT:RF_PARSE_DEC  1102
+READ_FLOAT:RF_PARSE_INT  10C2
+READ_FLOAT:RF_POSITIVE  1162
+READ_FLOAT:RF_RETRY  1090
+READ_FLOAT:RF_TWO_DIGITS  1158
+STACKPTR            5000
+START               1000
+STR0                12E7
+STR1                12AC
+STR2                12D5
+STR3                129C
+T0                  130A
+ZERO_CHAR           1203

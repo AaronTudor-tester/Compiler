@@ -1,0 +1,33 @@
+// Prueba del SWITCH-CASE
+
+principal {
+    escribeN "=== PRUEBA DE SWITCH-CASE ===".
+    
+    numero opcion es 1.
+    escribeN "Opcion = 1:".
+    segun opcion {
+        si es 1 : escribe "Seleccionaste 1".
+        si es 2 : escribe "Seleccionaste 2".
+        si es 3 : escribe "Seleccionaste 3".
+    }
+    
+    escribe "\n".
+    numero opcion2 es 2.
+    escribeN "Opcion = 2:".
+    segun opcion2 {
+        si es 1 : escribe "Opcion 1".
+        si es 2 : escribe "Opcion 2".
+        si es 3 : escribe "Opcion 3".
+    }
+    
+    escribe "\n".
+    numero opcion3 es 5.
+    escribeN "Opcion = 5 (no existe):".
+    segun opcion3 {
+        si es 1 : escribe "Uno".
+        si es 2 : escribe "Dos".
+        si es 3 : escribe "Tres".
+    }
+    
+    escribe "FIN".
+}

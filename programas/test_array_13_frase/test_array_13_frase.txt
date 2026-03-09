@@ -1,0 +1,22 @@
+// TEST ARRAY 13: Arrays de frase (string)
+// Objetivo: Verificar arrays de cadenas de texto
+
+principal {
+    escribeN "=== TEST: Arrays de frase ===".
+    
+    lista de frase nombres es ["Ana", "Luis", "Maria"].
+    
+    escribeN "Mostrando nombres:".
+    frase nombre1 es nombres posicion (0).
+    escribeN nombre1.
+    
+    frase nombre2 es nombres posicion (1).
+    escribeN nombre2.
+    
+    escribeN "Modificando posicion 2:".
+    nombres posicion (2) es "Pedro".
+    frase nombre3 es nombres posicion (2).
+    escribeN nombre3.
+    
+    escribeN "Test completado".
+}

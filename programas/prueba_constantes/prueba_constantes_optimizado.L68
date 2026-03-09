@@ -1,0 +1,134 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 11/02/2026 9:03:06
+
+00000000                             1  ; Easy68K Assembly Generated
+00001000                             2              ORG $1000
+00001000                             3  START:
+00001000  4FF9 00005000              4              LEA STACKPTR, A7                ; Initialize stack pointer
+00001006  4EF9 00001090              5              JMP main; Jump to main program
+0000100C                             6  
+0000100C                             7  ; ===== RUTINAS AUXILIARES =====
+0000100C                             8  PRINT_SIGNED:
+0000100C                             9              ; D1 contiene el número a mostrar (con signo)
+0000100C                            10              ; Si es negativo, muestra '-' y el valor absoluto
+0000100C  4A41                      11              TST.W D1; Probar el signo
+0000100E  6A00 0010                 12              BPL PRINT_UNSIGNED              ; Si es positivo, saltar
+00001012                            13              ; Es negativo: mostrar '-'
+00001012  103C 000E                 14              MOVE.B #14, D0
+00001016  43F9 000010D3             15              LEA MINUS_SIGN, A1
+0000101C  4E4F                      16              TRAP #15
+0000101E                            17              ; Negar el valor
+0000101E  4441                      18              NEG.W D1
+00001020                            19  PRINT_UNSIGNED:
+00001020                            20              ; Mostrar el número (ahora positivo) usando Task #3
+00001020  103C 0003                 21              MOVE.B #3, D0                   ; Task 3 = Display number
+00001024  4E4F                      22              TRAP #15
+00001026  4E75                      23              RTS
+00001028                            24  
+00001028                            25  PRINT_DECIMAL_2:
+00001028                            26              ; D1 = numero escalado x100 (ej: 350 = 3.50)
+00001028                            27              ; Guardar original en D3 (32-bit)
+00001028  2601                      28              MOVE.L D1, D3
+0000102A                            29              ; Manejar signo: si negativo, imprimir '-' y tomar abs
+0000102A  4A83                      30              TST.L D3
+0000102C  6A00 0010                 31              BPL .PD2_POSITIVE
+00001030                            32              ; imprimir '-'
+00001030  103C 000E                 33              MOVE.B #14, D0
+00001034  43F9 000010D3             34              LEA MINUS_SIGN, A1
+0000103A  4E4F                      35              TRAP #15
+0000103C  4483                      36              NEG.L D3
+0000103E                            37  .PD2_POSITIVE:
+0000103E                            38              ; Calcular parte entera: D2 = original / 100
+0000103E  2403                      39              MOVE.L D3, D2
+00001040  383C 0064                 40              MOVE.W #100, D4
+00001044  85C4                      41              DIVS D4, D2
+00001046                            42              ; Calcular fracción: D3 = remainder = original - (parte_entera*100)
+00001046  2A02                      43              MOVE.L D2, D5
+00001048  383C 0064                 44              MOVE.W #100, D4
+0000104C  2C05                      45              MOVE.L D5, D6
+0000104E  4280                      46              CLR.L D0
+00001050  3004                      47              MOVE.W D4, D0
+00001052  CDC0                      48              MULS D0, D6
+00001054  9686                      49              SUB.L D6, D3
+00001056                            50              ; Imprimir parte entera usando Task 3
+00001056  4281                      51              CLR.L D1
+00001058  3202                      52              MOVE.W D2, D1
+0000105A  103C 0003                 53              MOVE.B #3, D0
+0000105E  4E4F                      54              TRAP #15
+00001060                            55              ; Imprimir punto decimal
+00001060  43F9 000010D5             56              LEA DECIMAL_POINT, A1
+00001066  103C 000E                 57              MOVE.B #14, D0
+0000106A  4E4F                      58              TRAP #15
+0000106C                            59              ; Imprimir fracción con 2 dígitos
+0000106C  4280                      60              CLR.L D0
+0000106E  3003                      61              MOVE.W D3, D0
+00001070  B07C 000A                 62              CMP.W #10, D0
+00001074  6C00 000E                 63              BGE .PD2_SKIP_ZERO
+00001078                            64              ; imprimir '0' si <10
+00001078  43F9 000010D7             65              LEA ZERO_CHAR, A1
+0000107E  103C 000E                 66              MOVE.B #14, D0
+00001082  4E4F                      67              TRAP #15
+00001084                            68  .PD2_SKIP_ZERO:
+00001084  4281                      69              CLR.L D1
+00001086  3203                      70              MOVE.W D3, D1
+00001088  103C 0003                 71              MOVE.B #3, D0
+0000108C  4E4F                      72              TRAP #15
+0000108E  4E75                      73              RTS
+00001090                            74  
+00001090                            75  main:
+00001090                            76              ; PI = 314
+00001090  33FC 013A 000010DC        77              MOVE.W #314, PI
+00001098                            78              ; x = 10
+00001098  33FC 000A 000010DA        79              MOVE.W #10, x
+000010A0                            80              ; output x
+000010A0  3239 000010DA             81              MOVE.W x, D1
+000010A6  4EB8 100C                 82              JSR PRINT_SIGNED
+000010AA  43F9 000010D0             83              LEA NEWLINE, A1
+000010B0  103C 000E                 84              MOVE.B #14, D0
+000010B4  4E4F                      85              TRAP #15
+000010B6                            86              ; output PI
+000010B6  3239 000010DC             87              MOVE.W PI, D1
+000010BC  4EB8 100C                 88              JSR PRINT_SIGNED
+000010C0  43F9 000010D0             89              LEA NEWLINE, A1
+000010C6  103C 000E                 90              MOVE.B #14, D0
+000010CA  4E4F                      91              TRAP #15
+000010CC  6000 0010                 92              BRA HALT
+000010D0                            93  
+000010D0                            94              ; DATA SECTION
+000010D0= 0D 0A 00                  95  NEWLINE:    DC.B 13,10,0
+000010D3= 2D 00                     96  MINUS_SIGN: DC.B '-',0
+000010D5= 2E 00                     97  DECIMAL_POINT:      DC.B '.',0
+000010D7= 30 00                     98  ZERO_CHAR:  DC.B '0',0
+000010DA                            99  x:          DS.W 1
+000010DC                           100  PI:         DS.W 1
+000010DE                           101  
+000010DE                           102  HALT:
+000010DE  FFFF FFFF                103              SIMHALT
+000010E2                           104  
+00005000                           105              ORG $5000
+00005000                           106  STACKPTR:
+00005000                           107              END START
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+DECIMAL_POINT       10D5
+HALT                10DE
+MAIN                1090
+MINUS_SIGN          10D3
+NEWLINE             10D0
+PI                  10DC
+PRINT_DECIMAL_2     1028
+PRINT_DECIMAL_2:PD2_POSITIVE  103E
+PRINT_DECIMAL_2:PD2_SKIP_ZERO  1084
+PRINT_SIGNED        100C
+PRINT_UNSIGNED      1020
+STACKPTR            5000
+START               1000
+X                   10DA
+ZERO_CHAR           10D7

@@ -1,0 +1,15 @@
+// TEST: Entrada por teclado de una frase
+// Objetivo: Verificar que se puedan leer frases por teclado
+
+principal {
+    escribeN "=== TEST: Lectura de frase ===".
+    
+    escribeN "Introduce una frase (ej: g):".
+    frase c.
+    lee c.
+    
+    escribe "Has introducido: ".
+    escribeN c.
+    
+    escribeN "Test completado".
+}

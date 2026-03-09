@@ -1,0 +1,64 @@
+===== OPTIMIZACIONES REALIZADAS =====
+
+Archivo: .\programas\test_posicion_parcial_init\test_posicion_parcial_init.txt
+Fecha: 2026-02-11T20:44:04.367663500
+
+--- ESTADÍSTICAS DE CÓDIGO INTERMEDIO ---
+
+Instrucciones originales: 12
+Instrucciones optimizadas: 11
+Instrucciones eliminadas: 1
+Reducción: 8,33%
+
+--- ESTADÍSTICAS DE ENSAMBLADOR ---
+
+Archivo original (.x68): 4289 bytes
+Archivo optimizado (_optimizado.x68): 3244 bytes
+Bytes reducidos: 1045 bytes
+Reducción en ensamblador: 24,36%
+
+--- CÓDIGO OPTIMIZADO ---
+
+main:
+output "Introduce indice (0..3):"
+output "\n"
+input idx
+arr[0] = 10
+arr[4] = 20
+arr[12] = 40
+t19 = idx * 4
+t20 = 4
+t22 = arr[t19]
+output t22
+
+--- CAMBIOS REALIZADOS POR EL OPTIMIZADOR ---
+
+Asignación diferida:
+  - Línea 4: t0 eliminado y sustituido por 1
+  - Línea 4: t1 eliminado y sustituido por 4
+  - Línea 5: t3 eliminado y sustituido por 4
+  - Línea 7: t5 eliminado y sustituido por 0
+  - Línea 7: t6 eliminado y sustituido por 4
+  - Línea 8: t8 eliminado y sustituido por 10
+  - Línea 9: t9 eliminado y sustituido por 1
+  - Línea 9: t10 eliminado y sustituido por 4
+  - Línea 10: t12 eliminado y sustituido por 20
+  - Línea 11: t13 eliminado y sustituido por 3
+  - Línea 11: t14 eliminado y sustituido por 4
+  - Línea 12: t16 eliminado y sustituido por 40
+  - Línea 13: t17 eliminado y sustituido por idx
+  - Línea 13: t18 eliminado y sustituido por 4
+  - Línea 14: t21 eliminado y sustituido por 4
+  - Línea 4: t2 eliminado y sustituido por 4
+  - Línea 6: t7 eliminado y sustituido por 0
+  - Línea 7: t11 eliminado y sustituido por 4
+  - Línea 8: t15 eliminado y sustituido por 12
+  - Línea 4: t4 eliminado y sustituido por 16
+Eliminación de etiquetas muertas:
+  - Línea 17: Se ha eliminado la etiqueta end
+Cálculo de constantes:
+  - Línea 4: t2 = 1 * 4 -> t2 = 4
+  - Línea 7: t7 = 0 * 4 -> t7 = 0
+  - Línea 9: t11 = 1 * 4 -> t11 = 4
+  - Línea 11: t15 = 3 * 4 -> t15 = 12
+  - Línea 4: t4 = 4 * 4 -> t4 = 16

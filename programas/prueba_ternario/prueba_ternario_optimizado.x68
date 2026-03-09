@@ -1,0 +1,92 @@
+	ORG $1000
+START:
+	LEA STACKPTR, A7
+	JMP main
+
+; ===== RUTINAS AUXILIARES =====
+PRINT_SIGNED:
+	TST.W D1
+	BPL PRINT_UNSIGNED
+	MOVE.B #14, D0
+	LEA MINUS_SIGN, A1
+	TRAP #15
+	NEG.W D1
+PRINT_UNSIGNED:
+	MOVE.B #3, D0
+	TRAP #15
+	RTS
+
+PRINT_BOOL:
+	TST.W D1
+	BEQ .PRINT_MENTIRA
+	LEA STR_CIERTO, A1
+	BRA .PRINT_BOOL_STR
+.PRINT_MENTIRA:
+	LEA STR_MENTIRA, A1
+.PRINT_BOOL_STR:
+	MOVE.B #14, D0
+	TRAP #15
+	RTS
+
+main:
+	; x = 2
+	MOVE.W #2, x
+	; t4 = x + 4
+	MOVE.W x, D0
+	ADD.W #4, D0
+	MOVE.W D0, t4
+	; t6 = t4 > 5
+	MOVE.W #0, t6
+	MOVE.W t4, D0
+	CMP.W #5, D0
+	BGT t6_true
+	JMP t6_false
+t6_true:
+	MOVE.W #1, t6
+t6_false:
+	; a = true
+	MOVE.W #1, a
+	; output x
+	MOVE.W x, D1
+	JSR PRINT_SIGNED
+	; output "\n"
+	LEA NEWLINE, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; output a
+	MOVE.W a, D1
+	JSR PRINT_BOOL
+	; output "\n"
+	LEA NEWLINE, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; if !(a) goto e2
+	MOVE.W a, D0
+	CMP.W #0, D0
+	BEQ e2
+	; output "hola"
+	LEA str0, A1
+	MOVE.B #14, D0
+	TRAP #15
+e2:
+	BRA HALT
+
+	; DATA SECTION
+NEWLINE:	DC.B 13,10,0
+MINUS_SIGN:	DC.B '-',0
+STR_CIERTO:	DC.B 'cierto',0
+STR_MENTIRA:	DC.B 'mentira',0
+HEAP_PTR:	DC.L $8000
+t4:	DS.W 1
+a:	DS.W 1
+t6:	DS.W 1
+x:	DS.W 1
+true:	DS.W 1
+str0:	DC.B 'hola',0
+
+HALT:
+	SIMHALT
+
+	ORG $5000
+STACKPTR:
+	END START

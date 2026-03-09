@@ -1,0 +1,63 @@
+numero suma ( numero a , numero b ) {
+    devuelve a mas b.
+}
+
+principal {
+    // Test 1: Variables y operaciones básicas
+    escribeN "=== TEST 1: Operaciones Basicas ===".
+    numero x es 10.
+    numero y es 5.
+    escribe "x + y = ".
+    escribeN suma(x, y).
+    
+    // Test 2: Condicionales IF/ELSE
+
+    escribeN "=== TEST 2: Condicionales ===".
+    si x es mayor que y {
+        escribeN "10 es mayor que 5".
+    } sino {
+        escribeN "10 no es mayor que 5".
+    }
+    
+    // Test 3: Bucle MIENTRAS (WHILE)
+  
+    escribeN "=== TEST 3: While ===".
+    numero contador es 0.
+    mientras contador es menor que 3 {
+        escribe "Iteracion: ".
+        escribeN contador.
+        incrementa contador.
+    }
+    
+    // Test 4: Operaciones unarias
+
+    escribeN "=== TEST 4: Operaciones Unarias ===".
+    numero z es 15.
+    escribe "z = ".
+    escribeN z.
+    escribe "Negacion de z = ".
+    numero negZ es menos z.
+    escribeN negZ.
+    
+    // Test 5: Strings
+
+    escribeN "=== TEST 5: Strings ===".
+    escribeN "Hola Mundo".
+    escribeN "Compilador funcionando!".
+    
+    // Test 6: Comparaciones
+    
+    escribeN "=== TEST 6: Comparaciones ===".
+    si 10 es igual que 10 {
+        escribeN "10 igual a 10: VERDADERO".
+    }
+    
+    si 5 es mayor que 8 {
+        escribeN "5 > 8: VERDADERO".
+    } sino {
+        escribeN "5 > 8: FALSO".
+    }
+    
+    escribe "=== FIN DE PRUEBAS ===".
+}
+

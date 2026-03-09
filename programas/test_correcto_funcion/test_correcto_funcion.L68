@@ -1,0 +1,120 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 11/02/2026 20:39:04
+
+00001000                             1              ORG $1000
+00001000                             2  START:
+00001000  4FF9 00005000              3              LEA STACKPTR, A7
+00001006  4EF9 00001070              4              JMP main
+0000100C                             5  
+0000100C                             6  ; ===== RUTINAS AUXILIARES =====
+0000100C                             7  PRINT_SIGNED:
+0000100C  4A41                       8              TST.W D1
+0000100E  6A00 0010                  9              BPL PRINT_UNSIGNED
+00001012  103C 000E                 10              MOVE.B #14, D0
+00001016  43F9 000010BF             11              LEA MINUS_SIGN, A1
+0000101C  4E4F                      12              TRAP #15
+0000101E  4441                      13              NEG.W D1
+00001020                            14  PRINT_UNSIGNED:
+00001020  103C 0003                 15              MOVE.B #3, D0
+00001024  4E4F                      16              TRAP #15
+00001026  4E75                      17              RTS
+00001028                            18  
+00001028                            19  suma:
+00001028                            20              ; ; param a : INT
+00001028                            21              ; ; param b : INT
+00001028                            22              ; t0 = a
+00001028  33F9 000010C8 000010DA    23              MOVE.W a, t0
+00001032                            24              ; t1 = b
+00001032  33F9 000010CC 000010DC    25              MOVE.W b, t1
+0000103C                            26              ; t2 = t0 + t1
+0000103C  3039 000010DA             27              MOVE.W t0, D0
+00001042  D079 000010DC             28              ADD.W t1, D0
+00001048  33C0 000010DE             29              MOVE.W D0, t2
+0000104E                            30              ; return t2
+0000104E  3039 000010DE             31              MOVE.W t2, D0
+00001054  4E75                      32              RTS
+00001056                            33  saludo:
+00001056                            34              ; output "Hola mundo"
+00001056  43F9 000010CE             35              LEA str0, A1
+0000105C  103C 000E                 36              MOVE.B #14, D0
+00001060  4E4F                      37              TRAP #15
+00001062                            38              ; output "\n"
+00001062  43F9 000010BC             39              LEA NEWLINE, A1
+00001068  103C 000E                 40              MOVE.B #14, D0
+0000106C  4E4F                      41              TRAP #15
+0000106E                            42              ; return null
+0000106E  4E75                      43              RTS
+00001070                            44  main:
+00001070                            45              ; t3 = 2
+00001070  33FC 0002 000010E0        46              MOVE.W #2, t3
+00001078                            47              ; t4 = 3
+00001078  33FC 0003 000010C6        48              MOVE.W #3, t4
+00001080                            49              ; param_s t3  
+00001080                            50              ; param_s t4  
+00001080                            51              ; t5 = call suma
+00001080  33F9 000010E0 000010C8    52              MOVE.W t3, a
+0000108A  33F9 000010C6 000010CC    53              MOVE.W t4, b
+00001094  4EB8 1028                 54              JSR suma
+00001098  33C0 000010CA             55              MOVE.W D0, t5
+0000109E                            56              ; output t5
+0000109E  3239 000010CA             57              MOVE.W t5, D1
+000010A4  4EB8 100C                 58              JSR PRINT_SIGNED
+000010A8                            59              ; output "\n"
+000010A8  43F9 000010BC             60              LEA NEWLINE, A1
+000010AE  103C 000E                 61              MOVE.B #14, D0
+000010B2  4E4F                      62              TRAP #15
+000010B4                            63              ; call saludo  
+000010B4  4EB8 1056                 64              JSR saludo
+000010B8                            65  end:
+000010B8  6000 0028                 66              BRA HALT
+000010BC                            67  
+000010BC                            68              ; DATA SECTION
+000010BC= 0D 0A 00                  69  NEWLINE:    DC.B 13,10,0
+000010BF= 2D 00                     70  MINUS_SIGN: DC.B '-',0
+000010C2= 00008000                  71  HEAP_PTR:   DC.L $8000
+000010C6                            72  t4:         DS.W 1
+000010C8                            73  a:          DS.W 1
+000010CA                            74  t5:         DS.W 1
+000010CC                            75  b:          DS.W 1
+000010CE= 48 6F 6C 61 20 6D ...     76  str0:       DC.B 'Hola mundo',0
+000010DA                            77  t0:         DS.W 1
+000010DC                            78  t1:         DS.W 1
+000010DE                            79  t2:         DS.W 1
+000010E0                            80  t3:         DS.W 1
+000010E2                            81  
+000010E2                            82  HALT:
+000010E2  FFFF FFFF                 83              SIMHALT
+000010E6                            84  
+00005000                            85              ORG $5000
+00005000                            86  STACKPTR:
+00005000                            87              END START
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+A                   10C8
+B                   10CC
+END                 10B8
+HALT                10E2
+HEAP_PTR            10C2
+MAIN                1070
+MINUS_SIGN          10BF
+NEWLINE             10BC
+PRINT_SIGNED        100C
+PRINT_UNSIGNED      1020
+SALUDO              1056
+STACKPTR            5000
+START               1000
+STR0                10CE
+SUMA                1028
+T0                  10DA
+T1                  10DC
+T2                  10DE
+T3                  10E0
+T4                  10C6
+T5                  10CA

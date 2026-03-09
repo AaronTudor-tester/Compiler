@@ -1,0 +1,139 @@
+===== OPTIMIZACIONES REALIZADAS =====
+
+Archivo: .\programas\prueba_modifica\prueba_modifica.txt
+Fecha: 2026-02-11T09:17:29.038569600
+
+--- ESTADÍSTICAS DE CÓDIGO INTERMEDIO ---
+
+Instrucciones originales: 72
+Instrucciones optimizadas: 72
+Instrucciones eliminadas: 0
+Reducción: 0,00%
+
+--- ESTADÍSTICAS DE ENSAMBLADOR ---
+
+Archivo original (.x68): 7096 bytes
+Archivo optimizado (_optimizado.x68): 5451 bytes
+Bytes reducidos: 1645 bytes
+Reducción en ensamblador: 23,18%
+
+--- CÓDIGO OPTIMIZADO ---
+
+main:
+x = 2.0
+output x
+output "\n"
+t4 = x + 3.0
+x = t4
+output x
+output "\n"
+t8 = x - 2.0
+x = t8
+output x
+output "\n"
+t12 = x * 4.0
+x = t12
+output x
+output "\n"
+t16 = x / 3.0
+x = t16
+output x
+output "\n"
+x = x - 1.0
+t20 = x % 2.0
+x = t20
+output x
+output "\n"
+x = 1.0
+output "x es: "
+output x
+output "\n"
+output "x es: "
+x = x + 1.0
+t27 = 5.0 - x
+t29 = t27 + 2.0
+x = x - 1.0
+t31 = t29 + x
+t33 = t31 + 1.0
+x = x + 1.0
+t34 = t33 - x
+t35 = x + t34
+x = t35
+output x
+output "\n"
+output "BUCLES:"
+output "\n"
+i = 1.0
+e0:
+t40 = i <= 5.0
+if !(t40) goto e1
+output "ITERAMOS"
+output "\n"
+output x
+output "\n"
+output i
+output "\n"
+t45 = i + 1.0
+i = t45
+t48 = i + 0.5
+x = t48
+goto e0
+e1:
+output "hola"
+output "\n"
+i = 1.0
+e2:
+t52 = i <= 5
+if !(t52) goto e3
+output "otro bucle"
+output "\n"
+t55 = i + 1.0
+i = t55
+goto e2
+e3:
+
+--- CAMBIOS REALIZADOS POR EL OPTIMIZADOR ---
+
+Asignación diferida:
+  - Línea 1: t0 eliminado y sustituido por 2.0
+  - Línea 2: t1 eliminado y sustituido por x
+  - Línea 4: t2 eliminado y sustituido por x
+  - Línea 4: t3 eliminado y sustituido por 3.0
+  - Línea 6: t5 eliminado y sustituido por x
+  - Línea 8: t6 eliminado y sustituido por x
+  - Línea 8: t7 eliminado y sustituido por 2.0
+  - Línea 10: t9 eliminado y sustituido por x
+  - Línea 12: t10 eliminado y sustituido por x
+  - Línea 12: t11 eliminado y sustituido por 4.0
+  - Línea 14: t13 eliminado y sustituido por x
+  - Línea 16: t14 eliminado y sustituido por x
+  - Línea 16: t15 eliminado y sustituido por 3.0
+  - Línea 18: t17 eliminado y sustituido por x
+  - Línea 21: t18 eliminado y sustituido por x
+  - Línea 21: t19 eliminado y sustituido por 2.0
+  - Línea 23: t21 eliminado y sustituido por x
+  - Línea 25: t22 eliminado y sustituido por 1.0
+  - Línea 27: t23 eliminado y sustituido por x
+  - Línea 30: t24 eliminado y sustituido por x
+  - Línea 30: t25 eliminado y sustituido por 5.0
+  - Línea 30: t26 eliminado y sustituido por x
+  - Línea 32: t28 eliminado y sustituido por 2.0
+  - Línea 33: t30 eliminado y sustituido por x
+  - Línea 35: t32 eliminado y sustituido por 1.0
+  - Línea 40: t36 eliminado y sustituido por x
+  - Línea 44: t37 eliminado y sustituido por 1.0
+  - Línea 46: t38 eliminado y sustituido por i
+  - Línea 46: t39 eliminado y sustituido por 5.0
+  - Línea 50: t41 eliminado y sustituido por x
+  - Línea 52: t42 eliminado y sustituido por i
+  - Línea 54: t43 eliminado y sustituido por i
+  - Línea 54: t44 eliminado y sustituido por 1.0
+  - Línea 56: t46 eliminado y sustituido por i
+  - Línea 56: t47 eliminado y sustituido por 0.5
+  - Línea 62: t49 eliminado y sustituido por 1.0
+  - Línea 64: t50 eliminado y sustituido por i
+  - Línea 64: t51 eliminado y sustituido por 5
+  - Línea 68: t53 eliminado y sustituido por i
+  - Línea 68: t54 eliminado y sustituido por 1.0
+Eliminación de etiquetas muertas:
+  - Línea 72: Se ha eliminado la etiqueta end

@@ -1,0 +1,4 @@
+===== TABLA DE SÍMBOLOS =====
+
+  VARIABLE: Simbolo{nombre='idx', tipo=INT, valor=null, linea=8, inicializada=true}
+  VARIABLE: Simbolo{nombre='arr', tipo=INT, valor=[10, 20, 30], linea=12, inicializada=true}

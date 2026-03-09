@@ -1,0 +1,535 @@
+strict digraph {
+272	[label="Programa"];
+272->49
+272->65
+272->71
+272->77
+272->83
+272->89
+272->95
+272->101
+272->107
+272->113
+272->119
+272->125
+272->131
+272->137
+272->139
+272->141
+272->146
+272->151
+272->156
+272->161
+272->166
+272->171
+272->173
+272->178
+272->183
+272->188
+272->193
+272->198
+272->203
+272->205
+272->207
+272->209
+272->214
+272->219
+272->224
+272->229
+272->234
+272->239
+272->241
+272->246
+272->251
+272->256
+272->261
+272->266
+272->271
+49	[label="func: sumarCubo"];
+49->3
+49->48
+3	[label="decl: cubo (INT[][][])"];
+48	[label="Bloque"];
+48->5
+48->47
+5	[label="=(i)"]
+5->4
+4	[label="0",shape=plaintext];
+47	[label="while"];
+47->8
+47->46
+8	[label="MENOR"];
+8->6
+8->7
+6	[label="i",shape=plaintext];
+7	[label="2",shape=plaintext];
+46	[label="Bloque"];
+46->10
+46->41
+46->45
+10	[label="=(j)"]
+10->9
+9	[label="0",shape=plaintext];
+41	[label="while"];
+41->13
+41->40
+13	[label="MENOR"];
+13->11
+13->12
+11	[label="j",shape=plaintext];
+12	[label="3",shape=plaintext];
+40	[label="Bloque"];
+40->15
+40->35
+40->39
+15	[label="=(k)"]
+15->14
+14	[label="0",shape=plaintext];
+35	[label="while"];
+35->18
+35->34
+18	[label="MENOR"];
+18->16
+18->17
+16	[label="k",shape=plaintext];
+17	[label="2",shape=plaintext];
+34	[label="Bloque"];
+34->29
+34->33
+29	[label="[] =\n(Asign. Array)"]
+29->22
+29->28
+22	[label="Acceso Array\n(cubo)"]
+22->19
+22->20
+22->21
+19	[label="i",shape=plaintext];
+20	[label="j",shape=plaintext];
+21	[label="k",shape=plaintext];
+28	[label="SUMA"];
+28->26
+28->27
+26	[label="Acceso Array\n(cubo)"]
+26->23
+26->24
+26->25
+23	[label="i",shape=plaintext];
+24	[label="j",shape=plaintext];
+25	[label="k",shape=plaintext];
+27	[label="1",shape=plaintext];
+33	[label="=(k)"]
+33->32
+32	[label="SUMA"];
+32->31
+32->30
+31	[label="k",shape=plaintext];
+30	[label="1",shape=plaintext];
+39	[label="=(j)"]
+39->38
+38	[label="SUMA"];
+38->37
+38->36
+37	[label="j",shape=plaintext];
+36	[label="1",shape=plaintext];
+45	[label="=(i)"]
+45->44
+44	[label="SUMA"];
+44->43
+44->42
+43	[label="i",shape=plaintext];
+42	[label="1",shape=plaintext];
+65	[label="array: miCubo[12](INT)"];
+65->50
+65->51
+65->52
+65->53
+65->54
+65->55
+65->56
+65->57
+65->58
+65->59
+65->60
+65->61
+50	[label="1",shape=plaintext];
+51	[label="2",shape=plaintext];
+52	[label="3",shape=plaintext];
+53	[label="4",shape=plaintext];
+54	[label="5",shape=plaintext];
+55	[label="6",shape=plaintext];
+56	[label="7",shape=plaintext];
+57	[label="8",shape=plaintext];
+58	[label="9",shape=plaintext];
+59	[label="10",shape=plaintext];
+60	[label="11",shape=plaintext];
+61	[label="12",shape=plaintext];
+71	[label="[] =\n(Asign. Array)"]
+71->69
+71->70
+69	[label="Acceso Array\n(miCubo)"]
+69->66
+69->67
+69->68
+66	[label="0",shape=plaintext];
+67	[label="0",shape=plaintext];
+68	[label="0",shape=plaintext];
+70	[label="1",shape=plaintext];
+77	[label="[] =\n(Asign. Array)"]
+77->75
+77->76
+75	[label="Acceso Array\n(miCubo)"]
+75->72
+75->73
+75->74
+72	[label="0",shape=plaintext];
+73	[label="0",shape=plaintext];
+74	[label="1",shape=plaintext];
+76	[label="2",shape=plaintext];
+83	[label="[] =\n(Asign. Array)"]
+83->81
+83->82
+81	[label="Acceso Array\n(miCubo)"]
+81->78
+81->79
+81->80
+78	[label="0",shape=plaintext];
+79	[label="1",shape=plaintext];
+80	[label="0",shape=plaintext];
+82	[label="3",shape=plaintext];
+89	[label="[] =\n(Asign. Array)"]
+89->87
+89->88
+87	[label="Acceso Array\n(miCubo)"]
+87->84
+87->85
+87->86
+84	[label="0",shape=plaintext];
+85	[label="1",shape=plaintext];
+86	[label="1",shape=plaintext];
+88	[label="4",shape=plaintext];
+95	[label="[] =\n(Asign. Array)"]
+95->93
+95->94
+93	[label="Acceso Array\n(miCubo)"]
+93->90
+93->91
+93->92
+90	[label="0",shape=plaintext];
+91	[label="2",shape=plaintext];
+92	[label="0",shape=plaintext];
+94	[label="5",shape=plaintext];
+101	[label="[] =\n(Asign. Array)"]
+101->99
+101->100
+99	[label="Acceso Array\n(miCubo)"]
+99->96
+99->97
+99->98
+96	[label="0",shape=plaintext];
+97	[label="2",shape=plaintext];
+98	[label="1",shape=plaintext];
+100	[label="6",shape=plaintext];
+107	[label="[] =\n(Asign. Array)"]
+107->105
+107->106
+105	[label="Acceso Array\n(miCubo)"]
+105->102
+105->103
+105->104
+102	[label="1",shape=plaintext];
+103	[label="0",shape=plaintext];
+104	[label="0",shape=plaintext];
+106	[label="7",shape=plaintext];
+113	[label="[] =\n(Asign. Array)"]
+113->111
+113->112
+111	[label="Acceso Array\n(miCubo)"]
+111->108
+111->109
+111->110
+108	[label="1",shape=plaintext];
+109	[label="0",shape=plaintext];
+110	[label="1",shape=plaintext];
+112	[label="8",shape=plaintext];
+119	[label="[] =\n(Asign. Array)"]
+119->117
+119->118
+117	[label="Acceso Array\n(miCubo)"]
+117->114
+117->115
+117->116
+114	[label="1",shape=plaintext];
+115	[label="1",shape=plaintext];
+116	[label="0",shape=plaintext];
+118	[label="9",shape=plaintext];
+125	[label="[] =\n(Asign. Array)"]
+125->123
+125->124
+123	[label="Acceso Array\n(miCubo)"]
+123->120
+123->121
+123->122
+120	[label="1",shape=plaintext];
+121	[label="1",shape=plaintext];
+122	[label="1",shape=plaintext];
+124	[label="10",shape=plaintext];
+131	[label="[] =\n(Asign. Array)"]
+131->129
+131->130
+129	[label="Acceso Array\n(miCubo)"]
+129->126
+129->127
+129->128
+126	[label="1",shape=plaintext];
+127	[label="2",shape=plaintext];
+128	[label="0",shape=plaintext];
+130	[label="11",shape=plaintext];
+137	[label="[] =\n(Asign. Array)"]
+137->135
+137->136
+135	[label="Acceso Array\n(miCubo)"]
+135->132
+135->133
+135->134
+132	[label="1",shape=plaintext];
+133	[label="2",shape=plaintext];
+134	[label="1",shape=plaintext];
+136	[label="12",shape=plaintext];
+139	[label="print"];
+139->138
+138	[label="Cubo 3D original:",shape=plaintext];
+141	[label="print"];
+141->140
+140	[label="Capa 0:",shape=plaintext];
+146	[label="print"];
+146->145
+145	[label="Acceso Array\n(miCubo)"]
+145->142
+145->143
+145->144
+142	[label="0",shape=plaintext];
+143	[label="0",shape=plaintext];
+144	[label="0",shape=plaintext];
+151	[label="print"];
+151->150
+150	[label="Acceso Array\n(miCubo)"]
+150->147
+150->148
+150->149
+147	[label="0",shape=plaintext];
+148	[label="0",shape=plaintext];
+149	[label="1",shape=plaintext];
+156	[label="print"];
+156->155
+155	[label="Acceso Array\n(miCubo)"]
+155->152
+155->153
+155->154
+152	[label="0",shape=plaintext];
+153	[label="1",shape=plaintext];
+154	[label="0",shape=plaintext];
+161	[label="print"];
+161->160
+160	[label="Acceso Array\n(miCubo)"]
+160->157
+160->158
+160->159
+157	[label="0",shape=plaintext];
+158	[label="1",shape=plaintext];
+159	[label="1",shape=plaintext];
+166	[label="print"];
+166->165
+165	[label="Acceso Array\n(miCubo)"]
+165->162
+165->163
+165->164
+162	[label="0",shape=plaintext];
+163	[label="2",shape=plaintext];
+164	[label="0",shape=plaintext];
+171	[label="print"];
+171->170
+170	[label="Acceso Array\n(miCubo)"]
+170->167
+170->168
+170->169
+167	[label="0",shape=plaintext];
+168	[label="2",shape=plaintext];
+169	[label="1",shape=plaintext];
+173	[label="print"];
+173->172
+172	[label="Capa 1:",shape=plaintext];
+178	[label="print"];
+178->177
+177	[label="Acceso Array\n(miCubo)"]
+177->174
+177->175
+177->176
+174	[label="1",shape=plaintext];
+175	[label="0",shape=plaintext];
+176	[label="0",shape=plaintext];
+183	[label="print"];
+183->182
+182	[label="Acceso Array\n(miCubo)"]
+182->179
+182->180
+182->181
+179	[label="1",shape=plaintext];
+180	[label="0",shape=plaintext];
+181	[label="1",shape=plaintext];
+188	[label="print"];
+188->187
+187	[label="Acceso Array\n(miCubo)"]
+187->184
+187->185
+187->186
+184	[label="1",shape=plaintext];
+185	[label="1",shape=plaintext];
+186	[label="0",shape=plaintext];
+193	[label="print"];
+193->192
+192	[label="Acceso Array\n(miCubo)"]
+192->189
+192->190
+192->191
+189	[label="1",shape=plaintext];
+190	[label="1",shape=plaintext];
+191	[label="1",shape=plaintext];
+198	[label="print"];
+198->197
+197	[label="Acceso Array\n(miCubo)"]
+197->194
+197->195
+197->196
+194	[label="1",shape=plaintext];
+195	[label="2",shape=plaintext];
+196	[label="0",shape=plaintext];
+203	[label="print"];
+203->202
+202	[label="Acceso Array\n(miCubo)"]
+202->199
+202->200
+202->201
+199	[label="1",shape=plaintext];
+200	[label="2",shape=plaintext];
+201	[label="1",shape=plaintext];
+205	[label="call: sumarCubo"];
+205->204
+204	[label="miCubo",shape=plaintext];
+207	[label="print"];
+207->206
+206	[label="Cubo 3D tras sumar 1:",shape=plaintext];
+209	[label="print"];
+209->208
+208	[label="Capa 0:",shape=plaintext];
+214	[label="print"];
+214->213
+213	[label="Acceso Array\n(miCubo)"]
+213->210
+213->211
+213->212
+210	[label="0",shape=plaintext];
+211	[label="0",shape=plaintext];
+212	[label="0",shape=plaintext];
+219	[label="print"];
+219->218
+218	[label="Acceso Array\n(miCubo)"]
+218->215
+218->216
+218->217
+215	[label="0",shape=plaintext];
+216	[label="0",shape=plaintext];
+217	[label="1",shape=plaintext];
+224	[label="print"];
+224->223
+223	[label="Acceso Array\n(miCubo)"]
+223->220
+223->221
+223->222
+220	[label="0",shape=plaintext];
+221	[label="1",shape=plaintext];
+222	[label="0",shape=plaintext];
+229	[label="print"];
+229->228
+228	[label="Acceso Array\n(miCubo)"]
+228->225
+228->226
+228->227
+225	[label="0",shape=plaintext];
+226	[label="1",shape=plaintext];
+227	[label="1",shape=plaintext];
+234	[label="print"];
+234->233
+233	[label="Acceso Array\n(miCubo)"]
+233->230
+233->231
+233->232
+230	[label="0",shape=plaintext];
+231	[label="2",shape=plaintext];
+232	[label="0",shape=plaintext];
+239	[label="print"];
+239->238
+238	[label="Acceso Array\n(miCubo)"]
+238->235
+238->236
+238->237
+235	[label="0",shape=plaintext];
+236	[label="2",shape=plaintext];
+237	[label="1",shape=plaintext];
+241	[label="print"];
+241->240
+240	[label="Capa 1:",shape=plaintext];
+246	[label="print"];
+246->245
+245	[label="Acceso Array\n(miCubo)"]
+245->242
+245->243
+245->244
+242	[label="1",shape=plaintext];
+243	[label="0",shape=plaintext];
+244	[label="0",shape=plaintext];
+251	[label="print"];
+251->250
+250	[label="Acceso Array\n(miCubo)"]
+250->247
+250->248
+250->249
+247	[label="1",shape=plaintext];
+248	[label="0",shape=plaintext];
+249	[label="1",shape=plaintext];
+256	[label="print"];
+256->255
+255	[label="Acceso Array\n(miCubo)"]
+255->252
+255->253
+255->254
+252	[label="1",shape=plaintext];
+253	[label="1",shape=plaintext];
+254	[label="0",shape=plaintext];
+261	[label="print"];
+261->260
+260	[label="Acceso Array\n(miCubo)"]
+260->257
+260->258
+260->259
+257	[label="1",shape=plaintext];
+258	[label="1",shape=plaintext];
+259	[label="1",shape=plaintext];
+266	[label="print"];
+266->265
+265	[label="Acceso Array\n(miCubo)"]
+265->262
+265->263
+265->264
+262	[label="1",shape=plaintext];
+263	[label="2",shape=plaintext];
+264	[label="0",shape=plaintext];
+271	[label="print"];
+271->270
+270	[label="Acceso Array\n(miCubo)"]
+270->267
+270->268
+270->269
+267	[label="1",shape=plaintext];
+268	[label="2",shape=plaintext];
+269	[label="1",shape=plaintext];
+}

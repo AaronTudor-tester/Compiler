@@ -1,0 +1,14 @@
+decimal sumaDosDecimales(decimal a, decimal b) {
+    devuelve a mas b.
+}
+
+principal {
+    escribe "=== PRUEBA FLOAT ===".
+    
+    decimal x es 3.5.
+    decimal y es 2.25.
+    decimal z es sumaDosDecimales(x, y).
+    
+    escribeN "Resultado esperado ~5.75".
+    escribe z.
+}

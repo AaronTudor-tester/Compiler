@@ -1,0 +1,161 @@
+===== CÓDIGO INTERMEDIO =====
+
+main:
+t0 = 10.0
+x = t0
+t1 = 20
+y = t1
+t2 = 5.5
+z = t2
+t3 = 1
+i = t3
+e0:
+t4 = i
+t5 = 5
+t6 = t4 <= t5
+if !(t6) goto e1
+output "ITERAMOS"
+output "\n"
+t7 = i
+i = i + 1
+goto e0
+e1:
+t8 = 0
+crement = t8
+t9 = 1
+incr = t9
+incr = incr + 1
+crement = incr
+t10 = incr
+incr = incr + 1
+crement = t10
+t11 = crement
+output t11
+t12 = x
+x = x + 1.0
+t13 = 5.0
+t14 = t12 + t13
+asignaIncremento = t14
+t15 = asignaIncremento
+t16 = 0.5
+t17 = t15 + t16
+asignaIncremento = asignaIncremento + 1.0
+t18 = t17 < asignaIncremento
+if !(t18) goto e2
+output "incrementado"
+output "\n"
+goto e3
+e2:
+e3:
+t19 = 3
+t20 = 10
+t21 = t19 + t20
+t22 = y
+t23 = t21 - t22
+a = t23
+t24 = a
+output t24
+output "\n"
+t25 = 10
+t26 = y
+t27 = t25 * t26
+w = t27
+t28 = z
+t29 = 1.5
+t30 = t28 + t29
+output t30
+output "\n"
+hola2 = "Hola mundo"
+t31 = hola2
+output t31
+output "\n"
+input edad
+t32 = edad
+t33 = 17
+t34 = t32 > t33
+if !(t34) goto e4
+output "Eres mayor de edad"
+output "\n"
+goto e5
+e4:
+output "Eres menor de edad"
+output "\n"
+e5:
+t35 = 0
+j = t35
+e6:
+t36 = j
+t37 = 5
+t38 = t36 <= t37
+if !(t38) goto e7
+t39 = j
+output t39
+output "\n"
+j = j + 1
+goto e6
+e7:
+t40 = 5
+n = t40
+e8:
+t41 = n
+output t41
+output "\n"
+n = n - 1
+t42 = n
+t43 = 0
+t44 = t42 != t43
+if t44 goto e8
+e9:
+t45 = 2
+opcion = t45
+t46 = opcion
+t47 = 1
+if t46 != t47 goto e11
+output "uno"
+output "\n"
+goto e10
+e11:
+t48 = 2
+if t46 != t48 goto e12
+output "dos"
+output "\n"
+goto e10
+e12:
+t49 = 3
+if t46 != t49 goto e13
+output "tres"
+output "\n"
+goto e10
+e13:
+output "Opción no válida"
+output "\n"
+e10:
+t50 = 0
+i = t50
+e14:
+t51 = i
+t52 = 5
+t53 = t51 < t52
+if !(t53) goto e15
+t54 = 1
+pruebaaaa = t54
+t55 = i
+i = i + 1
+goto e14
+e15:
+t56 = true
+llueve = t56
+t57 = false
+paraguas = t57
+t58 = llueve
+t59 = ! paraguas
+t60 = t58 && t59
+if !(t60) goto e16
+output "Me voy a mojar"
+output "\n"
+goto e17
+e16:
+output "Todo bien"
+output "\n"
+e17:
+end:

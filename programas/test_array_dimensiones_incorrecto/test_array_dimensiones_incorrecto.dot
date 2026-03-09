@@ -1,0 +1,13 @@
+strict digraph {
+9	[label="Programa"];
+9->2
+9->4
+9->6
+9->8
+2	[label="array: arr_neg[0](INT)"];
+4	[label="array: arr_zero[0](INT)"];
+6	[label="array: arr_ok[0](INT)"];
+8	[label="print"];
+8->7
+7	[label="Fin de prueba dimensiones: arr_neg (negativa), arr_zero (cero), arr_ok (positiva)",shape=plaintext];
+}

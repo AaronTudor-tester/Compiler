@@ -1,0 +1,387 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 03/02/2026 12:21:34
+
+00000000                             1  ; Easy68K Assembly Generated
+00001000                             2      ORG $1000
+00001000                             3  START:
+00001000  4FF9 00005000              4      LEA STACKPTR, A7    ; Initialize stack pointer
+00001006  4EF9 000010CA              5      JMP main        ; Jump to main program
+0000100C                             6  
+0000100C                             7  ; ===== RUTINAS AUXILIARES =====
+0000100C                             8  PRINT_SIGNED:
+0000100C                             9      ; D1 contiene el número a mostrar (con signo)
+0000100C                            10      ; Si es negativo, muestra '-' y el valor absoluto
+0000100C  4A41                      11      TST.W D1        ; Probar el signo
+0000100E  6A00 0010                 12      BPL PRINT_UNSIGNED  ; Si es positivo, saltar
+00001012                            13      ; Es negativo: mostrar '-'
+00001012  103C 000E                 14      MOVE.B #14, D0
+00001016  43F9 00001307             15      LEA MINUS_SIGN, A1
+0000101C  4E4F                      16      TRAP #15
+0000101E                            17      ; Negar el valor
+0000101E  4441                      18      NEG.W D1
+00001020                            19  PRINT_UNSIGNED:
+00001020                            20      ; Mostrar el número (ahora positivo) usando Task #3
+00001020  103C 0003                 21      MOVE.B #3, D0   ; Task 3 = Display number
+00001024  4E4F                      22      TRAP #15
+00001026  4E75                      23      RTS
+00001028                            24  
+00001028                            25  PRINT_SIGNED_LONG:
+00001028                            26      ; D1 contiene el número de 32 bits a mostrar (con signo)
+00001028  4A81                      27      TST.L D1        ; Probar el signo
+0000102A  6A00 0010                 28      BPL PRINT_UNSIGNED_LONG ; Si es positivo, saltar
+0000102E                            29      ; Es negativo: mostrar '-'
+0000102E  103C 000E                 30      MOVE.B #14, D0
+00001032  43F9 00001307             31      LEA MINUS_SIGN, A1
+00001038  4E4F                      32      TRAP #15
+0000103A                            33      ; Negar el valor
+0000103A  4481                      34      NEG.L D1
+0000103C                            35  PRINT_UNSIGNED_LONG:
+0000103C                            36      ; Mostrar el número de 32 bits (ahora positivo)
+0000103C  103C 0003                 37      MOVE.B #3, D0   ; Task 3 = Display signed number at D1.L
+00001040  4E4F                      38      TRAP #15
+00001042  4E75                      39      RTS
+00001044                            40  
+00001044                            41  PRINT_DECIMAL_2:
+00001044                            42      ; D1 = numero escalado x100 (ej: 350 = 3.50)
+00001044                            43      ; Guardar original en D3 (32-bit)
+00001044  2601                      44      MOVE.L D1, D3
+00001046                            45      ; Manejar signo: si negativo, imprimir '-' y tomar abs
+00001046  4A83                      46      TST.L D3
+00001048  6A00 0010                 47      BPL .PD2_POSITIVE
+0000104C                            48      ; imprimir '-'
+0000104C  103C 000E                 49      MOVE.B #14, D0
+00001050  43F9 00001307             50      LEA MINUS_SIGN, A1
+00001056  4E4F                      51      TRAP #15
+00001058  4483                      52      NEG.L D3
+0000105A                            53  .PD2_POSITIVE:
+0000105A                            54      ; Calcular parte entera: D2 = original / 100
+0000105A  2403                      55      MOVE.L D3, D2
+0000105C  383C 0064                 56      MOVE.W #100, D4
+00001060  85C4                      57      DIVS D4, D2
+00001062                            58      ; Calcular fracción: D3 = remainder = original - (parte_entera*100)
+00001062  2A02                      59      MOVE.L D2, D5
+00001064  383C 0064                 60      MOVE.W #100, D4
+00001068  2C05                      61      MOVE.L D5, D6
+0000106A  4280                      62      CLR.L D0
+0000106C  3004                      63      MOVE.W D4, D0
+0000106E  CDC0                      64      MULS D0, D6
+00001070  9686                      65      SUB.L D6, D3
+00001072                            66      ; Imprimir parte entera usando Task 3
+00001072  4281                      67      CLR.L D1
+00001074  3202                      68      MOVE.W D2, D1
+00001076  103C 0003                 69      MOVE.B #3, D0
+0000107A  4E4F                      70      TRAP #15
+0000107C                            71      ; Imprimir punto decimal
+0000107C  43F9 00001309             72      LEA DECIMAL_POINT, A1
+00001082  103C 000E                 73      MOVE.B #14, D0
+00001086  4E4F                      74      TRAP #15
+00001088                            75      ; Imprimir fracción con 2 dígitos
+00001088  4280                      76      CLR.L D0
+0000108A  3003                      77      MOVE.W D3, D0
+0000108C  B07C 000A                 78      CMP.W #10, D0
+00001090  6C00 000E                 79      BGE .PD2_SKIP_ZERO
+00001094                            80      ; imprimir '0' si <10
+00001094  43F9 0000130B             81      LEA ZERO_CHAR, A1
+0000109A  103C 000E                 82      MOVE.B #14, D0
+0000109E  4E4F                      83      TRAP #15
+000010A0                            84  .PD2_SKIP_ZERO:
+000010A0  4281                      85      CLR.L D1
+000010A2  3203                      86      MOVE.W D3, D1
+000010A4  103C 0003                 87      MOVE.B #3, D0
+000010A8  4E4F                      88      TRAP #15
+000010AA  4E75                      89      RTS
+000010AC                            90  
+000010AC                            91  PRINT_BOOL:
+000010AC                            92      ; D1 contiene el valor booleano (0=mentira, 1=cierto)
+000010AC  4A41                      93      TST.W D1        ; Probar si es 0
+000010AE  6700 000C                 94      BEQ .PRINT_MENTIRA  ; Si es 0, imprimir 'mentira'
+000010B2                            95      ; Es cierto (1)
+000010B2  43F9 0000132A             96      LEA STR_CIERTO, A1
+000010B8  6000 0008                 97      BRA .PRINT_BOOL_STR
+000010BC                            98  .PRINT_MENTIRA:
+000010BC  43F9 00001331             99      LEA STR_MENTIRA, A1
+000010C2                           100  .PRINT_BOOL_STR:
+000010C2  103C 000E                101      MOVE.B #14, D0  ; Task 14 = Display string
+000010C6  4E4F                     102      TRAP #15
+000010C8  4E75                     103      RTS
+000010CA                           104  
+000010CA                           105  main:
+000010CA                           106      ; output "=== TEST: Escritura en array ==="
+000010CA  43F9 000013B4            107      LEA str0, A1
+000010D0  103C 000E                108      MOVE.B #14, D0  ; Task 14 = Display string
+000010D4  4E4F                     109      TRAP #15
+000010D6                           110      ; output "\n"
+000010D6  43F9 00001304            111      LEA NEWLINE, A1
+000010DC  103C 000E                112      MOVE.B #14, D0  ; Task 14 = Display string
+000010E0  4E4F                     113      TRAP #15
+000010E2                           114      ; t0 = 3
+000010E2  33FC 0003 000013E4       115      MOVE.W #3, t0
+000010EA                           116      ; t1 = 4
+000010EA  33FC 0004 000013E6       117      MOVE.W #4, t1
+000010F2                           118      ; t2 = t0 * t1
+000010F2                           119      ; MULT ENTERA: D0 = op1 * op2
+000010F2  3039 000013E4            120      MOVE.W t0, D0
+000010F8  C1F9 000013E6            121      MULS t1, D0
+000010FE  33C0 000013E8            122      MOVE.W D0, t2
+00001104                           123      ; 
+00001104  2039 0000133A            124      MOVE.L HEAP_PTR, D0
+0000110A  23C0 000013AA            125      MOVE.L D0, vector
+00001110  4281                     126      CLR.L D1
+00001112  3239 000013E8            127      MOVE.W t2, D1
+00001118  D081                     128      ADD.L D1, D0
+0000111A  23C0 0000133A            129      MOVE.L D0, HEAP_PTR
+00001120                           130      ; t3 = 10
+00001120  33FC 000A 000013EA       131      MOVE.W #10, t3
+00001128                           132      ; t4 = 0
+00001128  33FC 0000 0000133E       133      MOVE.W #0, t4
+00001130                           134      ; t5 = 4
+00001130  33FC 0004 00001340       135      MOVE.W #4, t5
+00001138                           136      ; t6 = t4 * t5
+00001138                           137      ; MULT ENTERA: D0 = op1 * op2
+00001138  3039 0000133E            138      MOVE.W t4, D0
+0000113E  C1F9 00001340            139      MULS t5, D0
+00001144  33C0 00001342            140      MOVE.W D0, t6
+0000114A                           141      ; vector[t6] = t3
+0000114A  2079 000013AA            142      MOVEA.L vector, A0
+00001150  4280                     143      CLR.L D0
+00001152  3039 00001342            144      MOVE.W t6, D0
+00001158  4281                     145      CLR.L D1
+0000115A  3239 000013EA            146      MOVE.W t3, D1
+00001160  2181 0800                147      MOVE.L D1, 0(A0, D0.L)
+00001164                           148      ; t7 = 20
+00001164  33FC 0014 00001344       149      MOVE.W #20, t7
+0000116C                           150      ; t8 = 1
+0000116C  33FC 0001 00001346       151      MOVE.W #1, t8
+00001174                           152      ; t9 = 4
+00001174  33FC 0004 00001348       153      MOVE.W #4, t9
+0000117C                           154      ; t10 = t8 * t9
+0000117C                           155      ; MULT ENTERA: D0 = op1 * op2
+0000117C  3039 00001346            156      MOVE.W t8, D0
+00001182  C1F9 00001348            157      MULS t9, D0
+00001188  33C0 0000134A            158      MOVE.W D0, t10
+0000118E                           159      ; vector[t10] = t7
+0000118E  2079 000013AA            160      MOVEA.L vector, A0
+00001194  4280                     161      CLR.L D0
+00001196  3039 0000134A            162      MOVE.W t10, D0
+0000119C  4281                     163      CLR.L D1
+0000119E  3239 00001344            164      MOVE.W t7, D1
+000011A4  2181 0800                165      MOVE.L D1, 0(A0, D0.L)
+000011A8                           166      ; t11 = 30
+000011A8  33FC 001E 0000135E       167      MOVE.W #30, t11
+000011B0                           168      ; t12 = 2
+000011B0  33FC 0002 0000134C       169      MOVE.W #2, t12
+000011B8                           170      ; t13 = 4
+000011B8  33FC 0004 00001382       171      MOVE.W #4, t13
+000011C0                           172      ; t14 = t12 * t13
+000011C0                           173      ; MULT ENTERA: D0 = op1 * op2
+000011C0  3039 0000134C            174      MOVE.W t12, D0
+000011C6  C1F9 00001382            175      MULS t13, D0
+000011CC  33C0 00001360            176      MOVE.W D0, t14
+000011D2                           177      ; vector[t14] = t11
+000011D2  2079 000013AA            178      MOVEA.L vector, A0
+000011D8  4280                     179      CLR.L D0
+000011DA  3039 00001360            180      MOVE.W t14, D0
+000011E0  4281                     181      CLR.L D1
+000011E2  3239 0000135E            182      MOVE.W t11, D1
+000011E8  2181 0800                183      MOVE.L D1, 0(A0, D0.L)
+000011EC                           184      ; output "Valor original en posicion 1: "
+000011EC  43F9 00001362            185      LEA str1, A1
+000011F2  103C 000E                186      MOVE.B #14, D0  ; Task 14 = Display string
+000011F6  4E4F                     187      TRAP #15
+000011F8                           188      ; t15 = 1
+000011F8  33FC 0001 000013A8       189      MOVE.W #1, t15
+00001200                           190      ; t16 = 4
+00001200  33FC 0004 000013A6       191      MOVE.W #4, t16
+00001208                           192      ; t17 = t15 * t16
+00001208                           193      ; MULT ENTERA: D0 = op1 * op2
+00001208  3039 000013A8            194      MOVE.W t15, D0
+0000120E  C1F9 000013A6            195      MULS t16, D0
+00001214  33C0 000013B0            196      MOVE.W D0, t17
+0000121A                           197      ; t18 = vector[t17]
+0000121A  2079 000013AA            198      MOVEA.L vector, A0
+00001220  4280                     199      CLR.L D0
+00001222  3039 000013B0            200      MOVE.W t17, D0
+00001228  2230 0800                201      MOVE.L 0(A0, D0.L), D1
+0000122C  33C1 000013AE            202      MOVE.W D1, t18
+00001232                           203      ; output t18
+00001232  3239 000013AE            204      MOVE.W t18, D1
+00001238  4EB8 100C                205      JSR PRINT_SIGNED
+0000123C                           206      ; output "\n"
+0000123C  43F9 00001304            207      LEA NEWLINE, A1
+00001242  103C 000E                208      MOVE.B #14, D0  ; Task 14 = Display string
+00001246  4E4F                     209      TRAP #15
+00001248                           210      ; t19 = 1
+00001248  33FC 0001 000013B2       211      MOVE.W #1, t19
+00001250                           212      ; t20 = 4
+00001250  33FC 0004 000013D8       213      MOVE.W #4, t20
+00001258                           214      ; t21 = t19 * t20
+00001258                           215      ; MULT ENTERA: D0 = op1 * op2
+00001258  3039 000013B2            216      MOVE.W t19, D0
+0000125E  C1F9 000013D8            217      MULS t20, D0
+00001264  33C0 000013D6            218      MOVE.W D0, t21
+0000126A                           219      ; t22 = 99
+0000126A  33FC 0063 000013DC       220      MOVE.W #99, t22
+00001272                           221      ; vector[t21] = t22
+00001272  2079 000013AA            222      MOVEA.L vector, A0
+00001278  4280                     223      CLR.L D0
+0000127A  3039 000013D6            224      MOVE.W t21, D0
+00001280  4281                     225      CLR.L D1
+00001282  3239 000013DC            226      MOVE.W t22, D1
+00001288  2181 0800                227      MOVE.L D1, 0(A0, D0.L)
+0000128C                           228      ; output "Valor modificado en posicion 1: "
+0000128C  43F9 00001384            229      LEA str2, A1
+00001292  103C 000E                230      MOVE.B #14, D0  ; Task 14 = Display string
+00001296  4E4F                     231      TRAP #15
+00001298                           232      ; t23 = 1
+00001298  33FC 0001 000013DA       233      MOVE.W #1, t23
+000012A0                           234      ; t24 = 4
+000012A0  33FC 0004 000013E0       235      MOVE.W #4, t24
+000012A8                           236      ; t25 = t23 * t24
+000012A8                           237      ; MULT ENTERA: D0 = op1 * op2
+000012A8  3039 000013DA            238      MOVE.W t23, D0
+000012AE  C1F9 000013E0            239      MULS t24, D0
+000012B4  33C0 000013DE            240      MOVE.W D0, t25
+000012BA                           241      ; t26 = vector[t25]
+000012BA  2079 000013AA            242      MOVEA.L vector, A0
+000012C0  4280                     243      CLR.L D0
+000012C2  3039 000013DE            244      MOVE.W t25, D0
+000012C8  2230 0800                245      MOVE.L 0(A0, D0.L), D1
+000012CC  33C1 000013E2            246      MOVE.W D1, t26
+000012D2                           247      ; output t26
+000012D2  3239 000013E2            248      MOVE.W t26, D1
+000012D8  4EB8 100C                249      JSR PRINT_SIGNED
+000012DC                           250      ; output "\n"
+000012DC  43F9 00001304            251      LEA NEWLINE, A1
+000012E2  103C 000E                252      MOVE.B #14, D0  ; Task 14 = Display string
+000012E6  4E4F                     253      TRAP #15
+000012E8                           254      ; output "Test completado"
+000012E8  43F9 0000134E            255      LEA str3, A1
+000012EE  103C 000E                256      MOVE.B #14, D0  ; Task 14 = Display string
+000012F2  4E4F                     257      TRAP #15
+000012F4                           258      ; output "\n"
+000012F4  43F9 00001304            259      LEA NEWLINE, A1
+000012FA  103C 000E                260      MOVE.B #14, D0  ; Task 14 = Display string
+000012FE  4E4F                     261      TRAP #15
+00001300                           262  end:
+00001300  6000 00F8                263      BRA HALT
+00001304                           264  
+00001304                           265      ; DATA SECTION
+00001304= 0D 0A 00                 266  NEWLINE:    DC.B 13,10,0
+00001307= 2D 00                    267  MINUS_SIGN: DC.B '-',0
+00001309= 2E 00                    268  DECIMAL_POINT:  DC.B '.',0
+0000130B= 30 00                    269  ZERO_CHAR:  DC.B '0',0
+0000130D= 45 52 52 4F 52 3A ...    270  DIV_ZERO_MSG:   DC.B 'ERROR: Division entre cero',13,10,0
+0000132A= 63 69 65 72 74 6F 00     271  STR_CIERTO: DC.B 'cierto',0
+00001331= 6D 65 6E 74 69 72 ...    272  STR_MENTIRA:    DC.B 'mentira',0
+0000133A= 00008000                 273  HEAP_PTR:   DC.L $8000  ; Inicio del heap para arrays
+0000133E                           274  t4: DS.W 1
+00001340                           275  t5: DS.W 1
+00001342                           276  t6: DS.W 1
+00001344                           277  t7: DS.W 1
+00001346                           278  t8: DS.W 1
+00001348                           279  t9: DS.W 1
+0000134A                           280  t10:    DS.W 1
+0000134C                           281  t12:    DS.W 1
+0000134E= 54 65 73 74 20 63 ...    282  str3:   DC.B 'Test completado',0
+0000135E                           283  t11:    DS.W 1
+00001360                           284  t14:    DS.W 1
+00001362= 56 61 6C 6F 72 20 ...    285  str1:   DC.B 'Valor original en posicion 1: ',0
+00001382                           286  t13:    DS.W 1
+00001384= 56 61 6C 6F 72 20 ...    287  str2:   DC.B 'Valor modificado en posicion 1: ',0
+000013A6                           288  t16:    DS.W 1
+000013A8                           289  t15:    DS.W 1
+000013AA                           290  vector: DS.L 1
+000013AE                           291  t18:    DS.W 1
+000013B0                           292  t17:    DS.W 1
+000013B2                           293  t19:    DS.W 1
+000013B4= 3D 3D 3D 20 54 45 ...    294  str0:   DC.B '=== TEST: Escritura en array ===',0
+000013D6                           295  t21:    DS.W 1
+000013D8                           296  t20:    DS.W 1
+000013DA                           297  t23:    DS.W 1
+000013DC                           298  t22:    DS.W 1
+000013DE                           299  t25:    DS.W 1
+000013E0                           300  t24:    DS.W 1
+000013E2                           301  t26:    DS.W 1
+000013E4                           302  t0: DS.W 1
+000013E6                           303  t1: DS.W 1
+000013E8                           304  t2: DS.W 1
+000013EA                           305  t3: DS.W 1
+000013EC                           306  
+000013EC                           307  ; ===== MANEJADOR DE ERROR DE DIVISION ENTRE CERO =====
+000013EC                           308  DIV_ZERO_ERROR:
+000013EC  43F8 130D                309      LEA DIV_ZERO_MSG, A1
+000013F0  103C 000E                310      MOVE.B #14, D0  ; Task 14 = Display string
+000013F4  4E4F                     311      TRAP #15
+000013F6  6000 0002                312      BRA HALT
+000013FA                           313  
+000013FA                           314  HALT:
+000013FA  FFFF FFFF                315      SIMHALT
+000013FE                           316  
+00005000                           317      ORG $5000
+00005000                           318  STACKPTR:
+00005000                           319      END START
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+DECIMAL_POINT       1309
+DIV_ZERO_ERROR      13EC
+DIV_ZERO_MSG        130D
+END                 1300
+HALT                13FA
+HEAP_PTR            133A
+MAIN                10CA
+MINUS_SIGN          1307
+NEWLINE             1304
+PRINT_BOOL          10AC
+PRINT_BOOL:PRINT_BOOL_STR  10C2
+PRINT_BOOL:PRINT_MENTIRA  10BC
+PRINT_DECIMAL_2     1044
+PRINT_DECIMAL_2:PD2_POSITIVE  105A
+PRINT_DECIMAL_2:PD2_SKIP_ZERO  10A0
+PRINT_SIGNED        100C
+PRINT_SIGNED_LONG   1028
+PRINT_UNSIGNED      1020
+PRINT_UNSIGNED_LONG  103C
+STACKPTR            5000
+START               1000
+STR0                13B4
+STR1                1362
+STR2                1384
+STR3                134E
+STR_CIERTO          132A
+STR_MENTIRA         1331
+T0                  13E4
+T1                  13E6
+T10                 134A
+T11                 135E
+T12                 134C
+T13                 1382
+T14                 1360
+T15                 13A8
+T16                 13A6
+T17                 13B0
+T18                 13AE
+T19                 13B2
+T2                  13E8
+T20                 13D8
+T21                 13D6
+T22                 13DC
+T23                 13DA
+T24                 13E0
+T25                 13DE
+T26                 13E2
+T3                  13EA
+T4                  133E
+T5                  1340
+T6                  1342
+T7                  1344
+T8                  1346
+T9                  1348
+VECTOR              13AA
+ZERO_CHAR           130B

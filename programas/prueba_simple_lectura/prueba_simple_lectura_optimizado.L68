@@ -1,0 +1,274 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 03/02/2026 13:20:15
+
+00000000                             1  ; Easy68K Assembly Generated
+00001000                             2      ORG $1000
+00001000                             3  START:
+00001000  4FF9 00005000              4      LEA STACKPTR, A7    ; Initialize stack pointer
+00001006  4EF9 0000115A              5      JMP main        ; Jump to main program
+0000100C                             6  
+0000100C                             7  ; ===== RUTINAS AUXILIARES =====
+0000100C                             8  PRINT_SIGNED:
+0000100C                             9      ; D1 contiene el número a mostrar (con signo)
+0000100C                            10      ; Si es negativo, muestra '-' y el valor absoluto
+0000100C  4A41                      11      TST.W D1        ; Probar el signo
+0000100E  6A00 0010                 12      BPL PRINT_UNSIGNED  ; Si es positivo, saltar
+00001012                            13      ; Es negativo: mostrar '-'
+00001012  103C 000E                 14      MOVE.B #14, D0
+00001016  43F9 000011A5             15      LEA MINUS_SIGN, A1
+0000101C  4E4F                      16      TRAP #15
+0000101E                            17      ; Negar el valor
+0000101E  4441                      18      NEG.W D1
+00001020                            19  PRINT_UNSIGNED:
+00001020                            20      ; Mostrar el número (ahora positivo) usando Task #3
+00001020  103C 0003                 21      MOVE.B #3, D0   ; Task 3 = Display number
+00001024  4E4F                      22      TRAP #15
+00001026  4E75                      23      RTS
+00001028                            24  
+00001028                            25  PRINT_SIGNED_LONG:
+00001028                            26      ; D1 contiene el número de 32 bits a mostrar (con signo)
+00001028  4A81                      27      TST.L D1        ; Probar el signo
+0000102A  6A00 0010                 28      BPL PRINT_UNSIGNED_LONG ; Si es positivo, saltar
+0000102E                            29      ; Es negativo: mostrar '-'
+0000102E  103C 000E                 30      MOVE.B #14, D0
+00001032  43F9 000011A5             31      LEA MINUS_SIGN, A1
+00001038  4E4F                      32      TRAP #15
+0000103A                            33      ; Negar el valor
+0000103A  4481                      34      NEG.L D1
+0000103C                            35  PRINT_UNSIGNED_LONG:
+0000103C                            36      ; Mostrar el número de 32 bits (ahora positivo)
+0000103C  103C 0003                 37      MOVE.B #3, D0   ; Task 3 = Display signed number at D1.L
+00001040  4E4F                      38      TRAP #15
+00001042  4E75                      39      RTS
+00001044                            40  
+00001044                            41  PRINT_DECIMAL_2:
+00001044                            42      ; D1 = numero escalado x100 (ej: 350 = 3.50)
+00001044                            43      ; Guardar original en D3 (32-bit)
+00001044  2601                      44      MOVE.L D1, D3
+00001046                            45      ; Manejar signo: si negativo, imprimir '-' y tomar abs
+00001046  4A83                      46      TST.L D3
+00001048  6A00 0010                 47      BPL .PD2_POSITIVE
+0000104C                            48      ; imprimir '-'
+0000104C  103C 000E                 49      MOVE.B #14, D0
+00001050  43F9 000011A5             50      LEA MINUS_SIGN, A1
+00001056  4E4F                      51      TRAP #15
+00001058  4483                      52      NEG.L D3
+0000105A                            53  .PD2_POSITIVE:
+0000105A                            54      ; Calcular parte entera: D2 = original / 100
+0000105A  2403                      55      MOVE.L D3, D2
+0000105C  383C 0064                 56      MOVE.W #100, D4
+00001060  85C4                      57      DIVS D4, D2
+00001062                            58      ; Calcular fracción: D3 = remainder = original - (parte_entera*100)
+00001062  2A02                      59      MOVE.L D2, D5
+00001064  383C 0064                 60      MOVE.W #100, D4
+00001068  2C05                      61      MOVE.L D5, D6
+0000106A  4280                      62      CLR.L D0
+0000106C  3004                      63      MOVE.W D4, D0
+0000106E  CDC0                      64      MULS D0, D6
+00001070  9686                      65      SUB.L D6, D3
+00001072                            66      ; Imprimir parte entera usando Task 3
+00001072  4281                      67      CLR.L D1
+00001074  3202                      68      MOVE.W D2, D1
+00001076  103C 0003                 69      MOVE.B #3, D0
+0000107A  4E4F                      70      TRAP #15
+0000107C                            71      ; Imprimir punto decimal
+0000107C  43F9 000011A7             72      LEA DECIMAL_POINT, A1
+00001082  103C 000E                 73      MOVE.B #14, D0
+00001086  4E4F                      74      TRAP #15
+00001088                            75      ; Imprimir fracción con 2 dígitos
+00001088  4280                      76      CLR.L D0
+0000108A  3003                      77      MOVE.W D3, D0
+0000108C  B07C 000A                 78      CMP.W #10, D0
+00001090  6C00 000E                 79      BGE .PD2_SKIP_ZERO
+00001094                            80      ; imprimir '0' si <10
+00001094  43F9 000011A9             81      LEA ZERO_CHAR, A1
+0000109A  103C 000E                 82      MOVE.B #14, D0
+0000109E  4E4F                      83      TRAP #15
+000010A0                            84  .PD2_SKIP_ZERO:
+000010A0  4281                      85      CLR.L D1
+000010A2  3203                      86      MOVE.W D3, D1
+000010A4  103C 0003                 87      MOVE.B #3, D0
+000010A8  4E4F                      88      TRAP #15
+000010AA  4E75                      89      RTS
+000010AC                            90  
+000010AC                            91  PRINT_BOOL:
+000010AC                            92      ; D1 contiene el valor booleano (0=mentira, 1=cierto)
+000010AC  4A41                      93      TST.W D1        ; Probar si es 0
+000010AE  6700 000C                 94      BEQ .PRINT_MENTIRA  ; Si es 0, imprimir 'mentira'
+000010B2                            95      ; Es cierto (1)
+000010B2  43F9 000011FC             96      LEA STR_CIERTO, A1
+000010B8  6000 0008                 97      BRA .PRINT_BOOL_STR
+000010BC                            98  .PRINT_MENTIRA:
+000010BC  43F9 00001203             99      LEA STR_MENTIRA, A1
+000010C2                           100  .PRINT_BOOL_STR:
+000010C2  103C 000E                101      MOVE.B #14, D0  ; Task 14 = Display string
+000010C6  4E4F                     102      TRAP #15
+000010C8  4E75                     103      RTS
+000010CA                           104  
+000010CA                           105  READ_NUM_VALID:
+000010CA                           106      ; Lee un número validando que la entrada sea válida
+000010CA                           107      ; Si la entrada no es válida, muestra error y vuelve a pedir
+000010CA                           108      ; Resultado en D1.W
+000010CA                           109  .RNV_RETRY:
+000010CA                           110      ; Leer string desde teclado (Task 2)
+000010CA  43F9 0000120B            111      LEA INPUT_BUFFER, A1
+000010D0  103C 0002                112      MOVE.B #2, D0   ; Task 2 = Read string
+000010D4  4E4F                     113      TRAP #15
+000010D6                           114      ; A1 apunta al buffer con el string leído
+000010D6  43F9 0000120B            115      LEA INPUT_BUFFER, A1
+000010DC                           116      ; Validar: Verificar que solo contenga dígitos y opcionalmente signo
+000010DC  4242                     117      CLR.W D2        ; Flag: 0=positivo, 1=negativo
+000010DE  4283                     118      CLR.L D3        ; Acumulador del número
+000010E0  4284                     119      CLR.L D4        ; Contador de dígitos válidos
+000010E2                           120      ; Verificar primer carácter (puede ser '-' o dígito)
+000010E2  1A11                     121      MOVE.B (A1), D5
+000010E4  BA3C 0000                122      CMP.B #0, D5    ; String vacío?
+000010E8  6700 0060                123      BEQ .RNV_ERR
+000010EC  BA3C 002D                124      CMP.B #'-', D5  ; Es signo negativo?
+000010F0  6600 0008                125      BNE .RNV_CHK
+000010F4                           126      ; Es negativo
+000010F4  343C 0001                127      MOVE.W #1, D2   ; Flag negativo
+000010F8  5289                     128      ADDA.L #1, A1   ; Avanzar al siguiente carácter
+000010FA                           129  .RNV_CHK:
+000010FA                           130      ; Ahora todos los caracteres deben ser dígitos
+000010FA                           131  .RNV_LOOP:
+000010FA  1A19                     132      MOVE.B (A1)+, D5    ; Leer carácter
+000010FC  BA3C 0000                133      CMP.B #0, D5        ; Fin del string?
+00001100  6700 0036                134      BEQ .RNV_VALID
+00001104  BA3C 000A                135      CMP.B #10, D5       ; Salto de línea?
+00001108  6700 002E                136      BEQ .RNV_VALID
+0000110C  BA3C 000D                137      CMP.B #13, D5       ; Retorno de carro?
+00001110  6700 0026                138      BEQ .RNV_VALID
+00001114                           139      ; Verificar que sea dígito (0-9 = ASCII 48-57)
+00001114  BA3C 0030                140      CMP.B #'0', D5
+00001118  6D00 0030                141      BLT .RNV_ERR        ; Menor que '0'
+0000111C  BA3C 0039                142      CMP.B #'9', D5
+00001120  6E00 0028                143      BGT .RNV_ERR        ; Mayor que '9'
+00001124                           144      ; Es un dígito válido
+00001124  5284                     145      ADD.L #1, D4        ; Incrementar contador de dígitos
+00001126                           146      ; Convertir carácter a número: D5 = D5 - '0'
+00001126  0405 0030                147      SUB.B #'0', D5
+0000112A                           148      ; Acumular: D3 = D3 * 10 + D5
+0000112A  2C03                     149      MOVE.L D3, D6
+0000112C  C7FC 000A                150      MULS #10, D3
+00001130  4885                     151      EXT.W D5
+00001132  48C5                     152      EXT.L D5
+00001134  D685                     153      ADD.L D5, D3
+00001136  60C2                     154      BRA .RNV_LOOP
+00001138                           155  .RNV_VALID:
+00001138                           156      ; Verificar que se leyó al menos un dígito
+00001138  4A84                     157      TST.L D4
+0000113A  6700 000E                158      BEQ .RNV_ERR
+0000113E                           159      ; Número válido, mover a D1
+0000113E  3203                     160      MOVE.W D3, D1
+00001140                           161      ; Aplicar signo si es negativo
+00001140  4A42                     162      TST.W D2
+00001142  6700 0004                163      BEQ .RNV_END
+00001146  4441                     164      NEG.W D1
+00001148                           165  .RNV_END:
+00001148  4E75                     166      RTS
+0000114A                           167  .RNV_ERR:
+0000114A                           168      ; Mostrar mensaje de error
+0000114A  43F9 000011C8            169      LEA ERROR_INPUT_MSG, A1
+00001150  103C 000E                170      MOVE.B #14, D0  ; Task 14 = Display string
+00001154  4E4F                     171      TRAP #15
+00001156                           172      ; Reintentar
+00001156  6000 FF72                173      BRA .RNV_RETRY
+0000115A                           174  
+0000115A                           175  main:
+0000115A                           176      ; output "Ingresa numero:"
+0000115A  43F9 0000126E            177      LEA str0, A1
+00001160  103C 000E                178      MOVE.B #14, D0  ; Task 14 = Display string
+00001164  4E4F                     179      TRAP #15
+00001166                           180      ; output "\n"
+00001166  43F9 000011A2            181      LEA NEWLINE, A1
+0000116C  103C 000E                182      MOVE.B #14, D0  ; Task 14 = Display string
+00001170  4E4F                     183      TRAP #15
+00001172                           184      ; input x
+00001172  4EB8 10CA                185      JSR READ_NUM_VALID
+00001176  33C1 0000126C            186      MOVE.W D1, x
+0000117C                           187      ; output "Ingresaste:"
+0000117C  43F9 00001260            188      LEA str1, A1
+00001182  103C 000E                189      MOVE.B #14, D0  ; Task 14 = Display string
+00001186  4E4F                     190      TRAP #15
+00001188                           191      ; output "\n"
+00001188  43F9 000011A2            192      LEA NEWLINE, A1
+0000118E  103C 000E                193      MOVE.B #14, D0  ; Task 14 = Display string
+00001192  4E4F                     194      TRAP #15
+00001194                           195      ; output x
+00001194  3239 0000126C            196      MOVE.W x, D1
+0000119A  4EB8 100C                197      JSR PRINT_SIGNED
+0000119E  6000 00EC                198      BRA HALT
+000011A2                           199  
+000011A2                           200      ; DATA SECTION
+000011A2= 0D 0A 00                 201  NEWLINE:    DC.B 13,10,0
+000011A5= 2D 00                    202  MINUS_SIGN: DC.B '-',0
+000011A7= 2E 00                    203  DECIMAL_POINT:  DC.B '.',0
+000011A9= 30 00                    204  ZERO_CHAR:  DC.B '0',0
+000011AB= 45 52 52 4F 52 3A ...    205  DIV_ZERO_MSG:   DC.B 'ERROR: Division entre cero',13,10,0
+000011C8= 45 52 52 4F 52 3A ...    206  ERROR_INPUT_MSG:    DC.B 'ERROR: Entrada invalida. Ingrese un numero valido: ',0
+000011FC= 63 69 65 72 74 6F 00     207  STR_CIERTO: DC.B 'cierto',0
+00001203= 6D 65 6E 74 69 72 ...    208  STR_MENTIRA:    DC.B 'mentira',0
+0000120B                           209  INPUT_BUFFER:   DS.B 80 ; Buffer para leer entrada del usuario
+0000125C= 00008000                 210  HEAP_PTR:   DC.L $8000  ; Inicio del heap para arrays
+00001260= 49 6E 67 72 65 73 ...    211  str1:   DC.B 'Ingresaste:',0
+0000126C                           212  x:  DS.W 1
+0000126E= 49 6E 67 72 65 73 ...    213  str0:   DC.B 'Ingresa numero:',0
+0000127E                           214  
+0000127E                           215  ; ===== MANEJADOR DE ERROR DE DIVISION ENTRE CERO =====
+0000127E                           216  DIV_ZERO_ERROR:
+0000127E  43F8 11AB                217      LEA DIV_ZERO_MSG, A1
+00001282  103C 000E                218      MOVE.B #14, D0  ; Task 14 = Display string
+00001286  4E4F                     219      TRAP #15
+00001288  6000 0002                220      BRA HALT
+0000128C                           221  
+0000128C                           222  HALT:
+0000128C  FFFF FFFF                223      SIMHALT
+00001290                           224  
+00005000                           225      ORG $5000
+00005000                           226  STACKPTR:
+00005000                           227      END START
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+DECIMAL_POINT       11A7
+DIV_ZERO_ERROR      127E
+DIV_ZERO_MSG        11AB
+ERROR_INPUT_MSG     11C8
+HALT                128C
+HEAP_PTR            125C
+INPUT_BUFFER        120B
+MAIN                115A
+MINUS_SIGN          11A5
+NEWLINE             11A2
+PRINT_BOOL          10AC
+PRINT_BOOL:PRINT_BOOL_STR  10C2
+PRINT_BOOL:PRINT_MENTIRA  10BC
+PRINT_DECIMAL_2     1044
+PRINT_DECIMAL_2:PD2_POSITIVE  105A
+PRINT_DECIMAL_2:PD2_SKIP_ZERO  10A0
+PRINT_SIGNED        100C
+PRINT_SIGNED_LONG   1028
+PRINT_UNSIGNED      1020
+PRINT_UNSIGNED_LONG  103C
+READ_NUM_VALID      10CA
+READ_NUM_VALID:RNV_CHK  10FA
+READ_NUM_VALID:RNV_END  1148
+READ_NUM_VALID:RNV_ERR  114A
+READ_NUM_VALID:RNV_LOOP  10FA
+READ_NUM_VALID:RNV_RETRY  10CA
+READ_NUM_VALID:RNV_VALID  1138
+STACKPTR            5000
+START               1000
+STR0                126E
+STR1                1260
+STR_CIERTO          11FC
+STR_MENTIRA         1203
+X                   126C
+ZERO_CHAR           11A9

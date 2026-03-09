@@ -1,0 +1,39 @@
+===== CÓDIGO INTERMEDIO =====
+
+main:
+t0 = 122
+x = t0
+t1 = 55
+y = t1
+t2 = x
+output t2
+output "\n"
+t3 = y
+output t3
+output "\n"
+t4 = 120
+a = t4
+t5 = 121
+b = t5
+t6 = 53
+c = t6
+t7 = a
+output t7
+output "\n"
+t8 = b
+output t8
+output "\n"
+t9 = c
+output t9
+output "\n"
+output "asd"
+output "\n"
+aa = "aasd asd"
+ab = "ggg wwww"
+t10 = aa
+output t10
+output "\n"
+t11 = ab
+output t11
+output "\n"
+end:

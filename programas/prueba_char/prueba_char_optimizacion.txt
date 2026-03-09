@@ -1,0 +1,63 @@
+===== OPTIMIZACIONES REALIZADAS =====
+
+Archivo: .\programas\prueba_char\prueba_char.txt
+Fecha: 2026-02-11T16:37:42.128411300
+
+--- ESTADÍSTICAS DE CÓDIGO INTERMEDIO ---
+
+Instrucciones originales: 24
+Instrucciones optimizadas: 24
+Instrucciones eliminadas: 0
+Reducción: 0,00%
+
+--- ESTADÍSTICAS DE ENSAMBLADOR ---
+
+Archivo original (.x68): 2085 bytes
+Archivo optimizado (_optimizado.x68): 1626 bytes
+Bytes reducidos: 459 bytes
+Reducción en ensamblador: 22,01%
+
+--- CÓDIGO OPTIMIZADO ---
+
+main:
+x = 122
+y = 55
+output x
+output "\n"
+output y
+output "\n"
+a = 120
+b = 121
+c = 53
+output a
+output "\n"
+output b
+output "\n"
+output c
+output "\n"
+output "asd"
+output "\n"
+aa = "aasd asd"
+ab = "ggg wwww"
+output aa
+output "\n"
+output ab
+output "\n"
+
+--- CAMBIOS REALIZADOS POR EL OPTIMIZADOR ---
+
+Asignación diferida:
+  - Línea 1: t0 eliminado y sustituido por 122
+  - Línea 2: t1 eliminado y sustituido por 55
+  - Línea 3: t2 eliminado y sustituido por x
+  - Línea 5: t3 eliminado y sustituido por y
+  - Línea 7: t4 eliminado y sustituido por 120
+  - Línea 8: t5 eliminado y sustituido por 121
+  - Línea 9: t6 eliminado y sustituido por 53
+  - Línea 10: t7 eliminado y sustituido por a
+  - Línea 12: t8 eliminado y sustituido por b
+  - Línea 14: t9 eliminado y sustituido por c
+  - Línea 20: t10 eliminado y sustituido por aa
+  - Línea 22: t11 eliminado y sustituido por ab
+Eliminación de etiquetas muertas:
+  - Línea 24: Se ha eliminado la etiqueta end

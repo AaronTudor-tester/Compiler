@@ -1,0 +1,45 @@
+// CASO DE PRUEBA ERROR 3: Errores de arrays y tipos
+// Este programa intenta compilar pero fallará por errores semánticos
+
+principal {
+    // Declarar un array
+    lista de numero vector es [10, 20, 30, 40, 50].
+    
+    // ERROR 1: Acceso a array fuera de rango
+    numero valor1 es vector posicion (20).
+    escribe valor1.
+    
+    // ERROR 2: Array usado como variable simple
+    numero valor2 es vector.
+    escribe valor2.
+    
+    // ERROR 3: Tipo de índice incorrecto
+    numero valor3 es vector posicion ("dos").
+    escribe valor3.
+    
+    // ERROR 4: Intento de reasignar array a tipo incompatible
+    lista de frase palabras es ["gato", "perro", "pajaro"].
+    numero x es palabras posicion (0).
+    escribe x.
+}
+
+// ERRORES ESPERADOS:
+// 1. Error semántico (línea 9): Índice fuera de rango
+//    - Array 'vector' tiene 5 elementos (índices 0-4)
+//    - Intenta acceder al índice 20 que no existe
+//    - Mensaje: "Indice fuera de rango: 20 (máximo permitido: 4)"
+//
+// 2. Error semántico (línea 13): Array usado como variable
+//    - 'vector' es un array, no una variable simple
+//    - No se puede asignar un array completo a una variable numero
+//    - Se debe usar posicion (índice) para acceder a un elemento
+//
+// 3. Error semántico (línea 17): Tipo de índice incorrecto
+//    - El índice debe ser de tipo 'numero'
+//    - Se intenta pasar "dos" que es de tipo 'frase'
+//    - Los índices solo pueden ser enteros
+//
+// 4. Error semántico (línea 22): Tipo incompatible
+//    - 'palabras' es un array de 'frase' (strings)
+//    - Intenta asignar a 'x' que es de tipo 'numero'
+//    - Frase y numero no son compatibles

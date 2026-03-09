@@ -1,0 +1,8 @@
+===== ERRORES DETECTADOS EN LA COMPILACIÓN =====
+
+Archivo: programas\test_array_numero_incorrecto\test_array_numero_incorrecto.txt
+Fecha: 2026-02-11T12:15:51.586915600
+
+1 error(es) encontrado(s):
+
+1. [Línea 9, Columna 5] ERROR SEMANTICO: Tipos incompatibles en declaración: variable x es INT pero la expresión es un array

@@ -1,0 +1,86 @@
+===== TABLAS DE VARIABLES Y PROCEDIMIENTOS =====
+
+--- TABLA DE VARIABLES ---
+
+Variables del programa:
+  a
+  b
+  c
+  resultado
+  total2
+  llueve
+  l
+  noLlueve
+  total
+  contador : INT
+  x
+  y
+  z
+  pruebaBlques
+
+Variables temporales generadas:
+  t50
+  t52
+  t51
+  t10
+  t54
+  t53
+  t12
+  t11
+  t55
+  t14
+  t13
+  t16
+  t15
+  t18
+  t17
+  t19
+  t21
+  t20
+  t23
+  t22
+  t25
+  t24
+  t27
+  t26
+  t29
+  t28
+  t0
+  t1
+  t2
+  t3
+  t4
+  t5
+  t6
+  t7
+  t8
+  t9
+  t30
+  t32
+  t31
+  t34
+  t33
+  t36
+  t35
+  t38
+  t37
+  t39
+  t41
+  t40
+  t43
+  t42
+  t45
+  t44
+  t47
+  t46
+  t49
+  t48
+
+--- TABLA DE PROCEDIMIENTOS ---
+
+  suma
+    Tipo retorno: INT
+    Parametros: 2
+  prueba
+    Tipo retorno: INT
+    Parametros: 3

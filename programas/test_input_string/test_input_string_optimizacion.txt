@@ -1,0 +1,39 @@
+===== OPTIMIZACIONES REALIZADAS =====
+
+Archivo: .\programas\test_input_string\test_input_string.txt
+Fecha: 2026-02-11T20:58:27.116185600
+
+--- ESTADÍSTICAS DE CÓDIGO INTERMEDIO ---
+
+Instrucciones originales: 11
+Instrucciones optimizadas: 11
+Instrucciones eliminadas: 0
+Reducción: 0,00%
+
+--- ESTADÍSTICAS DE ENSAMBLADOR ---
+
+Archivo original (.x68): 1301 bytes
+Archivo optimizado (_optimizado.x68): 1258 bytes
+Bytes reducidos: 43 bytes
+Reducción en ensamblador: 3,31%
+
+--- CÓDIGO OPTIMIZADO ---
+
+main:
+output "=== TEST: Lectura de frase ==="
+output "\n"
+output "Introduce una frase (ej: g):"
+output "\n"
+input c
+output "Has introducido: "
+output c
+output "\n"
+output "Test completado"
+output "\n"
+
+--- CAMBIOS REALIZADOS POR EL OPTIMIZADOR ---
+
+Asignación diferida:
+  - Línea 7: t0 eliminado y sustituido por c
+Eliminación de etiquetas muertas:
+  - Línea 11: Se ha eliminado la etiqueta end

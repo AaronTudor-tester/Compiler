@@ -1,0 +1,50 @@
+===== CÓDIGO INTERMEDIO =====
+
+main:
+output "=== CASO 1: OPERACIONES BASICAS ==="
+output "\n"
+t0 = 10
+a = t0
+t1 = 5
+b = t1
+t2 = a
+t3 = b
+t4 = t2 + t3
+suma = t4
+output "Suma: "
+t5 = suma
+output t5
+output "\n"
+t6 = a
+t7 = b
+t8 = t6 - t7
+resta = t8
+output "Resta: "
+t9 = resta
+output t9
+output "\n"
+t10 = a
+t11 = b
+t12 = t10 * t11
+multiplicacion = t12
+output "Multiplicación: "
+t13 = multiplicacion
+output t13
+output "\n"
+t14 = a
+t15 = b
+t16 = t14 / t15
+division = t16
+output "División: "
+t17 = division
+output t17
+output "\n"
+t18 = a
+t19 = b
+t20 = t18 % t19
+modulo = t20
+output "Módulo: "
+t21 = modulo
+output t21
+output "\n"
+end:

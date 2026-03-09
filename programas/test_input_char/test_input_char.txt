@@ -1,0 +1,15 @@
+// TEST: Entrada por teclado de un char
+// Objetivo: Verificar que se puedan leer chars por teclado
+
+principal {
+    escribeN "=== TEST: Lectura de char ===".
+    
+    escribeN "Introduce un char (ej: g):".
+    letra c.
+    lee c.
+    
+    escribe "Has introducido: ".
+    escribeN c.
+    
+    escribeN "Test completado".
+}

@@ -1,0 +1,91 @@
+===== OPTIMIZACIONES REALIZADAS =====
+
+Archivo: programas/test_array_10_while/test_array_10_while.txt
+Fecha: 2026-02-03T11:23:34.755629500
+
+--- ESTADISTICAS DE CODIGO INTERMEDIO ---
+
+Instrucciones originales: 25
+Instrucciones optimizadas: 24
+Instrucciones eliminadas: 1
+Reduccion: 4,00%
+
+--- ESTADISTICAS DE ENSAMBLADOR ---
+
+Archivo original (.x68): 6093 bytes
+Archivo optimizado (_optimizado.x68): 4312 bytes
+Bytes reducidos: 1781 bytes
+Reduccion en ensamblador: 29,23%
+
+--- CODIGO OPTIMIZADO ---
+
+main:
+output "=== TEST: Array con while ==="
+output "\n"
+vector[0] = 5
+vector[4] = 10
+vector[8] = 15
+vector[12] = 20
+vector[16] = 25
+i = 0
+output "Recorriendo array con while:"
+output "\n"
+e0:
+t26 = i < 5
+if !(t26) goto e1
+t29 = i * 4
+t31 = vector[t29]
+output t31
+output "\n"
+t34 = i + 1
+i = t34
+goto e0
+e1:
+output "Test completado"
+output "\n"
+
+--- CAMBIOS REALIZADOS POR EL OPTIMIZADOR ---
+
+Fusión Lectura Array:
+  - Línea 44: Se eliminó temporal t30 asignando directo a valor
+  - Línea 44: Se eliminó temporal valor asignando directo a t31
+Asignación diferida:
+  - Línea 3: t0 eliminado y sustituido por 5
+  - Línea 3: t1 eliminado y sustituido por 4
+  - Línea 5: t3 eliminado y sustituido por 5
+  - Línea 5: t4 eliminado y sustituido por 0
+  - Línea 5: t5 eliminado y sustituido por 4
+  - Línea 7: t7 eliminado y sustituido por 10
+  - Línea 7: t8 eliminado y sustituido por 1
+  - Línea 7: t9 eliminado y sustituido por 4
+  - Línea 9: t11 eliminado y sustituido por 15
+  - Línea 9: t12 eliminado y sustituido por 2
+  - Línea 9: t13 eliminado y sustituido por 4
+  - Línea 11: t15 eliminado y sustituido por 20
+  - Línea 11: t16 eliminado y sustituido por 3
+  - Línea 11: t17 eliminado y sustituido por 4
+  - Línea 13: t19 eliminado y sustituido por 25
+  - Línea 13: t20 eliminado y sustituido por 4
+  - Línea 13: t21 eliminado y sustituido por 4
+  - Línea 15: t23 eliminado y sustituido por 0
+  - Línea 19: t24 eliminado y sustituido por i
+  - Línea 19: t25 eliminado y sustituido por 5
+  - Línea 21: t27 eliminado y sustituido por i
+  - Línea 21: t28 eliminado y sustituido por 4
+  - Línea 25: t32 eliminado y sustituido por i
+  - Línea 25: t33 eliminado y sustituido por 1
+  - Línea 3: t2 eliminado y sustituido por 20
+  - Línea 4: t6 eliminado y sustituido por 0
+  - Línea 5: t10 eliminado y sustituido por 4
+  - Línea 6: t14 eliminado y sustituido por 8
+  - Línea 7: t18 eliminado y sustituido por 12
+  - Línea 8: t22 eliminado y sustituido por 16
+Eliminación de etiquetas muertas:
+  - Línea 31: Se ha eliminado la etiqueta end
+Cálculo de constantes:
+  - Línea 3: t2 = 5 * 4 -> t2 = 20
+  - Línea 5: t6 = 0 * 4 -> t6 = 0
+  - Línea 7: t10 = 1 * 4 -> t10 = 4
+  - Línea 9: t14 = 2 * 4 -> t14 = 8
+  - Línea 11: t18 = 3 * 4 -> t18 = 12
+  - Línea 13: t22 = 4 * 4 -> t22 = 16

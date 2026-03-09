@@ -1,0 +1,155 @@
+	ORG $1000
+START:
+	LEA STACKPTR, A7
+	JMP main
+
+; ===== RUTINAS AUXILIARES =====
+PRINT_SIGNED:
+	TST.W D1
+	BPL PRINT_UNSIGNED
+	MOVE.B #14, D0
+	LEA MINUS_SIGN, A1
+	TRAP #15
+	NEG.W D1
+PRINT_UNSIGNED:
+	MOVE.B #3, D0
+	TRAP #15
+	RTS
+
+PRINT_DECIMAL_2:
+	MOVE.L D1, D3
+	TST.L D3
+	BPL .PD2_POSITIVE
+	MOVE.B #14, D0
+	LEA MINUS_SIGN, A1
+	TRAP #15
+	NEG.L D3
+.PD2_POSITIVE:
+	MOVE.L D3, D2
+	MOVE.W #100, D4
+	DIVS D4, D2
+	MOVE.L D2, D5
+	MOVE.W #100, D4
+	MOVE.L D5, D6
+	CLR.L D0
+	MOVE.W D4, D0
+	MULS D0, D6
+	SUB.L D6, D3
+	CLR.L D1
+	MOVE.W D2, D1
+	MOVE.B #3, D0
+	TRAP #15
+	LEA DECIMAL_POINT, A1
+	MOVE.B #14, D0
+	TRAP #15
+	CLR.L D0
+	MOVE.W D3, D0
+	CMP.W #10, D0
+	BGE .PD2_SKIP_ZERO
+	LEA ZERO_CHAR, A1
+	MOVE.B #14, D0
+	TRAP #15
+.PD2_SKIP_ZERO:
+	CLR.L D1
+	MOVE.W D3, D1
+	MOVE.B #3, D0
+	TRAP #15
+	RTS
+
+main:
+	; output "=== PRUEBA FOR CON DECIMALES ==="
+	LEA str0, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; output "\n"
+	LEA NEWLINE, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; i = 1.0
+	MOVE.W #100, i
+e0:
+	; t3 = i <= 3.0
+	MOVE.W #0, t3
+	MOVE.W i, D0
+	CMP.W #300, D0
+	BLE t3_true
+	JMP t3_false
+t3_true:
+	MOVE.W #1, t3
+t3_false:
+	; if !(t3) goto e1
+	MOVE.W t3, D0
+	CMP.W #0, D0
+	BEQ e1
+	; output "i="
+	LEA str1, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; output i
+	CLR.L D1
+	MOVE.W i, D1
+	EXT.L D1
+	JSR PRINT_DECIMAL_2
+	; output "\n"
+	LEA NEWLINE, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; output " Doble="
+	LEA str2, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; t7 = i * 2.0
+	MOVE.W i, D0
+	MOVE.W #200, D1
+	MULS D1, D0
+	MOVE.W #100, D2
+	DIVS D2, D0
+	MOVE.W D0, t7
+	; y = t7
+	MOVE.W t7, y
+	; output y
+	CLR.L D1
+	MOVE.W y, D1
+	EXT.L D1
+	JSR PRINT_DECIMAL_2
+	; output "\n"
+	LEA NEWLINE, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; t11 = i + 0.5
+	MOVE.W i, D0
+	ADD.W #50, D0
+	MOVE.W D0, t11
+	; i = t11
+	MOVE.W t11, i
+	; goto e0
+	JMP e0
+e1:
+	; output "FIN PRUEBA FOR"
+	LEA str3, A1
+	MOVE.B #14, D0
+	TRAP #15
+	BRA HALT
+
+	; DATA SECTION
+NEWLINE:	DC.B 13,10,0
+MINUS_SIGN:	DC.B '-',0
+DECIMAL_POINT:	DC.B '.',0
+ZERO_CHAR:	DC.B '0',0
+HEAP_PTR:	DC.L $8000
+t7:	DS.W 1
+str3:	DC.B 'FIN PRUEBA FOR',0
+t11:	DS.W 1
+str1:	DC.B 'i=',0
+str2:	DC.B ' Doble=',0
+str0:	DC.B '=== PRUEBA FOR CON DECIMALES ===',0
+i:	DS.W 1
+y:	DS.W 1
+t3:	DS.W 1
+
+HALT:
+	SIMHALT
+
+	ORG $5000
+STACKPTR:
+	END START

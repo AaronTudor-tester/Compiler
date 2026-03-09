@@ -1,0 +1,43 @@
+numero a es 2.
+
+numero b es 3.
+
+numero suma2 ( numero x ) {
+    si x es menor que 100 {
+        escribeN x.
+        devuelve suma2(x mas 37).
+    }
+   x es 9.
+   devuelve menos 1 mas x. 
+}
+
+vacio funcVoid() {
+    escribeN "hola".
+}
+
+numero suma (  ) {
+    numero resultado.
+    modifica a mas 2.
+    resultado es a mas b.
+    si a es menor que 100 {
+        devuelve suma2(23) mas suma2(a mas 1) mas 3. 
+    }
+   devuelve resultado.
+}
+
+numero sumaNormal(numero a1, numero b1) {
+    devuelve a1 mas b1.
+}
+
+principal {
+    decimal www es 2 mas 2.3.
+    escribe www.
+    escribeN suma().    b es 3.
+    
+    escribeN suma() mas suma() mas suma2(1).
+    funcVoid().
+    numero y es 3. 
+    
+    escribeN suma2(200).
+    escribeN sumaNormal(2,3). 
+}

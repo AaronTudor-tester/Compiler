@@ -1,0 +1,39 @@
+===== OPTIMIZACIONES REALIZADAS =====
+
+Archivo: .\programas\test_input_char\test_input_char.txt
+Fecha: 2026-02-11T16:37:39.289412900
+
+--- ESTADÍSTICAS DE CÓDIGO INTERMEDIO ---
+
+Instrucciones originales: 11
+Instrucciones optimizadas: 11
+Instrucciones eliminadas: 0
+Reducción: 0,00%
+
+--- ESTADÍSTICAS DE ENSAMBLADOR ---
+
+Archivo original (.x68): 1264 bytes
+Archivo optimizado (_optimizado.x68): 1222 bytes
+Bytes reducidos: 42 bytes
+Reducción en ensamblador: 3,32%
+
+--- CÓDIGO OPTIMIZADO ---
+
+main:
+output "=== TEST: Lectura de char ==="
+output "\n"
+output "Introduce un char (ej: g):"
+output "\n"
+input c
+output "Has introducido: "
+output c
+output "\n"
+output "Test completado"
+output "\n"
+
+--- CAMBIOS REALIZADOS POR EL OPTIMIZADOR ---
+
+Asignación diferida:
+  - Línea 7: t0 eliminado y sustituido por c
+Eliminación de etiquetas muertas:
+  - Línea 11: Se ha eliminado la etiqueta end

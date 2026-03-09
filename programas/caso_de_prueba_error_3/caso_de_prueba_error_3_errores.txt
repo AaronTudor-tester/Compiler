@@ -1,0 +1,12 @@
+===== ERRORES DETECTADOS EN LA COMPILACIÓN =====
+
+Archivo: .\programas\caso_de_prueba_error_3\caso_de_prueba_error_3.txt
+Fecha: 2026-02-11T21:12:02.797264100
+
+5 error(es) encontrado(s):
+
+1. [Línea 9, Columna 42] ERROR SINTACTICO: Idice fuera de rango: 20 no está en el rango establecido de 0 a 4
+2. [Línea 17, Columna 45] ERROR SINTACTICO: El índice debe ser de tipo INT, pero se ha encontrado tipo STRING
+3. [Línea 23, Columna 5] ERROR SEMANTICO: Tipos incompatibles en declaración: variable x es INT pero la expresión es STRING
+4. [Línea 23, Columna 14] ERROR SEMANTICO: Variable no declarada: x
+5. [Línea 24, Columna 1] ERROR SINTACTICO: Expresión inválida en OUTPUT: tipo incompatible o error en la expresión

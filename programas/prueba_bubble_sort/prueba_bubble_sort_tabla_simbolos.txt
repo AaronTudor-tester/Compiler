@@ -1,0 +1,9 @@
+===== TABLA DE SÍMBOLOS =====
+
+  VARIABLE: Simbolo{nombre='n', tipo=INT, valor=7, linea=6, inicializada=true}
+  VARIABLE: Simbolo{nombre='res', tipo=INT, valor=null, linea=7, inicializada=true}
+    VARIABLE: Simbolo{nombre='i', tipo=INT, valor=0, linea=16, inicializada=true}
+    VARIABLE: Simbolo{nombre='i', tipo=INT, valor=0, linea=21, inicializada=true}
+      VARIABLE: Simbolo{nombre='j', tipo=INT, valor=0, linea=22, inicializada=true}
+        VARIABLE: Simbolo{nombre='temp', tipo=INT, valor=0, linea=25, inicializada=true}
+    VARIABLE: Simbolo{nombre='i', tipo=INT, valor=0, linea=33, inicializada=true}

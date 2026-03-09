@@ -1,0 +1,513 @@
+	ORG $1000
+START:
+	LEA STACKPTR, A7
+	JMP main
+
+; ===== RUTINAS AUXILIARES =====
+PRINT_SIGNED:
+	TST.W D1
+	BPL PRINT_UNSIGNED
+	MOVE.B #14, D0
+	LEA MINUS_SIGN, A1
+	TRAP #15
+	NEG.W D1
+PRINT_UNSIGNED:
+	MOVE.B #3, D0
+	TRAP #15
+	RTS
+
+
+ARRAY_INDEX_OUT_OF_BOUNDS:
+	; Indice fuera de rango - mostrar mensaje y detener la simulacion
+	LEA ERROR_INDEX_MSG, A1
+	MOVE.B #14, D0
+	TRAP #15
+	SIMHALT
+
+UNINITIALIZED_ACCESS:
+	; Acceso a posicion no inicializada - mostrar mensaje y detener la simulacion
+	LEA ERROR_UNINIT_MSG, A1
+	MOVE.B #14, D0
+	TRAP #15
+	SIMHALT
+
+ALLOC_SIZE_INVALID:
+	; Tamaño de array inválido en tiempo de ejecución - mostrar mensaje y detener
+	LEA ERROR_ALLOC_MSG, A1
+	MOVE.B #14, D0
+	TRAP #15
+	SIMHALT
+sumarMatriz:
+	; ; param matriz : INT_ARRAY_2
+	; i = 0
+	MOVE.W #0, i
+e0:
+	; t3 = i < 2
+	MOVE.W #0, t3
+	MOVE.W i, D0
+	CMP.W #2, D0
+	BLT t3_true
+	JMP t3_false
+t3_true:
+	MOVE.W #1, t3
+t3_false:
+	; if !(t3) goto e1
+	MOVE.W t3, D0
+	CMP.W #0, D0
+	BEQ e1
+	; j = 0
+	MOVE.W #0, j
+e2:
+	; t7 = j < 3
+	MOVE.W #0, t7
+	MOVE.W j, D0
+	CMP.W #3, D0
+	BLT t7_true
+	JMP t7_false
+t7_true:
+	MOVE.W #1, t7
+t7_false:
+	; if !(t7) goto e3
+	MOVE.W t7, D0
+	CMP.W #0, D0
+	BEQ e3
+	; t11 = i * 3
+	MOVE.W i, D0
+	MULS #3, D0
+	MOVE.W D0, t11
+	; t12 = t11 + j
+	MOVE.W t11, D0
+	ADD.W j, D0
+	MOVE.W D0, t12
+	; t14 = t12 * 4
+	MOVE.W t12, D0
+	MULS #4, D0
+	MOVE.W D0, t14
+	; t18 = i * 3
+	MOVE.W i, D0
+	MULS #3, D0
+	MOVE.W D0, t18
+	; t19 = t18 + j
+	MOVE.W t18, D0
+	ADD.W j, D0
+	MOVE.W D0, t19
+	; t21 = t19 * 4
+	MOVE.W t19, D0
+	MULS #4, D0
+	MOVE.W D0, t21
+	; t22 = 6
+	MOVE.W #6, t22
+	; t26 = matriz[t21]
+	MOVEA.L matriz, A0
+	CLR.L D0
+	MOVE.W t21, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.W t22, D2
+	EXT.L D2
+	MOVE.W #4, D3
+	MULS D3, D2
+	CMP.L D2, D0
+	BGE ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.L 0(A0, D0.L), D1
+	CMP.L #-1, D1
+	BEQ UNINITIALIZED_ACCESS
+	MOVE.W D1, t26
+	; t28 = t26 + 1
+	MOVE.W t26, D0
+	ADD.W #1, D0
+	MOVE.W D0, t28
+	; matriz[t14] = t28
+	MOVEA.L matriz, A0
+	CLR.L D0
+	MOVE.W t14, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	CLR.L D1
+	MOVE.W t28, D1
+	MOVE.L D1, 0(A0, D0.L)
+	; t31 = j + 1
+	MOVE.W j, D0
+	ADD.W #1, D0
+	MOVE.W D0, t31
+	; j = t31
+	MOVE.W t31, j
+	; goto e2
+	JMP e2
+e3:
+	; t34 = i + 1
+	MOVE.W i, D0
+	ADD.W #1, D0
+	MOVE.W D0, t34
+	; i = t34
+	MOVE.W t34, i
+	; goto e0
+	JMP e0
+e1:
+	; return null
+	RTS
+main:
+	; 
+	MOVE.L HEAP_PTR, D0
+	MOVE.L D0, mat
+	MOVE.L #24, D1
+	CMP.L #1, D1
+	BLT ALLOC_SIZE_INVALID
+	ADD.L #24, D0
+	MOVE.L D0, HEAP_PTR
+	TST.L D1
+	BEQ INIT_mat_LOOP_END
+	MOVE.L mat, A0
+INIT_mat_LOOP:
+	MOVE.L #-1, D4
+	MOVE.L D4, (A0)+
+	SUBQ.L #4, D1
+	BGT INIT_mat_LOOP
+INIT_mat_LOOP_END:
+	; mat[0] = 1
+	MOVEA.L mat, A0
+	MOVE.L #0, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.L #1, D1
+	MOVE.L D1, 0(A0, D0.L)
+	; mat[4] = 2
+	MOVEA.L mat, A0
+	MOVE.L #4, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.L #2, D1
+	MOVE.L D1, 0(A0, D0.L)
+	; mat[8] = 3
+	MOVEA.L mat, A0
+	MOVE.L #8, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.L #3, D1
+	MOVE.L D1, 0(A0, D0.L)
+	; mat[12] = 4
+	MOVEA.L mat, A0
+	MOVE.L #12, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.L #4, D1
+	MOVE.L D1, 0(A0, D0.L)
+	; mat[16] = 5
+	MOVEA.L mat, A0
+	MOVE.L #16, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.L #5, D1
+	MOVE.L D1, 0(A0, D0.L)
+	; mat[20] = 6
+	MOVEA.L mat, A0
+	MOVE.L #20, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.L #6, D1
+	MOVE.L D1, 0(A0, D0.L)
+	; mat[0] = 1
+	MOVEA.L mat, A0
+	MOVE.L #0, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.L #1, D1
+	MOVE.L D1, 0(A0, D0.L)
+	; mat[4] = 2
+	MOVEA.L mat, A0
+	MOVE.L #4, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.L #2, D1
+	MOVE.L D1, 0(A0, D0.L)
+	; mat[8] = 3
+	MOVEA.L mat, A0
+	MOVE.L #8, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.L #3, D1
+	MOVE.L D1, 0(A0, D0.L)
+	; mat[12] = 4
+	MOVEA.L mat, A0
+	MOVE.L #12, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.L #4, D1
+	MOVE.L D1, 0(A0, D0.L)
+	; mat[16] = 5
+	MOVEA.L mat, A0
+	MOVE.L #16, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.L #5, D1
+	MOVE.L D1, 0(A0, D0.L)
+	; mat[20] = 6
+	MOVEA.L mat, A0
+	MOVE.L #20, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.L #6, D1
+	MOVE.L D1, 0(A0, D0.L)
+	; output "Matriz original:"
+	LEA str0, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; output "\n"
+	LEA NEWLINE, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; t117 = 6
+	MOVE.W #6, t117
+	; t121 = mat[0]
+	MOVEA.L mat, A0
+	MOVE.L #0, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.W t117, D2
+	EXT.L D2
+	MOVE.W #4, D3
+	MULS D3, D2
+	CMP.L D2, D0
+	BGE ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.L 0(A0, D0.L), D1
+	CMP.L #-1, D1
+	BEQ UNINITIALIZED_ACCESS
+	MOVE.W D1, t121
+	; output t121
+	MOVE.W t121, D1
+	JSR PRINT_SIGNED
+	; output "\n"
+	LEA NEWLINE, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; t129 = 6
+	MOVE.W #6, t129
+	; t133 = mat[8]
+	MOVEA.L mat, A0
+	MOVE.L #8, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.W t129, D2
+	EXT.L D2
+	MOVE.W #4, D3
+	MULS D3, D2
+	CMP.L D2, D0
+	BGE ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.L 0(A0, D0.L), D1
+	CMP.L #-1, D1
+	BEQ UNINITIALIZED_ACCESS
+	MOVE.W D1, t133
+	; output t133
+	MOVE.W t133, D1
+	JSR PRINT_SIGNED
+	; output "\n"
+	LEA NEWLINE, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; t141 = 6
+	MOVE.W #6, t141
+	; t145 = mat[12]
+	MOVEA.L mat, A0
+	MOVE.L #12, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.W t141, D2
+	EXT.L D2
+	MOVE.W #4, D3
+	MULS D3, D2
+	CMP.L D2, D0
+	BGE ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.L 0(A0, D0.L), D1
+	CMP.L #-1, D1
+	BEQ UNINITIALIZED_ACCESS
+	MOVE.W D1, t145
+	; output t145
+	MOVE.W t145, D1
+	JSR PRINT_SIGNED
+	; output "\n"
+	LEA NEWLINE, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; t153 = 6
+	MOVE.W #6, t153
+	; t157 = mat[20]
+	MOVEA.L mat, A0
+	MOVE.L #20, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.W t153, D2
+	EXT.L D2
+	MOVE.W #4, D3
+	MULS D3, D2
+	CMP.L D2, D0
+	BGE ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.L 0(A0, D0.L), D1
+	CMP.L #-1, D1
+	BEQ UNINITIALIZED_ACCESS
+	MOVE.W D1, t157
+	; output t157
+	MOVE.W t157, D1
+	JSR PRINT_SIGNED
+	; output "\n"
+	LEA NEWLINE, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; param_s mat  
+	; call sumarMatriz  
+	MOVE.L mat, matriz
+	JSR sumarMatriz
+	; output "Matriz tras sumar 1:"
+	LEA str1, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; output "\n"
+	LEA NEWLINE, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; t165 = 6
+	MOVE.W #6, t165
+	; t169 = mat[0]
+	MOVEA.L mat, A0
+	MOVE.L #0, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.W t165, D2
+	EXT.L D2
+	MOVE.W #4, D3
+	MULS D3, D2
+	CMP.L D2, D0
+	BGE ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.L 0(A0, D0.L), D1
+	CMP.L #-1, D1
+	BEQ UNINITIALIZED_ACCESS
+	MOVE.W D1, t169
+	; output t169
+	MOVE.W t169, D1
+	JSR PRINT_SIGNED
+	; output "\n"
+	LEA NEWLINE, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; t177 = 6
+	MOVE.W #6, t177
+	; t181 = mat[8]
+	MOVEA.L mat, A0
+	MOVE.L #8, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.W t177, D2
+	EXT.L D2
+	MOVE.W #4, D3
+	MULS D3, D2
+	CMP.L D2, D0
+	BGE ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.L 0(A0, D0.L), D1
+	CMP.L #-1, D1
+	BEQ UNINITIALIZED_ACCESS
+	MOVE.W D1, t181
+	; output t181
+	MOVE.W t181, D1
+	JSR PRINT_SIGNED
+	; output "\n"
+	LEA NEWLINE, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; t189 = 6
+	MOVE.W #6, t189
+	; t193 = mat[12]
+	MOVEA.L mat, A0
+	MOVE.L #12, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.W t189, D2
+	EXT.L D2
+	MOVE.W #4, D3
+	MULS D3, D2
+	CMP.L D2, D0
+	BGE ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.L 0(A0, D0.L), D1
+	CMP.L #-1, D1
+	BEQ UNINITIALIZED_ACCESS
+	MOVE.W D1, t193
+	; output t193
+	MOVE.W t193, D1
+	JSR PRINT_SIGNED
+	; output "\n"
+	LEA NEWLINE, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; t201 = 6
+	MOVE.W #6, t201
+	; t205 = mat[20]
+	MOVEA.L mat, A0
+	MOVE.L #20, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.W t201, D2
+	EXT.L D2
+	MOVE.W #4, D3
+	MULS D3, D2
+	CMP.L D2, D0
+	BGE ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.L 0(A0, D0.L), D1
+	CMP.L #-1, D1
+	BEQ UNINITIALIZED_ACCESS
+	MOVE.W D1, t205
+	; output t205
+	MOVE.W t205, D1
+	JSR PRINT_SIGNED
+	; output "\n"
+	LEA NEWLINE, A1
+	MOVE.B #14, D0
+	TRAP #15
+	BRA HALT
+
+	; DATA SECTION
+NEWLINE:	DC.B 13,10,0
+MINUS_SIGN:	DC.B '-',0
+ERROR_INDEX_MSG:	DC.B 'ERROR: Indice fuera de rango',13,10,0
+ERROR_UNINIT_MSG:	DC.B 'ERROR: Acceso a posicion no inicializada',13,10,0
+ERROR_ALLOC_MSG:	DC.B 'ERROR: Tamaño de array inválido (<= 0)',13,10,0
+HEAP_PTR:	DC.L $8000
+t7:	DS.W 1
+t181:	DS.W 1
+t121:	DS.W 1
+t165:	DS.W 1
+t201:	DS.W 1
+t145:	DS.W 1
+t189:	DS.W 1
+matriz:	DS.L 1
+t141:	DS.W 1
+t31:	DS.W 1
+t12:	DS.W 1
+t34:	DS.W 1
+t11:	DS.W 1
+t14:	DS.W 1
+t117:	DS.W 1
+str1:	DC.B 'Matriz tras sumar 1:',0
+t18:	DS.W 1
+t19:	DS.W 1
+mat:	DS.L 1
+t193:	DS.W 1
+t133:	DS.W 1
+t177:	DS.W 1
+i:	DS.W 1
+str0:	DC.B 'Matriz original:',0
+j:	DS.W 1
+t157:	DS.W 1
+t153:	DS.W 1
+t129:	DS.W 1
+t21:	DS.W 1
+t22:	DS.W 1
+t169:	DS.W 1
+t205:	DS.W 1
+t26:	DS.W 1
+t28:	DS.W 1
+t3:	DS.W 1
+
+HALT:
+	SIMHALT
+
+	ORG $5000
+STACKPTR:
+	END START

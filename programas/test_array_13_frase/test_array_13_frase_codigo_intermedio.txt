@@ -1,0 +1,62 @@
+===== CÓDIGO INTERMEDIO =====
+
+main:
+output "=== TEST: Arrays de frase ==="
+output "\n"
+t0 = 3
+t1 = 4
+t2 = t0 * t1
+
+t3 = 0
+t4 = 4
+t5 = t3 * t4
+nombres[t5] = "Ana"
+t6 = 1
+t7 = 4
+t8 = t6 * t7
+nombres[t8] = "Luis"
+t9 = 2
+t10 = 4
+t11 = t9 * t10
+nombres[t11] = "Maria"
+output "Mostrando nombres:"
+output "\n"
+t12 = 0
+t13 = 4
+t14 = t12 * t13
+t16 = 3
+t15 = t16
+t17 = nombres[t14]
+nombre1 = t17
+t18 = nombre1
+output t18
+output "\n"
+t19 = 1
+t20 = 4
+t21 = t19 * t20
+t23 = 3
+t22 = t23
+t24 = nombres[t21]
+nombre2 = t24
+t25 = nombre2
+output t25
+output "\n"
+output "Modificando posicion 2:"
+output "\n"
+t26 = 2
+t27 = 4
+t28 = t26 * t27
+nombres[t28] = "Pedro"
+t29 = 2
+t30 = 4
+t31 = t29 * t30
+t33 = 3
+t32 = t33
+t34 = nombres[t31]
+nombre3 = t34
+t35 = nombre3
+output t35
+output "\n"
+output "Test completado"
+output "\n"
+end:

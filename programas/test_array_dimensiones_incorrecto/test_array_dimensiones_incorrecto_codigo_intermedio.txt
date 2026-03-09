@@ -1,0 +1,25 @@
+===== CÓDIGO INTERMEDIO =====
+
+main:
+t0 = 1
+t1 = 5
+t2 = NEG t1
+t3 = t0 * t2
+t4 = 4
+t5 = t3 * t4
+
+t6 = 1
+t7 = 0
+t8 = t6 * t7
+t9 = 4
+t10 = t8 * t9
+
+t11 = 1
+t12 = 3
+t13 = t11 * t12
+t14 = 4
+t15 = t13 * t14
+
+output "Fin de prueba dimensiones: arr_neg (negativa), arr_zero (cero), arr_ok (positiva)"
+output "\n"
+end:

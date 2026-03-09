@@ -1,0 +1,95 @@
+strict digraph {
+46	[label="Programa"];
+46->1
+46->3
+46->5
+46->9
+46->11
+46->13
+46->17
+46->19
+46->21
+46->25
+46->27
+46->29
+46->33
+46->35
+46->37
+46->41
+46->43
+46->45
+1	[label="print"];
+1->0
+0	[label="=== CASO 1: OPERACIONES BASICAS ===",shape=plaintext];
+3	[label="=(a)"]
+3->2
+2	[label="10",shape=plaintext];
+5	[label="=(b)"]
+5->4
+4	[label="5",shape=plaintext];
+9	[label="=(suma)"]
+9->8
+8	[label="SUMA"];
+8->6
+8->7
+6	[label="a",shape=plaintext];
+7	[label="b",shape=plaintext];
+11	[label="print"];
+11->10
+10	[label="Suma: ",shape=plaintext];
+13	[label="print"];
+13->12
+12	[label="suma",shape=plaintext];
+17	[label="=(resta)"]
+17->16
+16	[label="RESTA"];
+16->14
+16->15
+14	[label="a",shape=plaintext];
+15	[label="b",shape=plaintext];
+19	[label="print"];
+19->18
+18	[label="Resta: ",shape=plaintext];
+21	[label="print"];
+21->20
+20	[label="resta",shape=plaintext];
+25	[label="=(multiplicacion)"]
+25->24
+24	[label="PROD"];
+24->22
+24->23
+22	[label="a",shape=plaintext];
+23	[label="b",shape=plaintext];
+27	[label="print"];
+27->26
+26	[label="Multiplicación: ",shape=plaintext];
+29	[label="print"];
+29->28
+28	[label="multiplicacion",shape=plaintext];
+33	[label="=(division)"]
+33->32
+32	[label="DIV"];
+32->30
+32->31
+30	[label="a",shape=plaintext];
+31	[label="b",shape=plaintext];
+35	[label="print"];
+35->34
+34	[label="División: ",shape=plaintext];
+37	[label="print"];
+37->36
+36	[label="division",shape=plaintext];
+41	[label="=(modulo)"]
+41->40
+40	[label="MOD"];
+40->38
+40->39
+38	[label="a",shape=plaintext];
+39	[label="b",shape=plaintext];
+43	[label="print"];
+43->42
+42	[label="Módulo: ",shape=plaintext];
+45	[label="print"];
+45->44
+44	[label="modulo",shape=plaintext];
+}

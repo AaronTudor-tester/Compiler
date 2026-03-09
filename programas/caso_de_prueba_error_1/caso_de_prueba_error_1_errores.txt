@@ -1,0 +1,10 @@
+===== ERRORES DETECTADOS EN LA COMPILACIÓN =====
+
+Archivo: .\programas\caso_de_prueba_error_1\caso_de_prueba_error_1.txt
+Fecha: 2026-02-11T07:05:47.848884600
+
+3 error(es) encontrado(s):
+
+1. [Línea 12, Columna 14] ERROR SEMANTICO: Variable no inicializada: x
+2. [Línea 18, Columna 5] ERROR SEMANTICO: Tipos incompatibles en declaración: variable resultado es INT pero la expresión es STRING
+3. [Línea 18, Columna 47] ERROR SINTACTICO: Tipo de argumento 2 incorrecto en la llamada a sumar (es STRING se esperaba INT)

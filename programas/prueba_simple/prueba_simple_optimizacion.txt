@@ -1,0 +1,38 @@
+===== OPTIMIZACIONES REALIZADAS =====
+
+Archivo: .\programas\prueba_simple\prueba_simple.txt
+Fecha: 2026-02-11T08:54:19.501230600
+
+--- ESTADÍSTICAS DE CÓDIGO INTERMEDIO ---
+
+Instrucciones originales: 9
+Instrucciones optimizadas: 9
+Instrucciones eliminadas: 0
+Reducción: 0,00%
+
+--- ESTADÍSTICAS DE ENSAMBLADOR ---
+
+Archivo original (.x68): 936 bytes
+Archivo optimizado (_optimizado.x68): 857 bytes
+Bytes reducidos: 79 bytes
+Reducción en ensamblador: 8,44%
+
+--- CÓDIGO OPTIMIZADO ---
+
+main:
+output 10
+output "\n"
+output "Hola"
+output "\n"
+output 20
+output "\n"
+output "Mundo"
+output "\n"
+
+--- CAMBIOS REALIZADOS POR EL OPTIMIZADOR ---
+
+Asignación diferida:
+  - Línea 1: t0 eliminado y sustituido por 10
+  - Línea 5: t1 eliminado y sustituido por 20
+Eliminación de etiquetas muertas:
+  - Línea 9: Se ha eliminado la etiqueta end

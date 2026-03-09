@@ -1,0 +1,3 @@
+===== TABLA DE SIMBOLOS =====
+
+  VARIABLE: Simbolo{nombre='vector', tipo=INT, valor=null, linea=9, inicializada=true}

@@ -1,0 +1,45 @@
+===== CÓDIGO INTERMEDIO =====
+
+main:
+output "=== TEST: Lectura de array ==="
+output "\n"
+t0 = 3
+t1 = 4
+t2 = t0 * t1
+
+t3 = 10
+t4 = 0
+t5 = 4
+t6 = t4 * t5
+vector[t6] = t3
+t7 = 20
+t8 = 1
+t9 = 4
+t10 = t8 * t9
+vector[t10] = t7
+t11 = 30
+t12 = 2
+t13 = 4
+t14 = t12 * t13
+vector[t14] = t11
+output "Leyendo posicion 0:"
+t15 = 0
+t16 = 4
+t17 = t15 * t16
+t19 = 3
+t18 = t19
+t20 = vector[t17]
+output t20
+output "\n"
+output "Leyendo posicion 1:"
+t21 = 1
+t22 = 4
+t23 = t21 * t22
+t25 = 3
+t24 = t25
+t26 = vector[t23]
+output t26
+output "\n"
+output "Test completado"
+output "\n"
+end:

@@ -1,0 +1,19 @@
+strict digraph {
+8	[label="Programa"];
+8->0
+8->2
+8->3
+8->5
+8->7
+0	[label="decl: x (INT)"];
+2	[label="print"];
+2->1
+1	[label="Ingresa numero:",shape=plaintext];
+3	[label="input(x)"];
+5	[label="print"];
+5->4
+4	[label="Ingresaste:",shape=plaintext];
+7	[label="print"];
+7->6
+6	[label="x",shape=plaintext];
+}

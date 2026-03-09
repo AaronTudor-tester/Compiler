@@ -1,0 +1,22 @@
+===== CODIGO INTERMEDIO (3-ADDRESS CODE) =====
+
+main:
+output "Introduce un numero entero:"
+output "\n"
+input miNumero
+output "Has introducido: "
+t0 = miNumero
+output t0
+output "\n"
+output "Introduce otro numero:"
+output "\n"
+input otroNumero
+t1 = miNumero
+t2 = otroNumero
+t3 = t1 + t2
+suma = t3
+output "La suma es: "
+t4 = suma
+output t4
+output "\n"
+end:

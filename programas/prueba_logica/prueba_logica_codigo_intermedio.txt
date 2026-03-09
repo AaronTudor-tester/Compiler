@@ -1,0 +1,101 @@
+===== CODIGO INTERMEDIO (3-ADDRESS CODE) =====
+
+main:
+output "=== PRUEBA DE OPERADORES LOGICOS ==="
+output "\n"
+t0 = 5
+x = t0
+t1 = 10
+y = t1
+t2 = 15
+z = t2
+output "TEST 1: AND (y ademas)"
+output "\n"
+t3 = x
+t4 = y
+t5 = t3 < t4
+t6 = y
+t7 = z
+t8 = t6 < t7
+t9 = t5 && t8
+if !(t9) goto e0
+output "5 < 10 AND 10 < 15: VERDADERO"
+output "\n"
+goto e1
+e0:
+output "5 < 10 AND 10 < 15: FALSO"
+output "\n"
+e1:
+t10 = x
+t11 = y
+t12 = t10 > t11
+t13 = y
+t14 = z
+t15 = t13 < t14
+t16 = t12 && t15
+if !(t16) goto e2
+output "5 > 10 AND 10 < 15: VERDADERO"
+output "\n"
+goto e3
+e2:
+output "5 > 10 AND 10 < 15: FALSO"
+output "\n"
+e3:
+output "TEST 2: OR (o bien)"
+output "\n"
+t17 = x
+t18 = y
+t19 = t17 > t18
+t20 = y
+t21 = z
+t22 = t20 < t21
+t23 = t19 || t22
+if !(t23) goto e4
+output "5 > 10 OR 10 < 15: VERDADERO"
+output "\n"
+goto e5
+e4:
+output "5 > 10 OR 10 < 15: FALSO"
+output "\n"
+e5:
+t24 = x
+t25 = y
+t26 = t24 > t25
+t27 = y
+t28 = z
+t29 = t27 > t28
+t30 = t26 || t29
+if !(t30) goto e6
+output "5 > 10 OR 10 > 15: VERDADERO"
+output "\n"
+goto e7
+e6:
+output "5 > 10 OR 10 > 15: FALSO"
+output "\n"
+e7:
+output "TEST 3: NOT (no)"
+output "\n"
+t31 = true
+verd = t31
+t32 = false
+fals = t32
+t33 = ! verd
+if !(t33) goto e8
+output "NOT(true): VERDADERO"
+output "\n"
+goto e9
+e8:
+output "NOT(true): FALSO"
+output "\n"
+e9:
+t34 = ! fals
+if !(t34) goto e10
+output "NOT(false): VERDADERO"
+output "\n"
+goto e11
+e10:
+output "NOT(false): FALSO"
+output "\n"
+e11:
+output "FIN"
+end:

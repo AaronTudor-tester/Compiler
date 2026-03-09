@@ -1,0 +1,75 @@
+===== OPTIMIZACIONES REALIZADAS =====
+
+Archivo: .\programas\test_array_02_lectura\test_array_02_lectura.txt
+Fecha: 2026-02-11T20:30:15.409061600
+
+--- ESTADÍSTICAS DE CÓDIGO INTERMEDIO ---
+
+Instrucciones originales: 19
+Instrucciones optimizadas: 18
+Instrucciones eliminadas: 1
+Reducción: 5,26%
+
+--- ESTADÍSTICAS DE ENSAMBLADOR ---
+
+Archivo original (.x68): 4428 bytes
+Archivo optimizado (_optimizado.x68): 3203 bytes
+Bytes reducidos: 1225 bytes
+Reducción en ensamblador: 27,66%
+
+--- CÓDIGO OPTIMIZADO ---
+
+main:
+output "=== TEST: Lectura de array ==="
+output "\n"
+vector[0] = 10
+vector[4] = 20
+vector[8] = 30
+output "Leyendo posicion 0:"
+t18 = 3
+t20 = vector[0]
+output t20
+output "\n"
+output "Leyendo posicion 1:"
+t24 = 3
+t26 = vector[4]
+output t26
+output "\n"
+output "Test completado"
+output "\n"
+
+--- CAMBIOS REALIZADOS POR EL OPTIMIZADOR ---
+
+Asignación diferida:
+  - Línea 3: t0 eliminado y sustituido por 3
+  - Línea 3: t1 eliminado y sustituido por 4
+  - Línea 5: t3 eliminado y sustituido por 10
+  - Línea 5: t4 eliminado y sustituido por 0
+  - Línea 5: t5 eliminado y sustituido por 4
+  - Línea 7: t7 eliminado y sustituido por 20
+  - Línea 7: t8 eliminado y sustituido por 1
+  - Línea 7: t9 eliminado y sustituido por 4
+  - Línea 9: t11 eliminado y sustituido por 30
+  - Línea 9: t12 eliminado y sustituido por 2
+  - Línea 9: t13 eliminado y sustituido por 4
+  - Línea 12: t15 eliminado y sustituido por 0
+  - Línea 12: t16 eliminado y sustituido por 4
+  - Línea 13: t19 eliminado y sustituido por 3
+  - Línea 18: t21 eliminado y sustituido por 1
+  - Línea 18: t22 eliminado y sustituido por 4
+  - Línea 19: t25 eliminado y sustituido por 3
+  - Línea 3: t2 eliminado y sustituido por 12
+  - Línea 4: t6 eliminado y sustituido por 0
+  - Línea 5: t10 eliminado y sustituido por 4
+  - Línea 6: t14 eliminado y sustituido por 8
+  - Línea 8: t17 eliminado y sustituido por 0
+  - Línea 13: t23 eliminado y sustituido por 4
+Eliminación de etiquetas muertas:
+  - Línea 25: Se ha eliminado la etiqueta end
+Cálculo de constantes:
+  - Línea 3: t2 = 3 * 4 -> t2 = 12
+  - Línea 5: t6 = 0 * 4 -> t6 = 0
+  - Línea 7: t10 = 1 * 4 -> t10 = 4
+  - Línea 9: t14 = 2 * 4 -> t14 = 8
+  - Línea 12: t17 = 0 * 4 -> t17 = 0
+  - Línea 18: t23 = 1 * 4 -> t23 = 4

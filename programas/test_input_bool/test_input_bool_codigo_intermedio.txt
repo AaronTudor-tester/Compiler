@@ -1,0 +1,15 @@
+===== CÓDIGO INTERMEDIO =====
+
+main:
+output "=== TEST: Lectura de booleanos ==="
+output "\n"
+output "Introduce un valor booleano (cierto/mentira):"
+output "\n"
+input usuario
+output "Has introducido: "
+t0 = usuario
+output t0
+output "\n"
+output "Test completado"
+output "\n"
+end:

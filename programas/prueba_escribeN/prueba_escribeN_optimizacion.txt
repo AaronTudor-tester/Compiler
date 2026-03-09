@@ -1,0 +1,43 @@
+===== OPTIMIZACIONES REALIZADAS =====
+
+Archivo: programas/prueba_escribeN/prueba_escribeN.txt
+Fecha: 2026-02-02T14:37:28.620612400
+
+--- ESTADISTICAS DE CODIGO INTERMEDIO ---
+
+Instrucciones originales: 14
+Instrucciones optimizadas: 14
+Instrucciones eliminadas: 0
+Reduccion: 0,00%
+
+--- ESTADISTICAS DE ENSAMBLADOR ---
+
+Archivo original (.x68): 3044 bytes
+Archivo optimizado (_optimizado.x68): 2965 bytes
+Bytes reducidos: 79 bytes
+Reduccion en ensamblador: 2,60%
+
+--- CODIGO OPTIMIZADO ---
+
+main:
+output "Hola"
+output " mundo"
+output " sin salto de linea"
+output "Con salto de linea"
+output "\n"
+output "Segunda linea"
+output "\n"
+x = 42
+output "El valor es: "
+output x
+output "\n"
+output "Final del programa"
+output "\n"
+
+--- CAMBIOS REALIZADOS POR EL OPTIMIZADOR ---
+
+Asignación diferida:
+  - Línea 8: t0 eliminado y sustituido por 42
+  - Línea 10: t1 eliminado y sustituido por x
+Eliminación de etiquetas muertas:
+  - Línea 14: Se ha eliminado la etiqueta end

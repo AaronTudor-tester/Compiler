@@ -1,0 +1,8 @@
+// Prueba de dimensiones de arrays
+// Deben producirse errores para longitudes negativas o cero
+principal {
+	lista de numero arr_neg de longitud menos 5.
+	lista de numero arr_zero de longitud 0.
+	lista de numero arr_ok de longitud 3.
+	escribeN "Fin de prueba dimensiones: arr_neg (negativa), arr_zero (cero), arr_ok (positiva)".
+}

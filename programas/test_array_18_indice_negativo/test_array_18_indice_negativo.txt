@@ -1,0 +1,18 @@
+// TEST ARRAY 18: Índice negativo - ERROR
+// Objetivo: Verificar que el compilador detecta índices negativos
+
+principal {
+    escribeN "=== TEST: Indice negativo (debe fallar) ===".
+    
+    lista de numero vector es [5, 10, 15, 20].
+    
+    // ERROR: Índice negativo
+    numero valor es vector posicion (-1).
+    
+    escribeN valor.
+}
+
+// ERRORES ESPERADOS:
+// 1. Error semántico: Índice fuera de rango: -1
+//    - Los índices deben ser >= 0
+//    - Se intenta acceder con índice negativo

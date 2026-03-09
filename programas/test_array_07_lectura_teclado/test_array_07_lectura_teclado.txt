@@ -1,0 +1,24 @@
+// TEST ARRAY 07: Lectura desde teclado
+// Objetivo: Verificar que se pueden leer valores desde teclado y guardar en array
+
+principal {
+    escribeN "=== TEST: Lectura de teclado a array ===".
+    
+    lista de numero vector de longitud 3.
+    
+    escribeN "Introduce valor para posicion 0:".
+    lee vector posicion (0).
+    
+    escribeN "Introduce valor para posicion 1:".
+    lee vector posicion (1).
+    
+    escribeN "Introduce valor para posicion 2:".
+    lee vector posicion (2).
+    
+    escribeN "Mostrando valores guardados:".
+    escribeN vector posicion (0).
+    escribeN vector posicion (1).
+    escribeN vector posicion (2).
+    
+    escribeN "Test completado".
+}

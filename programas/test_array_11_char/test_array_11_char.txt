@@ -1,0 +1,22 @@
+// TEST ARRAY 11: Arrays de char
+// Objetivo: Verificar arrays de caracteres
+
+principal {
+    escribeN "=== TEST: Arrays de char ===".
+    
+    lista de letra vocales es ['a', 'e', 'i', 'o', 'u'].
+    
+    escribeN "Mostrando vocales:".
+    letra primera es vocales posicion (0).
+    escribeN primera.
+    
+    letra tercera es vocales posicion (2).
+    escribeN tercera.
+    
+    escribeN "Modificando posicion 1:".
+    vocales posicion (1) es 'E'.
+    letra nueva es vocales posicion (1).
+    escribeN nueva.
+    
+    escribeN "Test completado".
+}

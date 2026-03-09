@@ -1,0 +1,8 @@
+===== TABLA DE SÍMBOLOS =====
+
+FUNCION: Simbolo{nombre='sumarCubo', tipoRetorno=VOID, parametros=[INT[][][]], linea=4}
+  VARIABLE: Simbolo{nombre='cubo', tipo=INT, valor=null, linea=4, inicializada=true}
+  VARIABLE: Simbolo{nombre='i', tipo=INT, valor=0, linea=6, inicializada=true}
+    VARIABLE: Simbolo{nombre='j', tipo=INT, valor=0, linea=8, inicializada=true}
+      VARIABLE: Simbolo{nombre='k', tipo=INT, valor=0, linea=10, inicializada=true}
+  VARIABLE: Simbolo{nombre='miCubo', tipo=INT, valor=[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12], linea=24, inicializada=true}

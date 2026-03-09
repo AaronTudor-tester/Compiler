@@ -1,0 +1,95 @@
+strict digraph {
+47	[label="Programa"];
+47->1
+47->3
+47->5
+47->9
+47->13
+47->17
+47->21
+47->23
+47->26
+47->28
+47->31
+47->33
+47->35
+47->39
+47->42
+47->44
+47->46
+1	[label="print"];
+1->0
+0	[label="=== TEST: Arrays de booleano ===",shape=plaintext];
+3	[label="array: flags[0](BOOL)"];
+5	[label="print"];
+5->4
+4	[label="Inicializando flags:",shape=plaintext];
+9	[label="[] =\n(Asign. Array)"]
+9->7
+9->8
+7	[label="Acceso Array\n(flags)"]
+7->6
+6	[label="0",shape=plaintext];
+8	[label="true",shape=plaintext];
+13	[label="[] =\n(Asign. Array)"]
+13->11
+13->12
+11	[label="Acceso Array\n(flags)"]
+11->10
+10	[label="1",shape=plaintext];
+12	[label="false",shape=plaintext];
+17	[label="[] =\n(Asign. Array)"]
+17->15
+17->16
+15	[label="Acceso Array\n(flags)"]
+15->14
+14	[label="2",shape=plaintext];
+16	[label="true",shape=plaintext];
+21	[label="[] =\n(Asign. Array)"]
+21->19
+21->20
+19	[label="Acceso Array\n(flags)"]
+19->18
+18	[label="3",shape=plaintext];
+20	[label="false",shape=plaintext];
+23	[label="print"];
+23->22
+22	[label="Mostrando flags:",shape=plaintext];
+26	[label="=(f1)"]
+26->25
+25	[label="Acceso Array\n(flags)"]
+25->24
+24	[label="0",shape=plaintext];
+28	[label="print"];
+28->27
+27	[label="f1",shape=plaintext];
+31	[label="=(f2)"]
+31->30
+30	[label="Acceso Array\n(flags)"]
+30->29
+29	[label="1",shape=plaintext];
+33	[label="print"];
+33->32
+32	[label="f2",shape=plaintext];
+35	[label="print"];
+35->34
+34	[label="Modificando posicion 2:",shape=plaintext];
+39	[label="[] =\n(Asign. Array)"]
+39->37
+39->38
+37	[label="Acceso Array\n(flags)"]
+37->36
+36	[label="2",shape=plaintext];
+38	[label="false",shape=plaintext];
+42	[label="=(f3)"]
+42->41
+41	[label="Acceso Array\n(flags)"]
+41->40
+40	[label="2",shape=plaintext];
+44	[label="print"];
+44->43
+43	[label="f3",shape=plaintext];
+46	[label="print"];
+46->45
+45	[label="Test completado",shape=plaintext];
+}

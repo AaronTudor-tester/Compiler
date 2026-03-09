@@ -1,0 +1,78 @@
+// ============================================
+// PROGRAMA DE PRUEBA COMPLETO DE COMPILADOR
+// ============================================
+// Prueba TODAS las funcionalidades del lenguaje
+
+// Función: Sumar dos números
+numero suma ( numero n1 , numero n2 ) {
+    devuelve n1 mas n2.
+}
+
+// Función: Contar pares en un rango
+numero contarPares ( numero inicio , numero fin ) {
+    numero contador es 0.
+    numero i es inicio.
+    numero limite es fin.
+    mientras i es menor que limite {
+        si i es diferente de 0 {
+            numero residuo es i resto 2.
+            si residuo es igual que 0 {
+                incrementa contador.
+            }
+        }
+        incrementa i.
+    }
+    devuelve contador.
+}
+
+principal {
+    escribe "PRUEBA COMPLETA".
+    escribe "\n".
+    
+    // TEST 1: Variables
+    escribeN "TEST 1: Variables".
+    numero x es 10.
+    numero y es 5.
+    escribe "x+y= ".
+    escribe suma(x, y).
+    escribe "\n".
+    
+    // TEST 2: Condicionales
+    escribeN "TEST 2: Condicionales".
+    si x es mayor que y {
+        escribe "10>5: SI".
+    }
+    escribe "\n".
+    
+    // TEST 3: While
+    escribeN "TEST 3: While (1 a 3)".
+    numero c es 1.
+    mientras c es menor o igual que 3 {
+        escribe c.
+        escribe " ".
+        incrementa c.
+    }
+    escribe "\n".
+    
+    // TEST 4: Operadores logicos
+    escribeN "TEST 4: Logica".
+    pregunta a es cierto.
+    pregunta b es mentira.
+    si a y ademas a {
+        escribe "AND: SI".
+    }
+    si a o bien b {
+        escribe "OR: SI".
+    }
+    si no b {
+        escribe "NOT: SI".
+    }
+    escribe "\n".
+    
+    // TEST 5: Funcion compleja
+    escribeN "TEST 5: Pares(1-11)= ".
+    numero pares es contarPares(1, 11).
+    escribe pares.
+    escribe "\n".
+    escribe "FIN".
+}

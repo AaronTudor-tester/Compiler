@@ -1,0 +1,96 @@
+===== OPTIMIZACIONES REALIZADAS =====
+
+Archivo: .\programas\caso_de_prueba_2\caso_de_prueba_2.txt
+Fecha: 2026-02-11T21:12:43.511947
+
+--- ESTADÍSTICAS DE CÓDIGO INTERMEDIO ---
+
+Instrucciones originales: 46
+Instrucciones optimizadas: 46
+Instrucciones eliminadas: 0
+Reducción: 0,00%
+
+--- ESTADÍSTICAS DE ENSAMBLADOR ---
+
+Archivo original (.x68): 4204 bytes
+Archivo optimizado (_optimizado.x68): 3437 bytes
+Bytes reducidos: 767 bytes
+Reducción en ensamblador: 18,24%
+
+--- CÓDIGO OPTIMIZADO ---
+
+main:
+output "=== CASO 2: BUCLES Y CONDICIONALES ==="
+output "\n"
+output "Numeros del 1 al 10:"
+output "\n"
+i = 1
+e0:
+t3 = i <= 10
+if !(t3) goto e1
+output i
+output " "
+i = i + 1
+goto e0
+e1:
+output "\n"
+output "Numeros pares del 1 al 10:"
+output "\n"
+j = 1
+e2:
+t8 = j <= 10
+if !(t8) goto e3
+t11 = j % 2
+t13 = t11 == 0
+if !(t13) goto e4
+output j
+output " "
+e4:
+j = j + 1
+goto e2
+e3:
+output "\n"
+output "Numeros impares del 1 al 10:"
+output "\n"
+k = 1
+e6:
+t18 = k <= 10
+if !(t18) goto e7
+t21 = k % 2
+t23 = t21 != 0
+if !(t23) goto e8
+output k
+output " "
+e8:
+k = k + 1
+goto e6
+e7:
+
+--- CAMBIOS REALIZADOS POR EL OPTIMIZADOR ---
+
+Asignación diferida:
+  - Línea 5: t0 eliminado y sustituido por 1
+  - Línea 7: t1 eliminado y sustituido por i
+  - Línea 7: t2 eliminado y sustituido por 10
+  - Línea 9: t4 eliminado y sustituido por i
+  - Línea 17: t5 eliminado y sustituido por 1
+  - Línea 19: t6 eliminado y sustituido por j
+  - Línea 19: t7 eliminado y sustituido por 10
+  - Línea 21: t9 eliminado y sustituido por j
+  - Línea 21: t10 eliminado y sustituido por 2
+  - Línea 22: t12 eliminado y sustituido por 0
+  - Línea 24: t14 eliminado y sustituido por j
+  - Línea 35: t15 eliminado y sustituido por 1
+  - Línea 37: t16 eliminado y sustituido por k
+  - Línea 37: t17 eliminado y sustituido por 10
+  - Línea 39: t19 eliminado y sustituido por k
+  - Línea 39: t20 eliminado y sustituido por 2
+  - Línea 40: t22 eliminado y sustituido por 0
+  - Línea 42: t24 eliminado y sustituido por k
+Ramificaciones adyacentes:
+  - Línea 26: Salto innecesario a e5 eliminado
+  - Línea 43: Salto innecesario a e9 eliminado
+Eliminación de etiquetas muertas:
+  - Línea 27: Se ha eliminado la etiqueta e5
+  - Línea 44: Se ha eliminado la etiqueta e9
+  - Línea 48: Se ha eliminado la etiqueta end

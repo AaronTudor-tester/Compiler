@@ -1,0 +1,24 @@
+===== TABLAS DE VARIABLES Y PROCEDIMIENTOS =====
+
+--- TABLA DE VARIABLES ---
+
+Variables del programa:
+  a
+  b
+
+Variables temporales generadas:
+  t4
+  t5
+  t0
+  t1
+  t2
+  t3
+
+--- TABLA DE PROCEDIMIENTOS ---
+
+  suma
+    Tipo retorno: INT
+    Parametros: 2
+  saludo
+    Tipo retorno: VOID
+    Parametros: 0

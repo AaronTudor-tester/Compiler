@@ -1,0 +1,11 @@
+===== ERRORES DETECTADOS EN LA COMPILACIÓN =====
+
+Archivo: .\programas\test_array_17_tipo_incorrecto\test_array_17_tipo_incorrecto.txt
+Fecha: 2026-02-11T20:35:41.640409
+
+4 error(es) encontrado(s):
+
+1. [Línea 11, Columna 36] ERROR SEMANTICO: Tipos incompatibles en asignación de array. El array es de tipo INT pero se intenta asignar un valor de tipo STRING
+2. [Línea 17, Columna 5] ERROR SEMANTICO: Tipos incompatibles en declaración: variable x es INT pero la expresión es STRING
+3. [Línea 17, Columna 15] ERROR SEMANTICO: Variable no declarada: x
+4. [Línea 18, Columna 1] ERROR SINTACTICO: Expresión inválida en OUTPUTN: tipo incompatible o error en la expresión

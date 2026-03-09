@@ -1,0 +1,295 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 11/02/2026 21:13:30
+
+00001000                             1              ORG $1000
+00001000                             2  START:
+00001000  4FF9 00005000              3              LEA STACKPTR, A7
+00001006  4EF9 00001028              4              JMP main
+0000100C                             5  
+0000100C                             6  ; ===== RUTINAS AUXILIARES =====
+0000100C                             7  PRINT_SIGNED:
+0000100C  4A41                       8              TST.W D1
+0000100E  6A00 0010                  9              BPL PRINT_UNSIGNED
+00001012  103C 000E                 10              MOVE.B #14, D0
+00001016  43F9 00001279             11              LEA MINUS_SIGN, A1
+0000101C  4E4F                      12              TRAP #15
+0000101E  4441                      13              NEG.W D1
+00001020                            14  PRINT_UNSIGNED:
+00001020  103C 0003                 15              MOVE.B #3, D0
+00001024  4E4F                      16              TRAP #15
+00001026  4E75                      17              RTS
+00001028                            18  
+00001028                            19  main:
+00001028                            20              ; output "=== CASO 2: BUCLES Y CONDICIONALES ==="
+00001028  43F9 0000129E             21              LEA str0, A1
+0000102E  103C 000E                 22              MOVE.B #14, D0
+00001032  4E4F                      23              TRAP #15
+00001034                            24              ; output "\n"
+00001034  43F9 00001276             25              LEA NEWLINE, A1
+0000103A  103C 000E                 26              MOVE.B #14, D0
+0000103E  4E4F                      27              TRAP #15
+00001040                            28              ; output "Numeros del 1 al 10:"
+00001040  43F9 0000130B             29              LEA str1, A1
+00001046  103C 000E                 30              MOVE.B #14, D0
+0000104A  4E4F                      31              TRAP #15
+0000104C                            32              ; output "\n"
+0000104C  43F9 00001276             33              LEA NEWLINE, A1
+00001052  103C 000E                 34              MOVE.B #14, D0
+00001056  4E4F                      35              TRAP #15
+00001058                            36              ; i = 1
+00001058  33FC 0001 000012C6        37              MOVE.W #1, i
+00001060                            38  e0:
+00001060                            39              ; t3 = i <= 10
+00001060  33FC 0000 00001326        40              MOVE.W #0, t3
+00001068  3039 000012C6             41              MOVE.W i, D0
+0000106E  B07C 000A                 42              CMP.W #10, D0
+00001072  6F00 0008                 43              BLE t3_true
+00001076  4EF9 00001084             44              JMP t3_false
+0000107C                            45  t3_true:
+0000107C  33FC 0001 00001326        46              MOVE.W #1, t3
+00001084                            47  t3_false:
+00001084                            48              ; if !(t3) goto e1
+00001084  3039 00001326             49              MOVE.W t3, D0
+0000108A  B07C 0000                 50              CMP.W #0, D0
+0000108E  6700 002A                 51              BEQ e1
+00001092                            52              ; output i
+00001092  3239 000012C6             53              MOVE.W i, D1
+00001098  4EB8 100C                 54              JSR PRINT_SIGNED
+0000109C                            55              ; output " "
+0000109C  43F9 00001320             56              LEA str2, A1
+000010A2  103C 000E                 57              MOVE.B #14, D0
+000010A6  4E4F                      58              TRAP #15
+000010A8                            59              ; i = i + 1
+000010A8  3039 000012C6             60              MOVE.W i, D0
+000010AE  5240                      61              ADD.W #1, D0
+000010B0  33C0 000012C6             62              MOVE.W D0, i
+000010B6                            63              ; goto e0
+000010B6  4EF8 1060                 64              JMP e0
+000010BA                            65  e1:
+000010BA                            66              ; output "\n"
+000010BA  43F9 00001276             67              LEA NEWLINE, A1
+000010C0  103C 000E                 68              MOVE.B #14, D0
+000010C4  4E4F                      69              TRAP #15
+000010C6                            70              ; output "Numeros pares del 1 al 10:"
+000010C6  43F9 000012CE             71              LEA str3, A1
+000010CC  103C 000E                 72              MOVE.B #14, D0
+000010D0  4E4F                      73              TRAP #15
+000010D2                            74              ; output "\n"
+000010D2  43F9 00001276             75              LEA NEWLINE, A1
+000010D8  103C 000E                 76              MOVE.B #14, D0
+000010DC  4E4F                      77              TRAP #15
+000010DE                            78              ; j = 1
+000010DE  33FC 0001 000012C8        79              MOVE.W #1, j
+000010E6                            80  e2:
+000010E6                            81              ; t8 = j <= 10
+000010E6  33FC 0000 0000129C        82              MOVE.W #0, t8
+000010EE  3039 000012C8             83              MOVE.W j, D0
+000010F4  B07C 000A                 84              CMP.W #10, D0
+000010F8  6F00 0008                 85              BLE t8_true
+000010FC  4EF9 0000110A             86              JMP t8_false
+00001102                            87  t8_true:
+00001102  33FC 0001 0000129C        88              MOVE.W #1, t8
+0000110A                            89  t8_false:
+0000110A                            90              ; if !(t8) goto e3
+0000110A  3039 0000129C             91              MOVE.W t8, D0
+00001110  B07C 0000                 92              CMP.W #0, D0
+00001114  6700 0080                 93              BEQ e3
+00001118                            94              ; t11 = j % 2
+00001118  3039 000012C8             95              MOVE.W j, D0
+0000111E  323C 0002                 96              MOVE.W #2, D1
+00001122  4A41                      97              TST.W D1
+00001124  6700 0202                 98              BEQ DIV_ZERO_ERROR
+00001128  48C0                      99              EXT.L D0
+0000112A  2400                     100              MOVE.L D0, D2
+0000112C  81C1                     101              DIVS D1, D0
+0000112E  4283                     102              CLR.L D3
+00001130  3600                     103              MOVE.W D0, D3
+00001132  C7C1                     104              MULS D1, D3
+00001134  9483                     105              SUB.L D3, D2
+00001136  33C2 000012EC            106              MOVE.W D2, t11
+0000113C                           107              ; t13 = t11 == 0
+0000113C  33FC 0000 00001322       108              MOVE.W #0, t13
+00001144  3039 000012EC            109              MOVE.W t11, D0
+0000114A  B07C 0000                110              CMP.W #0, D0
+0000114E  6700 0008                111              BEQ t13_true
+00001152  4EF9 00001160            112              JMP t13_false
+00001158                           113  t13_true:
+00001158  33FC 0001 00001322       114              MOVE.W #1, t13
+00001160                           115  t13_false:
+00001160                           116              ; if !(t13) goto e4
+00001160  3039 00001322            117              MOVE.W t13, D0
+00001166  B07C 0000                118              CMP.W #0, D0
+0000116A  6700 0018                119              BEQ e4
+0000116E                           120              ; output j
+0000116E  3239 000012C8            121              MOVE.W j, D1
+00001174  4EB8 100C                122              JSR PRINT_SIGNED
+00001178                           123              ; output " "
+00001178  43F9 00001320            124              LEA str2, A1
+0000117E  103C 000E                125              MOVE.B #14, D0
+00001182  4E4F                     126              TRAP #15
+00001184                           127  e4:
+00001184                           128              ; j = j + 1
+00001184  3039 000012C8            129              MOVE.W j, D0
+0000118A  5240                     130              ADD.W #1, D0
+0000118C  33C0 000012C8            131              MOVE.W D0, j
+00001192                           132              ; goto e2
+00001192  4EF8 10E6                133              JMP e2
+00001196                           134  e3:
+00001196                           135              ; output "\n"
+00001196  43F9 00001276            136              LEA NEWLINE, A1
+0000119C  103C 000E                137              MOVE.B #14, D0
+000011A0  4E4F                     138              TRAP #15
+000011A2                           139              ; output "Numeros impares del 1 al 10:"
+000011A2  43F9 000012EE            140              LEA str4, A1
+000011A8  103C 000E                141              MOVE.B #14, D0
+000011AC  4E4F                     142              TRAP #15
+000011AE                           143              ; output "\n"
+000011AE  43F9 00001276            144              LEA NEWLINE, A1
+000011B4  103C 000E                145              MOVE.B #14, D0
+000011B8  4E4F                     146              TRAP #15
+000011BA                           147              ; k = 1
+000011BA  33FC 0001 000012CA       148              MOVE.W #1, k
+000011C2                           149  e6:
+000011C2                           150              ; t18 = k <= 10
+000011C2  33FC 0000 00001324       151              MOVE.W #0, t18
+000011CA  3039 000012CA            152              MOVE.W k, D0
+000011D0  B07C 000A                153              CMP.W #10, D0
+000011D4  6F00 0008                154              BLE t18_true
+000011D8  4EF9 000011E6            155              JMP t18_false
+000011DE                           156  t18_true:
+000011DE  33FC 0001 00001324       157              MOVE.W #1, t18
+000011E6                           158  t18_false:
+000011E6                           159              ; if !(t18) goto e7
+000011E6  3039 00001324            160              MOVE.W t18, D0
+000011EC  B07C 0000                161              CMP.W #0, D0
+000011F0  6700 0080                162              BEQ e7
+000011F4                           163              ; t21 = k % 2
+000011F4  3039 000012CA            164              MOVE.W k, D0
+000011FA  323C 0002                165              MOVE.W #2, D1
+000011FE  4A41                     166              TST.W D1
+00001200  6700 0126                167              BEQ DIV_ZERO_ERROR
+00001204  48C0                     168              EXT.L D0
+00001206  2400                     169              MOVE.L D0, D2
+00001208  81C1                     170              DIVS D1, D0
+0000120A  4283                     171              CLR.L D3
+0000120C  3600                     172              MOVE.W D0, D3
+0000120E  C7C1                     173              MULS D1, D3
+00001210  9483                     174              SUB.L D3, D2
+00001212  33C2 000012CC            175              MOVE.W D2, t21
+00001218                           176              ; t23 = t21 != 0
+00001218  33FC 0000 000012EA       177              MOVE.W #0, t23
+00001220  3039 000012CC            178              MOVE.W t21, D0
+00001226  B07C 0000                179              CMP.W #0, D0
+0000122A  6600 0008                180              BNE t23_true
+0000122E  4EF9 0000123C            181              JMP t23_false
+00001234                           182  t23_true:
+00001234  33FC 0001 000012EA       183              MOVE.W #1, t23
+0000123C                           184  t23_false:
+0000123C                           185              ; if !(t23) goto e8
+0000123C  3039 000012EA            186              MOVE.W t23, D0
+00001242  B07C 0000                187              CMP.W #0, D0
+00001246  6700 0018                188              BEQ e8
+0000124A                           189              ; output k
+0000124A  3239 000012CA            190              MOVE.W k, D1
+00001250  4EB8 100C                191              JSR PRINT_SIGNED
+00001254                           192              ; output " "
+00001254  43F9 00001320            193              LEA str2, A1
+0000125A  103C 000E                194              MOVE.B #14, D0
+0000125E  4E4F                     195              TRAP #15
+00001260                           196  e8:
+00001260                           197              ; k = k + 1
+00001260  3039 000012CA            198              MOVE.W k, D0
+00001266  5240                     199              ADD.W #1, D0
+00001268  33C0 000012CA            200              MOVE.W D0, k
+0000126E                           201              ; goto e6
+0000126E  4EF8 11C2                202              JMP e6
+00001272                           203  e7:
+00001272  6000 00C2                204              BRA HALT
+00001276                           205  
+00001276                           206              ; DATA SECTION
+00001276= 0D 0A 00                 207  NEWLINE:    DC.B 13,10,0
+00001279= 2D 00                    208  MINUS_SIGN: DC.B '-',0
+0000127B= 45 52 52 4F 52 3A ...    209  DIV_ZERO_MSG:       DC.B 'ERROR: Division entre cero',13,10,0
+00001298= 00008000                 210  HEAP_PTR:   DC.L $8000
+0000129C                           211  t8:         DS.W 1
+0000129E= 3D 3D 3D 20 43 41 ...    212  str0:       DC.B '=== CASO 2: BUCLES Y CONDICIONALES ===',0
+000012C6                           213  i:          DS.W 1
+000012C8                           214  j:          DS.W 1
+000012CA                           215  k:          DS.W 1
+000012CC                           216  t21:        DS.W 1
+000012CE= 4E 75 6D 65 72 6F ...    217  str3:       DC.B 'Numeros pares del 1 al 10:',0
+000012EA                           218  t23:        DS.W 1
+000012EC                           219  t11:        DS.W 1
+000012EE= 4E 75 6D 65 72 6F ...    220  str4:       DC.B 'Numeros impares del 1 al 10:',0
+0000130B= 4E 75 6D 65 72 6F ...    221  str1:       DC.B 'Numeros del 1 al 10:',0
+00001320= 20 00                    222  str2:       DC.B ' ',0
+00001322                           223  t13:        DS.W 1
+00001324                           224  t18:        DS.W 1
+00001326                           225  t3:         DS.W 1
+00001328                           226  
+00001328                           227  ; ===== MANEJADOR DE ERROR DE DIVISION ENTRE CERO =====
+00001328                           228  DIV_ZERO_ERROR:
+00001328  43F8 127B                229              LEA DIV_ZERO_MSG, A1
+0000132C  103C 000E                230              MOVE.B #14, D0
+00001330  4E4F                     231              TRAP #15
+00001332  6000 0002                232              BRA HALT
+00001336                           233  
+00001336                           234  HALT:
+00001336  FFFF FFFF                235              SIMHALT
+0000133A                           236  
+00005000                           237              ORG $5000
+00005000                           238  STACKPTR:
+00005000                           239              END START
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+DIV_ZERO_ERROR      1328
+DIV_ZERO_MSG        127B
+E0                  1060
+E1                  10BA
+E2                  10E6
+E3                  1196
+E4                  1184
+E6                  11C2
+E7                  1272
+E8                  1260
+HALT                1336
+HEAP_PTR            1298
+I                   12C6
+J                   12C8
+K                   12CA
+MAIN                1028
+MINUS_SIGN          1279
+NEWLINE             1276
+PRINT_SIGNED        100C
+PRINT_UNSIGNED      1020
+STACKPTR            5000
+START               1000
+STR0                129E
+STR1                130B
+STR2                1320
+STR3                12CE
+STR4                12EE
+T11                 12EC
+T13                 1322
+T13_FALSE           1160
+T13_TRUE            1158
+T18                 1324
+T18_FALSE           11E6
+T18_TRUE            11DE
+T21                 12CC
+T23                 12EA
+T23_FALSE           123C
+T23_TRUE            1234
+T3                  1326
+T3_FALSE            1084
+T3_TRUE             107C
+T8                  129C
+T8_FALSE            110A
+T8_TRUE             1102

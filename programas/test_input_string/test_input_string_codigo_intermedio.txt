@@ -1,0 +1,15 @@
+===== CÓDIGO INTERMEDIO =====
+
+main:
+output "=== TEST: Lectura de frase ==="
+output "\n"
+output "Introduce una frase (ej: g):"
+output "\n"
+input c
+output "Has introducido: "
+t0 = c
+output t0
+output "\n"
+output "Test completado"
+output "\n"
+end:

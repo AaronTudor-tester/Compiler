@@ -1,0 +1,6 @@
+===== TABLA DE SIMBOLOS =====
+
+  CONSTANTE: Simbolo{nombre='PI', tipo=INT, valor=314, linea=3, inicializada=true}
+  CONSTANTE: Simbolo{nombre='PI2', tipo=INT, valor=null, linea=4, inicializada=true}
+  VARIABLE: Simbolo{nombre='x', tipo=INT, valor=10, linea=5, inicializada=true}
+  CONSTANTE: Simbolo{nombre='AA', tipo=FLOAT, valor=null, linea=7, inicializada=true}

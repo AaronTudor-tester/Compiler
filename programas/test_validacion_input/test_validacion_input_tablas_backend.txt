@@ -1,0 +1,19 @@
+===== TABLAS DE VARIABLES Y PROCEDIMIENTOS =====
+
+--- TABLA DE VARIABLES ---
+
+Variables del programa:
+  suma
+  miNumero
+  otroNumero
+
+Variables temporales generadas:
+  t4
+  t0
+  t1
+  t2
+  t3
+
+--- TABLA DE PROCEDIMIENTOS ---
+
+(ningun procedimiento definido)

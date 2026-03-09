@@ -1,0 +1,12 @@
+===== ERRORES DETECTADOS EN LA COMPILACIÓN =====
+
+Archivo: .\programas\caso_de_prueba_error_2\caso_de_prueba_error_2.txt
+Fecha: 2026-02-11T21:12:31.381625500
+
+5 error(es) encontrado(s):
+
+1. [Línea 15, Columna 1] ERROR SEMANTICO: La función 'calcular' es de tipo VOID y no puede contener sentencias 'devuelve'
+2. [Línea 17, Columna 47] ERROR SEMANTICO: Función no declarada: funcionInexistente
+3. [Línea 20, Columna 5] ERROR SEMANTICO: Tipos incompatibles en declaración: variable resultado1 es INT pero la expresión es ERROR
+4. [Línea 20, Columna 49] ERROR SEMANTICO: Número incorrecto de argumentos en la llamada a la funcion 'funcionNoExiste'
+5. [Línea 23, Columna 17] ERROR SINTACTICO: No se puede reasignar la constante: LIMITE

@@ -1,0 +1,15 @@
+// TEST: Entrada por teclado de números decimales
+// Objetivo: Verificar que se puedan leer decimales del teclado
+
+principal {
+    escribeN "=== TEST: Lectura de decimales ===".
+    
+    escribeN "Introduce un numero decimal (ej: 12.34):".
+    decimal numero1.
+    lee numero1.
+    
+    escribe "Has introducido: ".
+    escribeN numero1.
+    
+    escribeN "Test completado".
+}

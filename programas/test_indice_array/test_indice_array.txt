@@ -1,0 +1,16 @@
+// Test para probar los indices de los arrays. Si se pone un número mayor que 4 será 
+// out of bounds en tiempo de ejecución.
+
+principal {
+    // Declaramos un array de 5 números (inicializado)
+    lista de numero vector es [1, 2, 3, 4, 5].
+
+    escribeN "Introduce indice (0-4):".
+    numero i.
+    lee i.
+
+    // Acceso con índice leído en tiempo de ejecución
+    numero x es vector posicion (i).
+
+    escribeN x.
+}

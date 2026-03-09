@@ -1,0 +1,159 @@
+===== OPTIMIZACIONES REALIZADAS =====
+
+Archivo: .\programas\pruebaprograma\pruebaprograma.txt
+Fecha: 2026-02-11T20:51:51.875091300
+
+--- ESTADÍSTICAS DE CÓDIGO INTERMEDIO ---
+
+Instrucciones originales: 67
+Instrucciones optimizadas: 67
+Instrucciones eliminadas: 0
+Reducción: 0,00%
+
+--- ESTADÍSTICAS DE ENSAMBLADOR ---
+
+Archivo original (.x68): 6082 bytes
+Archivo optimizado (_optimizado.x68): 3797 bytes
+Bytes reducidos: 2285 bytes
+Reducción en ensamblador: 37,57%
+
+--- CÓDIGO OPTIMIZADO ---
+
+contador = 0
+suma:
+; param a : INT
+; param b : INT
+t3 = a + b
+resultado = t3
+return resultado
+prueba:
+; param a : INT
+; param b : INT
+; param c : INT
+t7 = a < 20
+if !(t7) goto e0
+output a
+t11 = a + 2
+param_s t11  
+param_s b  
+param_s c  
+t12 = call prueba
+return t12
+e0:
+output "fin"
+return 555
+main:
+t15 = NEG 15
+x = t15
+t16 = NEG x
+z = t16
+y = 20
+t21 = z - 10
+t22 = 5 + t21
+llueve = true
+t24 = ! llueve
+t28 = NEG 21
+param_s x  
+param_s y  
+t29 = call suma
+total = t29
+param_s 7  
+param_s 4  
+param_s 2  
+param_s 3  
+output total
+output "\n"
+t41 = total > 25
+if !(t41) goto e2
+output "El numero es grande"
+output "\n"
+goto e3
+e2:
+output "El numero es pequeno"
+output "\n"
+e3:
+e4:
+t44 = contador < 3
+if !(t44) goto e5
+contador = contador + 1
+output "Contando..."
+output "\n"
+t47 = contador > 2
+if !(t47) goto e4
+t50 = contador == 2
+goto e4
+e5:
+param_s 1  
+param_s 2  
+param_s 3  
+
+--- CAMBIOS REALIZADOS POR EL OPTIMIZADOR ---
+
+Asignación diferida:
+  - Línea 0: t0 eliminado y sustituido por 0
+  - Línea 4: t1 eliminado y sustituido por a
+  - Línea 4: t2 eliminado y sustituido por b
+  - Línea 6: t4 eliminado y sustituido por resultado
+  - Línea 11: t5 eliminado y sustituido por a
+  - Línea 11: t6 eliminado y sustituido por 20
+  - Línea 13: t8 eliminado y sustituido por a
+  - Línea 14: t9 eliminado y sustituido por a
+  - Línea 14: t10 eliminado y sustituido por 2
+  - Línea 24: t13 eliminado y sustituido por 555
+  - Línea 26: t14 eliminado y sustituido por 15
+  - Línea 30: t17 eliminado y sustituido por 20
+  - Línea 31: t18 eliminado y sustituido por 5
+  - Línea 31: t19 eliminado y sustituido por z
+  - Línea 31: t20 eliminado y sustituido por 10
+  - Línea 34: t23 eliminado y sustituido por true
+  - Línea 37: t25 eliminado y sustituido por 5
+  - Línea 37: t26 eliminado y sustituido por 16
+  - Línea 44: t30 eliminado y sustituido por 7
+  - Línea 44: t31 eliminado y sustituido por 3
+  - Línea 44: t32 eliminado y sustituido por 1
+  - Línea 49: t35 eliminado y sustituido por 2
+  - Línea 49: t36 eliminado y sustituido por 3
+  - Línea 52: t38 eliminado y sustituido por total
+  - Línea 54: t39 eliminado y sustituido por total
+  - Línea 54: t40 eliminado y sustituido por 25
+  - Línea 64: t42 eliminado y sustituido por contador
+  - Línea 64: t43 eliminado y sustituido por 3
+  - Línea 69: t45 eliminado y sustituido por contador
+  - Línea 69: t46 eliminado y sustituido por 2
+  - Línea 71: t48 eliminado y sustituido por contador
+  - Línea 71: t49 eliminado y sustituido por 2
+  - Línea 73: t51 eliminado y sustituido por contador
+  - Línea 82: t52 eliminado y sustituido por 1
+  - Línea 82: t53 eliminado y sustituido por 2
+  - Línea 82: t54 eliminado y sustituido por 3
+  - Línea 33: t27 eliminado y sustituido por 21
+  - Línea 38: t33 eliminado y sustituido por 4
+Ramificaciones adyacentes:
+  - Línea 20: Salto innecesario a e1 eliminado
+  - Línea 69: Salto a e6 reemplazado por salto directo a e4
+  - Línea 71: Salto a e8 reemplazado por salto directo a e7
+  - Línea 73: Salto innecesario a e9 eliminado
+  - Línea 72: Salto a e9 reemplazado por salto directo a e7
+  - Línea 75: Salto innecesario a e7 eliminado
+  - Línea 74: Salto a e7 reemplazado por salto directo a e4
+  - Línea 63: Salto innecesario a e7 eliminado
+  - Línea 62: Salto a e7 reemplazado por salto directo a e4
+Eliminación de etiquetas muertas:
+  - Línea 21: Se ha eliminado la etiqueta e1
+  - Línea 73: Se ha eliminado la etiqueta e8
+  - Línea 74: Se ha eliminado la etiqueta e9
+  - Línea 75: Se ha eliminado la etiqueta e6
+  - Línea 83: Se ha eliminado la etiqueta end
+  - Línea 63: Se ha eliminado la etiqueta e7
+Eliminación de código muerto:
+  - Línea 31: Se eliminó l
+  - Línea 34: Se eliminó noLlueve
+  - Línea 37: Se eliminó l
+  - Línea 46: Se eliminó total2
+  - Línea 49: Se eliminó t37
+  - Línea 71: Se eliminó pruebaBlques
+  - Línea 78: Se eliminó t55
+  - Línea 40: Se eliminó t34
+Cálculo de constantes:
+  - Línea 33: t27 = 5 + 16 -> t27 = 21
+  - Línea 39: t33 = 3 + 1 -> t33 = 4

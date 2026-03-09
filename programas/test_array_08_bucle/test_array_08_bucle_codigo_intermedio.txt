@@ -1,0 +1,60 @@
+===== CODIGO INTERMEDIO (3-ADDRESS CODE) =====
+
+main:
+output "=== TEST: Array con bucle for ==="
+output "\n"
+t0 = 5
+t1 = 4
+t2 = t0 * t1
+
+t3 = 10
+t4 = 0
+t5 = 4
+t6 = t4 * t5
+vector[t6] = t3
+t7 = 20
+t8 = 1
+t9 = 4
+t10 = t8 * t9
+vector[t10] = t7
+t11 = 30
+t12 = 2
+t13 = 4
+t14 = t12 * t13
+vector[t14] = t11
+t15 = 40
+t16 = 3
+t17 = 4
+t18 = t16 * t17
+vector[t18] = t15
+t19 = 50
+t20 = 4
+t21 = 4
+t22 = t20 * t21
+vector[t22] = t19
+output "Recorriendo array:"
+output "\n"
+t23 = 0
+i = t23
+e0:
+t24 = i
+t25 = 5
+t26 = t24 < t25
+if !(t26) goto e1
+t27 = i
+t28 = 4
+t29 = t27 * t28
+t30 = vector[t29]
+valor = t30
+t31 = valor
+output t31
+output "\n"
+t32 = i
+t33 = 1
+t34 = t32 + t33
+i = t34
+goto e0
+e1:
+output "Test completado"
+output "\n"
+end:

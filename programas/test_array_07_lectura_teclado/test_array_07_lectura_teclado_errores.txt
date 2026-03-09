@@ -1,0 +1,8 @@
+===== RESULTADO DE LA COMPILACION =====
+
+Archivo: programas\test_array_07_lectura_teclado\test_array_07_lectura_teclado.txt
+Fecha: 2026-02-03T12:24:48.671593300
+
+? No se detectaron errores.
+
+Compilacion exitosa.

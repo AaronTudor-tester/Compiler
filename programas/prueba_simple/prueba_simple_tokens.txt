@@ -1,0 +1,18 @@
+===== TOKENS GENERADOS =====
+
+Token MAIN          texto='-'  (linea 1, col 1)
+Token LBRACK        texto='-'  (linea 1, col 11)
+Token OUTPUTN       texto='-'  (linea 2, col 5)
+Token NUMERO        texto='10'  (linea 2, col 14)
+Token PUNTO         texto='-'  (linea 2, col 16)
+Token OUTPUTN       texto='-'  (linea 3, col 5)
+Token CADENA        texto='"Hola"'  (linea 3, col 14)
+Token PUNTO         texto='-'  (linea 3, col 20)
+Token OUTPUTN       texto='-'  (linea 4, col 5)
+Token NUMERO        texto='20'  (linea 4, col 14)
+Token PUNTO         texto='-'  (linea 4, col 16)
+Token OUTPUTN       texto='-'  (linea 5, col 5)
+Token CADENA        texto='"Mundo"'  (linea 5, col 14)
+Token PUNTO         texto='-'  (linea 5, col 21)
+Token RBRACK        texto='-'  (linea 6, col 1)
+Token EOF           texto='-'  (linea 7, col 1)

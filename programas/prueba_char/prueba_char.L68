@@ -1,0 +1,203 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 11/02/2026 16:38:02
+
+00001000                             1              ORG $1000
+00001000                             2  START:
+00001000  4FF9 00005000              3              LEA STACKPTR, A7
+00001006  4EF9 00001028              4              JMP main
+0000100C                             5  
+0000100C                             6  ; ===== RUTINAS AUXILIARES =====
+0000100C                             7  PRINT_SIGNED:
+0000100C  4A41                       8              TST.W D1
+0000100E  6A00 0010                  9              BPL PRINT_UNSIGNED
+00001012  103C 000E                 10              MOVE.B #14, D0
+00001016  43F9 000011A7             11              LEA MINUS_SIGN, A1
+0000101C  4E4F                      12              TRAP #15
+0000101E  4441                      13              NEG.W D1
+00001020                            14  PRINT_UNSIGNED:
+00001020  103C 0003                 15              MOVE.B #3, D0
+00001024  4E4F                      16              TRAP #15
+00001026  4E75                      17              RTS
+00001028                            18  
+00001028                            19  main:
+00001028                            20              ; t0 = 122
+00001028  13FC 007A 000011E0        21              MOVE.B #122, t0
+00001030                            22              ; x = t0
+00001030  13F9 000011E0 000011DE    23              MOVE.B t0, x
+0000103A                            24              ; t1 = 55
+0000103A  13FC 0037 000011E1        25              MOVE.B #55, t1
+00001042                            26              ; y = t1
+00001042  13F9 000011E1 000011DF    27              MOVE.B t1, y
+0000104C                            28              ; t2 = x
+0000104C  13F9 000011DE 000011E2    29              MOVE.B x, t2
+00001056                            30              ; output t2
+00001056  1239 000011E2             31              MOVE.B t2, D1
+0000105C  103C 0006                 32              MOVE.B #6, D0
+00001060  4E4F                      33              TRAP #15
+00001062                            34              ; output "\n"
+00001062  43F9 000011A4             35              LEA NEWLINE, A1
+00001068  103C 000E                 36              MOVE.B #14, D0
+0000106C  4E4F                      37              TRAP #15
+0000106E                            38              ; t3 = y
+0000106E  13F9 000011DF 000011E3    39              MOVE.B y, t3
+00001078                            40              ; output t3
+00001078  1239 000011E3             41              MOVE.B t3, D1
+0000107E  103C 0006                 42              MOVE.B #6, D0
+00001082  4E4F                      43              TRAP #15
+00001084                            44              ; output "\n"
+00001084  43F9 000011A4             45              LEA NEWLINE, A1
+0000108A  103C 000E                 46              MOVE.B #14, D0
+0000108E  4E4F                      47              TRAP #15
+00001090                            48              ; t4 = 120
+00001090  13FC 0078 000011AE        49              MOVE.B #120, t4
+00001098                            50              ; a = t4
+00001098  13F9 000011AE 000011B4    51              MOVE.B t4, a
+000010A2                            52              ; t5 = 121
+000010A2  13FC 0079 000011B5        53              MOVE.B #121, t5
+000010AA                            54              ; b = t5
+000010AA  13F9 000011B5 000011BA    55              MOVE.B t5, b
+000010B4                            56              ; t6 = 53
+000010B4  13FC 0035 000011BB        57              MOVE.B #53, t6
+000010BC                            58              ; c = t6
+000010BC  13F9 000011BB 000011BC    59              MOVE.B t6, c
+000010C6                            60              ; t7 = a
+000010C6  13F9 000011B4 000011BD    61              MOVE.B a, t7
+000010D0                            62              ; output t7
+000010D0  1239 000011BD             63              MOVE.B t7, D1
+000010D6  103C 0006                 64              MOVE.B #6, D0
+000010DA  4E4F                      65              TRAP #15
+000010DC                            66              ; output "\n"
+000010DC  43F9 000011A4             67              LEA NEWLINE, A1
+000010E2  103C 000E                 68              MOVE.B #14, D0
+000010E6  4E4F                      69              TRAP #15
+000010E8                            70              ; t8 = b
+000010E8  13F9 000011BA 000011BE    71              MOVE.B b, t8
+000010F2                            72              ; output t8
+000010F2  1239 000011BE             73              MOVE.B t8, D1
+000010F8  103C 0006                 74              MOVE.B #6, D0
+000010FC  4E4F                      75              TRAP #15
+000010FE                            76              ; output "\n"
+000010FE  43F9 000011A4             77              LEA NEWLINE, A1
+00001104  103C 000E                 78              MOVE.B #14, D0
+00001108  4E4F                      79              TRAP #15
+0000110A                            80              ; t9 = c
+0000110A  13F9 000011BC 000011BF    81              MOVE.B c, t9
+00001114                            82              ; output t9
+00001114  1239 000011BF             83              MOVE.B t9, D1
+0000111A  103C 0006                 84              MOVE.B #6, D0
+0000111E  4E4F                      85              TRAP #15
+00001120                            86              ; output "\n"
+00001120  43F9 000011A4             87              LEA NEWLINE, A1
+00001126  103C 000E                 88              MOVE.B #14, D0
+0000112A  4E4F                      89              TRAP #15
+0000112C                            90              ; output "asd"
+0000112C  43F9 000011C0             91              LEA str0, A1
+00001132  103C 000E                 92              MOVE.B #14, D0
+00001136  4E4F                      93              TRAP #15
+00001138                            94              ; output "\n"
+00001138  43F9 000011A4             95              LEA NEWLINE, A1
+0000113E  103C 000E                 96              MOVE.B #14, D0
+00001142  4E4F                      97              TRAP #15
+00001144                            98              ; aa = "aasd asd"
+00001144  41F9 000011CC             99              LEA str1, A0
+0000114A  23C8 000011B0            100              MOVE.L A0, aa
+00001150                           101              ; ab = "ggg wwww"
+00001150  41F9 000011D5            102              LEA str2, A0
+00001156  23C8 000011B6            103              MOVE.L A0, ab
+0000115C                           104              ; t10 = aa
+0000115C  23F9 000011B0 000011C4   105              MOVE.L aa, t10
+00001166                           106              ; output t10
+00001166  2279 000011C4            107              MOVEA.L t10, A1
+0000116C  103C 000E                108              MOVE.B #14, D0
+00001170  4E4F                     109              TRAP #15
+00001172                           110              ; output "\n"
+00001172  43F9 000011A4            111              LEA NEWLINE, A1
+00001178  103C 000E                112              MOVE.B #14, D0
+0000117C  4E4F                     113              TRAP #15
+0000117E                           114              ; t11 = ab
+0000117E  23F9 000011B6 000011C8   115              MOVE.L ab, t11
+00001188                           116              ; output t11
+00001188  2279 000011C8            117              MOVEA.L t11, A1
+0000118E  103C 000E                118              MOVE.B #14, D0
+00001192  4E4F                     119              TRAP #15
+00001194                           120              ; output "\n"
+00001194  43F9 000011A4            121              LEA NEWLINE, A1
+0000119A  103C 000E                122              MOVE.B #14, D0
+0000119E  4E4F                     123              TRAP #15
+000011A0                           124  end:
+000011A0  6000 0042                125              BRA HALT
+000011A4                           126  
+000011A4                           127              ; DATA SECTION
+000011A4= 0D 0A 00                 128  NEWLINE:    DC.B 13,10,0
+000011A7= 2D 00                    129  MINUS_SIGN: DC.B '-',0
+000011AA= 00008000                 130  HEAP_PTR:   DC.L $8000
+000011AE                           131  t4:         DS.B 1
+000011B0                           132  aa:         DS.L 1
+000011B4                           133  a:          DS.B 1
+000011B5                           134  t5:         DS.B 1
+000011B6                           135  ab:         DS.L 1
+000011BA                           136  b:          DS.B 1
+000011BB                           137  t6:         DS.B 1
+000011BC                           138  c:          DS.B 1
+000011BD                           139  t7:         DS.B 1
+000011BE                           140  t8:         DS.B 1
+000011BF                           141  t9:         DS.B 1
+000011C0= 61 73 64 00              142  str0:       DC.B 'asd',0
+000011C4                           143  t10:        DS.L 1
+000011C8                           144  t11:        DS.L 1
+000011CC= 61 61 73 64 20 61 ...    145  str1:       DC.B 'aasd asd',0
+000011D5= 67 67 67 20 77 77 ...    146  str2:       DC.B 'ggg wwww',0
+000011DE                           147  x:          DS.B 1
+000011DF                           148  y:          DS.B 1
+000011E0                           149  t0:         DS.B 1
+000011E1                           150  t1:         DS.B 1
+000011E2                           151  t2:         DS.B 1
+000011E3                           152  t3:         DS.B 1
+000011E4                           153  
+000011E4                           154  HALT:
+000011E4  FFFF FFFF                155              SIMHALT
+000011E8                           156  
+00005000                           157              ORG $5000
+00005000                           158  STACKPTR:
+00005000                           159              END START
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+A                   11B4
+AA                  11B0
+AB                  11B6
+B                   11BA
+C                   11BC
+END                 11A0
+HALT                11E4
+HEAP_PTR            11AA
+MAIN                1028
+MINUS_SIGN          11A7
+NEWLINE             11A4
+PRINT_SIGNED        100C
+PRINT_UNSIGNED      1020
+STACKPTR            5000
+START               1000
+STR0                11C0
+STR1                11CC
+STR2                11D5
+T0                  11E0
+T1                  11E1
+T10                 11C4
+T11                 11C8
+T2                  11E2
+T3                  11E3
+T4                  11AE
+T5                  11B5
+T6                  11BB
+T7                  11BD
+T8                  11BE
+T9                  11BF
+X                   11DE
+Y                   11DF

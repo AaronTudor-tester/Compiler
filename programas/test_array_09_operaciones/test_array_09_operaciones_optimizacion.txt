@@ -1,0 +1,99 @@
+===== OPTIMIZACIONES REALIZADAS =====
+
+Archivo: programas\test_array_09_operaciones\test_array_09_operaciones.txt
+Fecha: 2026-02-04T12:15:56.520176300
+
+--- ESTADISTICAS DE CODIGO INTERMEDIO ---
+
+Instrucciones originales: 24
+Instrucciones optimizadas: 23
+Instrucciones eliminadas: 1
+Reduccion: 4,17%
+
+--- ESTADISTICAS DE ENSAMBLADOR ---
+
+Archivo original (.x68): 8999 bytes
+Archivo optimizado (_optimizado.x68): 6861 bytes
+Bytes reducidos: 2138 bytes
+Reduccion en ensamblador: 23,76%
+
+--- CODIGO OPTIMIZADO ---
+
+main:
+output "=== TEST: Operaciones con array ==="
+output "\n"
+numeros[0] = 10
+numeros[4] = 20
+numeros[8] = 30
+a = numeros[0]
+b = numeros[4]
+t29 = a + b
+suma = t29
+output "10 + 20 = "
+output "\n"
+output suma
+output "\n"
+c = numeros[8]
+t39 = b * c
+producto = t39
+output "20 * 30 = "
+output "\n"
+output producto
+output "\n"
+output "Test completado"
+output "\n"
+
+--- CAMBIOS REALIZADOS POR EL OPTIMIZADOR ---
+
+Fusión Lectura Array:
+  - Línea 27: Se eliminó temporal t20 asignando directo a a
+  - Línea 33: Se eliminó temporal t26 asignando directo a b
+  - Línea 48: Se eliminó temporal t36 asignando directo a c
+Asignación diferida:
+  - Línea 3: t0 eliminado y sustituido por 3
+  - Línea 3: t1 eliminado y sustituido por 4
+  - Línea 5: t3 eliminado y sustituido por 10
+  - Línea 5: t4 eliminado y sustituido por 0
+  - Línea 5: t5 eliminado y sustituido por 4
+  - Línea 7: t7 eliminado y sustituido por 20
+  - Línea 7: t8 eliminado y sustituido por 1
+  - Línea 7: t9 eliminado y sustituido por 4
+  - Línea 9: t11 eliminado y sustituido por 30
+  - Línea 9: t12 eliminado y sustituido por 2
+  - Línea 9: t13 eliminado y sustituido por 4
+  - Línea 11: t15 eliminado y sustituido por 0
+  - Línea 11: t16 eliminado y sustituido por 4
+  - Línea 12: t19 eliminado y sustituido por 3
+  - Línea 14: t21 eliminado y sustituido por 1
+  - Línea 14: t22 eliminado y sustituido por 4
+  - Línea 15: t25 eliminado y sustituido por 3
+  - Línea 17: t27 eliminado y sustituido por a
+  - Línea 17: t28 eliminado y sustituido por b
+  - Línea 21: t30 eliminado y sustituido por suma
+  - Línea 23: t31 eliminado y sustituido por 2
+  - Línea 23: t32 eliminado y sustituido por 4
+  - Línea 24: t35 eliminado y sustituido por 3
+  - Línea 26: t37 eliminado y sustituido por b
+  - Línea 26: t38 eliminado y sustituido por c
+  - Línea 30: t40 eliminado y sustituido por producto
+  - Línea 3: t2 eliminado y sustituido por 12
+  - Línea 4: t6 eliminado y sustituido por 0
+  - Línea 5: t10 eliminado y sustituido por 4
+  - Línea 6: t14 eliminado y sustituido por 8
+  - Línea 7: t17 eliminado y sustituido por 0
+  - Línea 8: t23 eliminado y sustituido por 4
+  - Línea 15: t33 eliminado y sustituido por 8
+Eliminación de etiquetas muertas:
+  - Línea 34: Se ha eliminado la etiqueta end
+Eliminación de código muerto:
+  - Línea 12: Se eliminó t18
+  - Línea 15: Se eliminó t24
+  - Línea 24: Se eliminó t34
+Cálculo de constantes:
+  - Línea 3: t2 = 3 * 4 -> t2 = 12
+  - Línea 5: t6 = 0 * 4 -> t6 = 0
+  - Línea 7: t10 = 1 * 4 -> t10 = 4
+  - Línea 9: t14 = 2 * 4 -> t14 = 8
+  - Línea 11: t17 = 0 * 4 -> t17 = 0
+  - Línea 13: t23 = 1 * 4 -> t23 = 4
+  - Línea 21: t33 = 2 * 4 -> t33 = 8

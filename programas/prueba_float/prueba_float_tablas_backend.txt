@@ -1,0 +1,25 @@
+===== TABLAS DE VARIABLES Y PROCEDIMIENTOS =====
+
+--- TABLA DE VARIABLES ---
+
+Variables del programa:
+  a
+  b
+  x
+  y
+  z
+
+Variables temporales generadas:
+  t4
+  t5
+  t6
+  t0
+  t1
+  t2
+  t3
+
+--- TABLA DE PROCEDIMIENTOS ---
+
+  sumaDosDecimales
+    Tipo retorno: FLOAT
+    Parametros: 2

@@ -1,0 +1,16 @@
+// TEST ARRAY 02: Lectura de un elemento
+// Objetivo: Verificar que se puede leer un valor de una posición específica
+
+principal {
+    escribeN "=== TEST: Lectura de array ===".
+    
+    lista de numero vector es [10, 20, 30].
+    
+    escribe "Leyendo posicion 0:".
+    escribeN vector posicion (0).
+    
+    escribe "Leyendo posicion 1:".
+    escribeN vector posicion (1).
+    
+    escribeN "Test completado".
+}

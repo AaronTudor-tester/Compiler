@@ -1,0 +1,38 @@
+===== CÓDIGO INTERMEDIO =====
+
+main:
+output "Introduce un indice (0-2):"
+output "\n"
+input idx
+t0 = 3
+t1 = 4
+t2 = t0 * t1
+
+t3 = 10
+t4 = 0
+t5 = 4
+t6 = t4 * t5
+arr[t6] = t3
+t7 = 20
+t8 = 1
+t9 = 4
+t10 = t8 * t9
+arr[t10] = t7
+t11 = 30
+t12 = 2
+t13 = 4
+t14 = t12 * t13
+arr[t14] = t11
+output "Valor en arr["
+t15 = idx
+output t15
+output "]: "
+t16 = idx
+t17 = 4
+t18 = t16 * t17
+t20 = 3
+t19 = t20
+t21 = arr[t18]
+output t21
+output "\n"
+end:

@@ -1,0 +1,39 @@
+strict digraph {
+19	[label="Programa"];
+19->1
+19->6
+19->8
+19->11
+19->13
+19->16
+19->18
+1	[label="print"];
+1->0
+0	[label="=== TEST: Lectura de array ===",shape=plaintext];
+6	[label="array: vector[3](INT)"];
+6->2
+6->3
+6->4
+2	[label="10",shape=plaintext];
+3	[label="20",shape=plaintext];
+4	[label="30",shape=plaintext];
+8	[label="print"];
+8->7
+7	[label="Leyendo posicion 0:",shape=plaintext];
+11	[label="print"];
+11->10
+10	[label="Acceso Array\n(vector)"]
+10->9
+9	[label="0",shape=plaintext];
+13	[label="print"];
+13->12
+12	[label="Leyendo posicion 1:",shape=plaintext];
+16	[label="print"];
+16->15
+15	[label="Acceso Array\n(vector)"]
+15->14
+14	[label="1",shape=plaintext];
+18	[label="print"];
+18->17
+17	[label="Test completado",shape=plaintext];
+}

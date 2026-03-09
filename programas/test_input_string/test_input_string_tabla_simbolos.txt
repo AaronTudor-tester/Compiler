@@ -1,0 +1,3 @@
+===== TABLA DE SÍMBOLOS =====
+
+  VARIABLE: Simbolo{nombre='c', tipo=STRING, valor=null, linea=9, inicializada=true}

@@ -1,0 +1,101 @@
+	ORG $1000
+START:
+	LEA STACKPTR, A7
+	JMP main
+
+; ===== RUTINAS AUXILIARES =====
+
+ARRAY_INDEX_OUT_OF_BOUNDS:
+	; Indice fuera de rango - mostrar mensaje y detener la simulacion
+	LEA ERROR_INDEX_MSG, A1
+	MOVE.B #14, D0
+	TRAP #15
+	SIMHALT
+
+UNINITIALIZED_ACCESS:
+	; Acceso a posicion no inicializada - mostrar mensaje y detener la simulacion
+	LEA ERROR_UNINIT_MSG, A1
+	MOVE.B #14, D0
+	TRAP #15
+	SIMHALT
+
+ALLOC_SIZE_INVALID:
+	; Tamaño de array inválido en tiempo de ejecución - mostrar mensaje y detener
+	LEA ERROR_ALLOC_MSG, A1
+	MOVE.B #14, D0
+	TRAP #15
+	SIMHALT
+main:
+	; 
+	MOVE.L HEAP_PTR, D0
+	MOVE.L D0, arr
+	MOVE.L #16, D1
+	CMP.L #1, D1
+	BLT ALLOC_SIZE_INVALID
+	ADD.L #16, D0
+	MOVE.L D0, HEAP_PTR
+	TST.L D1
+	BEQ INIT_arr_LOOP_END
+	MOVE.L arr, A0
+INIT_arr_LOOP:
+	MOVE.L #-1, D4
+	MOVE.L D4, (A0)+
+	SUBQ.L #4, D1
+	BGT INIT_arr_LOOP
+INIT_arr_LOOP_END:
+	; arr[0] = 10
+	MOVEA.L arr, A0
+	MOVE.L #0, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.L #10, D1
+	MOVE.L D1, 0(A0, D0.L)
+	; arr[4] = 20
+	MOVEA.L arr, A0
+	MOVE.L #4, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.L #20, D1
+	MOVE.L D1, 0(A0, D0.L)
+	; arr[12] = 40
+	MOVEA.L arr, A0
+	MOVE.L #12, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.L #40, D1
+	MOVE.L D1, 0(A0, D0.L)
+	; t20 = 4
+	MOVE.W #4, t20
+	; t22 = arr[8]
+	MOVEA.L arr, A0
+	MOVE.L #8, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.W t20, D2
+	EXT.L D2
+	MOVE.W #4, D3
+	MULS D3, D2
+	CMP.L D2, D0
+	BGE ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.L 0(A0, D0.L), D1
+	CMP.L #-1, D1
+	BEQ UNINITIALIZED_ACCESS
+	MOVE.W D1, t22
+	BRA HALT
+
+	; DATA SECTION
+NEWLINE:	DC.B 13,10,0
+ERROR_INDEX_MSG:	DC.B 'ERROR: Indice fuera de rango',13,10,0
+ERROR_UNINIT_MSG:	DC.B 'ERROR: Acceso a posicion no inicializada',13,10,0
+ERROR_ALLOC_MSG:	DC.B 'ERROR: Tamaño de array inválido (<= 0)',13,10,0
+HEAP_PTR:	DC.L $8000
+arr:	DS.L 1
+t20:	DS.W 1
+t22:	DS.W 1
+
+HALT:
+	SIMHALT
+
+	ORG $5000
+STACKPTR:
+	END START

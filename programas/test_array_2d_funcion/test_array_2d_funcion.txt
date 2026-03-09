@@ -1,0 +1,39 @@
+// TEST: Pasar array 2D como parámetro a función
+// SINTAXIS: lista de lista de numero matriz[2][3] indica 2 filas, 3 columnas
+
+vacio sumarMatriz(lista de lista de numero matriz[2][3]) {
+    numero i es 0.
+    mientras i es menor que 2 {
+        numero j es 0.
+        mientras j es menor que 3 {
+            matriz posicion (i, j) es matriz posicion (i, j) mas 1.
+            modifica j mas 1.
+        }
+        modifica i mas 1.
+    }
+}
+
+principal {
+    lista de lista de numero mat es [[1, 2, 3], [4, 5, 6]].
+    
+    mat posicion (0, 0) es 1.
+    mat posicion (0, 1) es 2.
+    mat posicion (0, 2) es 3.
+    mat posicion (1, 0) es 4.
+    mat posicion (1, 1) es 5.
+    mat posicion (1, 2) es 6.
+    
+    escribeN "Matriz original:".
+    escribeN mat posicion (0, 0).
+    escribeN mat posicion (0, 2).
+    escribeN mat posicion (1, 0).
+    escribeN mat posicion (1, 2).
+    
+    sumarMatriz(mat).
+    
+    escribeN "Matriz tras sumar 1:".
+    escribeN mat posicion (0, 0).
+    escribeN mat posicion (0, 2).
+    escribeN mat posicion (1, 0).
+    escribeN mat posicion (1, 2).
+}

@@ -1,0 +1,28 @@
+// TEST ARRAY 14: Arrays de booleano
+// Objetivo: Verificar arrays de valores booleanos
+
+principal {
+    escribeN "=== TEST: Arrays de booleano ===".
+    
+    lista de pregunta flags de longitud 4.
+    
+    escribeN "Inicializando flags:".
+    flags posicion (0) es cierto.
+    flags posicion (1) es mentira.
+    flags posicion (2) es cierto.
+    flags posicion (3) es mentira.
+    
+    escribeN "Mostrando flags:".
+    pregunta f1 es flags posicion (0).
+    escribeN f1.
+    
+    pregunta f2 es flags posicion (1).
+    escribeN f2.
+    
+    escribeN "Modificando posicion 2:".
+    flags posicion (2) es mentira.
+    pregunta f3 es flags posicion (2).
+    escribeN f3.
+    
+    escribeN "Test completado".
+}

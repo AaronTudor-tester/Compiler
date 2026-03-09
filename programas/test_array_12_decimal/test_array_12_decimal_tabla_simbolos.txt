@@ -1,0 +1,7 @@
+===== TABLA DE SÍMBOLOS =====
+
+  VARIABLE: Simbolo{nombre='precios', tipo=FLOAT, valor=[10.5, 20.99, 15.75], linea=9, inicializada=true}
+  VARIABLE: Simbolo{nombre='p1', tipo=FLOAT, valor=null, linea=11, inicializada=true}
+  VARIABLE: Simbolo{nombre='p2', tipo=FLOAT, valor=null, linea=14, inicializada=true}
+  VARIABLE: Simbolo{nombre='p3', tipo=FLOAT, valor=null, linea=18, inicializada=true}
+  VARIABLE: Simbolo{nombre='total', tipo=FLOAT, valor=null, linea=19, inicializada=true}

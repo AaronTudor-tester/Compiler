@@ -1,0 +1,223 @@
+strict digraph {
+111	[label="Programa"];
+111->1
+111->3
+111->7
+111->11
+111->15
+111->19
+111->23
+111->27
+111->31
+111->33
+111->45
+111->96
+111->98
+111->110
+1	[label="=(n)"]
+1->0
+0	[label="7",shape=plaintext];
+3	[label="array: res[0](INT)"];
+7	[label="[] =\n(Asign. Array)"]
+7->5
+7->6
+5	[label="Acceso Array\n(res)"]
+5->4
+4	[label="0",shape=plaintext];
+6	[label="5",shape=plaintext];
+11	[label="[] =\n(Asign. Array)"]
+11->9
+11->10
+9	[label="Acceso Array\n(res)"]
+9->8
+8	[label="1",shape=plaintext];
+10	[label="2",shape=plaintext];
+15	[label="[] =\n(Asign. Array)"]
+15->13
+15->14
+13	[label="Acceso Array\n(res)"]
+13->12
+12	[label="2",shape=plaintext];
+14	[label="9",shape=plaintext];
+19	[label="[] =\n(Asign. Array)"]
+19->17
+19->18
+17	[label="Acceso Array\n(res)"]
+17->16
+16	[label="3",shape=plaintext];
+18	[label="1",shape=plaintext];
+23	[label="[] =\n(Asign. Array)"]
+23->21
+23->22
+21	[label="Acceso Array\n(res)"]
+21->20
+20	[label="4",shape=plaintext];
+22	[label="4",shape=plaintext];
+27	[label="[] =\n(Asign. Array)"]
+27->25
+27->26
+25	[label="Acceso Array\n(res)"]
+25->24
+24	[label="5",shape=plaintext];
+26	[label="7",shape=plaintext];
+31	[label="[] =\n(Asign. Array)"]
+31->29
+31->30
+29	[label="Acceso Array\n(res)"]
+29->28
+28	[label="6",shape=plaintext];
+30	[label="3",shape=plaintext];
+33	[label="print"];
+33->32
+32	[label="Lista original:",shape=plaintext];
+45	[label="for"];
+45->35
+45->38
+45->40
+45->44
+35	[label="=(i)"]
+35->34
+34	[label="0",shape=plaintext];
+38	[label="MENOR"];
+38->36
+38->37
+36	[label="i",shape=plaintext];
+37	[label="n",shape=plaintext];
+40	[label="INCR"];
+40->39
+39	[label="i",shape=plaintext];
+44	[label="Bloque"];
+44->43
+43	[label="print"];
+43->42
+42	[label="Acceso Array\n(res)"]
+42->41
+41	[label="i",shape=plaintext];
+96	[label="for"];
+96->47
+96->52
+96->54
+96->95
+47	[label="=(i)"]
+47->46
+46	[label="0",shape=plaintext];
+52	[label="MENOR"];
+52->48
+52->51
+48	[label="i",shape=plaintext];
+51	[label="RESTA"];
+51->49
+51->50
+49	[label="n",shape=plaintext];
+50	[label="1",shape=plaintext];
+54	[label="INCR"];
+54->53
+53	[label="i",shape=plaintext];
+95	[label="Bloque"];
+95->94
+94	[label="for"];
+94->56
+94->63
+94->65
+94->93
+56	[label="=(j)"]
+56->55
+55	[label="0",shape=plaintext];
+63	[label="MENOR"];
+63->57
+63->62
+57	[label="j",shape=plaintext];
+62	[label="RESTA"];
+62->60
+62->61
+60	[label="RESTA"];
+60->58
+60->59
+58	[label="n",shape=plaintext];
+59	[label="i",shape=plaintext];
+61	[label="1",shape=plaintext];
+65	[label="INCR"];
+65->64
+64	[label="j",shape=plaintext];
+93	[label="Bloque"];
+93->92
+92	[label="if"];
+92->72
+92->91
+72	[label="MAYOR"];
+72->67
+72->71
+67	[label="Acceso Array\n(res)"]
+67->66
+66	[label="j",shape=plaintext];
+71	[label="Acceso Array\n(res)"]
+71->70
+70	[label="SUMA"];
+70->68
+70->69
+68	[label="j",shape=plaintext];
+69	[label="1",shape=plaintext];
+91	[label="Bloque"];
+91->74
+91->77
+91->84
+91->90
+74	[label="=(temp)"]
+74->73
+73	[label="0",shape=plaintext];
+77	[label="=(temp)"]
+77->76
+76	[label="Acceso Array\n(res)"]
+76->75
+75	[label="j",shape=plaintext];
+84	[label="[] =\n(Asign. Array)"]
+84->79
+84->83
+79	[label="Acceso Array\n(res)"]
+79->78
+78	[label="j",shape=plaintext];
+83	[label="Acceso Array\n(res)"]
+83->82
+82	[label="SUMA"];
+82->80
+82->81
+80	[label="j",shape=plaintext];
+81	[label="1",shape=plaintext];
+90	[label="[] =\n(Asign. Array)"]
+90->88
+90->89
+88	[label="Acceso Array\n(res)"]
+88->87
+87	[label="SUMA"];
+87->85
+87->86
+85	[label="j",shape=plaintext];
+86	[label="1",shape=plaintext];
+89	[label="temp",shape=plaintext];
+98	[label="print"];
+98->97
+97	[label="Lista ordenada:",shape=plaintext];
+110	[label="for"];
+110->100
+110->103
+110->105
+110->109
+100	[label="=(i)"]
+100->99
+99	[label="0",shape=plaintext];
+103	[label="MENOR"];
+103->101
+103->102
+101	[label="i",shape=plaintext];
+102	[label="n",shape=plaintext];
+105	[label="INCR"];
+105->104
+104	[label="i",shape=plaintext];
+109	[label="Bloque"];
+109->108
+108	[label="print"];
+108->107
+107	[label="Acceso Array\n(res)"]
+107->106
+106	[label="i",shape=plaintext];
+}

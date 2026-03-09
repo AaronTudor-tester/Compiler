@@ -1,0 +1,24 @@
+// TEST ARRAY 17: Tipos incorrectos - ERROR
+// Objetivo: Verificar que el compilador detecta tipos incompatibles en arrays
+
+principal {
+    escribeN "=== TEST: Tipos incorrectos (debe fallar) ===".
+    
+    // Declarar array de números
+    lista de numero numeros es [10, 20, 30].
+    
+    // ERROR 1: Intentar asignar una frase a un array de números
+    numeros posicion (0) es "texto".
+    
+    // ERROR 2: Intentar usar array de frases con variable numérica
+    lista de frase palabras es ["uno", "dos", "tres"].
+    numero x es palabras posicion (0).
+    
+    escribeN x.
+}
+
+// ERRORES ESPERADOS:
+// 1. Error semántico: Tipos incompatibles en asignación de array
+//    - El array es de tipo INT pero se intenta asignar STRING
+// 2. Error semántico: Tipos incompatibles en declaración
+//    - Variable x es INT pero la expresión es STRING

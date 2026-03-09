@@ -1,0 +1,3 @@
+===== TABLA DE SÍMBOLOS =====
+
+  VARIABLE: Simbolo{nombre='numero1', tipo=FLOAT, valor=null, linea=9, inicializada=true}

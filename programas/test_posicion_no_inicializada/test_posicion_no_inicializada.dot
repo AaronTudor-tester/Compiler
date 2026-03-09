@@ -1,0 +1,35 @@
+strict digraph {
+17	[label="Programa"];
+17->1
+17->5
+17->9
+17->13
+17->16
+1	[label="array: arr[0](INT)"];
+5	[label="[] =\n(Asign. Array)"]
+5->3
+5->4
+3	[label="Acceso Array\n(arr)"]
+3->2
+2	[label="0",shape=plaintext];
+4	[label="10",shape=plaintext];
+9	[label="[] =\n(Asign. Array)"]
+9->7
+9->8
+7	[label="Acceso Array\n(arr)"]
+7->6
+6	[label="1",shape=plaintext];
+8	[label="20",shape=plaintext];
+13	[label="[] =\n(Asign. Array)"]
+13->11
+13->12
+11	[label="Acceso Array\n(arr)"]
+11->10
+10	[label="3",shape=plaintext];
+12	[label="40",shape=plaintext];
+16	[label="=(x)"]
+16->15
+15	[label="Acceso Array\n(arr)"]
+15->14
+14	[label="2",shape=plaintext];
+}

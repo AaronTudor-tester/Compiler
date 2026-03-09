@@ -1,0 +1,168 @@
+===== OPTIMIZACIONES REALIZADAS =====
+
+Archivo: programas\test_array_06_2d\test_array_06_2d.txt
+Fecha: 2026-02-03T12:23:51.273791500
+
+--- ESTADISTICAS DE CODIGO INTERMEDIO ---
+
+Instrucciones originales: 44
+Instrucciones optimizadas: 43
+Instrucciones eliminadas: 1
+Reduccion: 2,27%
+
+--- ESTADISTICAS DE ENSAMBLADOR ---
+
+Archivo original (.x68): 10388 bytes
+Archivo optimizado (_optimizado.x68): 6053 bytes
+Bytes reducidos: 4335 bytes
+Reduccion en ensamblador: 41,73%
+
+--- CODIGO OPTIMIZADO ---
+
+main:
+output "=== TEST: Array 2D completo ==="
+output "\n"
+output "Inicializando matriz 2x2:"
+output "\n"
+matriz[0] = 1
+matriz[4] = 2
+matriz[8] = 3
+matriz[12] = 4
+output "Leyendo matriz con bucle:"
+output "\n"
+i = 0
+e0:
+t42 = i < 2
+if !(t42) goto e1
+j = 0
+e2:
+t46 = j < 2
+if !(t46) goto e3
+t50 = i * 2
+t51 = t50 + j
+t53 = t51 * 4
+t55 = matriz[t53]
+output t55
+output "\n"
+t58 = j + 1
+j = t58
+goto e2
+e3:
+t61 = i + 1
+i = t61
+goto e0
+e1:
+output "Operacion: matriz[0,0] + matriz[1,1]:"
+output "\n"
+a = matriz[0]
+b = matriz[12]
+t80 = a + b
+suma = t80
+output suma
+output "\n"
+output "Test completado"
+output "\n"
+
+--- CAMBIOS REALIZADOS POR EL OPTIMIZADOR ---
+
+Fusión Lectura Array:
+  - Línea 72: Se eliminó temporal t54 asignando directo a valor
+  - Línea 72: Se eliminó temporal valor asignando directo a t55
+  - Línea 96: Se eliminó temporal t69 asignando directo a a
+  - Línea 104: Se eliminó temporal t77 asignando directo a b
+Asignación diferida:
+  - Línea 3: t0 eliminado y sustituido por 1
+  - Línea 3: t1 eliminado y sustituido por 2
+  - Línea 4: t3 eliminado y sustituido por 2
+  - Línea 5: t5 eliminado y sustituido por 4
+  - Línea 9: t7 eliminado y sustituido por 0
+  - Línea 9: t8 eliminado y sustituido por 0
+  - Línea 9: t9 eliminado y sustituido por 2
+  - Línea 11: t12 eliminado y sustituido por 4
+  - Línea 12: t14 eliminado y sustituido por 1
+  - Línea 13: t15 eliminado y sustituido por 0
+  - Línea 13: t16 eliminado y sustituido por 1
+  - Línea 13: t17 eliminado y sustituido por 2
+  - Línea 15: t20 eliminado y sustituido por 4
+  - Línea 16: t22 eliminado y sustituido por 2
+  - Línea 17: t23 eliminado y sustituido por 1
+  - Línea 17: t24 eliminado y sustituido por 0
+  - Línea 17: t25 eliminado y sustituido por 2
+  - Línea 19: t28 eliminado y sustituido por 4
+  - Línea 20: t30 eliminado y sustituido por 3
+  - Línea 21: t31 eliminado y sustituido por 1
+  - Línea 21: t32 eliminado y sustituido por 1
+  - Línea 21: t33 eliminado y sustituido por 2
+  - Línea 23: t36 eliminado y sustituido por 4
+  - Línea 24: t38 eliminado y sustituido por 4
+  - Línea 27: t39 eliminado y sustituido por 0
+  - Línea 29: t40 eliminado y sustituido por i
+  - Línea 29: t41 eliminado y sustituido por 2
+  - Línea 31: t43 eliminado y sustituido por 0
+  - Línea 33: t44 eliminado y sustituido por j
+  - Línea 33: t45 eliminado y sustituido por 2
+  - Línea 35: t47 eliminado y sustituido por i
+  - Línea 35: t48 eliminado y sustituido por j
+  - Línea 35: t49 eliminado y sustituido por 2
+  - Línea 37: t52 eliminado y sustituido por 4
+  - Línea 41: t56 eliminado y sustituido por j
+  - Línea 41: t57 eliminado y sustituido por 1
+  - Línea 45: t59 eliminado y sustituido por i
+  - Línea 45: t60 eliminado y sustituido por 1
+  - Línea 51: t62 eliminado y sustituido por 0
+  - Línea 51: t63 eliminado y sustituido por 0
+  - Línea 51: t64 eliminado y sustituido por 2
+  - Línea 53: t67 eliminado y sustituido por 4
+  - Línea 55: t70 eliminado y sustituido por 1
+  - Línea 55: t71 eliminado y sustituido por 1
+  - Línea 55: t72 eliminado y sustituido por 2
+  - Línea 57: t75 eliminado y sustituido por 4
+  - Línea 59: t78 eliminado y sustituido por a
+  - Línea 59: t79 eliminado y sustituido por b
+  - Línea 61: t81 eliminado y sustituido por suma
+  - Línea 3: t2 eliminado y sustituido por 2
+  - Línea 8: t10 eliminado y sustituido por 0
+  - Línea 8: t11 eliminado y sustituido por 0
+  - Línea 10: t18 eliminado y sustituido por 0
+  - Línea 13: t26 eliminado y sustituido por 2
+  - Línea 13: t27 eliminado y sustituido por 2
+  - Línea 15: t34 eliminado y sustituido por 2
+  - Línea 44: t65 eliminado y sustituido por 0
+  - Línea 44: t66 eliminado y sustituido por 0
+  - Línea 46: t73 eliminado y sustituido por 2
+  - Línea 3: t4 eliminado y sustituido por 4
+  - Línea 7: t13 eliminado y sustituido por 0
+  - Línea 8: t19 eliminado y sustituido por 1
+  - Línea 10: t29 eliminado y sustituido por 8
+  - Línea 11: t35 eliminado y sustituido por 3
+  - Línea 39: t68 eliminado y sustituido por 0
+  - Línea 40: t74 eliminado y sustituido por 3
+  - Línea 3: t6 eliminado y sustituido por 16
+  - Línea 7: t21 eliminado y sustituido por 4
+  - Línea 9: t37 eliminado y sustituido por 12
+  - Línea 37: t76 eliminado y sustituido por 12
+Simplificación algebraica:
+  - Línea 10: t11 = t10
+  - Línea 18: t27 = t26
+  - Línea 52: t66 = t65
+Eliminación de etiquetas muertas:
+  - Línea 65: Se ha eliminado la etiqueta end
+Cálculo de constantes:
+  - Línea 3: t2 = 1 * 2 -> t2 = 2
+  - Línea 9: t10 = 0 * 2 -> t10 = 0
+  - Línea 13: t18 = 0 * 2 -> t18 = 0
+  - Línea 17: t26 = 1 * 2 -> t26 = 2
+  - Línea 21: t34 = 1 * 2 -> t34 = 2
+  - Línea 51: t65 = 0 * 2 -> t65 = 0
+  - Línea 55: t73 = 1 * 2 -> t73 = 2
+  - Línea 3: t4 = 2 * 2 -> t4 = 4
+  - Línea 8: t13 = 0 * 4 -> t13 = 0
+  - Línea 10: t19 = 0 + 1 -> t19 = 1
+  - Línea 13: t29 = 2 * 4 -> t29 = 8
+  - Línea 15: t35 = 2 + 1 -> t35 = 3
+  - Línea 44: t68 = 0 * 4 -> t68 = 0
+  - Línea 46: t74 = 2 + 1 -> t74 = 3
+  - Línea 3: t6 = 4 * 4 -> t6 = 16
+  - Línea 8: t21 = 1 * 4 -> t21 = 4
+  - Línea 11: t37 = 3 * 4 -> t37 = 12
+  - Línea 40: t76 = 3 * 4 -> t76 = 12

@@ -1,0 +1,66 @@
+===== OPTIMIZACIONES REALIZADAS =====
+
+Archivo: .\programas\test_array_input_index\test_array_input_index.txt
+Fecha: 2026-02-11T20:38:07.513444200
+
+--- ESTADÍSTICAS DE CÓDIGO INTERMEDIO ---
+
+Instrucciones originales: 16
+Instrucciones optimizadas: 15
+Instrucciones eliminadas: 1
+Reducción: 6,25%
+
+--- ESTADÍSTICAS DE ENSAMBLADOR ---
+
+Archivo original (.x68): 4495 bytes
+Archivo optimizado (_optimizado.x68): 3522 bytes
+Bytes reducidos: 973 bytes
+Reducción en ensamblador: 21,65%
+
+--- CÓDIGO OPTIMIZADO ---
+
+main:
+output "Introduce un indice (0-2):"
+output "\n"
+input idx
+arr[0] = 10
+arr[4] = 20
+arr[8] = 30
+output "Valor en arr["
+output idx
+output "]: "
+t18 = idx * 4
+t19 = 3
+t21 = arr[t18]
+output t21
+output "\n"
+
+--- CAMBIOS REALIZADOS POR EL OPTIMIZADOR ---
+
+Asignación diferida:
+  - Línea 4: t0 eliminado y sustituido por 3
+  - Línea 4: t1 eliminado y sustituido por 4
+  - Línea 6: t3 eliminado y sustituido por 10
+  - Línea 6: t4 eliminado y sustituido por 0
+  - Línea 6: t5 eliminado y sustituido por 4
+  - Línea 8: t7 eliminado y sustituido por 20
+  - Línea 8: t8 eliminado y sustituido por 1
+  - Línea 8: t9 eliminado y sustituido por 4
+  - Línea 10: t11 eliminado y sustituido por 30
+  - Línea 10: t12 eliminado y sustituido por 2
+  - Línea 10: t13 eliminado y sustituido por 4
+  - Línea 13: t15 eliminado y sustituido por idx
+  - Línea 15: t16 eliminado y sustituido por idx
+  - Línea 15: t17 eliminado y sustituido por 4
+  - Línea 16: t20 eliminado y sustituido por 3
+  - Línea 4: t2 eliminado y sustituido por 12
+  - Línea 5: t6 eliminado y sustituido por 0
+  - Línea 6: t10 eliminado y sustituido por 4
+  - Línea 7: t14 eliminado y sustituido por 8
+Eliminación de etiquetas muertas:
+  - Línea 20: Se ha eliminado la etiqueta end
+Cálculo de constantes:
+  - Línea 4: t2 = 3 * 4 -> t2 = 12
+  - Línea 6: t6 = 0 * 4 -> t6 = 0
+  - Línea 8: t10 = 1 * 4 -> t10 = 4
+  - Línea 10: t14 = 2 * 4 -> t14 = 8

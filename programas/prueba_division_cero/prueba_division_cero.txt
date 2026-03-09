@@ -1,0 +1,12 @@
+principal {
+    numero a es 10.
+    numero b es 0.
+    numero c es 5.
+    numero resultado.
+    
+    resultado es a dividido c.
+    escribeN resultado.
+    
+    resultado es a dividido b.
+    escribe resultado.
+}

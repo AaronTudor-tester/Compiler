@@ -1,0 +1,5 @@
+===== TABLA DE SÍMBOLOS =====
+
+  VARIABLE: Simbolo{nombre='arr_neg', tipo=INT, valor=null, linea=5, inicializada=true}
+  VARIABLE: Simbolo{nombre='arr_zero', tipo=INT, valor=null, linea=6, inicializada=true}
+  VARIABLE: Simbolo{nombre='arr_ok', tipo=INT, valor=null, linea=7, inicializada=true}

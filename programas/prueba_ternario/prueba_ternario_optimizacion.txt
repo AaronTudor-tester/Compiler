@@ -1,0 +1,58 @@
+===== OPTIMIZACIONES REALIZADAS =====
+
+Archivo: .\programas\prueba_ternario\prueba_ternario.txt
+Fecha: 2026-02-11T08:56:23.523723300
+
+--- ESTADÍSTICAS DE CÓDIGO INTERMEDIO ---
+
+Instrucciones originales: 12
+Instrucciones optimizadas: 12
+Instrucciones eliminadas: 0
+Reducción: 0,00%
+
+--- ESTADÍSTICAS DE ENSAMBLADOR ---
+
+Archivo original (.x68): 1756 bytes
+Archivo optimizado (_optimizado.x68): 1221 bytes
+Bytes reducidos: 535 bytes
+Reducción en ensamblador: 30,47%
+
+--- CÓDIGO OPTIMIZADO ---
+
+main:
+x = 2
+t4 = x + 4
+t6 = t4 > 5
+a = true
+output x
+output "\n"
+output a
+output "\n"
+if !(a) goto e2
+output "hola"
+e2:
+
+--- CAMBIOS REALIZADOS POR EL OPTIMIZADOR ---
+
+Asignación diferida:
+  - Línea 1: t0 eliminado y sustituido por 2
+  - Línea 2: t2 eliminado y sustituido por x
+  - Línea 2: t3 eliminado y sustituido por 4
+  - Línea 3: t5 eliminado y sustituido por 5
+  - Línea 5: t7 eliminado y sustituido por true
+  - Línea 5: t1 eliminado y sustituido por true
+  - Línea 7: t8 eliminado y sustituido por false
+  - Línea 10: t9 eliminado y sustituido por x
+  - Línea 12: t10 eliminado y sustituido por a
+  - Línea 14: t11 eliminado y sustituido por a
+Ramificaciones adyacentes:
+  - Línea 16: Salto innecesario a e3 eliminado
+  - Línea 5: Salto innecesario a e1 eliminado
+  - Línea 4: Salto innecesario a e0 eliminado
+Eliminación de etiquetas muertas:
+  - Línea 17: Se ha eliminado la etiqueta e3
+  - Línea 18: Se ha eliminado la etiqueta end
+  - Línea 6: Se ha eliminado la etiqueta e1
+  - Línea 4: Se ha eliminado la etiqueta e0
+Eliminación de código muerto:
+  - Línea 7: Se eliminó t1

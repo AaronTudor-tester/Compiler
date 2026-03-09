@@ -1,0 +1,38 @@
+// CASO DE PRUEBA 3: SUMA CON BUCLE
+// Demuestra:
+// - Bucle while
+// - Variables acumuladoras
+// - Condicionales
+
+principal {
+    escribeN "=== CASO 3: SUMA CON BUCLE ===".
+    
+    numero suma es 0.
+    numero contador es 0.
+    
+    mientras contador es menor que 5 {
+        contador es contador mas 1.
+        suma es suma mas contador.
+        escribe "Suma parcial: ".
+        escribe suma.
+        escribe "\n".
+    }
+    
+    escribe "Suma total:".
+    escribeN suma.
+    
+    escribeN "Tabla de multiplicar del 3:".
+    numero i es 1.
+    mientras i es menor o igual que 10 {
+        numero resultado es 3 multiplicado i.
+        escribe resultado .
+        escribe " ".
+        incrementa i.
+    }
+}
+
+// FUNCIONAMIENTO:
+// 1. Primer bucle suma números del 1 al 5: 1+2+3+4+5 = 15
+// 2. Usa variable acumuladora 'suma'
+// 3. Segundo bucle calcula tabla del 3: 3,6,9,12,...,30
+// 4. Usa incrementa para avanzar el bucle

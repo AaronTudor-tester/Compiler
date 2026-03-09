@@ -1,0 +1,19 @@
+// TEST ARRAY 05: Array vacío con longitud
+// Objetivo: Verificar declaración de array vacío y escritura/lectura
+
+principal {
+    escribeN "=== TEST: Array vacio ===".
+    
+    lista de numero vector de longitud 3.
+    
+    vector posicion (0) es 100.
+    vector posicion (1) es 200.
+    
+    escribe "Leyendo posicion 0: ".
+    escribeN vector posicion (0).
+    
+    escribe"Leyendo posicion 1: ".
+    escribeN vector posicion (1).
+    
+    escribeN "Test completado".
+}

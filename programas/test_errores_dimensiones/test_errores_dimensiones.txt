@@ -1,0 +1,33 @@
+// TEST: Errores de dimensiones y arrays vacíos
+// Este archivo contiene casos que DEBERÍAN dar error para probar el análisis semántico
+
+principal {
+    
+    escribeN "=== CASOS QUE DEBERÍAN DAR ERROR ===".
+    
+    // CASO 1: Declaración 1D con inicialización 2D (array vacío)
+    lista de numero error1 es [ [] ].
+    
+    // CASO 2: Declaración 1D con inicialización 2D (con elemento)
+    lista de numero error2 es [ [3] ].
+    
+    // CASO 3: Declaración 1D con inicialización 2D (múltiples elementos)
+    lista de numero error3 es [ [1, 2], [3, 4] ].
+    
+    // CASO 4: Declaración 2D con inicialización 1D
+    lista de lista de numero error4 es [1, 2, 3].
+    
+    // CASO 5: Declaración 2D con inicialización 3D
+    lista de lista de numero error5 es [ [[1, 2]], [[3, 4]] ].
+    
+    // CASO 6: Arrays vacíos en diferentes niveles
+    lista de numero error6 es [].  // Array completamente vacío
+    
+    // CASO 7: Mezcla de elementos vacíos y no vacíos
+    lista de lista de numero error7 es [ [], [1, 2] ].
+    
+    // CASO 8: Declaración 3D con inicialización 2D
+    lista de lista de lista de numero error8 es [ [1, 2], [3, 4] ].
+    
+    escribeN "Si ves este mensaje, algo falló en el análisis semántico".
+}

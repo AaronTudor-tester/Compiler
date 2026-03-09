@@ -1,0 +1,8 @@
+===== TABLA DE SIMBOLOS =====
+
+  VARIABLE: Simbolo{nombre='numeros', tipo=INT, valor=[10, 20, 30], linea=9, inicializada=true}
+  VARIABLE: Simbolo{nombre='a', tipo=INT, valor=null, linea=10, inicializada=true}
+  VARIABLE: Simbolo{nombre='b', tipo=INT, valor=null, linea=11, inicializada=true}
+  VARIABLE: Simbolo{nombre='suma', tipo=INT, valor=null, linea=12, inicializada=true}
+  VARIABLE: Simbolo{nombre='c', tipo=INT, valor=null, linea=16, inicializada=true}
+  VARIABLE: Simbolo{nombre='producto', tipo=INT, valor=null, linea=17, inicializada=true}

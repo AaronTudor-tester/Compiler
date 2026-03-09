@@ -1,0 +1,194 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 11/02/2026 9:00:31
+
+00001000                             1              ORG $1000
+00001000                             2  START:
+00001000  4FF9 00005000              3              LEA STACKPTR, A7
+00001006  4EF9 00001090              4              JMP main
+0000100C                             5  
+0000100C                             6  ; ===== RUTINAS AUXILIARES =====
+0000100C                             7  PRINT_SIGNED:
+0000100C  4A41                       8              TST.W D1
+0000100E  6A00 0010                  9              BPL PRINT_UNSIGNED
+00001012  103C 000E                 10              MOVE.B #14, D0
+00001016  43F9 00001181             11              LEA MINUS_SIGN, A1
+0000101C  4E4F                      12              TRAP #15
+0000101E  4441                      13              NEG.W D1
+00001020                            14  PRINT_UNSIGNED:
+00001020  103C 0003                 15              MOVE.B #3, D0
+00001024  4E4F                      16              TRAP #15
+00001026  4E75                      17              RTS
+00001028                            18  
+00001028                            19  PRINT_DECIMAL_2:
+00001028  2601                      20              MOVE.L D1, D3
+0000102A  4A83                      21              TST.L D3
+0000102C  6A00 0010                 22              BPL .PD2_POSITIVE
+00001030  103C 000E                 23              MOVE.B #14, D0
+00001034  43F9 00001181             24              LEA MINUS_SIGN, A1
+0000103A  4E4F                      25              TRAP #15
+0000103C  4483                      26              NEG.L D3
+0000103E                            27  .PD2_POSITIVE:
+0000103E  2403                      28              MOVE.L D3, D2
+00001040  383C 0064                 29              MOVE.W #100, D4
+00001044  85C4                      30              DIVS D4, D2
+00001046  2A02                      31              MOVE.L D2, D5
+00001048  383C 0064                 32              MOVE.W #100, D4
+0000104C  2C05                      33              MOVE.L D5, D6
+0000104E  4280                      34              CLR.L D0
+00001050  3004                      35              MOVE.W D4, D0
+00001052  CDC0                      36              MULS D0, D6
+00001054  9686                      37              SUB.L D6, D3
+00001056  4281                      38              CLR.L D1
+00001058  3202                      39              MOVE.W D2, D1
+0000105A  103C 0003                 40              MOVE.B #3, D0
+0000105E  4E4F                      41              TRAP #15
+00001060  43F9 00001183             42              LEA DECIMAL_POINT, A1
+00001066  103C 000E                 43              MOVE.B #14, D0
+0000106A  4E4F                      44              TRAP #15
+0000106C  4280                      45              CLR.L D0
+0000106E  3003                      46              MOVE.W D3, D0
+00001070  B07C 000A                 47              CMP.W #10, D0
+00001074  6C00 000E                 48              BGE .PD2_SKIP_ZERO
+00001078  43F9 00001185             49              LEA ZERO_CHAR, A1
+0000107E  103C 000E                 50              MOVE.B #14, D0
+00001082  4E4F                      51              TRAP #15
+00001084                            52  .PD2_SKIP_ZERO:
+00001084  4281                      53              CLR.L D1
+00001086  3203                      54              MOVE.W D3, D1
+00001088  103C 0003                 55              MOVE.B #3, D0
+0000108C  4E4F                      56              TRAP #15
+0000108E  4E75                      57              RTS
+00001090                            58  
+00001090                            59  main:
+00001090                            60              ; output "=== PRUEBA FOR CON DECIMALES ==="
+00001090  43F9 000011AB             61              LEA str0, A1
+00001096  103C 000E                 62              MOVE.B #14, D0
+0000109A  4E4F                      63              TRAP #15
+0000109C                            64              ; output "\n"
+0000109C  43F9 0000117E             65              LEA NEWLINE, A1
+000010A2  103C 000E                 66              MOVE.B #14, D0
+000010A6  4E4F                      67              TRAP #15
+000010A8                            68              ; i = 1.0
+000010A8  33FC 0064 000011CC        69              MOVE.W #100, i
+000010B0                            70  e0:
+000010B0                            71              ; t3 = i <= 3.0
+000010B0  33FC 0000 000011D0        72              MOVE.W #0, t3
+000010B8  3039 000011CC             73              MOVE.W i, D0
+000010BE  B07C 012C                 74              CMP.W #300, D0
+000010C2  6F00 0008                 75              BLE t3_true
+000010C6  4EF9 000010D4             76              JMP t3_false
+000010CC                            77  t3_true:
+000010CC  33FC 0001 000011D0        78              MOVE.W #1, t3
+000010D4                            79  t3_false:
+000010D4                            80              ; if !(t3) goto e1
+000010D4  3039 000011D0             81              MOVE.W t3, D0
+000010DA  B07C 0000                 82              CMP.W #0, D0
+000010DE  6700 008E                 83              BEQ e1
+000010E2                            84              ; output "i="
+000010E2  43F9 000011A0             85              LEA str1, A1
+000010E8  103C 000E                 86              MOVE.B #14, D0
+000010EC  4E4F                      87              TRAP #15
+000010EE                            88              ; output i
+000010EE  4281                      89              CLR.L D1
+000010F0  3239 000011CC             90              MOVE.W i, D1
+000010F6  48C1                      91              EXT.L D1
+000010F8  4EB8 1028                 92              JSR PRINT_DECIMAL_2
+000010FC                            93              ; output "\n"
+000010FC  43F9 0000117E             94              LEA NEWLINE, A1
+00001102  103C 000E                 95              MOVE.B #14, D0
+00001106  4E4F                      96              TRAP #15
+00001108                            97              ; output " Doble="
+00001108  43F9 000011A3             98              LEA str2, A1
+0000110E  103C 000E                 99              MOVE.B #14, D0
+00001112  4E4F                     100              TRAP #15
+00001114                           101              ; t7 = i * 2.0
+00001114  3039 000011CC            102              MOVE.W i, D0
+0000111A  323C 00C8                103              MOVE.W #200, D1
+0000111E  C1C1                     104              MULS D1, D0
+00001120  343C 0064                105              MOVE.W #100, D2
+00001124  81C2                     106              DIVS D2, D0
+00001126  33C0 0000118C            107              MOVE.W D0, t7
+0000112C                           108              ; y = t7
+0000112C  33F9 0000118C 000011CE   109              MOVE.W t7, y
+00001136                           110              ; output y
+00001136  4281                     111              CLR.L D1
+00001138  3239 000011CE            112              MOVE.W y, D1
+0000113E  48C1                     113              EXT.L D1
+00001140  4EB8 1028                114              JSR PRINT_DECIMAL_2
+00001144                           115              ; output "\n"
+00001144  43F9 0000117E            116              LEA NEWLINE, A1
+0000114A  103C 000E                117              MOVE.B #14, D0
+0000114E  4E4F                     118              TRAP #15
+00001150                           119              ; t11 = i + 0.5
+00001150  3039 000011CC            120              MOVE.W i, D0
+00001156  0640 0032                121              ADD.W #50, D0
+0000115A  33C0 0000119E            122              MOVE.W D0, t11
+00001160                           123              ; i = t11
+00001160  33F9 0000119E 000011CC   124              MOVE.W t11, i
+0000116A                           125              ; goto e0
+0000116A  4EF8 10B0                126              JMP e0
+0000116E                           127  e1:
+0000116E                           128              ; output "FIN PRUEBA FOR"
+0000116E  43F9 0000118E            129              LEA str3, A1
+00001174  103C 000E                130              MOVE.B #14, D0
+00001178  4E4F                     131              TRAP #15
+0000117A  6000 0056                132              BRA HALT
+0000117E                           133  
+0000117E                           134              ; DATA SECTION
+0000117E= 0D 0A 00                 135  NEWLINE:    DC.B 13,10,0
+00001181= 2D 00                    136  MINUS_SIGN: DC.B '-',0
+00001183= 2E 00                    137  DECIMAL_POINT:      DC.B '.',0
+00001185= 30 00                    138  ZERO_CHAR:  DC.B '0',0
+00001188= 00008000                 139  HEAP_PTR:   DC.L $8000
+0000118C                           140  t7:         DS.W 1
+0000118E= 46 49 4E 20 50 52 ...    141  str3:       DC.B 'FIN PRUEBA FOR',0
+0000119E                           142  t11:        DS.W 1
+000011A0= 69 3D 00                 143  str1:       DC.B 'i=',0
+000011A3= 20 44 6F 62 6C 65 ...    144  str2:       DC.B ' Doble=',0
+000011AB= 3D 3D 3D 20 50 52 ...    145  str0:       DC.B '=== PRUEBA FOR CON DECIMALES ===',0
+000011CC                           146  i:          DS.W 1
+000011CE                           147  y:          DS.W 1
+000011D0                           148  t3:         DS.W 1
+000011D2                           149  
+000011D2                           150  HALT:
+000011D2  FFFF FFFF                151              SIMHALT
+000011D6                           152  
+00005000                           153              ORG $5000
+00005000                           154  STACKPTR:
+00005000                           155              END START
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+DECIMAL_POINT       1183
+E0                  10B0
+E1                  116E
+HALT                11D2
+HEAP_PTR            1188
+I                   11CC
+MAIN                1090
+MINUS_SIGN          1181
+NEWLINE             117E
+PRINT_DECIMAL_2     1028
+PRINT_DECIMAL_2:PD2_POSITIVE  103E
+PRINT_DECIMAL_2:PD2_SKIP_ZERO  1084
+PRINT_SIGNED        100C
+PRINT_UNSIGNED      1020
+STACKPTR            5000
+START               1000
+STR0                11AB
+STR1                11A0
+STR2                11A3
+STR3                118E
+T11                 119E
+T3                  11D0
+T3_FALSE            10D4
+T3_TRUE             10CC
+T7                  118C
+Y                   11CE
+ZERO_CHAR           1185

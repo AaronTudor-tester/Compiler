@@ -1,0 +1,47 @@
+strict digraph {
+22	[label="Programa"];
+22->7
+22->9
+22->11
+22->13
+22->17
+22->19
+22->21
+7	[label="func: sumaDosDecimales"];
+7->0
+7->1
+7->6
+0	[label="decl: a (FLOAT)"];
+1	[label="decl: b (FLOAT)"];
+6	[label="Bloque"];
+6->5
+5	[label="return"];
+5->4
+4	[label="SUMA"];
+4->2
+4->3
+2	[label="a",shape=plaintext];
+3	[label="b",shape=plaintext];
+9	[label="print"];
+9->8
+8	[label="=== PRUEBA FLOAT ===",shape=plaintext];
+11	[label="=(x)"]
+11->10
+10	[label="3.5",shape=plaintext];
+13	[label="=(y)"]
+13->12
+12	[label="2.25",shape=plaintext];
+17	[label="=(z)"]
+17->16
+16	[label="call: sumaDosDecimales"];
+16->14
+16->15
+14	[label="x",shape=plaintext];
+15	[label="y",shape=plaintext];
+19	[label="print"];
+19->18
+18	[label="Resultado esperado ~5.75",shape=plaintext];
+21	[label="print"];
+21->20
+20	[label="z",shape=plaintext];
+}

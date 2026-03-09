@@ -1,0 +1,191 @@
+strict digraph {
+94	[label="Programa"];
+94->1
+94->3
+94->5
+94->7
+94->9
+94->23
+94->37
+94->39
+94->53
+94->67
+94->69
+94->71
+94->73
+94->82
+94->91
+94->93
+1	[label="print"];
+1->0
+0	[label="=== PRUEBA DE OPERADORES LOGICOS ===",shape=plaintext];
+3	[label="=(x)"]
+3->2
+2	[label="5",shape=plaintext];
+5	[label="=(y)"]
+5->4
+4	[label="10",shape=plaintext];
+7	[label="=(z)"]
+7->6
+6	[label="15",shape=plaintext];
+9	[label="print"];
+9->8
+8	[label="TEST 1: AND (y ademas)",shape=plaintext];
+23	[label="if"];
+23->16
+23->19
+23->22
+16	[label="AND"];
+16->12
+16->15
+12	[label="MENOR"];
+12->10
+12->11
+10	[label="x",shape=plaintext];
+11	[label="y",shape=plaintext];
+15	[label="MENOR"];
+15->13
+15->14
+13	[label="y",shape=plaintext];
+14	[label="z",shape=plaintext];
+19	[label="Bloque"];
+19->18
+18	[label="print"];
+18->17
+17	[label="5 < 10 AND 10 < 15: VERDADERO",shape=plaintext];
+22	[label="Bloque"];
+22->21
+21	[label="print"];
+21->20
+20	[label="5 < 10 AND 10 < 15: FALSO",shape=plaintext];
+37	[label="if"];
+37->30
+37->33
+37->36
+30	[label="AND"];
+30->26
+30->29
+26	[label="MAYOR"];
+26->24
+26->25
+24	[label="x",shape=plaintext];
+25	[label="y",shape=plaintext];
+29	[label="MENOR"];
+29->27
+29->28
+27	[label="y",shape=plaintext];
+28	[label="z",shape=plaintext];
+33	[label="Bloque"];
+33->32
+32	[label="print"];
+32->31
+31	[label="5 > 10 AND 10 < 15: VERDADERO",shape=plaintext];
+36	[label="Bloque"];
+36->35
+35	[label="print"];
+35->34
+34	[label="5 > 10 AND 10 < 15: FALSO",shape=plaintext];
+39	[label="print"];
+39->38
+38	[label="TEST 2: OR (o bien)",shape=plaintext];
+53	[label="if"];
+53->46
+53->49
+53->52
+46	[label="OR"];
+46->42
+46->45
+42	[label="MAYOR"];
+42->40
+42->41
+40	[label="x",shape=plaintext];
+41	[label="y",shape=plaintext];
+45	[label="MENOR"];
+45->43
+45->44
+43	[label="y",shape=plaintext];
+44	[label="z",shape=plaintext];
+49	[label="Bloque"];
+49->48
+48	[label="print"];
+48->47
+47	[label="5 > 10 OR 10 < 15: VERDADERO",shape=plaintext];
+52	[label="Bloque"];
+52->51
+51	[label="print"];
+51->50
+50	[label="5 > 10 OR 10 < 15: FALSO",shape=plaintext];
+67	[label="if"];
+67->60
+67->63
+67->66
+60	[label="OR"];
+60->56
+60->59
+56	[label="MAYOR"];
+56->54
+56->55
+54	[label="x",shape=plaintext];
+55	[label="y",shape=plaintext];
+59	[label="MAYOR"];
+59->57
+59->58
+57	[label="y",shape=plaintext];
+58	[label="z",shape=plaintext];
+63	[label="Bloque"];
+63->62
+62	[label="print"];
+62->61
+61	[label="5 > 10 OR 10 > 15: VERDADERO",shape=plaintext];
+66	[label="Bloque"];
+66->65
+65	[label="print"];
+65->64
+64	[label="5 > 10 OR 10 > 15: FALSO",shape=plaintext];
+69	[label="print"];
+69->68
+68	[label="TEST 3: NOT (no)",shape=plaintext];
+71	[label="=(verd)"]
+71->70
+70	[label="true",shape=plaintext];
+73	[label="=(fals)"]
+73->72
+72	[label="false",shape=plaintext];
+82	[label="if"];
+82->75
+82->78
+82->81
+75	[label="NOT"];
+75->74
+74	[label="verd",shape=plaintext];
+78	[label="Bloque"];
+78->77
+77	[label="print"];
+77->76
+76	[label="NOT(true): VERDADERO",shape=plaintext];
+81	[label="Bloque"];
+81->80
+80	[label="print"];
+80->79
+79	[label="NOT(true): FALSO",shape=plaintext];
+91	[label="if"];
+91->84
+91->87
+91->90
+84	[label="NOT"];
+84->83
+83	[label="fals",shape=plaintext];
+87	[label="Bloque"];
+87->86
+86	[label="print"];
+86->85
+85	[label="NOT(false): VERDADERO",shape=plaintext];
+90	[label="Bloque"];
+90->89
+89	[label="print"];
+89->88
+88	[label="NOT(false): FALSO",shape=plaintext];
+93	[label="print"];
+93->92
+92	[label="FIN",shape=plaintext];
+}

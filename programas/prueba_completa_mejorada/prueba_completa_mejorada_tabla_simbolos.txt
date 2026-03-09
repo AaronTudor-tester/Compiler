@@ -1,0 +1,16 @@
+===== TABLA DE SÍMBOLOS =====
+
+VARIABLE: Simbolo{nombre='a', tipo=INT, valor=null, linea=3, inicializada=true}
+VARIABLE: Simbolo{nombre='b', tipo=INT, valor=null, linea=3, inicializada=true}
+VARIABLE: Simbolo{nombre='x', tipo=INT, valor=null, linea=7, inicializada=true}
+VARIABLE: Simbolo{nombre='y', tipo=INT, valor=null, linea=7, inicializada=true}
+FUNCION: Simbolo{nombre='sumaDosNumeros', tipoRetorno=INT, parametros=[INT, INT], linea=3}
+FUNCION: Simbolo{nombre='multiplicar', tipoRetorno=INT, parametros=[INT, INT], linea=7}
+  VARIABLE: Simbolo{nombre='num1', tipo=INT, valor=5, linea=18, inicializada=true}
+  VARIABLE: Simbolo{nombre='num2', tipo=INT, valor=3, linea=19, inicializada=true}
+  VARIABLE: Simbolo{nombre='suma', tipo=INT, valor=null, linea=20, inicializada=true}
+  VARIABLE: Simbolo{nombre='contador', tipo=INT, valor=1, linea=35, inicializada=true}
+  VARIABLE: Simbolo{nombre='opcion', tipo=INT, valor=2, linea=45, inicializada=true}
+  VARIABLE: Simbolo{nombre='num', tipo=INT, valor=1, linea=55, inicializada=true}
+  VARIABLE: Simbolo{nombre='esVerdadero', tipo=BOOL, valor=true, linea=65, inicializada=true}
+  VARIABLE: Simbolo{nombre='resultado', tipo=INT, valor=null, linea=75, inicializada=true}

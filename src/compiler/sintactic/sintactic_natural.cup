@@ -1,0 +1,1834 @@
+/**
+ * Assignatura 21780 Compiladors
+ * Estudis de Grau en Informàtica
+ * Professor: Pere Palmer
+ * Autors: Teletubbies sospechosos
+ */
+package compiler.sintactic;
+
+import java_cup.runtime.ComplexSymbolFactory.ComplexSymbol;
+import java_cup.runtime.ComplexSymbolFactory.Location;
+
+import java_cup.runtime.*;
+
+import compiler.sintactic.Symbols.*;
+import compiler.codigo_intermedio.*;
+import java.io.PrintStream;
+import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
+
+class Parser;
+
+parser code {:
+
+    private BloqueActivacion bloqueGlobal = new BloqueActivacion(null, "GLOBAL");
+    private BloqueActivacion bloqueActual = bloqueGlobal;
+    
+    // Lista para almacenar todos los errores detectados
+    private List<ErrorInfo> listaErrores = new ArrayList<>();
+
+    public BloqueActivacion getBloqueGlobal() {
+        return bloqueGlobal;
+    }
+    
+    public List<ErrorInfo> getListaErrores() {
+        return listaErrores;
+    }
+    
+    // Clase interna para almacenar información de errores
+    public static class ErrorInfo {
+        public int linea;
+        public int columna;
+        public String tipo;
+        public String mensaje;
+        
+        public ErrorInfo(int linea, int columna, String tipo, String mensaje) {
+            this.linea = linea;
+            this.columna = columna;
+            this.tipo = tipo;
+            this.mensaje = mensaje;
+        }
+        
+        @Override
+        public String toString() {
+            return String.format("[Línea %d, Columna %d] ERROR %s: %s", linea, columna, tipo, mensaje);
+        }
+    }
+
+    private void agregarVariable(String id, TipoDato tipo, NodoExpresion expresion) {
+        Location loc = ((ComplexSymbol)cur_token).getLeft(); // Obtenemos la posición inicial del token
+        if (bloqueActual.buscar(id) != null && bloqueActual.buscar(id).getCategoria() == Simbolo.Categoria.VARIABLE) {
+            report_error("Variable ya declarada: " + id, cur_token);
+           
+            return;
+        } else if (expresion != null)  {
+        
+            if (expresion.isArray()) {
+                report_error ("No puedes asignar un array completo a la variable simple '" + id + "'", cur_token);
+                return;
+            }
+            else if (tipo != expresion.getTipo()) {
+
+             if ((tipo == TipoDato.FLOAT) && (expresion.getTipo() == TipoDato.INT)){
+                expresion.setTipo(tipo);
+            } else {
+                report_error("Tipos incompatibles en declaración: variable " +
+                             id + " es " + tipo + " pero la expresión es " + expresion.getTipo(), cur_token);
+                return;
+            }
+            }
+         
+            }
+        
+        Simbolo simbolo = new Simbolo(id, tipo, Simbolo.Categoria.VARIABLE, loc.getLine(), loc.getColumn());
+        if (expresion instanceof NodoLiteral) {
+            simbolo.setValor(((NodoLiteral)expresion).getValor());
+        } else if (expresion != null) {
+            simbolo.setInicializada(true);
+        }
+        simbolo.setGlobal(bloqueActual == bloqueGlobal);
+        bloqueActual.agregarVariable(simbolo);
+    }
+
+    private void agregarParametro(String id, TipoDato tipo) {
+        Location loc = ((ComplexSymbol)cur_token).getLeft();
+        if (bloqueActual.buscar(id) != null) {
+            report_error("Parámetro duplicado o variable ya declarada: " + id, cur_token);
+            
+        } else {
+            Simbolo simbolo = new Simbolo(id, tipo, Simbolo.Categoria.VARIABLE, loc.getLine(), loc.getColumn());
+            simbolo.setGlobal(false);
+            simbolo.setInicializada(true);
+
+            bloqueActual.agregarParametro(simbolo);
+        }
+    }
+
+    private void agregarParametroArray(String id, TipoDato tipoBase, int numDimensiones) {
+        Location loc = ((ComplexSymbol)cur_token).getLeft();
+        if (bloqueActual.buscar(id) != null) {
+            report_error("Parámetro duplicado o variable ya declarada: " + id, cur_token);
+           
+        } else {
+            Simbolo simbolo = new Simbolo(id, tipoBase, Simbolo.Categoria.VARIABLE, loc.getLine(), loc.getColumn());
+            simbolo.setGlobal(false);
+            simbolo.setInicializada(true);
+            // Marcar como array con dimensiones (usamos null para las longitudes ya que son parámetros)
+            List<NodoExpresion> longitudes = new ArrayList<>();
+            for (int i = 0; i < numDimensiones; i++) {
+                longitudes.add(null);  // No conocemos las longitudes de parámetros array
+            }
+            simbolo.setArray(null, 0, longitudes, numDimensiones);
+
+            bloqueActual.agregarParametro(simbolo);
+        }
+    }
+
+    private void agregarParametroArrayConDimensiones(String id, TipoDato tipoBase, int numDimensiones, List<NodoExpresion> dimensionesExplicitas) {
+        Location loc = ((ComplexSymbol)cur_token).getLeft();
+        if (bloqueActual.buscar(id) != null) {
+            report_error("Parámetro duplicado o variable ya declarada: " + id, cur_token);
+           
+        } else {
+            Simbolo simbolo = new Simbolo(id, tipoBase, Simbolo.Categoria.VARIABLE, loc.getLine(), loc.getColumn());
+            simbolo.setGlobal(false);
+            simbolo.setInicializada(true);
+            // Marcar como array con dimensiones explícitas (proporcionadas en la declaración)
+            simbolo.setArray(null, 0, dimensionesExplicitas, numDimensiones);
+
+            bloqueActual.agregarParametro(simbolo);
+        }
+    }
+
+    private void agregarArray(String id, TipoDato tipoBase, List<NodoExpresion> valores, List<NodoExpresion> long_dimensiones, int dimensiones_esperadas) {
+       Location loc = ((ComplexSymbol)cur_token).getLeft();
+       int tam_valores = 0; 
+       if (bloqueActual.buscar(id) != null) {
+           report_error("Variable ya declarada: " + id, cur_token);
+           
+           return;
+       }
+
+
+       if (valores != null) {
+           for (NodoExpresion e : valores) {
+               if (e.getTipo() != tipoBase) {
+                   report_error("Tipo incompatible en array '" + id + "': se esperaba " + tipoBase + " pero se encontró " + e.getTipo(), cur_token);
+                   
+                   return;
+               }
+           }
+           tam_valores = valores.size();
+       }
+       
+       Simbolo simbolo = new Simbolo(id, tipoBase, Simbolo.Categoria.VARIABLE, loc.getLine(), loc.getColumn());
+       simbolo.setArray(valores, tam_valores, long_dimensiones, dimensiones_esperadas);
+       bloqueActual.agregarVariable(simbolo);
+   }
+
+   // Método que elimina las dimensiones de un array
+   private void eliminar_Dimensiones (Object objeto, List<NodoExpresion> array_destino, TipoDato tipoBase) {
+       if (objeto instanceof List) {
+           for (Object elemento : (List<Object>)objeto) {
+           eliminar_Dimensiones(elemento, array_destino, tipoBase);
+           }
+       } else if (objeto instanceof NodoExpresion) {
+           NodoExpresion expr = (NodoExpresion)objeto;
+           if (expr.getTipo() != tipoBase) {
+            if (expr.getTipo() == TipoDato.INT && tipoBase == TipoDato.FLOAT) {
+               expr.setTipo(TipoDato.FLOAT);
+            } else {
+                report_error("Tipo incorrecto en inicialización de array.", cur_token);
+                return;
+            }
+           }
+           array_destino.add(expr);
+       }
+   }
+   private boolean esEstructuraValida(Object nodo, List<NodoExpresion> dimsEsperadas, int nivelActual) {
+       // Si ya hemos pasado la profundidad de listas, esperamos un NodoExpresion
+       if (nivelActual >= dimsEsperadas.size()) {
+           return (nodo instanceof NodoExpresion);
+       }
+
+
+       // Si esperamos lista, debe ser lista
+       if (!(nodo instanceof List)) return false;
+
+
+       List<Object> lista = (List<Object>) nodo;
+       NodoExpresion dimNodo = dimsEsperadas.get(nivelActual);
+       
+       if (dimNodo instanceof NodoLiteral && ((NodoLiteral)dimNodo).getValor() instanceof Integer) {
+           int tamanoEsperado = (Integer) ((NodoLiteral)dimNodo).getValor();
+           
+           // Si sabemos el tamaño, comprobamos que sea igual
+           if (lista.size() != tamanoEsperado) {
+               return false; 
+           }
+       }
+
+
+       // Validar recursivamente todos los hijos
+       for (Object hijo : lista) {
+           if (!esEstructuraValida(hijo, dimsEsperadas, nivelActual + 1)) {
+               return false;
+           }
+       }
+       return true;
+   }
+
+   // Método que consiste en obtener las longitudes de cada dimensión de un array instanciado.
+   private void validarArray(String id, TipoDato tipoBase, List<Object> array_n_dimensiones, Integer dimensiones_esperadas) {
+   List <NodoExpresion> longitudes_dimension = new ArrayList<>();
+   Object array_actual = array_n_dimensiones;
+
+
+       while (array_actual instanceof List) {
+           List <Object> lista = (List <Object>) array_actual;
+           if (lista.isEmpty()) break;
+          
+           Location loc = ((ComplexSymbol)cur_token).getLeft();
+           int tamano = lista.size();
+           
+           longitudes_dimension.add(new NodoLiteral(tamano, TipoDato.INT, loc.getLine(), loc.getColumn()));
+
+           array_actual = lista.get(0);
+       }
+       
+        
+        if (longitudes_dimension.size() != dimensiones_esperadas) {
+           report_error("Las dimensiones del array esperadas [" + dimensiones_esperadas +"], no coinciden con las dimensiones declaradas[" + longitudes_dimension.size()+']', cur_token);      
+           return;
+       } 
+       if (!esEstructuraValida(array_n_dimensiones, longitudes_dimension, 0)) {
+           report_error("Error estructural en array '" + id + "': Los sub-arrays no tienen la misma longitud o hay mezcla de tipos.", cur_token);      
+           return;
+       }
+
+
+       List <NodoExpresion> valores_sin_dimensiones = new ArrayList<>();
+       eliminar_Dimensiones (array_n_dimensiones, valores_sin_dimensiones, tipoBase);
+       agregarArray (id, tipoBase, valores_sin_dimensiones, longitudes_dimension, (int) dimensiones_esperadas);
+  
+   }
+
+    private void agregarConstante(String id, TipoDato tipo, NodoExpresion expresion) {
+        Location loc = ((ComplexSymbol)cur_token).getLeft();
+        if (bloqueActual.buscar(id) != null) {
+            report_error("Constante ya declarada: " + id, cur_token);
+            return;
+        } else if (expresion == null) {
+            report_error("La constante " + id + " debe ser asignada en la declaración", cur_token);
+            return;
+        } else if (tipo != expresion.getTipo()) {
+            
+            if ((tipo == TipoDato.FLOAT) && (expresion.getTipo() == TipoDato.INT)){
+                expresion.setTipo(tipo);
+            } else {
+                report_error("Tipos incompatibles en declaración de constante: " +
+                             id + " es " + tipo + " pero la expresión es " + expresion.getTipo(), cur_token);
+                return;
+            }
+        }
+        Simbolo simbolo = new Simbolo(id, tipo, Simbolo.Categoria.VARIABLE, loc.getLine(), loc.getColumn());
+        simbolo.setConstante();
+        if (expresion instanceof NodoLiteral) {
+            simbolo.setValor(((NodoLiteral)expresion).getValor());
+        } else {
+            simbolo.setInicializada(true);
+        }
+        simbolo.setGlobal(bloqueActual == bloqueGlobal);
+        bloqueActual.agregarVariable(simbolo);
+    }
+   
+
+   
+   // COMPROBACIÓN DE VARIABLES
+   private void comprobarAsignacion(String id, NodoExpresion expr) {
+      Simbolo s = bloqueActual.buscar(id);
+      if (s == null) {
+          report_error("Variable no declarada: " + id, cur_token);
+          return;
+      }
+
+      // Verificar si se intenta reasignar una constante
+      if (s.isConstante()) {
+          report_error("No se puede reasignar la constante: " + id, cur_token);
+          return;
+      }
+
+      TipoDato tVar = s.getTipo();
+      TipoDato tExpr = expr.getTipo();
+
+      if (tVar != tExpr) {
+        if ((tVar == TipoDato.FLOAT) && (tExpr == TipoDato.INT)){
+                expr.setTipo(tVar);
+           } else {
+                report_error("Tipos incompatibles en asignación: variable " + id + " es " + tVar + " pero la expresión es " + tExpr, cur_token);
+           }
+           return;
+      }
+      if (s.isArray() != expr.isArray()) {
+            if (s.isArray()) {
+                report_error ("No puedes asignar un valor simple a la variable array '" + id + "'", cur_token);
+            } else {
+                report_error ("No puedes asignar un array completo a la variable simple '" + id + "'", cur_token);
+            }
+         
+      }
+
+   }
+
+   private void comprobarUsoVariable(String id) {
+    Simbolo s = bloqueActual.buscar(id);
+      if (s == null) {
+         report_error("Variable no declarada: " + id, cur_token);
+         
+      } else if(!s.isInicializada()) {
+         report_error("Variable no inicializada: " + id, cur_token);
+         
+      }
+   }
+
+   // COMPROBACIÓN DE TIPOS
+   private void comprobarOperacion(NodoOperacionBinaria op) {
+      TipoDato izq = op.getIzquierda().getTipo();
+      TipoDato der = op.getDerecha().getTipo();
+      String operador = op.getOperador();
+
+      if (op.getIzquierda().isArray() || op.getDerecha().isArray()) {
+        report_error("No se pueden realizar operaciones binarias con un array", cur_token);
+        op.setTipo(TipoDato.ERROR); 
+        op.setDimensionesEsp(0); 
+        return; 
+    }
+      switch (operador) {
+        case "SUMA": case "RESTA": case "PROD": case "DIV": case "MOD":
+
+           if (izq == TipoDato.INT && der == TipoDato.INT){
+               op.setTipo(TipoDato.INT);
+           } else if (izq == TipoDato.FLOAT || der == TipoDato.FLOAT) {
+               op.setTipo(TipoDato.FLOAT);
+           } else {
+                op.setTipo (TipoDato.ERROR);
+               report_error("Tipos incompatibles en operación aritmética: " + izq + " con " + der, cur_token);       
+           }
+           break;
+
+        case "IGUAL": case "DIST":
+            if (izq != der) {
+                report_error("Tipos incompatibles en comparación: " + izq + " con " + der, cur_token);
+                op.setTipo(TipoDato.ERROR);
+            } else {
+            op.setTipo(TipoDato.BOOL);
+            }
+
+            break;
+
+        case "AND": case "OR": case "XOR":
+            if (izq != TipoDato.BOOL || der != TipoDato.BOOL) {
+               report_error("Tipos incompatibles en operación lógica: " + izq + " con " + der, cur_token);
+               op.setTipo(TipoDato.ERROR);
+            } else {
+            op.setTipo(TipoDato.BOOL);
+            }
+            break;
+
+        case "MENOR": case "MAYOR": case "MEIGUAL": case "MAIGUAL":
+            if (!((izq == TipoDato.INT || izq == TipoDato.FLOAT) &&
+                  (der == TipoDato.INT || der == TipoDato.FLOAT))) {
+                report_error("Tipos incompatibles en comparación numérica: " + izq + " y " + der, cur_token);
+                op.setTipo(TipoDato.ERROR);
+            } else {
+            op.setTipo(TipoDato.BOOL);
+            }
+            break;
+      }
+   }
+
+   private void comprobarOperacionUnaria(NodoOperacionUnaria op) {
+      TipoDato t = op.getTipo();
+      String operador = op.getOperador();
+
+      if (op.getOperando().isArray()) {
+        report_error("No se pueden realizar operaciones unarias con un array", cur_token);
+        op.setTipo(TipoDato.ERROR); 
+        op.setDimensionesEsp(0); 
+        return; 
+      } 
+
+      switch (operador) {
+
+        case "NOT":
+            if (t != TipoDato.BOOL) {
+                report_error("El operador NOT requiere un booleano", cur_token);
+                op.setTipo(TipoDato.ERROR); 
+            }
+            
+            break;
+
+        case "RESTA": // Negativo unario
+            if (t != TipoDato.INT && t != TipoDato.FLOAT) {
+                report_error("El operador 'menos' unario solo puede aplicarse a números", cur_token);
+                op.setTipo(TipoDato.ERROR); 
+            }
+            break;
+
+        case "INCR":
+        case "DECR":
+            if (t != TipoDato.INT && t != TipoDato.FLOAT) {
+                report_error("El operador INCR y DECR solo pueden aplicarse a INT o FLOAT", cur_token);
+                op.setTipo(TipoDato.ERROR); 
+            }
+            
+            break;
+      }
+   }
+
+   private void comprobarCamposSwitch(NodoExpresion exp, List<NodoCase> cases) {
+
+      TipoDato tSwitch = exp.getTipo();
+
+      for (NodoCase c : cases) {
+         if (c.getValor() != null) {
+            TipoDato tCase = c.getValor().getTipo();
+            if (tCase != tSwitch) {
+                report_error("El tipo del case (" + tCase + ") no coincide con el tipo del switch (" + tSwitch + ")", cur_token);
+            
+            }
+         }
+      }
+   }
+
+    
+    @Override
+    public void unrecovered_syntax_error(Symbol cur_token) throws Exception {
+        report_error("Error sintáctico devastador: no se puede continuar con el análisis", cur_token);
+        done_parsing();        
+    }
+
+    @Override
+    public void syntax_error(Symbol cur_token) {
+        String mensaje;
+
+        // Léxico
+        if (cur_token.sym == ParserSym.error) {
+            mensaje = "Token inesperado '" + cur_token.value.toString()+"'";
+        } else { //Sintáctico
+            mensaje = "Estructura incorrecta";
+        }
+        report_error(mensaje, cur_token);
+    }
+
+    @Override
+    public void report_error(String message, Object info) {
+        StringBuilder msg = new StringBuilder("ERROR");
+        int linea = -1;
+        int columna = -1;
+        String tipoError = "SINTACTICO";
+        
+        if (info instanceof Symbol) {
+            ComplexSymbol token = (ComplexSymbol)info;
+            Location l = token.getLeft();
+            
+            if (l != null) {
+                linea = l.getLine();
+                columna = l.getColumn();
+                msg.append(" (fila: ")
+                   .append(linea)
+                   .append(", columna: ")
+                   .append(columna)
+                   .append(")");
+            }
+        }
+        msg.append(": ").append(message);
+        
+        // Determinar tipo de error
+        if (message.contains("Variable")  || message.contains("Tipos incompatibles") || 
+            message.contains("Constante") || message.contains("array") ||
+            message.contains("funcion")   || message.contains("función") ||
+            message.contains("Parámetro") || message.contains("Parametro") ||
+            message.contains("semántico") || message.contains("semantico") ||
+            message.contains("return")     || message.contains("devuelve") ||
+            message.contains("operador")
+            ) {
+            tipoError = "SEMANTICO";
+        }else if (message.contains("Token inesperado")) {
+            tipoError = "LEXICO";
+        }
+        
+        
+        // Agregar error a la lista
+        listaErrores.add(new ErrorInfo(linea, columna, tipoError, message));
+        
+    }
+
+    @Override
+    public void report_fatal_error(String message, Object info) throws Exception {
+        report_error("Error catastrófico ("+message+")", info);
+        done_parsing();
+    }
+
+:}
+
+// DEFINICIÓN DE TERMINALES
+terminal INT, FLOAT, BOOL, CHAR, STRING, VACIO, CONST;
+terminal TRUE, FALSE, MAIN;
+terminal IF, ELSE, FOR, WHILE, REPEAT, UNTIL, SWITCH, CASE, BREAK, ARRAY, LONG, ACCESO, RETURN, INPUT, OUTPUT, OUTPUTN;
+terminal SUMA, RESTA, PROD, DIV, MOD, INCR, DECR, MODIF;
+terminal COND, ASIGN, IGUAL, DIST, MAIGUAL, MAYOR, MEIGUAL, MENOR;
+terminal NOT, AND, OR, XOR;
+terminal LPAREN, RPAREN, LCORCH, RCORCH, LBRACK, RBRACK;
+terminal PUNTO, COMA, DPUNTO;
+terminal CADENA, ID, ELEMENTO, NUMERO, DECIMAL;
+
+
+// SÍMBOLOS NO TERMINALES
+non terminal programa;
+non terminal lista_definiciones;
+non terminal definicion;
+non terminal definicion_funcion;
+non terminal llamada_funcion;
+non terminal bloque_main;
+non terminal parametros;
+non terminal tipo_parametro;
+non terminal dimensiones_param;
+non terminal declaracion;
+non terminal asignacion;
+non terminal tipo;
+non terminal bloque;
+non terminal sentencia;
+non terminal lista_sentencias;
+non terminal lista_sentencias_sin_break;
+non terminal final_sentencias;
+non terminal cond;
+non terminal cuerpo_else;
+non terminal for_init;
+non terminal for_loop;
+non terminal for_cond;
+non terminal decl_switch, opt, case_switch, default_case;
+non terminal expresion_sentencia;
+non terminal expresion;
+non terminal logico;
+non terminal aritmetica;
+non terminal comparacion;
+non terminal crement;
+non terminal primario;
+non terminal lista_inicializada_array;
+non terminal dimensiones;
+non terminal long_dimensiones;
+non terminal elemento_array;
+non terminal acceso_array;
+non terminal lista_indices_acceso;
+non terminal expresiones_funcion;
+non terminal lista_expresiones;
+non terminal cabecera_funcion;
+
+
+// PRECEDENCIAS
+precedence right ASIGN;
+precedence left OR;
+precedence left XOR;
+precedence left AND;
+precedence left COND;
+precedence right NOT;
+precedence left IGUAL, DIST;
+precedence left MENOR, MEIGUAL, MAYOR, MAIGUAL;
+precedence left SUMA, RESTA;
+precedence left PROD, DIV, MOD;
+precedence left ELSE;
+
+// GRAMÁTICA
+start with programa;
+
+programa ::= lista_definiciones:ld bloque_main:main
+       {:
+            // Si hay error de cualquier tipo Léxico / Sintáctico / Semántico no compilamos.
+            RESULT = new NodoPrograma((ArrayList<NodoAST>)ld, (ArrayList<NodoAST>)main, 1, 1);
+       :}
+       ;
+
+
+lista_definiciones ::= /* lambda */
+                   {: RESULT = new ArrayList<NodoAST>(); :}
+                   | lista_definiciones:ld definicion:def
+                   {:
+                       if (def != null) {
+                           ((ArrayList<NodoAST>)ld).add((NodoAST)def);
+                       }
+                       RESULT = ld;
+                   :}
+                   ;
+
+
+definicion ::= definicion_funcion:df {: RESULT = df; :}
+            | declaracion:dg         {: RESULT = dg; :}
+            | error PUNTO // Error sintactico ignora hasta siguiente '.'
+            {: 
+                RESULT = null;
+            :}
+            | error RBRACK  // Error sintactico en bloque/función. Ignorando hasta siguiente '}'.'
+            {: 
+                RESULT = null; 
+            :}
+            ;
+
+definicion_funcion ::= cabecera_funcion:header LPAREN 
+    {:
+        
+        Object[] datos = (Object[])header;
+        String nombreFunc = (String)datos[1];       
+
+        BloqueActivacion padre_func = bloqueActual;
+        bloqueActual = new BloqueActivacion(padre_func, "FUNCION " + nombreFunc);
+        RESULT = null; 
+    :}
+    parametros:params RPAREN
+    {:
+        
+        Location loc = ((ComplexSymbol)cur_token).getLeft();
+        
+        Object[] datos = (Object[])header;
+        TipoDato tipoFunc = (TipoDato)datos[0];
+        String nombreFunc = (String)datos[1];
+        int dimsFunc = (Integer)datos[2];
+
+        List<TipoParametro> tiposParametros = new ArrayList<>();
+        for (NodoDeclaracion param : (ArrayList<NodoDeclaracion>)params) {
+            tiposParametros.add(param.getTipoParametro());
+        }
+
+        BloqueActivacion hijo_func = bloqueActual;
+        bloqueActual = bloqueActual.getPadre(); 
+
+        Simbolo simboloFuncion = new Simbolo(nombreFunc, tipoFunc, tiposParametros, loc.getLine(), loc.getColumn());
+        
+        
+        if (dimsFunc > 0) {      
+             simboloFuncion.setArray(null, 0, null, dimsFunc); 
+        }
+
+        if (bloqueActual.buscarFuncion(nombreFunc) != null) {
+            report_error("Función ya declarada: " + nombreFunc, cur_token);
+        } else {
+            bloqueActual.agregarFuncion(simboloFuncion);
+        }
+        
+        bloqueActual = hijo_func;
+        RESULT = null;
+    :} LBRACK lista_sentencias:cuerpo RBRACK
+    {:
+        Location loc = ((ComplexSymbol)cur_token).getLeft();
+        
+        Object[] datos = (Object[])header;
+        TipoDato tipoFunc = (TipoDato)datos[0];
+        String nombreFunc = (String)datos[1];
+        int dimsFunc = (Integer)datos[2];
+        
+        NodoBloque bloqueFuncion = new NodoBloque((ArrayList<NodoAST>)cuerpo, bloqueActual, loc.getLine(), loc.getColumn());
+        bloqueActual = bloqueActual.getPadre(); 
+
+        NodoFuncion nodoFunc = new NodoFuncion(tipoFunc, nombreFunc, (ArrayList<NodoDeclaracion>)params, bloqueFuncion, loc.getLine(), loc.getColumn());
+        
+        nodoFunc.setDimensionesRetorno(dimsFunc);
+
+        String nodoFunc_error = nodoFunc.validarReturns();
+        if (nodoFunc_error != null) {
+            report_error(nodoFunc_error, cur_token);
+        }
+        
+        RESULT = nodoFunc;
+    :}
+    ;
+
+cabecera_funcion ::= tipo:t ID:id
+                  {: 
+                     RESULT = new Object[]{t, id, 0}; 
+                  :}
+                  | dimensiones:d tipo:t ID:id
+                  {: 
+                     RESULT = new Object[]{t, id, d}; 
+                  :}
+                  | VACIO ID:id
+                  {: 
+                     RESULT = new Object[]{TipoDato.VOID, id, 0}; 
+                  :}
+                  ;
+
+bloque_main ::= MAIN LBRACK
+                 {:
+                     // Creamos un nuevo bloque para el main
+                     BloqueActivacion bloqueMain = new BloqueActivacion(bloqueGlobal, "MAIN");
+                     bloqueActual = bloqueMain;
+                 :}
+                 lista_sentencias:ls RBRACK
+                 {:
+                     // Procesamos las sentencias
+                     ArrayList<NodoAST> sentenciasMain = (ArrayList<NodoAST>)ls;
+
+                     // Restauramos el bloque global
+                     bloqueActual = bloqueGlobal;
+
+                     RESULT = sentenciasMain;
+                 :}
+               ;
+
+
+
+parametros ::= /* lambda */
+              {: RESULT = new ArrayList<NodoDeclaracion>(); :}
+            | tipo_parametro:tp ID:id
+              {:
+                  Location loc = ((ComplexSymbol)cur_token).getLeft();
+                  String idStr = (String)id;
+                  TipoParametro tipoParam = (TipoParametro)tp;
+                  
+                  // Agregar a la tabla de símbolos dependiendo si es array o no
+                  if (tipoParam.esArray()) {
+                      agregarParametroArray(idStr, tipoParam.getTipoBase(), tipoParam.getNumDimensiones());
+                  } else {
+                      agregarParametro(idStr, tipoParam.getTipoBase());
+                  }
+                  
+                  ArrayList<NodoDeclaracion> p = new ArrayList<>();
+                  p.add(new NodoDeclaracion(idStr, tipoParam.getTipoBase(), tipoParam.getNumDimensiones(), loc.getLine(), loc.getColumn()));
+                  RESULT = p;
+              :}
+            | tipo_parametro:tp ID:id dimensiones_param:dims
+              {:
+                  Location loc = ((ComplexSymbol)cur_token).getLeft();
+                  String idStr = (String)id;
+                  TipoParametro tipoParam = (TipoParametro)tp;
+                  List<NodoExpresion> dimensiones = (List<NodoExpresion>)dims;
+                  
+                  // Agregar a la tabla de símbolos con dimensiones explícitas
+                  if (tipoParam.esArray()) {
+                      agregarParametroArrayConDimensiones(idStr, tipoParam.getTipoBase(), tipoParam.getNumDimensiones(), dimensiones);
+                  } else {
+                      agregarParametro(idStr, tipoParam.getTipoBase());
+                  }
+                  
+                  ArrayList<NodoDeclaracion> p = new ArrayList<>();
+                  NodoDeclaracion decl = new NodoDeclaracion(idStr, tipoParam.getTipoBase(), tipoParam.getNumDimensiones(), loc.getLine(), loc.getColumn());
+                  p.add(decl);
+                  RESULT = p;
+              :}
+            | parametros:p COMA tipo_parametro:tp ID:id
+              {:
+                  Location loc = ((ComplexSymbol)cur_token).getLeft();
+                  String idStr = (String)id;
+                  TipoParametro tipoParam = (TipoParametro)tp;
+                  
+                  // Agregar a la tabla de símbolos dependiendo si es array o no
+                  if (tipoParam.esArray()) {
+                      agregarParametroArray(idStr, tipoParam.getTipoBase(), tipoParam.getNumDimensiones());
+                  } else {
+                      agregarParametro(idStr, tipoParam.getTipoBase());
+                  }
+                  
+                  ((ArrayList<NodoDeclaracion>)p).add(new NodoDeclaracion(idStr, tipoParam.getTipoBase(), tipoParam.getNumDimensiones(), loc.getLine(), loc.getColumn()));
+                  RESULT = p;
+              :}
+            | parametros:p COMA tipo_parametro:tp ID:id dimensiones_param:dims
+              {:
+                  Location loc = ((ComplexSymbol)cur_token).getLeft();
+                  String idStr = (String)id;
+                  TipoParametro tipoParam = (TipoParametro)tp;
+                  List<NodoExpresion> dimensiones = (List<NodoExpresion>)dims;
+                  
+                  // Agregar a la tabla de símbolos con dimensiones explícitas
+                  if (tipoParam.esArray()) {
+                      agregarParametroArrayConDimensiones(idStr, tipoParam.getTipoBase(), tipoParam.getNumDimensiones(), dimensiones);
+                  } else {
+                      agregarParametro(idStr, tipoParam.getTipoBase());
+                  }
+                  
+                  ((ArrayList<NodoDeclaracion>)p).add(new NodoDeclaracion(idStr, tipoParam.getTipoBase(), tipoParam.getNumDimensiones(), loc.getLine(), loc.getColumn()));
+                  RESULT = p;
+              :}
+              ;
+
+lista_sentencias ::= lista_sentencias_sin_break:ls final_sentencias:fs
+                    {:
+                        if (fs != null) {
+                            ((ArrayList<NodoAST>)ls).add((NodoAST)fs);
+                        }
+                        RESULT = ls;
+                    :}
+                    ;
+
+lista_sentencias_sin_break ::= /* lambda (lista vacía) */
+                  {: RESULT = new ArrayList<NodoAST>(); :}
+                  | lista_sentencias_sin_break:ls sentencia:s
+                  {:
+                      if (s != null) {
+                      ((ArrayList<NodoAST>)ls).add((NodoAST)s);
+                      }
+                      RESULT = ls;
+                  :}
+                  ;
+
+final_sentencias ::= /* lambda */
+                   | BREAK PUNTO
+                   {:
+                    Location loc = ((ComplexSymbol)cur_token).getLeft();
+                    RESULT = new NodoBreak(loc.getLine(), loc.getColumn());
+                  :}
+                   | RETURN expresion:e PUNTO
+                   {:
+                        Location loc = ((ComplexSymbol)cur_token).getLeft();
+                        RESULT = new NodoReturn((NodoExpresion)e, loc.getLine(), loc.getColumn());
+                   :}
+                   ;
+
+
+sentencia ::= declaracion:d
+           {: RESULT = d; :}
+           | cond:c
+           {: RESULT = c; :}
+           | error PUNTO
+           {:
+            RESULT = null;
+           :}     
+           | WHILE expresion:e bloque:b
+           {:
+              if (((NodoExpresion)e).getTipo() != TipoDato.BOOL) {
+                 report_error("La condición del WHILE debe ser boolean", cur_token);
+             
+              }
+
+              // Asignamos nombre al bloque WHILE
+              ((NodoBloque)b).getBloqueActivacion().setNombre("WHILE");
+
+               Location loc = ((ComplexSymbol)cur_token).getLeft();
+               RESULT = new NodoWhile((NodoExpresion)e, (NodoBloque)b, loc.getLine(), loc.getColumn());
+           :}
+           | REPEAT bloque:b UNTIL expresion:e PUNTO
+           {:
+              if (((NodoExpresion)e).getTipo() != TipoDato.BOOL) {
+                 report_error("La condición del UNTIL debe ser boolean", cur_token);
+              
+              }
+
+              // Asignamos nombre al bloque UNTIL
+              ((NodoBloque)b).getBloqueActivacion().setNombre("UNTIL");
+
+               Location loc = ((ComplexSymbol)cur_token).getLeft();
+               RESULT = new NodoRepeat((NodoExpresion)e, (NodoBloque)b, loc.getLine(), loc.getColumn());
+           :}
+           | for_loop:f
+           {:
+               RESULT = f;
+           :}
+           | decl_switch:ds
+           {:
+               RESULT = ds;
+           :}
+           | INPUT ID:id PUNTO
+           {:
+              String idStr = (String)id;
+              Simbolo s = bloqueActual.buscar(idStr);
+              if (s == null) {
+                 report_error("Variable no declarada en INPUT: " + idStr, cur_token);
+                
+              } else {
+                s.setInicializada(true);
+              }
+              Location loc = ((ComplexSymbol)cur_token).getLeft();
+              TipoDato tipoVar = (s != null) ? s.getTipo() : TipoDato.ERROR;
+              RESULT = new NodoInput(idStr, tipoVar, loc.getLine(), loc.getColumn());
+           :}
+           | INPUT acceso_array:aa PUNTO
+           {:
+              NodoAccesoArray nodoAcceso = (NodoAccesoArray) aa;
+              if (nodoAcceso != null) {  
+              Location loc = ((ComplexSymbol)cur_token).getLeft();
+              RESULT = new NodoInputArray((NodoAccesoArray)aa, loc.getLine(), loc.getColumn());
+              }
+           :}
+           | OUTPUT expresion:e PUNTO
+           {:
+              NodoExpresion expr = (NodoExpresion)e;
+              if (expr == null || expr.getTipo() == TipoDato.VOID || expr.getTipo() == TipoDato.ERROR) {
+                 report_error("Expresión inválida en OUTPUT: tipo incompatible o error en la expresión", cur_token);
+             
+              }
+              Location loc = ((ComplexSymbol)cur_token).getLeft();
+              RESULT = new NodoOutput(expr, false, loc.getLine(), loc.getColumn());
+           :}
+           | OUTPUTN expresion:e PUNTO
+           {:
+              NodoExpresion expr = (NodoExpresion)e;
+              if (expr == null || expr.getTipo() == TipoDato.VOID || expr.getTipo() == TipoDato.ERROR) {
+                 report_error("Expresión inválida en OUTPUTN: tipo incompatible o error en la expresión", cur_token);
+              
+              }
+              Location loc = ((ComplexSymbol)cur_token).getLeft();
+              RESULT = new NodoOutput(expr, true, loc.getLine(), loc.getColumn());
+           :}
+           | expresion_sentencia:es PUNTO
+           {:
+               RESULT = es;
+           :}
+           ;
+
+
+declaracion ::=  tipo:t ID:id ASIGN expresion:e PUNTO
+   {:
+       String idStr = (String)id;
+       TipoDato tipoDato = (TipoDato)t;
+
+       agregarVariable(idStr, tipoDato, (NodoExpresion)e);
+       Location loc = ((ComplexSymbol)cur_token).getLeft();
+       RESULT = new NodoAsignacion(idStr, (NodoExpresion)e, loc.getLine(), loc.getColumn());
+   :}
+    | tipo:t ID:id PUNTO
+    {:
+        String idStr = (String)id;
+        TipoDato tipoDato = (TipoDato)t;
+        agregarVariable(idStr, tipoDato, null);
+        Location loc = ((ComplexSymbol)cur_token).getLeft();
+        RESULT = new NodoDeclaracion(idStr, tipoDato, loc.getLine(), loc.getColumn());
+    :}
+    | dimensiones:d tipo:t ID:id ASIGN lista_inicializada_array:li PUNTO
+    {:
+        Integer dimensiones_esperadas = (Integer) d;
+        validarArray((String)id, (TipoDato)t, (List<Object>)li, dimensiones_esperadas);
+        Location loc = ((ComplexSymbol)cur_token).getLeft();
+
+        // En caso de haber dimensiones
+        List<NodoExpresion> valores = new ArrayList<>();
+        eliminar_Dimensiones(li, valores, (TipoDato)t);
+        
+            RESULT = new NodoAsignacionArray((String)id,(TipoDato)t,valores,null,loc.getLine(),loc.getColumn());
+    :}
+    | dimensiones:d tipo:t ID:id LONG long_dimensiones:val_longitudes PUNTO
+    {:
+        List<NodoExpresion> longitudes = (List<NodoExpresion>) val_longitudes;
+        Integer dimensiones_esperadas = (Integer) d;
+        if (longitudes.size() != dimensiones_esperadas) {
+           report_error("Las dimensiones del array esperadas [" + dimensiones_esperadas+"], no coinciden con las dimensiones declaradas[" + longitudes.size()+']', cur_token);
+       
+           
+       }
+        agregarArray((String)id, (TipoDato)t, null, longitudes, dimensiones_esperadas);
+        Location loc = ((ComplexSymbol)cur_token).getLeft();
+
+        RESULT = new NodoAsignacionArray((String)id,(TipoDato)t,null,longitudes,loc.getLine(),loc.getColumn());
+    :}
+    | CONST tipo:t ID:id ASIGN expresion:e PUNTO
+    {:
+        String idStr = (String)id;
+        TipoDato tipoDato = (TipoDato)t;
+        agregarConstante(idStr, tipoDato, (NodoExpresion)e);
+        Location loc = ((ComplexSymbol)cur_token).getLeft();
+        RESULT = new NodoAsignacion(idStr, (NodoExpresion)e, loc.getLine(), loc.getColumn());
+    :}
+    ;
+
+
+
+
+lista_inicializada_array ::= LCORCH lista_expresiones:le RCORCH
+                          {:
+                              RESULT = le; // lista de NodoExpresion
+                          :}
+                          ;
+
+expresiones_funcion ::= /* lambda */
+                   {: RESULT = new ArrayList<NodoExpresion>(); :}
+                   | lista_expresiones:e
+                   {: RESULT = e; :}
+                   ;
+
+
+lista_expresiones ::= elemento_array:e
+                  {:
+                      List<Object> arr = new ArrayList<>();
+                      arr.add(e);
+                      RESULT = arr;
+                  :}
+                  | lista_expresiones:le COMA elemento_array:e
+                  {:
+                      List<Object> lista = (List<Object>)le;
+                      lista.add(e);
+                      RESULT = lista;
+                  :}
+                  ;
+                  
+elemento_array ::= expresion:e
+               {:
+               RESULT = e;
+               :}
+               | lista_inicializada_array : subLista
+               {:
+               RESULT = subLista;
+               :}
+               ;
+
+long_dimensiones ::= long_dimensiones:array_anterior COMA expresion:e
+                   {:                 
+                   List <NodoExpresion> lista = (List<NodoExpresion>) array_anterior;
+                   lista.add((NodoExpresion) e);
+                   RESULT = lista;                  
+                   :}
+                   | expresion:e
+                   {:
+                   List <NodoExpresion> longitudes = new ArrayList<>();
+                   longitudes.add((NodoExpresion) e);
+                   RESULT = longitudes;
+                   :}
+                   ;
+
+asignacion ::= ID:id ASIGN expresion:e
+   {:
+       Location loc = ((ComplexSymbol)cur_token).getLeft();
+       String idStr = (String)id;
+       comprobarAsignacion(idStr, (NodoExpresion)e);
+
+
+       Simbolo s = bloqueActual.buscar(idStr);
+       if (s != null && e instanceof NodoLiteral) {
+           s.setValor(((NodoLiteral)e).getValor());
+       } else if (s != null) {
+           s.setInicializada(true);
+       }
+
+       RESULT = new NodoAsignacion(idStr, (NodoExpresion)e, loc.getLine(), loc.getColumn());
+   :}
+   | acceso_array:aa ASIGN expresion:e
+   {:
+      NodoAccesoArray nodoAcceso = (NodoAccesoArray) aa;
+
+      if (nodoAcceso != null) {
+     
+      TipoDato tipoArray = nodoAcceso.getTipo();
+      TipoDato tipoExpr = ((NodoExpresion)e).getTipo();
+
+
+      if (tipoArray != tipoExpr) {
+          report_error("Tipos incompatibles en asignación de array. El array es de tipo " +
+                       tipoArray + " pero se intenta asignar un valor de tipo " + tipoExpr, cur_token);
+      
+      }
+
+
+      Location loc = ((ComplexSymbol)cur_token).getLeft();
+      RESULT = new NodoAsignacionAcceso(nodoAcceso, (NodoExpresion)e, loc.getLine(), loc.getColumn());
+      }
+  :}
+   | MODIF ID:id SUMA expresion:e
+   {:
+       Location loc = ((ComplexSymbol)cur_token).getLeft();
+       String idStr = (String)id;
+       comprobarAsignacion(idStr, (NodoExpresion)e);
+
+       NodoVariable var = new NodoVariable(idStr, loc.getLine(), loc.getColumn());
+       Simbolo s = bloqueActual.buscar(idStr);
+       if (s != null) {
+            var.setTipo(s.getTipo());
+            var.setValor(s.getValor());
+       }
+
+       NodoOperacionBinaria op = new NodoOperacionBinaria("SUMA", var, (NodoExpresion)e, loc.getLine(), loc.getColumn());
+       op.setTipo(s.getTipo());
+       comprobarOperacion(op);
+
+       RESULT = new NodoAsignacion(idStr, op, loc.getLine(), loc.getColumn());
+   :}
+   | MODIF ID:id RESTA expresion:e
+   {:
+       Location loc = ((ComplexSymbol)cur_token).getLeft();
+       String idStr = (String)id;
+       comprobarAsignacion(idStr, (NodoExpresion)e);
+
+       NodoVariable var = new NodoVariable(idStr, loc.getLine(), loc.getColumn());
+       Simbolo s = bloqueActual.buscar(idStr);
+       if (s != null) {
+            var.setTipo(s.getTipo());
+            var.setValor(s.getValor());
+       }
+
+       NodoOperacionBinaria op = new NodoOperacionBinaria("RESTA", var, (NodoExpresion)e, loc.getLine(), loc.getColumn());
+       op.setTipo(s.getTipo());
+       comprobarOperacion(op);
+
+       RESULT = new NodoAsignacion(idStr, op, loc.getLine(), loc.getColumn());
+   :}
+   | MODIF ID:id PROD expresion:e
+   {:
+       Location loc = ((ComplexSymbol)cur_token).getLeft();
+       String idStr = (String)id;
+       comprobarAsignacion(idStr, (NodoExpresion)e);
+
+       NodoVariable var = new NodoVariable(idStr, loc.getLine(), loc.getColumn());
+       Simbolo s = bloqueActual.buscar(idStr);
+       if (s != null) {
+            var.setTipo(s.getTipo());
+            var.setValor(s.getValor());
+       }
+
+       NodoOperacionBinaria op = new NodoOperacionBinaria("PROD", var, (NodoExpresion)e, loc.getLine(), loc.getColumn());
+       op.setTipo(s.getTipo());
+       comprobarOperacion(op);
+
+       RESULT = new NodoAsignacion(idStr, op, loc.getLine(), loc.getColumn());
+   :}
+   | MODIF ID:id DIV expresion:e
+   {:
+       Location loc = ((ComplexSymbol)cur_token).getLeft();
+       String idStr = (String)id;
+       comprobarAsignacion(idStr, (NodoExpresion)e);
+
+       NodoVariable var = new NodoVariable(idStr, loc.getLine(), loc.getColumn());
+       Simbolo s = bloqueActual.buscar(idStr);
+       if (s != null) {
+            var.setTipo(s.getTipo());
+            var.setValor(s.getValor());
+       }
+
+       NodoOperacionBinaria op = new NodoOperacionBinaria("DIV", var, (NodoExpresion)e, loc.getLine(), loc.getColumn());
+       op.setTipo(s.getTipo());
+       comprobarOperacion(op);
+
+       RESULT = new NodoAsignacion(idStr, op, loc.getLine(), loc.getColumn());
+   :}
+   | MODIF ID:id MOD expresion:e
+   {:
+       Location loc = ((ComplexSymbol)cur_token).getLeft();
+       String idStr = (String)id;
+       comprobarAsignacion(idStr, (NodoExpresion)e);
+
+       NodoVariable var = new NodoVariable(idStr, loc.getLine(), loc.getColumn());
+       Simbolo s = bloqueActual.buscar(idStr);
+       if (s != null) {
+            var.setTipo(s.getTipo());
+            var.setValor(s.getValor());
+       }
+
+       NodoOperacionBinaria op = new NodoOperacionBinaria("MOD", var, (NodoExpresion)e, loc.getLine(), loc.getColumn());
+       op.setTipo(s.getTipo());
+       comprobarOperacion(op);
+
+       RESULT = new NodoAsignacion(idStr, op, loc.getLine(), loc.getColumn());
+   :}
+   ;
+
+cond ::= IF expresion:e bloque:b
+      {:
+              if (((NodoExpresion)e).getTipo() != TipoDato.BOOL) {
+                 report_error("La condición del IF debe ser boolean", cur_token);
+           
+              }
+
+        // Asignamos nombre al bloque IF
+         ((NodoBloque)b).getBloqueActivacion().setNombre("IF");
+
+         Location loc = ((ComplexSymbol)cur_token).getLeft();
+         RESULT = new NodoIf((NodoExpresion)e, (NodoBloque)b, null, loc.getLine(), loc.getColumn());
+      :}
+      ;
+
+
+cond ::= IF expresion:e bloque:b ELSE cuerpo_else:ce
+      {:
+              if (((NodoExpresion)e).getTipo() != TipoDato.BOOL) {
+                 report_error("La condición del IF debe ser boolean", cur_token);
+            
+              }
+
+        // Asignamos nombre al bloque IF
+         ((NodoBloque)b).getBloqueActivacion().setNombre("IF");
+
+         Location loc = ((ComplexSymbol)cur_token).getLeft();
+         RESULT = new NodoIf((NodoExpresion)e, (NodoBloque)b, (NodoBloque)ce, loc.getLine(), loc.getColumn());
+      :}
+      ;
+
+
+cuerpo_else ::= cond:c
+             {: RESULT = c; :}
+             | bloque:b
+             {:
+                 ((NodoBloque)b).getBloqueActivacion().setNombre("ELSE");
+                 RESULT = b;
+             :}
+             ;
+
+
+for_init ::= tipo:t ID:id ASIGN expresion:e1 
+            {:
+               // Creamos el bloque del FOR
+               BloqueActivacion padre_for = bloqueActual;
+               bloqueActual = new BloqueActivacion(padre_for, "FOR");
+
+               // Declaramos la variable de control dentro del bloque del FOR
+               String idStr = (String)id;
+               TipoDato tipoVar = (TipoDato)t;
+
+               agregarVariable(idStr, tipoVar, (NodoExpresion)e1);
+
+             Location loc = ((ComplexSymbol)cur_token).getLeft();
+             RESULT = new NodoAsignacion(idStr, (NodoExpresion)e1, loc.getLine(), loc.getColumn());
+            :}
+            ;
+
+for_loop ::= FOR for_init:init COMA for_cond:fc COMA expresion_sentencia:expr LBRACK lista_sentencias:ls RBRACK
+            {:
+               Location loc = ((ComplexSymbol)cur_token).getLeft();
+               NodoBloque nodoBloqueFor = new NodoBloque((ArrayList<NodoAST>)ls, bloqueActual, loc.getLine(), loc.getColumn());
+
+               // Restauramos el bloque padre
+               bloqueActual = bloqueActual.getPadre();
+
+             // Construimos el nodo FOR usando el bloque b
+             RESULT = new NodoFor((NodoAsignacion)init, (NodoExpresion)fc, (NodoExpresion)expr, nodoBloqueFor, loc.getLine(), loc.getColumn());
+
+            :}
+            ;
+
+for_cond ::= REPEAT IF expresion:e               
+          {:
+              NodoExpresion condExpr = (NodoExpresion)e;
+              if (condExpr.getTipo() != TipoDato.BOOL) {
+                 report_error("La condición del FOR debe ser boolean", cur_token);
+             
+              }
+              RESULT = condExpr;
+          :}
+          ;
+
+
+
+decl_switch ::= SWITCH expresion:e LBRACK opt:o default_case:d RBRACK
+             {:
+                 // Combinar la lista de casos normales con el default si existe
+                 if (d != null) {
+                     ((ArrayList<NodoCase>)o).add((NodoCase)d);
+                 }
+                 comprobarCamposSwitch((NodoExpresion)e, (List<NodoCase>)o);
+                 Location loc = ((ComplexSymbol)cur_token).getLeft();
+                 RESULT = new NodoSwitch((NodoExpresion)e, (List<NodoCase>)o, loc.getLine(), loc.getColumn());
+             :}
+             ;
+
+
+opt ::= /* lambda */
+      {: RESULT = new ArrayList<NodoCase>(); :}   // Lista vacía si no hay cases
+      | opt:o case_switch:cs
+      {:
+          ((ArrayList<NodoCase>)o).add((NodoCase)cs); // Añadir case al final
+          RESULT = o;
+      :}
+      ;
+
+
+default_case ::= /* lambda */
+              {: RESULT = null; :} // No hay case default
+              | ELSE DPUNTO lista_sentencias:ls
+              {:
+                 Location loc = ((ComplexSymbol)cur_token).getLeft();
+                 NodoBloque bloqueDefault = new NodoBloque((ArrayList<NodoAST>)ls, bloqueActual, loc.getLine(), loc.getColumn());
+                 RESULT = new NodoCase(null, bloqueDefault, loc.getLine(), loc.getColumn());
+              :}
+              ;
+
+
+case_switch ::= CASE expresion:e DPUNTO lista_sentencias:ls
+              {:
+                 Location loc = ((ComplexSymbol)cur_token).getLeft();
+                 NodoBloque bloqueCase = new NodoBloque((ArrayList<NodoAST>)ls, bloqueActual, loc.getLine(), loc.getColumn());
+                 RESULT = new NodoCase((NodoExpresion)e, bloqueCase, loc.getLine(), loc.getColumn());
+              :}
+              ;
+
+
+tipo ::= INT
+      {:
+         RESULT = TipoDato.INT;
+      :}
+      | FLOAT
+      {:
+         RESULT = TipoDato.FLOAT;
+      :}
+      | BOOL
+      {:
+         RESULT = TipoDato.BOOL;
+      :}
+      | CHAR
+      {:
+         RESULT = TipoDato.CHAR;
+      :}
+      | STRING
+      {:
+         RESULT = TipoDato.STRING;
+      :}
+      ;
+
+tipo_parametro ::= tipo:t
+        {:
+            // Tipo simple (no array)
+            RESULT = new TipoParametro((TipoDato)t, 0);
+        :}
+        | dimensiones:d tipo:t
+        {:
+            // Array de d dimensiones
+            RESULT = new TipoParametro((TipoDato)t, (Integer)d);
+        :}
+        ;
+
+dimensiones ::= ARRAY
+        {:
+            RESULT = 1;
+        :}
+        | dimensiones:d ARRAY
+        {:
+            RESULT = (Integer) d + 1;
+        :}
+        ;
+
+dimensiones_param ::= LCORCH NUMERO:n RCORCH
+                   {:
+                       List<NodoExpresion> dims = new ArrayList<>();
+                       Integer val = (Integer)n;
+                       dims.add(new NodoLiteral(val, TipoDato.INT, 0, 0));
+                       RESULT = dims;
+                   :}
+                   | dimensiones_param:d LCORCH NUMERO:n RCORCH
+                   {:
+                       Integer val = (Integer)n;
+                       ((List<NodoExpresion>)d).add(new NodoLiteral(val, TipoDato.INT, 0, 0));
+                       RESULT = d;
+                   :}
+                   ;
+
+bloque ::= LBRACK
+          {:
+             // Creamos un nuevo bloque
+             BloqueActivacion padre_bloque = bloqueActual;
+             bloqueActual = new BloqueActivacion(padre_bloque, "");
+          :}
+          
+          // Procesamos las sentencias dentro del bloque
+          lista_sentencias:ls RBRACK
+       {:
+           Location loc = ((ComplexSymbol)cur_token).getLeft();
+           NodoBloque nodoBloque = new NodoBloque((ArrayList<NodoAST>)ls, bloqueActual, loc.getLine(), loc.getColumn());
+
+           // Restauramos el bloque padre
+           BloqueActivacion padre_bloque = bloqueActual.getPadre();
+           bloqueActual = padre_bloque;
+
+           RESULT = nodoBloque;
+       :}
+       ;
+
+expresion ::= logico:l
+          {: RESULT = l; :}
+          | asignacion:a
+          {: RESULT = a; :}
+          ;
+
+expresion_sentencia ::= crement:c
+          {: RESULT = c; :}
+          | asignacion:a
+          {: RESULT = a; :}
+          | llamada_funcion:fc
+          {: RESULT = fc; :}
+          ;
+
+
+logico ::= NOT logico:l
+        {:
+           Location loc = ((ComplexSymbol)cur_token).getLeft();
+           NodoOperacionUnaria op = new NodoOperacionUnaria("NOT", (NodoExpresion)l, loc.getLine(), loc.getColumn());
+           op.setTipo(((NodoExpresion)l).getTipo());
+           comprobarOperacionUnaria(op);
+           RESULT = op;
+        :}
+        | logico:l1 AND logico:l2
+        {:
+              Location loc = ((ComplexSymbol)cur_token).getLeft();
+              NodoOperacionBinaria op = new NodoOperacionBinaria("AND", (NodoExpresion)l1, (NodoExpresion)l2, loc.getLine(), loc.getColumn());
+              comprobarOperacion(op);
+              RESULT = op;
+        :}
+        | logico:l1 OR logico:l2
+        {:
+              Location loc = ((ComplexSymbol)cur_token).getLeft();
+              NodoOperacionBinaria op = new NodoOperacionBinaria("OR", (NodoExpresion)l1, (NodoExpresion)l2, loc.getLine(), loc.getColumn());
+              comprobarOperacion(op);
+              RESULT = op;
+        :}
+        | logico:l1 XOR logico:l2
+        {:
+              Location loc = ((ComplexSymbol)cur_token).getLeft();
+              NodoOperacionBinaria op = new NodoOperacionBinaria("XOR", (NodoExpresion)l1, (NodoExpresion)l2, loc.getLine(), loc.getColumn());
+              comprobarOperacion(op);
+              RESULT = op;
+        :}
+        | logico:l COND IF IF expresion:e1 ELSE expresion:e2
+          {:
+              Location loc = ((ComplexSymbol)cur_token).getLeft();
+
+              if (((NodoExpresion)l).getTipo() != TipoDato.BOOL) {
+                  report_error("La condición del operador ternario debe ser booleana", cur_token);
+             
+              }
+
+              if (((NodoExpresion)e1).getTipo() != ((NodoExpresion)e2).getTipo()) {
+                  report_error("Los dos operandos del ternario deben tener el mismo tipo", cur_token);
+           
+              }
+
+              NodoTernario t = new NodoTernario((NodoExpresion)l, (NodoExpresion)e1, (NodoExpresion)e2, loc.getLine(), loc.getColumn());
+              t.setTipo(((NodoExpresion)e1).getTipo());
+              RESULT = t;
+          :}
+          | comparacion:c
+        {: RESULT = c; :}
+        ;
+
+
+comparacion ::= aritmetica:a1 IGUAL aritmetica:a2
+             {:
+              Location loc = ((ComplexSymbol)cur_token).getLeft();
+              NodoOperacionBinaria op = new NodoOperacionBinaria("IGUAL", (NodoExpresion)a1, (NodoExpresion)a2, loc.getLine(), loc.getColumn());
+              comprobarOperacion(op);
+              RESULT = op;
+             :}
+             | aritmetica:a1 DIST aritmetica:a2
+             {:
+              Location loc = ((ComplexSymbol)cur_token).getLeft();
+              NodoOperacionBinaria op = new NodoOperacionBinaria("DIST", (NodoExpresion)a1, (NodoExpresion)a2, loc.getLine(), loc.getColumn());
+              comprobarOperacion(op);
+              RESULT = op;
+             :}
+             | aritmetica:a1 MENOR aritmetica:a2
+             {:
+              Location loc = ((ComplexSymbol)cur_token).getLeft();
+              NodoOperacionBinaria op = new NodoOperacionBinaria("MENOR", (NodoExpresion)a1, (NodoExpresion)a2, loc.getLine(), loc.getColumn());
+              comprobarOperacion(op);
+              RESULT = op;
+             :}
+             | aritmetica:a1 MEIGUAL aritmetica:a2
+             {:
+              Location loc = ((ComplexSymbol)cur_token).getLeft();
+              NodoOperacionBinaria op = new NodoOperacionBinaria("MEIGUAL", (NodoExpresion)a1, (NodoExpresion)a2, loc.getLine(), loc.getColumn());
+              comprobarOperacion(op);
+              RESULT = op;
+             :}
+             | aritmetica:a1 MAYOR aritmetica:a2
+             {:
+              Location loc = ((ComplexSymbol)cur_token).getLeft();
+              NodoOperacionBinaria op = new NodoOperacionBinaria("MAYOR", (NodoExpresion)a1, (NodoExpresion)a2, loc.getLine(), loc.getColumn());
+              comprobarOperacion(op);
+              RESULT = op;
+             :}
+             | aritmetica:a1 MAIGUAL aritmetica:a2
+             {:
+              Location loc = ((ComplexSymbol)cur_token).getLeft();
+              NodoOperacionBinaria op = new NodoOperacionBinaria("MAIGUAL", (NodoExpresion)a1, (NodoExpresion)a2, loc.getLine(), loc.getColumn());
+              comprobarOperacion(op);
+              RESULT = op;
+             :}
+             | aritmetica:a
+             {: RESULT = a; :}
+             ;
+
+
+aritmetica ::= aritmetica:a1 SUMA aritmetica:a2
+            {:
+              Location loc = ((ComplexSymbol)cur_token).getLeft();
+              NodoOperacionBinaria op = new NodoOperacionBinaria("SUMA", (NodoExpresion)a1, (NodoExpresion)a2, loc.getLine(), loc.getColumn());
+              comprobarOperacion(op);
+              RESULT = op;
+            :}
+            | aritmetica:a1 RESTA aritmetica:a2
+            {:
+              Location loc = ((ComplexSymbol)cur_token).getLeft();
+              NodoOperacionBinaria op = new NodoOperacionBinaria("RESTA", (NodoExpresion)a1, (NodoExpresion)a2, loc.getLine(), loc.getColumn());
+              comprobarOperacion(op);
+              RESULT = op;
+            :}
+            | aritmetica:a1 PROD aritmetica:a2
+            {:
+              Location loc = ((ComplexSymbol)cur_token).getLeft();
+              NodoOperacionBinaria op = new NodoOperacionBinaria("PROD", (NodoExpresion)a1, (NodoExpresion)a2, loc.getLine(), loc.getColumn());
+              comprobarOperacion(op);
+              RESULT = op;
+            :}
+            | aritmetica:a1 DIV aritmetica:a2
+            {:
+              Location loc = ((ComplexSymbol)cur_token).getLeft();
+              NodoOperacionBinaria op = new NodoOperacionBinaria("DIV", (NodoExpresion)a1, (NodoExpresion)a2, loc.getLine(), loc.getColumn());
+              comprobarOperacion(op);
+              RESULT = op;
+            :}
+            | aritmetica:a1 MOD aritmetica:a2
+            {:
+              Location loc = ((ComplexSymbol)cur_token).getLeft();
+              NodoOperacionBinaria op = new NodoOperacionBinaria("MOD", (NodoExpresion)a1, (NodoExpresion)a2, loc.getLine(), loc.getColumn());
+              comprobarOperacion(op);
+              RESULT = op;
+            :}
+            | RESTA aritmetica:a
+            {:
+              Location loc = ((ComplexSymbol)cur_token).getLeft();
+              NodoOperacionUnaria op = new NodoOperacionUnaria("RESTA", (NodoExpresion)a, loc.getLine(), loc.getColumn());
+              op.setTipo(((NodoExpresion)a).getTipo());
+              comprobarOperacionUnaria(op);
+              RESULT = op;
+            :}
+            | primario:p
+            {:
+                RESULT = p;
+            :}
+            | crement:c
+            {: RESULT = c; :}
+            | llamada_funcion:fc
+            {: RESULT = fc; :}
+            | acceso_array: aa 
+            {: RESULT = aa; :}
+            ;
+
+crement ::= INCR ID:id
+         {:
+           String idStr = (String)id;
+           comprobarUsoVariable(idStr);
+           Location loc = ((ComplexSymbol)cur_token).getLeft();
+           NodoVariable varNode = new NodoVariable(idStr, loc.getLine(), loc.getColumn());
+           Simbolo idS = bloqueActual.buscar(idStr);
+           varNode.setTipo(idS.getTipo());
+           varNode.setValor(idS.getValor());
+           NodoOperacionUnaria op = new NodoOperacionUnaria("INCR", varNode, loc.getLine(), loc.getColumn());
+           op.setTipo(idS.getTipo());
+           comprobarOperacionUnaria(op);
+           RESULT = op;
+         :}
+         | DECR ID:id
+         {:
+           String idStr = (String)id;
+           comprobarUsoVariable(idStr);
+           Location loc = ((ComplexSymbol)cur_token).getLeft();
+           NodoVariable varNode = new NodoVariable(idStr, loc.getLine(), loc.getColumn());
+           Simbolo idS = bloqueActual.buscar(idStr);
+           varNode.setTipo(idS.getTipo());
+           varNode.setValor(idS.getValor());
+           NodoOperacionUnaria op = new NodoOperacionUnaria("DECR", varNode, loc.getLine(), loc.getColumn());
+           op.setTipo(idS.getTipo());
+           comprobarOperacionUnaria(op);
+           RESULT = op;
+         :}
+         | ID:id INCR
+         {:
+           String idStr = (String)id;
+           comprobarUsoVariable(idStr);
+           Location loc = ((ComplexSymbol)cur_token).getLeft();
+           NodoVariable varNode = new NodoVariable(idStr, loc.getLine(), loc.getColumn());
+           Simbolo idS = bloqueActual.buscar(idStr);
+           varNode.setTipo(idS.getTipo());
+           varNode.setValor(idS.getValor());
+           NodoOperacionUnaria op = new NodoOperacionUnaria("INCR", varNode, loc.getLine(), loc.getColumn());
+           op.setTipo(idS.getTipo());
+           op.esPostIncremento();
+           comprobarOperacionUnaria(op);
+           RESULT = op;
+         :}
+         | ID:id DECR
+         {:
+           String idStr = (String)id;
+           comprobarUsoVariable(idStr);
+           Location loc = ((ComplexSymbol)cur_token).getLeft();
+           NodoVariable varNode = new NodoVariable(idStr, loc.getLine(), loc.getColumn());
+           Simbolo idS = bloqueActual.buscar(idStr);
+           varNode.setTipo(idS.getTipo());
+           varNode.setValor(idS.getValor());
+           NodoOperacionUnaria op = new NodoOperacionUnaria("DECR", varNode, loc.getLine(), loc.getColumn());
+           op.setTipo(idS.getTipo());
+           op.esPostIncremento();
+           comprobarOperacionUnaria(op);
+           RESULT = op;
+         :}
+         ;
+
+primario ::= LPAREN expresion:a RPAREN
+            {:
+               RESULT = a;
+            :}
+            | NUMERO:n
+            {:
+               Location loc = ((ComplexSymbol)cur_token).getLeft();
+               Integer num = (Integer)n;
+               RESULT = new NodoLiteral(num, TipoDato.INT, loc.getLine(), loc.getColumn());
+            :}
+            | DECIMAL:d
+            {:
+               Location loc = ((ComplexSymbol)cur_token).getLeft();
+               Double decimal = (Double)d;
+               RESULT = new NodoLiteral(decimal, TipoDato.FLOAT, loc.getLine(), loc.getColumn());
+            :}
+            | CADENA:c
+            {:
+               Location loc = ((ComplexSymbol)cur_token).getLeft();
+               String cadena = (String)c;
+               RESULT = new NodoLiteral(cadena, TipoDato.STRING, loc.getLine(), loc.getColumn());
+            :}
+            | ELEMENTO:l 
+            {:
+               Location loc = ((ComplexSymbol)cur_token).getLeft();
+               String s = (String)l;
+               char elemento = s.charAt(1);
+               RESULT = new NodoLiteral(elemento, TipoDato.CHAR, loc.getLine(), loc.getColumn());
+            :}
+            | TRUE
+            {:
+               Location loc = ((ComplexSymbol)cur_token).getLeft();
+               RESULT = new NodoLiteral(true, TipoDato.BOOL, loc.getLine(), loc.getColumn());
+            :}
+            | FALSE
+            {:
+               Location loc = ((ComplexSymbol)cur_token).getLeft();
+               RESULT = new NodoLiteral(false, TipoDato.BOOL, loc.getLine(), loc.getColumn());
+            :}
+            | ID:id
+            {:
+
+              String idStr = (String)id;
+              comprobarUsoVariable(idStr);
+
+              Location loc = ((ComplexSymbol)cur_token).getLeft();
+              NodoVariable nodo = new NodoVariable(idStr, loc.getLine(), loc.getColumn());
+
+                // Buscamos el tipo en la tabla y se lo asignamos al nodo
+                Simbolo s = bloqueActual.buscar(idStr);
+                if (s != null) {
+                    nodo.setTipo(s.getTipo());
+                    nodo.setValor(s.getValor());
+
+                    if (s.isArray()) {
+                        nodo.setDimensionesEsp(s.getNumDimensiones());                
+                    }
+                    
+                }
+
+               RESULT = nodo;
+            :}
+            ;
+
+llamada_funcion ::= ID:id LPAREN expresiones_funcion:args RPAREN
+            {:
+               String nombreFunc = (String)id;
+               Location loc = ((ComplexSymbol)cur_token).getLeft();
+
+                Simbolo funcion = bloqueActual.buscarFuncion(nombreFunc);
+                if (funcion == null) {
+                    report_error("Función no declarada: " + nombreFunc, cur_token);
+               
+                } else {
+                    List<TipoParametro> tiposEsperados = funcion.getParametros();
+                    ArrayList<NodoExpresion> argumentos = (ArrayList<NodoExpresion>)args;
+
+                    if (tiposEsperados.size() != argumentos.size()) {
+                        report_error("Número incorrecto de argumentos en la llamada a la funcion '" + nombreFunc+ "'", cur_token);
+                
+                    } else {
+                        for (int i = 0; i < tiposEsperados.size(); i++) {
+                            NodoExpresion argNodo = argumentos.get(i);
+                            TipoParametro tipoEsperado = tiposEsperados.get(i);
+                            
+                            // Verificar si el argumento es una variable
+                            if (argNodo instanceof NodoVariable) {
+                                String nombreVar = ((NodoVariable)argNodo).getNombre();
+                                Simbolo simboloArg = bloqueActual.buscar(nombreVar);
+                                
+                                if (simboloArg != null && simboloArg.isArray()) {
+                                    // Si es un array, verificar dimensiones o si el tipo corresponde con el esperado
+                                    int numDimsArg = simboloArg.getLong_Dimensiones() != null ? simboloArg.getLong_Dimensiones().size() : 0;
+                                    if (numDimsArg != tipoEsperado.getNumDimensiones()) {
+                                        report_error("Argumento " + (i+1) + " en llamada a " + nombreFunc + 
+                                                   ": esperado array de " + tipoEsperado.getNumDimensiones() + 
+                                                   " dimensiones, recibido array de " + numDimsArg + " dimensiones", cur_token);
+                                      
+                                    } else if (simboloArg.getTipo() != tipoEsperado.getTipoBase()) {
+                                        report_error("Tipo de argumento " + (i+1) + " incorrecto en la llamada a " + nombreFunc + 
+                                                   " (es " + simboloArg.getTipo() + "[] se esperaba " + tipoEsperado + ")", cur_token);
+                                     
+                                    }
+                                } else if (!tipoEsperado.esArray()) {
+                                    // Si no es array, validación normal de tipo
+                                    TipoDato tipoArg = argNodo.getTipo();
+                                    if (tipoArg != tipoEsperado.getTipoBase()) {
+                                        if ((tipoEsperado.getTipoBase() == TipoDato.FLOAT) && (tipoArg == TipoDato.INT)){
+                                            argumentos.get(i).setTipo(tipoEsperado.getTipoBase());
+                                        } else {
+                                            report_error("Tipo de argumento " + (i+1) + " incorrecto en la llamada a la funcion '" + nombreFunc + 
+                                                       "'' (es " + tipoArg + " se esperaba " + tipoEsperado.getTipoBase() + ")", cur_token);
+                                    
+                                        }
+                                    }
+                                } else {
+                                    report_error("Argumento " + (i+1) + " en llamada a la funcion '" + nombreFunc + 
+                                               "': se esperaba array pero se recibió variable simple", cur_token);
+                                 
+                                }
+                            } else if (!tipoEsperado.esArray()) {
+                                // Es una expresión
+                                TipoDato tipoArg = argNodo.getTipo();
+                                if (tipoArg != tipoEsperado.getTipoBase()) {
+                                    if ((tipoEsperado.getTipoBase() == TipoDato.FLOAT) && (tipoArg == TipoDato.INT)){
+                                        argumentos.get(i).setTipo(tipoEsperado.getTipoBase());
+                                    } else {
+                                        report_error("Tipo de argumento " + (i+1) + " incorrecto en la llamada a la funcion '" + nombreFunc + 
+                                                   "' (es " + tipoArg + " se esperaba " + tipoEsperado.getTipoBase() + ")", cur_token);
+                                   
+                                    }
+                                }
+                            } else {
+                                report_error("Argumento " + (i+1) + " en llamada a funcion '" + nombreFunc + 
+                                           "': se esperaba array pero se recibió expresión", cur_token);
+                               
+                            }
+                        }
+                    }
+                }
+
+               NodoLlamadaFuncion llamada = new NodoLlamadaFuncion(nombreFunc, (ArrayList<NodoExpresion>)args, loc.getLine(), loc.getColumn());
+               if(funcion != null) {
+                    llamada.setTipo(funcion.getTipo());
+               } else {
+                    llamada.setTipo(TipoDato.ERROR);
+               }
+               RESULT = llamada;
+            :}
+            ;
+
+acceso_array ::= ID:id ACCESO LPAREN lista_indices_acceso:idxs RPAREN
+           {:
+           String nombre = (String) id;
+           Simbolo s = bloqueActual.buscar(nombre);
+           List <NodoExpresion> lista_indices = (List<NodoExpresion>) idxs; 
+           Location loc = ((ComplexSymbol)cur_token).getLeft();
+           if (s == null) {
+               report_error("Variable no declarada: " + nombre, cur_token);
+            
+
+
+           } else if (!s.isArray()) {
+               report_error("La variable '" + nombre + "' no es un array.", cur_token);
+         
+
+
+           } else {
+               // Validar que el número de dimensiones coincida
+               List<NodoExpresion> dimensiones = s.getLong_Dimensiones();
+               int dimensionesDeclaradas = 0;
+               
+               // Contar dimensiones declaradas
+               if (dimensiones != null) {
+                   dimensionesDeclaradas = dimensiones.size();
+               } else {
+                   // Si es un parámetro array sin dimensiones explícitas, usar el número de dimensiones del símbolo
+                   dimensionesDeclaradas = s.getNumDimensiones();
+               }
+               
+               int indicesProporcionados = lista_indices.size();
+               
+               if (dimensionesDeclaradas != indicesProporcionados) {
+                   report_error("Error de dimensiones en array '" + nombre + "'. Dimensiones declaradas: " + 
+                              dimensionesDeclaradas + ", índices proporcionados: " + indicesProporcionados, cur_token);
+          
+               } else if (dimensiones != null) {
+                   // Solo hacer validación de rangos si tenemos dimensiones explícitas
+                   for (int i = 0; i < lista_indices.size(); i++) {
+                       NodoExpresion indice_usuario = lista_indices.get(i);
+                       NodoExpresion indice_dimension = dimensiones.get(i);
+
+                       // Validar que el tipo del índice sea INT
+                       if (indice_usuario.getTipo() != TipoDato.INT) {
+                           report_error("El índice debe ser de tipo INT, pero se ha encontrado tipo " + indice_usuario.getTipo(), cur_token);
+                     
+                           break;
+                       }
+
+                       if (indice_dimension instanceof NodoLiteral && ((NodoLiteral)indice_dimension).getValor() instanceof Integer) {
+                        int maxDimension = (Integer)((NodoLiteral)indice_dimension).getValor();
+                       if (indice_usuario instanceof NodoLiteral) {
+                           Object valorObj = ((NodoLiteral) indice_usuario).getValor();
+
+
+                           if (valorObj instanceof Integer) {
+                               int valor = (Integer) valorObj;
+                          
+                               if (valor >= maxDimension || valor < 0) {
+                               report_error("Idice fuera de rango: " + valor + " no está en el rango establecido de 0 a " + (maxDimension - 1), cur_token);
+                          
+                               break;
+                               }
+                           }
+                       }
+                     }
+                   }
+               }
+               
+               RESULT = new NodoAccesoArray(nombre, s.getLong_Dimensiones(), lista_indices, s.getTipoSize(), s.getTipo(), loc.getLine(), loc.getColumn());
+           }
+           :}
+           ;
+
+
+lista_indices_acceso ::= expresion:e
+           {:
+           List<NodoExpresion> l = new ArrayList<>();
+           l.add((NodoExpresion)e);
+           RESULT = l;
+           :}
+           | lista_indices_acceso:l COMA expresion:e 
+           {:
+           List<NodoExpresion> lista = (List<NodoExpresion>)l;
+           lista.add((NodoExpresion)e);
+           RESULT = lista; 
+           :}
+           ;

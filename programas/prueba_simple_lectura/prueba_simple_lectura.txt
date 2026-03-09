@@ -1,0 +1,7 @@
+principal {
+    numero x.
+    escribeN "Ingresa numero:".
+    lee x.
+    escribeN "Ingresaste:".
+    escribe x.
+}

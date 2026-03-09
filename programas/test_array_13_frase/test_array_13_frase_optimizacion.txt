@@ -1,0 +1,94 @@
+===== OPTIMIZACIONES REALIZADAS =====
+
+Archivo: .\programas\test_array_13_frase\test_array_13_frase.txt
+Fecha: 2026-02-11T20:34:07.944583800
+
+--- ESTADÍSTICAS DE CÓDIGO INTERMEDIO ---
+
+Instrucciones originales: 29
+Instrucciones optimizadas: 28
+Instrucciones eliminadas: 1
+Reducción: 3,45%
+
+--- ESTADÍSTICAS DE ENSAMBLADOR ---
+
+Archivo original (.x68): 5795 bytes
+Archivo optimizado (_optimizado.x68): 4219 bytes
+Bytes reducidos: 1576 bytes
+Reducción en ensamblador: 27,20%
+
+--- CÓDIGO OPTIMIZADO ---
+
+main:
+output "=== TEST: Arrays de frase ==="
+output "\n"
+nombres[0] = "Ana"
+nombres[4] = "Luis"
+nombres[8] = "Maria"
+output "Mostrando nombres:"
+output "\n"
+t15 = 3
+t17 = nombres[0]
+nombre1 = t17
+output nombre1
+output "\n"
+t22 = 3
+t24 = nombres[4]
+nombre2 = t24
+output nombre2
+output "\n"
+output "Modificando posicion 2:"
+output "\n"
+nombres[8] = "Pedro"
+t32 = 3
+t34 = nombres[8]
+nombre3 = t34
+output nombre3
+output "\n"
+output "Test completado"
+output "\n"
+
+--- CAMBIOS REALIZADOS POR EL OPTIMIZADOR ---
+
+Asignación diferida:
+  - Línea 3: t0 eliminado y sustituido por 3
+  - Línea 3: t1 eliminado y sustituido por 4
+  - Línea 5: t3 eliminado y sustituido por 0
+  - Línea 5: t4 eliminado y sustituido por 4
+  - Línea 7: t6 eliminado y sustituido por 1
+  - Línea 7: t7 eliminado y sustituido por 4
+  - Línea 9: t9 eliminado y sustituido por 2
+  - Línea 9: t10 eliminado y sustituido por 4
+  - Línea 13: t12 eliminado y sustituido por 0
+  - Línea 13: t13 eliminado y sustituido por 4
+  - Línea 14: t16 eliminado y sustituido por 3
+  - Línea 17: t18 eliminado y sustituido por nombre1
+  - Línea 19: t19 eliminado y sustituido por 1
+  - Línea 19: t20 eliminado y sustituido por 4
+  - Línea 20: t23 eliminado y sustituido por 3
+  - Línea 23: t25 eliminado y sustituido por nombre2
+  - Línea 27: t26 eliminado y sustituido por 2
+  - Línea 27: t27 eliminado y sustituido por 4
+  - Línea 29: t29 eliminado y sustituido por 2
+  - Línea 29: t30 eliminado y sustituido por 4
+  - Línea 30: t33 eliminado y sustituido por 3
+  - Línea 33: t35 eliminado y sustituido por nombre3
+  - Línea 3: t2 eliminado y sustituido por 12
+  - Línea 4: t5 eliminado y sustituido por 0
+  - Línea 5: t8 eliminado y sustituido por 4
+  - Línea 6: t11 eliminado y sustituido por 8
+  - Línea 9: t14 eliminado y sustituido por 0
+  - Línea 14: t21 eliminado y sustituido por 4
+  - Línea 21: t28 eliminado y sustituido por 8
+  - Línea 22: t31 eliminado y sustituido por 8
+Eliminación de etiquetas muertas:
+  - Línea 37: Se ha eliminado la etiqueta end
+Cálculo de constantes:
+  - Línea 3: t2 = 3 * 4 -> t2 = 12
+  - Línea 5: t5 = 0 * 4 -> t5 = 0
+  - Línea 7: t8 = 1 * 4 -> t8 = 4
+  - Línea 9: t11 = 2 * 4 -> t11 = 8
+  - Línea 13: t14 = 0 * 4 -> t14 = 0
+  - Línea 19: t21 = 1 * 4 -> t21 = 4
+  - Línea 27: t28 = 2 * 4 -> t28 = 8
+  - Línea 29: t31 = 2 * 4 -> t31 = 8

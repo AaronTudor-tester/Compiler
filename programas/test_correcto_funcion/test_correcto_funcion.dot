@@ -1,0 +1,37 @@
+strict digraph {
+17	[label="Programa"];
+17->7
+17->11
+17->15
+17->16
+7	[label="func: suma"];
+7->0
+7->1
+7->6
+0	[label="decl: a (INT)"];
+1	[label="decl: b (INT)"];
+6	[label="Bloque"];
+6->5
+5	[label="return"];
+5->4
+4	[label="SUMA"];
+4->2
+4->3
+2	[label="a",shape=plaintext];
+3	[label="b",shape=plaintext];
+11	[label="func: saludo"];
+11->10
+10	[label="Bloque"];
+10->9
+9	[label="print"];
+9->8
+8	[label="Hola mundo",shape=plaintext];
+15	[label="print"];
+15->14
+14	[label="call: suma"];
+14->12
+14->13
+12	[label="2",shape=plaintext];
+13	[label="3",shape=plaintext];
+16	[label="call: saludo"];
+}

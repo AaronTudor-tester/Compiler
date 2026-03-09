@@ -1,0 +1,3 @@
+===== TABLA DE SÍMBOLOS =====
+
+  VARIABLE: Simbolo{nombre='usuario', tipo=BOOL, valor=null, linea=9, inicializada=true}

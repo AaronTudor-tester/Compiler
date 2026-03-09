@@ -1,0 +1,6 @@
+===== TABLA DE SÍMBOLOS =====
+
+  VARIABLE: Simbolo{nombre='nombres', tipo=STRING, valor=["Ana", "Luis", "Maria"], linea=9, inicializada=true}
+  VARIABLE: Simbolo{nombre='nombre1', tipo=STRING, valor=null, linea=11, inicializada=true}
+  VARIABLE: Simbolo{nombre='nombre2', tipo=STRING, valor=null, linea=14, inicializada=true}
+  VARIABLE: Simbolo{nombre='nombre3', tipo=STRING, valor=null, linea=19, inicializada=true}

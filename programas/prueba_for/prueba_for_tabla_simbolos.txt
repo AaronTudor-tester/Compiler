@@ -1,0 +1,4 @@
+===== TABLA DE SÍMBOLOS =====
+
+    VARIABLE: Simbolo{nombre='i', tipo=FLOAT, valor=1.0, linea=7, inicializada=true}
+    VARIABLE: Simbolo{nombre='y', tipo=FLOAT, valor=null, linea=12, inicializada=true}

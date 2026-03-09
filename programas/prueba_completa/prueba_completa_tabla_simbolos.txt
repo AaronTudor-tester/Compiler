@@ -1,0 +1,10 @@
+===== TABLA DE SÍMBOLOS =====
+
+VARIABLE: Simbolo{nombre='a', tipo=INT, valor=null, linea=1, inicializada=true}
+VARIABLE: Simbolo{nombre='b', tipo=INT, valor=null, linea=1, inicializada=true}
+FUNCION: Simbolo{nombre='suma', tipoRetorno=INT, parametros=[INT, INT], linea=1}
+  VARIABLE: Simbolo{nombre='x', tipo=INT, valor=10, linea=9, inicializada=true}
+  VARIABLE: Simbolo{nombre='y', tipo=INT, valor=5, linea=10, inicializada=true}
+  VARIABLE: Simbolo{nombre='contador', tipo=INT, valor=0, linea=26, inicializada=true}
+  VARIABLE: Simbolo{nombre='z', tipo=INT, valor=15, linea=36, inicializada=true}
+  VARIABLE: Simbolo{nombre='negZ', tipo=INT, valor=null, linea=40, inicializada=true}

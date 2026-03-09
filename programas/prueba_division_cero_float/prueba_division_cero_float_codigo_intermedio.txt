@@ -1,0 +1,25 @@
+===== CÓDIGO INTERMEDIO =====
+
+main:
+t0 = 10.5
+x = t0
+t1 = 0.0
+y = t1
+t2 = 2.0
+z = t2
+t3 = 0.0
+resultado = t3
+t4 = x
+t5 = z
+t6 = t4 / t5
+resultado = t6
+t7 = resultado
+output t7
+output "\n"
+t8 = x
+t9 = y
+t10 = t8 / t9
+resultado = t10
+t11 = resultado
+output t11
+end:

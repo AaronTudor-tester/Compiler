@@ -1,0 +1,11 @@
+===== CÓDIGO INTERMEDIO =====
+
+main:
+output "Ingresa numero:"
+output "\n"
+input x
+output "Ingresaste:"
+output "\n"
+t0 = x
+output t0
+end:

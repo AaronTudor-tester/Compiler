@@ -1,0 +1,117 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 11/02/2026 20:59:06
+
+00001000                             1              ORG $1000
+00001000                             2  START:
+00001000  4FF9 00005000              3              LEA STACKPTR, A7
+00001006  4EF9 00001034              4              JMP main
+0000100C                             5  
+0000100C                             6  ; ===== RUTINAS AUXILIARES =====
+0000100C                             7  PRINT_SIGNED:
+0000100C  4A41                       8              TST.W D1
+0000100E  6A00 0010                  9              BPL PRINT_UNSIGNED
+00001012  103C 000E                 10              MOVE.B #14, D0
+00001016  43F9 000010BF             11              LEA MINUS_SIGN, A1
+0000101C  4E4F                      12              TRAP #15
+0000101E  4441                      13              NEG.W D1
+00001020                            14  PRINT_UNSIGNED:
+00001020  103C 0003                 15              MOVE.B #3, D0
+00001024  4E4F                      16              TRAP #15
+00001026  4E75                      17              RTS
+00001028                            18  
+00001028                            19  READ_STRING:
+00001028  2F00                      20              MOVE.L D0, -(A7)
+0000102A  103C 0002                 21              MOVE.B #2, D0
+0000102E  4E4F                      22              TRAP #15
+00001030  201F                      23              MOVE.L (A7)+, D0
+00001032  4E75                      24              RTS
+00001034                            25  
+00001034                            26  main:
+00001034                            27              ; output "=== TEST: Lectura de frase ==="
+00001034  43F9 00001155             28              LEA str0, A1
+0000103A  103C 000E                 29              MOVE.B #14, D0
+0000103E  4E4F                      30              TRAP #15
+00001040                            31              ; output "\n"
+00001040  43F9 000010BC             32              LEA NEWLINE, A1
+00001046  103C 000E                 33              MOVE.B #14, D0
+0000104A  4E4F                      34              TRAP #15
+0000104C                            35              ; output "Introduce una frase (ej: g):"
+0000104C  43F9 00001126             36              LEA str1, A1
+00001052  103C 000E                 37              MOVE.B #14, D0
+00001056  4E4F                      38              TRAP #15
+00001058                            39              ; output "\n"
+00001058  43F9 000010BC             40              LEA NEWLINE, A1
+0000105E  103C 000E                 41              MOVE.B #14, D0
+00001062  4E4F                      42              TRAP #15
+00001064                            43              ; input c
+00001064  43F9 000010C6             44              LEA c, A1
+0000106A  323C 0050                 45              MOVE.W #80, D1
+0000106E  4EB8 1028                 46              JSR READ_STRING
+00001072                            47              ; output "Has introducido: "
+00001072  43F9 00001143             48              LEA str2, A1
+00001078  103C 000E                 49              MOVE.B #14, D0
+0000107C  4E4F                      50              TRAP #15
+0000107E                            51              ; t0 = c
+0000107E  23F9 000010C6 00001174    52              MOVE.L c, t0
+00001088                            53              ; output t0
+00001088  43F9 00001174             54              LEA t0, A1
+0000108E  103C 000E                 55              MOVE.B #14, D0
+00001092  4E4F                      56              TRAP #15
+00001094                            57              ; output "\n"
+00001094  43F9 000010BC             58              LEA NEWLINE, A1
+0000109A  103C 000E                 59              MOVE.B #14, D0
+0000109E  4E4F                      60              TRAP #15
+000010A0                            61              ; output "Test completado"
+000010A0  43F9 00001116             62              LEA str3, A1
+000010A6  103C 000E                 63              MOVE.B #14, D0
+000010AA  4E4F                      64              TRAP #15
+000010AC                            65              ; output "\n"
+000010AC  43F9 000010BC             66              LEA NEWLINE, A1
+000010B2  103C 000E                 67              MOVE.B #14, D0
+000010B6  4E4F                      68              TRAP #15
+000010B8                            69  end:
+000010B8  6000 010A                 70              BRA HALT
+000010BC                            71  
+000010BC                            72              ; DATA SECTION
+000010BC= 0D 0A 00                  73  NEWLINE:    DC.B 13,10,0
+000010BF= 2D 00                     74  MINUS_SIGN: DC.B '-',0
+000010C2= 00008000                  75  HEAP_PTR:   DC.L $8000
+000010C6                            76  c:          DS.B 80
+00001116= 54 65 73 74 20 63 ...     77  str3:       DC.B 'Test completado',0
+00001126= 49 6E 74 72 6F 64 ...     78  str1:       DC.B 'Introduce una frase (ej: g):',0
+00001143= 48 61 73 20 69 6E ...     79  str2:       DC.B 'Has introducido: ',0
+00001155= 3D 3D 3D 20 54 45 ...     80  str0:       DC.B '=== TEST: Lectura de frase ===',0
+00001174                            81  t0:         DS.B 80
+000011C4                            82  
+000011C4                            83  HALT:
+000011C4  FFFF FFFF                 84              SIMHALT
+000011C8                            85  
+00005000                            86              ORG $5000
+00005000                            87  STACKPTR:
+00005000                            88              END START
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+C                   10C6
+END                 10B8
+HALT                11C4
+HEAP_PTR            10C2
+MAIN                1034
+MINUS_SIGN          10BF
+NEWLINE             10BC
+PRINT_SIGNED        100C
+PRINT_UNSIGNED      1020
+READ_STRING         1028
+STACKPTR            5000
+START               1000
+STR0                1155
+STR1                1126
+STR2                1143
+STR3                1116
+T0                  1174

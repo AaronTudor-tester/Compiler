@@ -1,0 +1,193 @@
+===== OPTIMIZACIONES REALIZADAS =====
+
+Archivo: .\programas\prueba_bubble_sort\prueba_bubble_sort.txt
+Fecha: 2026-02-11T22:16:33.936389
+
+--- ESTADÍSTICAS DE CÓDIGO INTERMEDIO ---
+
+Instrucciones originales: 75
+Instrucciones optimizadas: 74
+Instrucciones eliminadas: 1
+Reducción: 1,33%
+
+--- ESTADÍSTICAS DE ENSAMBLADOR ---
+
+Archivo original (.x68): 11166 bytes
+Archivo optimizado (_optimizado.x68): 7452 bytes
+Bytes reducidos: 3714 bytes
+Reducción en ensamblador: 33,26%
+
+--- CÓDIGO OPTIMIZADO ---
+
+main:
+n = 7
+res[0] = 5
+res[4] = 2
+res[8] = 9
+res[12] = 1
+res[16] = 4
+res[20] = 7
+res[24] = 3
+output "Lista original:"
+i = 0
+e0:
+t37 = i < n
+if !(t37) goto e1
+t40 = i * 4
+t41 = 7
+t43 = res[t40]
+output t43
+output "\n"
+i = i + 1
+goto e0
+e1:
+i = 0
+e2:
+t48 = n - 1
+t49 = i < t48
+if !(t49) goto e3
+j = 0
+e4:
+t54 = n - i
+t56 = t54 - 1
+t57 = j < t56
+if !(t57) goto e5
+t60 = j * 4
+t61 = 7
+t63 = res[t60]
+t66 = j + 1
+t68 = t66 * 4
+t69 = 7
+t71 = res[t68]
+t72 = t63 > t71
+if !(t72) goto e6
+t76 = j * 4
+t77 = 7
+0 = res[t76]
+t82 = j * 4
+t85 = j + 1
+t87 = t85 * 4
+t88 = 7
+t90 = res[t87]
+res[t82] = t90
+t93 = j + 1
+t95 = t93 * 4
+res[t95] = temp
+e6:
+j = j + 1
+goto e4
+e5:
+i = i + 1
+goto e2
+e3:
+output "Lista ordenada:"
+i = 0
+e8:
+t100 = i < n
+if !(t100) goto e9
+t103 = i * 4
+t104 = 7
+t106 = res[t103]
+output t106
+output "\n"
+i = i + 1
+goto e8
+e9:
+
+--- CAMBIOS REALIZADOS POR EL OPTIMIZADOR ---
+
+Fusión Lectura Array:
+  - Línea 106: Se eliminó temporal t79 asignando directo a temp
+Asignación diferida:
+  - Línea 1: t0 eliminado y sustituido por 7
+  - Línea 2: t1 eliminado y sustituido por 1
+  - Línea 2: t2 eliminado y sustituido por 7
+  - Línea 3: t4 eliminado y sustituido por 4
+  - Línea 5: t6 eliminado y sustituido por 0
+  - Línea 5: t7 eliminado y sustituido por 4
+  - Línea 6: t9 eliminado y sustituido por 5
+  - Línea 7: t10 eliminado y sustituido por 1
+  - Línea 7: t11 eliminado y sustituido por 4
+  - Línea 8: t13 eliminado y sustituido por 2
+  - Línea 9: t14 eliminado y sustituido por 2
+  - Línea 9: t15 eliminado y sustituido por 4
+  - Línea 10: t17 eliminado y sustituido por 9
+  - Línea 11: t18 eliminado y sustituido por 3
+  - Línea 11: t19 eliminado y sustituido por 4
+  - Línea 12: t21 eliminado y sustituido por 1
+  - Línea 13: t22 eliminado y sustituido por 4
+  - Línea 13: t23 eliminado y sustituido por 4
+  - Línea 14: t25 eliminado y sustituido por 4
+  - Línea 15: t26 eliminado y sustituido por 5
+  - Línea 15: t27 eliminado y sustituido por 4
+  - Línea 16: t29 eliminado y sustituido por 7
+  - Línea 17: t30 eliminado y sustituido por 6
+  - Línea 17: t31 eliminado y sustituido por 4
+  - Línea 18: t33 eliminado y sustituido por 3
+  - Línea 20: t34 eliminado y sustituido por 0
+  - Línea 22: t35 eliminado y sustituido por i
+  - Línea 22: t36 eliminado y sustituido por n
+  - Línea 24: t38 eliminado y sustituido por i
+  - Línea 24: t39 eliminado y sustituido por 4
+  - Línea 25: t42 eliminado y sustituido por 7
+  - Línea 32: t44 eliminado y sustituido por 0
+  - Línea 34: t45 eliminado y sustituido por i
+  - Línea 34: t46 eliminado y sustituido por n
+  - Línea 34: t47 eliminado y sustituido por 1
+  - Línea 37: t50 eliminado y sustituido por 0
+  - Línea 39: t51 eliminado y sustituido por j
+  - Línea 39: t52 eliminado y sustituido por n
+  - Línea 39: t53 eliminado y sustituido por i
+  - Línea 40: t55 eliminado y sustituido por 1
+  - Línea 43: t58 eliminado y sustituido por j
+  - Línea 43: t59 eliminado y sustituido por 4
+  - Línea 44: t62 eliminado y sustituido por 7
+  - Línea 46: t64 eliminado y sustituido por j
+  - Línea 46: t65 eliminado y sustituido por 1
+  - Línea 47: t67 eliminado y sustituido por 4
+  - Línea 48: t70 eliminado y sustituido por 7
+  - Línea 52: t73 eliminado y sustituido por 0
+  - Línea 52: temp eliminado y sustituido por 0
+  - Línea 52: t74 eliminado y sustituido por j
+  - Línea 52: t75 eliminado y sustituido por 4
+  - Línea 53: t78 eliminado y sustituido por 7
+  - Línea 55: t80 eliminado y sustituido por j
+  - Línea 55: t81 eliminado y sustituido por 4
+  - Línea 56: t83 eliminado y sustituido por j
+  - Línea 56: t84 eliminado y sustituido por 1
+  - Línea 57: t86 eliminado y sustituido por 4
+  - Línea 58: t89 eliminado y sustituido por 7
+  - Línea 61: t91 eliminado y sustituido por j
+  - Línea 61: t92 eliminado y sustituido por 1
+  - Línea 62: t94 eliminado y sustituido por 4
+  - Línea 63: t96 eliminado y sustituido por temp
+  - Línea 74: t97 eliminado y sustituido por 0
+  - Línea 76: t98 eliminado y sustituido por i
+  - Línea 76: t99 eliminado y sustituido por n
+  - Línea 78: t101 eliminado y sustituido por i
+  - Línea 78: t102 eliminado y sustituido por 4
+  - Línea 79: t105 eliminado y sustituido por 7
+  - Línea 2: t3 eliminado y sustituido por 7
+  - Línea 4: t8 eliminado y sustituido por 0
+  - Línea 5: t12 eliminado y sustituido por 4
+  - Línea 6: t16 eliminado y sustituido por 8
+  - Línea 7: t20 eliminado y sustituido por 12
+  - Línea 8: t24 eliminado y sustituido por 16
+  - Línea 9: t28 eliminado y sustituido por 20
+  - Línea 10: t32 eliminado y sustituido por 24
+  - Línea 2: t5 eliminado y sustituido por 28
+Ramificaciones adyacentes:
+  - Línea 64: Salto innecesario a e7 eliminado
+Eliminación de etiquetas muertas:
+  - Línea 65: Se ha eliminado la etiqueta e7
+  - Línea 85: Se ha eliminado la etiqueta end
+Cálculo de constantes:
+  - Línea 2: t3 = 1 * 7 -> t3 = 7
+  - Línea 5: t8 = 0 * 4 -> t8 = 0
+  - Línea 7: t12 = 1 * 4 -> t12 = 4
+  - Línea 9: t16 = 2 * 4 -> t16 = 8
+  - Línea 11: t20 = 3 * 4 -> t20 = 12
+  - Línea 13: t24 = 4 * 4 -> t24 = 16
+  - Línea 15: t28 = 5 * 4 -> t28 = 20
+  - Línea 17: t32 = 6 * 4 -> t32 = 24
+  - Línea 2: t5 = 7 * 4 -> t5 = 28

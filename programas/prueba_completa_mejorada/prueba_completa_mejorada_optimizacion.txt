@@ -1,0 +1,150 @@
+===== OPTIMIZACIONES REALIZADAS =====
+
+Archivo: .\programas\prueba_completa_mejorada\prueba_completa_mejorada.txt
+Fecha: 2026-02-11T08:52:40.447059300
+
+--- ESTADÍSTICAS DE CÓDIGO INTERMEDIO ---
+
+Instrucciones originales: 96
+Instrucciones optimizadas: 96
+Instrucciones eliminadas: 0
+Reducción: 0,00%
+
+--- ESTADÍSTICAS DE ENSAMBLADOR ---
+
+Archivo original (.x68): 7202 bytes
+Archivo optimizado (_optimizado.x68): 6136 bytes
+Bytes reducidos: 1066 bytes
+Reducción en ensamblador: 14,80%
+
+--- CÓDIGO OPTIMIZADO ---
+
+sumaDosNumeros:
+; param a : INT
+; param b : INT
+t2 = a + b
+return t2
+multiplicar:
+; param x : INT
+; param y : INT
+t5 = x * y
+return t5
+main:
+output "=== PROGRAMA COMPLETO DE PRUEBAS ==="
+output "\n"
+output "PRUEBA 1: Funciones"
+output "\n"
+num1 = 5
+num2 = 3
+param_s num1  
+param_s num2  
+t8 = call sumaDosNumeros
+suma = t8
+output "5 + 3 = "
+output suma
+output "\n"
+output "PRUEBA 2: IF"
+output "\n"
+t12 = suma > 7
+if !(t12) goto e0
+output "Suma es mayor que 7"
+output "\n"
+goto e1
+e0:
+output "Suma no es mayor que 7"
+output "\n"
+e1:
+output "PRUEBA 3: WHILE - Cuenta del 1 al 5"
+output "\n"
+contador = 1
+e2:
+t16 = contador <= 5
+if !(t16) goto e3
+output contador
+output " "
+t20 = contador + 1
+contador = t20
+goto e2
+e3:
+output "PRUEBA 4: SWITCH - Menu"
+output "\n"
+opcion = 2
+t22 = opcion
+t23 = 1
+if t22 != t23 goto e5
+output "Elegiste opcion 1"
+e5:
+t24 = 2
+if t22 != t24 goto e6
+output "Elegiste opcion 2"
+e6:
+t25 = 3
+if t22 != t25 goto e4
+output "Elegiste opcion 3"
+e4:
+output "\n"
+output "PRUEBA 5: REPEAT - Numeros impares hasta 9"
+output "\n"
+num = 1
+e7:
+output num
+t30 = num + 2
+num = t30
+output " "
+t33 = num <= 9
+if t33 goto e7
+output "PRUEBA 6: Operador NOT"
+output "\n"
+esVerdadero = true
+t35 = ! esVerdadero
+if !(t35) goto e9
+output "NO es verdadero"
+output "\n"
+goto e10
+e9:
+output "SI es verdadero"
+output "\n"
+e10:
+output "PRUEBA 7: Funcion multiplicar"
+output "\n"
+param_s 4  
+param_s 6  
+t38 = call multiplicar
+resultado = t38
+output "4 * 6 = "
+output resultado
+output "\n"
+output "FIN DEL PROGRAMA"
+
+--- CAMBIOS REALIZADOS POR EL OPTIMIZADOR ---
+
+Asignación diferida:
+  - Línea 3: t0 eliminado y sustituido por a
+  - Línea 3: t1 eliminado y sustituido por b
+  - Línea 8: t3 eliminado y sustituido por x
+  - Línea 8: t4 eliminado y sustituido por y
+  - Línea 15: t6 eliminado y sustituido por 5
+  - Línea 16: t7 eliminado y sustituido por 3
+  - Línea 22: t9 eliminado y sustituido por suma
+  - Línea 26: t10 eliminado y sustituido por suma
+  - Línea 26: t11 eliminado y sustituido por 7
+  - Línea 37: t13 eliminado y sustituido por 1
+  - Línea 39: t14 eliminado y sustituido por contador
+  - Línea 39: t15 eliminado y sustituido por 5
+  - Línea 41: t17 eliminado y sustituido por contador
+  - Línea 43: t18 eliminado y sustituido por contador
+  - Línea 43: t19 eliminado y sustituido por 1
+  - Línea 49: t21 eliminado y sustituido por 2
+  - Línea 66: t26 eliminado y sustituido por 1
+  - Línea 68: t27 eliminado y sustituido por num
+  - Línea 69: t28 eliminado y sustituido por num
+  - Línea 69: t29 eliminado y sustituido por 2
+  - Línea 72: t31 eliminado y sustituido por num
+  - Línea 72: t32 eliminado y sustituido por 9
+  - Línea 77: t34 eliminado y sustituido por true
+  - Línea 89: t36 eliminado y sustituido por 4
+  - Línea 89: t37 eliminado y sustituido por 6
+  - Línea 94: t39 eliminado y sustituido por resultado
+Eliminación de etiquetas muertas:
+  - Línea 74: Se ha eliminado la etiqueta e8
+  - Línea 97: Se ha eliminado la etiqueta end

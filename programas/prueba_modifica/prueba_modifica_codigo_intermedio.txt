@@ -1,0 +1,115 @@
+===== CÓDIGO INTERMEDIO =====
+
+main:
+t0 = 2.0
+x = t0
+t1 = x
+output t1
+output "\n"
+t2 = x
+t3 = 3.0
+t4 = t2 + t3
+x = t4
+t5 = x
+output t5
+output "\n"
+t6 = x
+t7 = 2.0
+t8 = t6 - t7
+x = t8
+t9 = x
+output t9
+output "\n"
+t10 = x
+t11 = 4.0
+t12 = t10 * t11
+x = t12
+t13 = x
+output t13
+output "\n"
+t14 = x
+t15 = 3.0
+t16 = t14 / t15
+x = t16
+t17 = x
+output t17
+output "\n"
+x = x - 1.0
+t18 = x
+t19 = 2.0
+t20 = t18 % t19
+x = t20
+t21 = x
+output t21
+output "\n"
+t22 = 1.0
+x = t22
+output "x es: "
+t23 = x
+output t23
+output "\n"
+output "x es: "
+t24 = x
+t25 = 5.0
+t26 = x
+x = x + 1.0
+t27 = t25 - t26
+t28 = 2.0
+t29 = t27 + t28
+t30 = x
+x = x - 1.0
+t31 = t29 + t30
+t32 = 1.0
+t33 = t31 + t32
+x = x + 1.0
+t34 = t33 - x
+t35 = t24 + t34
+x = t35
+t36 = x
+output t36
+output "\n"
+output "BUCLES:"
+output "\n"
+t37 = 1.0
+i = t37
+e0:
+t38 = i
+t39 = 5.0
+t40 = t38 <= t39
+if !(t40) goto e1
+output "ITERAMOS"
+output "\n"
+t41 = x
+output t41
+output "\n"
+t42 = i
+output t42
+output "\n"
+t43 = i
+t44 = 1.0
+t45 = t43 + t44
+i = t45
+t46 = i
+t47 = 0.5
+t48 = t46 + t47
+x = t48
+goto e0
+e1:
+output "hola"
+output "\n"
+t49 = 1.0
+i = t49
+e2:
+t50 = i
+t51 = 5
+t52 = t50 <= t51
+if !(t52) goto e3
+output "otro bucle"
+output "\n"
+t53 = i
+t54 = 1.0
+t55 = t53 + t54
+i = t55
+goto e2
+e3:
+end:

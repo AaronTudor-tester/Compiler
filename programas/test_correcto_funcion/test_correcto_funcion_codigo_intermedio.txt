@@ -1,0 +1,23 @@
+===== CÓDIGO INTERMEDIO =====
+
+suma:
+; param a : INT
+; param b : INT
+t0 = a
+t1 = b
+t2 = t0 + t1
+return t2
+saludo:
+output "Hola mundo"
+output "\n"
+return null
+main:
+t3 = 2
+t4 = 3
+param_s t3  
+param_s t4  
+t5 = call suma
+output t5
+output "\n"
+call saludo  
+end:

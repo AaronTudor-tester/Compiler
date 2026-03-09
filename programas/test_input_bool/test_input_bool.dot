@@ -1,0 +1,27 @@
+strict digraph {
+12	[label="Programa"];
+12->1
+12->3
+12->4
+12->5
+12->7
+12->9
+12->11
+1	[label="print"];
+1->0
+0	[label="=== TEST: Lectura de booleanos ===",shape=plaintext];
+3	[label="print"];
+3->2
+2	[label="Introduce un valor booleano (cierto/mentira):",shape=plaintext];
+4	[label="decl: usuario (BOOL)"];
+5	[label="input(usuario)"];
+7	[label="print"];
+7->6
+6	[label="Has introducido: ",shape=plaintext];
+9	[label="print"];
+9->8
+8	[label="usuario",shape=plaintext];
+11	[label="print"];
+11->10
+10	[label="Test completado",shape=plaintext];
+}

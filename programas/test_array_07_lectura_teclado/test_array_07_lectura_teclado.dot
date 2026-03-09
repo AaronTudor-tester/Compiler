@@ -1,0 +1,65 @@
+strict digraph {
+32	[label="Programa"];
+32->1
+32->3
+32->5
+32->8
+32->10
+32->13
+32->15
+32->18
+32->20
+32->23
+32->26
+32->29
+32->31
+1	[label="print"];
+1->0
+0	[label="=== TEST: Lectura de teclado a array ===",shape=plaintext];
+3	[label="array: vector[0](INT)"];
+5	[label="print"];
+5->4
+4	[label="Introduce valor para posicion 0:",shape=plaintext];
+8	[label="INPUT_ARRAY"];
+8->7
+7	[label="Acceso Array\n(vector)"]
+7->6
+6	[label="0",shape=plaintext];
+10	[label="print"];
+10->9
+9	[label="Introduce valor para posicion 1:",shape=plaintext];
+13	[label="INPUT_ARRAY"];
+13->12
+12	[label="Acceso Array\n(vector)"]
+12->11
+11	[label="1",shape=plaintext];
+15	[label="print"];
+15->14
+14	[label="Introduce valor para posicion 2:",shape=plaintext];
+18	[label="INPUT_ARRAY"];
+18->17
+17	[label="Acceso Array\n(vector)"]
+17->16
+16	[label="2",shape=plaintext];
+20	[label="print"];
+20->19
+19	[label="Mostrando valores guardados:",shape=plaintext];
+23	[label="print"];
+23->22
+22	[label="Acceso Array\n(vector)"]
+22->21
+21	[label="0",shape=plaintext];
+26	[label="print"];
+26->25
+25	[label="Acceso Array\n(vector)"]
+25->24
+24	[label="1",shape=plaintext];
+29	[label="print"];
+29->28
+28	[label="Acceso Array\n(vector)"]
+28->27
+27	[label="2",shape=plaintext];
+31	[label="print"];
+31->30
+30	[label="Test completado",shape=plaintext];
+}

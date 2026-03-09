@@ -1,0 +1,322 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 11/02/2026 15:11:33
+
+00001000                             1              ORG $1000
+00001000                             2  START:
+00001000  4FF9 00005000              3              LEA STACKPTR, A7
+00001006                             4              ; contador = 0
+00001006  33FC 0000 000012CA         5              MOVE.W #0, contador
+0000100E  4EF9 000010CE              6              JMP main
+00001014                             7  
+00001014                             8  ; ===== RUTINAS AUXILIARES =====
+00001014                             9  PRINT_SIGNED:
+00001014  4A41                      10              TST.W D1
+00001016  6A00 0010                 11              BPL PRINT_UNSIGNED
+0000101A  103C 000E                 12              MOVE.B #14, D0
+0000101E  43F9 000012BB             13              LEA MINUS_SIGN, A1
+00001024  4E4F                      14              TRAP #15
+00001026  4441                      15              NEG.W D1
+00001028                            16  PRINT_UNSIGNED:
+00001028  103C 0003                 17              MOVE.B #3, D0
+0000102C  4E4F                      18              TRAP #15
+0000102E  4E75                      19              RTS
+00001030                            20  
+00001030                            21  suma:
+00001030                            22              ; ; param a : INT
+00001030                            23              ; ; param b : INT
+00001030                            24              ; t3 = a + b
+00001030  3039 000012F4             25              MOVE.W a, D0
+00001036  D079 000012F6             26              ADD.W b, D0
+0000103C  33C0 0000132A             27              MOVE.W D0, t3
+00001042                            28              ; resultado = t3
+00001042  33F9 0000132A 000012FA    29              MOVE.W t3, resultado
+0000104C                            30              ; return resultado
+0000104C  3039 000012FA             31              MOVE.W resultado, D0
+00001052  4E75                      32              RTS
+00001054                            33  prueba:
+00001054                            34              ; ; param a : INT
+00001054                            35              ; ; param b : INT
+00001054                            36              ; ; param c : INT
+00001054                            37              ; t7 = a < 20
+00001054  33FC 0000 000012C2        38              MOVE.W #0, t7
+0000105C  3039 000012F4             39              MOVE.W a, D0
+00001062  B07C 0014                 40              CMP.W #20, D0
+00001066  6D00 0008                 41              BLT t7_true
+0000106A  4EF9 00001078             42              JMP t7_false
+00001070                            43  t7_true:
+00001070  33FC 0001 000012C2        44              MOVE.W #1, t7
+00001078                            45  t7_false:
+00001078                            46              ; if !(t7) goto e0
+00001078  3039 000012C2             47              MOVE.W t7, D0
+0000107E  B07C 0000                 48              CMP.W #0, D0
+00001082  6700 004A                 49              BEQ e0
+00001086                            50              ; output a
+00001086  3239 000012F4             51              MOVE.W a, D1
+0000108C  4EB8 1014                 52              JSR PRINT_SIGNED
+00001090                            53              ; t11 = a + 2
+00001090  3039 000012F4             54              MOVE.W a, D0
+00001096  5440                      55              ADD.W #2, D0
+00001098  33C0 000012CC             56              MOVE.W D0, t11
+0000109E                            57              ; param_s t11  
+0000109E                            58              ; param_s b  
+0000109E                            59              ; param_s c  
+0000109E                            60              ; t12 = call prueba
+0000109E  33F9 000012CC 000012F4    61              MOVE.W t11, a
+000010A8  33F9 000012F6 000012F6    62              MOVE.W b, b
+000010B2  33F9 000012F8 000012F8    63              MOVE.W c, c
+000010BC  4EB8 1054                 64              JSR prueba
+000010C0  33C0 000012C8             65              MOVE.W D0, t12
+000010C6                            66              ; return t12
+000010C6  3039 000012C8             67              MOVE.W t12, D0
+000010CC  4E75                      68              RTS
+000010CE                            69  e0:
+000010CE                            70  main:
+000010CE                            71              ; t14 = NEG 15
+000010CE  303C 000F                 72              MOVE.W #15, D0
+000010D2  4440                      73              NEG.W D0
+000010D4  33C0 000012CE             74              MOVE.W D0, t14
+000010DA                            75              ; x = t14
+000010DA  33F9 000012CE 0000131C    76              MOVE.W t14, x
+000010E4                            77              ; t15 = NEG x
+000010E4  3039 0000131C             78              MOVE.W x, D0
+000010EA  4440                      79              NEG.W D0
+000010EC  33C0 000012F2             80              MOVE.W D0, t15
+000010F2                            81              ; z = t15
+000010F2  33F9 000012F2 00001326    82              MOVE.W t15, z
+000010FC                            83              ; y = 20
+000010FC  33FC 0014 00001324        84              MOVE.W #20, y
+00001104                            85              ; t20 = z - 10
+00001104  3039 00001326             86              MOVE.W z, D0
+0000110A  0440 000A                 87              SUB.W #10, D0
+0000110E  33C0 00001316             88              MOVE.W D0, t20
+00001114                            89              ; t21 = 5 + t20
+00001114  303C 0005                 90              MOVE.W #5, D0
+00001118  D079 00001316             91              ADD.W t20, D0
+0000111E  33C0 00001312             92              MOVE.W D0, t21
+00001124                            93              ; llueve = true
+00001124  33FC 0001 000012C4        94              MOVE.W #1, llueve
+0000112C                            95              ; t23 = ! llueve
+0000112C  3039 000012C4             96              MOVE.W llueve, D0
+00001132  B07C 0000                 97              CMP.W #0, D0
+00001136  6700 0010                 98              BEQ t23_not_true
+0000113A  33FC 0000 00001318        99              MOVE.W #0, t23
+00001142  4EF9 00001150            100              JMP t23_not_end
+00001148                           101  t23_not_true:
+00001148  33FC 0001 00001318       102              MOVE.W #1, t23
+00001150                           103  t23_not_end:
+00001150                           104              ; t27 = NEG 21
+00001150  303C 0015                105              MOVE.W #21, D0
+00001154  4440                     106              NEG.W D0
+00001156  33C0 00001320            107              MOVE.W D0, t27
+0000115C                           108              ; param_s x  
+0000115C                           109              ; param_s y  
+0000115C                           110              ; t28 = call suma
+0000115C  33F9 0000131C 000012F4   111              MOVE.W x, a
+00001166  33F9 00001324 000012F6   112              MOVE.W y, b
+00001170  4EB8 1030                113              JSR suma
+00001174  33C0 00001328            114              MOVE.W D0, t28
+0000117A                           115              ; total = t28
+0000117A  33F9 00001328 000012C6   116              MOVE.W t28, total
+00001184                           117              ; param_s 7  
+00001184                           118              ; param_s 4  
+00001184                           119              ; param_s 2  
+00001184                           120              ; param_s 3  
+00001184                           121              ; output total
+00001184  3239 000012C6            122              MOVE.W total, D1
+0000118A  4EB8 1014                123              JSR PRINT_SIGNED
+0000118E                           124              ; output "\n"
+0000118E  43F9 000012B8            125              LEA NEWLINE, A1
+00001194  103C 000E                126              MOVE.B #14, D0
+00001198  4E4F                     127              TRAP #15
+0000119A                           128              ; t40 = total > 25
+0000119A  33FC 0000 00001310       129              MOVE.W #0, t40
+000011A2  3039 000012C6            130              MOVE.W total, D0
+000011A8  B07C 0019                131              CMP.W #25, D0
+000011AC  6E00 0008                132              BGT t40_true
+000011B0  4EF9 000011BE            133              JMP t40_false
+000011B6                           134  t40_true:
+000011B6  33FC 0001 00001310       135              MOVE.W #1, t40
+000011BE                           136  t40_false:
+000011BE                           137              ; if !(t40) goto e2
+000011BE  3039 00001310            138              MOVE.W t40, D0
+000011C4  B07C 0000                139              CMP.W #0, D0
+000011C8  6700 0020                140              BEQ e2
+000011CC                           141              ; output "El numero es grande"
+000011CC  43F9 000012FC            142              LEA str0, A1
+000011D2  103C 000E                143              MOVE.B #14, D0
+000011D6  4E4F                     144              TRAP #15
+000011D8                           145              ; output "\n"
+000011D8  43F9 000012B8            146              LEA NEWLINE, A1
+000011DE  103C 000E                147              MOVE.B #14, D0
+000011E2  4E4F                     148              TRAP #15
+000011E4                           149              ; goto e3
+000011E4  4EF9 00001202            150              JMP e3
+000011EA                           151  e2:
+000011EA                           152              ; output "El numero es pequeno"
+000011EA  43F9 000012D0            153              LEA str1, A1
+000011F0  103C 000E                154              MOVE.B #14, D0
+000011F4  4E4F                     155              TRAP #15
+000011F6                           156              ; output "\n"
+000011F6  43F9 000012B8            157              LEA NEWLINE, A1
+000011FC  103C 000E                158              MOVE.B #14, D0
+00001200  4E4F                     159              TRAP #15
+00001202                           160  e3:
+00001202                           161  e4:
+00001202                           162              ; t43 = contador < 3
+00001202  33FC 0000 00001314       163              MOVE.W #0, t43
+0000120A  3039 000012CA            164              MOVE.W contador, D0
+00001210  B07C 0003                165              CMP.W #3, D0
+00001214  6D00 0008                166              BLT t43_true
+00001218  4EF9 00001226            167              JMP t43_false
+0000121E                           168  t43_true:
+0000121E  33FC 0001 00001314       169              MOVE.W #1, t43
+00001226                           170  t43_false:
+00001226                           171              ; if !(t43) goto e5
+00001226  3039 00001314            172              MOVE.W t43, D0
+0000122C  B07C 0000                173              CMP.W #0, D0
+00001230  6700 0082                174              BEQ e5
+00001234                           175              ; contador = contador + 1
+00001234  3039 000012CA            176              MOVE.W contador, D0
+0000123A  5240                     177              ADD.W #1, D0
+0000123C  33C0 000012CA            178              MOVE.W D0, contador
+00001242                           179              ; output "Contando..."
+00001242  43F9 000012E5            180              LEA str2, A1
+00001248  103C 000E                181              MOVE.B #14, D0
+0000124C  4E4F                     182              TRAP #15
+0000124E                           183              ; output "\n"
+0000124E  43F9 000012B8            184              LEA NEWLINE, A1
+00001254  103C 000E                185              MOVE.B #14, D0
+00001258  4E4F                     186              TRAP #15
+0000125A                           187              ; t46 = contador > 2
+0000125A  33FC 0000 0000131A       188              MOVE.W #0, t46
+00001262  3039 000012CA            189              MOVE.W contador, D0
+00001268  B07C 0002                190              CMP.W #2, D0
+0000126C  6E00 0008                191              BGT t46_true
+00001270  4EF9 0000127E            192              JMP t46_false
+00001276                           193  t46_true:
+00001276  33FC 0001 0000131A       194              MOVE.W #1, t46
+0000127E                           195  t46_false:
+0000127E                           196              ; if !(t46) goto e4
+0000127E  3039 0000131A            197              MOVE.W t46, D0
+00001284  B07C 0000                198              CMP.W #0, D0
+00001288  6700 FF78                199              BEQ e4
+0000128C                           200              ; t49 = contador == 2
+0000128C  33FC 0000 00001322       201              MOVE.W #0, t49
+00001294  3039 000012CA            202              MOVE.W contador, D0
+0000129A  B07C 0002                203              CMP.W #2, D0
+0000129E  6700 0008                204              BEQ t49_true
+000012A2  4EF9 000012B0            205              JMP t49_false
+000012A8                           206  t49_true:
+000012A8  33FC 0001 00001322       207              MOVE.W #1, t49
+000012B0                           208  t49_false:
+000012B0                           209              ; goto e4
+000012B0  4EF8 1202                210              JMP e4
+000012B4                           211  e5:
+000012B4  6000 0076                212              BRA HALT
+000012B8                           213  
+000012B8                           214              ; DATA SECTION
+000012B8= 0D 0A 00                 215  NEWLINE:    DC.B 13,10,0
+000012BB= 2D 00                    216  MINUS_SIGN: DC.B '-',0
+000012BE= 00008000                 217  HEAP_PTR:   DC.L $8000
+000012C2                           218  t7:         DS.W 1
+000012C4                           219  llueve:     DS.W 1
+000012C6                           220  total:      DS.W 1
+000012C8                           221  t12:        DS.W 1
+000012CA                           222  contador:   DS.W 1
+000012CC                           223  t11:        DS.W 1
+000012CE                           224  t14:        DS.W 1
+000012D0= 45 6C 20 6E 75 6D ...    225  str1:       DC.B 'El numero es pequeno',0
+000012E5= 43 6F 6E 74 61 6E ...    226  str2:       DC.B 'Contando...',0
+000012F2                           227  t15:        DS.W 1
+000012F4                           228  a:          DS.W 1
+000012F6                           229  b:          DS.W 1
+000012F8                           230  c:          DS.W 1
+000012FA                           231  resultado:  DS.W 1
+000012FC= 45 6C 20 6E 75 6D ...    232  str0:       DC.B 'El numero es grande',0
+00001310                           233  t40:        DS.W 1
+00001312                           234  t21:        DS.W 1
+00001314                           235  t43:        DS.W 1
+00001316                           236  t20:        DS.W 1
+00001318                           237  t23:        DS.W 1
+0000131A                           238  t46:        DS.W 1
+0000131C                           239  x:          DS.W 1
+0000131E                           240  true:       DS.W 1
+00001320                           241  t27:        DS.W 1
+00001322                           242  t49:        DS.W 1
+00001324                           243  y:          DS.W 1
+00001326                           244  z:          DS.W 1
+00001328                           245  t28:        DS.W 1
+0000132A                           246  t3:         DS.W 1
+0000132C                           247  
+0000132C                           248  HALT:
+0000132C  FFFF FFFF                249              SIMHALT
+00001330                           250  
+00005000                           251              ORG $5000
+00005000                           252  STACKPTR:
+00005000                           253              END START
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+A                   12F4
+B                   12F6
+C                   12F8
+CONTADOR            12CA
+E0                  10CE
+E2                  11EA
+E3                  1202
+E4                  1202
+E5                  12B4
+HALT                132C
+HEAP_PTR            12BE
+LLUEVE              12C4
+MAIN                10CE
+MINUS_SIGN          12BB
+NEWLINE             12B8
+PRINT_SIGNED        1014
+PRINT_UNSIGNED      1028
+PRUEBA              1054
+RESULTADO           12FA
+STACKPTR            5000
+START               1000
+STR0                12FC
+STR1                12D0
+STR2                12E5
+SUMA                1030
+T11                 12CC
+T12                 12C8
+T14                 12CE
+T15                 12F2
+T20                 1316
+T21                 1312
+T23                 1318
+T23_NOT_END         1150
+T23_NOT_TRUE        1148
+T27                 1320
+T28                 1328
+T3                  132A
+T40                 1310
+T40_FALSE           11BE
+T40_TRUE            11B6
+T43                 1314
+T43_FALSE           1226
+T43_TRUE            121E
+T46                 131A
+T46_FALSE           127E
+T46_TRUE            1276
+T49                 1322
+T49_FALSE           12B0
+T49_TRUE            12A8
+T7                  12C2
+T7_FALSE            1078
+T7_TRUE             1070
+TOTAL               12C6
+TRUE                131E
+X                   131C
+Y                   1324
+Z                   1326

@@ -1,0 +1,19 @@
+// TEST: Validación de entrada de números
+// Probar introducir texto cuando se pide un número
+
+principal {
+    escribeN "Introduce un numero entero:".
+    numero miNumero.
+    lee miNumero.
+    
+    escribe "Has introducido: ".
+    escribeN miNumero.
+    
+    escribeN "Introduce otro numero:".
+    numero otroNumero.
+    lee otroNumero.
+    
+    numero suma es miNumero mas otroNumero.
+    escribe "La suma es: ".
+    escribeN suma.
+}

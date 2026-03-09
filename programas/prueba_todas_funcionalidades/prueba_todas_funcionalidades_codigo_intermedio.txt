@@ -1,0 +1,131 @@
+===== CÓDIGO INTERMEDIO =====
+
+suma:
+; param n1 : INT
+; param n2 : INT
+t0 = n1
+t1 = n2
+t2 = t0 + t1
+return t2
+contarPares:
+; param inicio : INT
+; param fin : INT
+t3 = 0
+contador = t3
+t4 = inicio
+i = t4
+t5 = fin
+limite = t5
+e0:
+t6 = i
+t7 = limite
+t8 = t6 < t7
+if !(t8) goto e1
+t9 = i
+t10 = 0
+t11 = t9 != t10
+if !(t11) goto e2
+t12 = i
+t13 = 2
+t14 = t12 % t13
+residuo = t14
+t15 = residuo
+t16 = 0
+t17 = t15 == t16
+if !(t17) goto e4
+contador = contador + 1
+goto e5
+e4:
+e5:
+goto e3
+e2:
+e3:
+i = i + 1
+goto e0
+e1:
+t18 = contador
+return t18
+main:
+output "PRUEBA COMPLETA"
+output "\n"
+output "TEST 1: Variables"
+output "\n"
+t19 = 10
+x = t19
+t20 = 5
+y = t20
+output "x+y= "
+param_s x  
+param_s y  
+t21 = call suma
+output t21
+output "\n"
+output "TEST 2: Condicionales"
+output "\n"
+t22 = x
+t23 = y
+t24 = t22 > t23
+if !(t24) goto e6
+output "10>5: SI"
+goto e7
+e6:
+e7:
+output "\n"
+output "TEST 3: While (1 a 3)"
+output "\n"
+t25 = 1
+c = t25
+e8:
+t26 = c
+t27 = 3
+t28 = t26 <= t27
+if !(t28) goto e9
+t29 = c
+output t29
+output " "
+c = c + 1
+goto e8
+e9:
+output "\n"
+output "TEST 4: Logica"
+output "\n"
+t30 = true
+a = t30
+t31 = false
+b = t31
+t32 = a
+t33 = a
+t34 = t32 && t33
+if !(t34) goto e10
+output "AND: SI"
+goto e11
+e10:
+e11:
+t35 = a
+t36 = b
+t37 = t35 || t36
+if !(t37) goto e12
+output "OR: SI"
+goto e13
+e12:
+e13:
+t38 = ! b
+if !(t38) goto e14
+output "NOT: SI"
+goto e15
+e14:
+e15:
+output "\n"
+output "TEST 5: Pares(1-11)= "
+output "\n"
+t39 = 1
+t40 = 11
+param_s t39  
+param_s t40  
+t41 = call contarPares
+pares = t41
+t42 = pares
+output t42
+output "\n"
+output "FIN"
+end:

@@ -1,0 +1,41 @@
+===== OPTIMIZACIONES REALIZADAS =====
+
+Archivo: programas\prueba_constantes\prueba_constantes.txt
+Fecha: 2026-02-02T12:49:54.358692500
+
+--- ESTADISTICAS DE CODIGO INTERMEDIO ---
+
+Instrucciones originales: 5
+Instrucciones optimizadas: 5
+Instrucciones eliminadas: 0
+Reduccion: 0,00%
+
+--- ESTADISTICAS DE ENSAMBLADOR ---
+
+Archivo original (.x68): 2245 bytes
+Archivo optimizado (_optimizado.x68): 1943 bytes
+Bytes reducidos: 302 bytes
+Reduccion en ensamblador: 13,45%
+
+--- CODIGO OPTIMIZADO ---
+
+main:
+PI = 314
+x = 10
+output x
+output PI
+
+--- CAMBIOS REALIZADOS POR EL OPTIMIZADOR ---
+
+Asignación diferida:
+  - Línea 1: t0 eliminado y sustituido por 314
+  - Línea 2: t1 eliminado y sustituido por PI
+  - Línea 3: t2 eliminado y sustituido por 10
+  - Línea 4: t3 eliminado y sustituido por x
+  - Línea 5: t4 eliminado y sustituido por x
+  - Línea 6: t5 eliminado y sustituido por PI
+Eliminación de etiquetas muertas:
+  - Línea 7: Se ha eliminado la etiqueta end
+Eliminación de código muerto:
+  - Línea 2: Se eliminó PI2
+  - Línea 4: Se eliminó AA

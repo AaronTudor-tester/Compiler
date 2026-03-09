@@ -1,0 +1,17 @@
+
+numero suma(numero a) {
+    a es a mas 1.
+    devuelve a.
+}
+
+principal {
+
+    escribeN 4.12 multiplicado 3 dividido 1.75 resto 2.
+    numero sum es 3.
+    sum es suma(sum). 
+    escribeN sum. 
+
+si 4.3 es mayor que 3 y ademas a es mayor que 0 {
+	escribe "hola".
+}
+}

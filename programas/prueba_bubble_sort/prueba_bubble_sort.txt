@@ -1,0 +1,36 @@
+// Programa principal con bubble sort inline (orden ascendente)
+
+principal {
+    numero n es 7.
+
+    lista de numero res de longitud 7.
+    res posicion (0) es 5.
+    res posicion (1) es 2.
+    res posicion (2) es 9.
+    res posicion (3) es 1.
+    res posicion (4) es 4.
+    res posicion (5) es 7.
+    res posicion (6) es 3.
+
+    escribe "Lista original:".
+    para numero i es 0, repite si i es menor que n, incrementa i {
+        escribeN res posicion (i).
+    }
+
+    // Bubble sort in-place, ascendente
+    para numero i es 0, repite si i es menor que n menos 1, incrementa i {
+        para numero j es 0, repite si j es menor que n menos i menos 1, incrementa j {
+            si res posicion (j) es mayor que res posicion (j mas 1) {
+                numero temp es 0.
+                temp es res posicion (j).
+                res posicion (j) es res posicion (j mas 1).
+                res posicion (j mas 1) es temp.
+            }
+        }
+    }
+
+    escribe "Lista ordenada:".
+    para numero i es 0, repite si i es menor que n, incrementa i {
+        escribeN res posicion (i).
+    }
+}

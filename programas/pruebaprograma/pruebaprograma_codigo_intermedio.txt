@@ -1,0 +1,125 @@
+===== CÓDIGO INTERMEDIO =====
+
+t0 = 0
+contador = t0
+suma:
+; param a : INT
+; param b : INT
+t1 = a
+t2 = b
+t3 = t1 + t2
+resultado = t3
+t4 = resultado
+return t4
+prueba:
+; param a : INT
+; param b : INT
+; param c : INT
+t5 = a
+t6 = 20
+t7 = t5 < t6
+if !(t7) goto e0
+t8 = a
+output t8
+t9 = a
+t10 = 2
+t11 = t9 + t10
+param_s t11  
+param_s b  
+param_s c  
+t12 = call prueba
+return t12
+goto e1
+e0:
+e1:
+output "fin"
+t13 = 555
+return t13
+main:
+t14 = 15
+t15 = NEG t14
+x = t15
+t16 = NEG x
+z = t16
+t17 = 20
+y = t17
+t18 = 5
+t19 = z
+t20 = 10
+t21 = t19 - t20
+t22 = t18 + t21
+l = t22
+t23 = true
+llueve = t23
+t24 = ! llueve
+noLlueve = t24
+t25 = 5
+t26 = 16
+t27 = t25 + t26
+t28 = NEG t27
+l = t28
+param_s x  
+param_s y  
+t29 = call suma
+total = t29
+t30 = 7
+t31 = 3
+t32 = 1
+t33 = t31 + t32
+param_s t30  
+param_s t33  
+t34 = call suma
+total2 = t34
+t35 = 2
+t36 = 3
+param_s t35  
+param_s t36  
+t37 = call suma
+t38 = total
+output t38
+output "\n"
+t39 = total
+t40 = 25
+t41 = t39 > t40
+if !(t41) goto e2
+output "El numero es grande"
+output "\n"
+goto e3
+e2:
+output "El numero es pequeno"
+output "\n"
+e3:
+e4:
+t42 = contador
+t43 = 3
+t44 = t42 < t43
+if !(t44) goto e5
+contador = contador + 1
+output "Contando..."
+output "\n"
+t45 = contador
+t46 = 2
+t47 = t45 > t46
+if !(t47) goto e6
+t48 = contador
+t49 = 2
+t50 = t48 == t49
+if !(t50) goto e8
+t51 = contador
+pruebaBlques = t51
+goto e9
+e8:
+e9:
+goto e7
+e6:
+e7:
+goto e4
+e5:
+t52 = 1
+t53 = 2
+t54 = 3
+param_s t52  
+param_s t53  
+param_s t54  
+t55 = call prueba
+end:

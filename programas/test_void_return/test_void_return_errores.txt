@@ -1,0 +1,8 @@
+===== ERRORES DETECTADOS EN LA COMPILACIÓN =====
+
+Archivo: .\programas\test_void_return\test_void_return.txt
+Fecha: 2026-02-11T09:24:02.830702200
+
+1 error(es) encontrado(s):
+
+1. [Línea 6, Columna 1] ERROR SEMANTICO: La función 'funcionVoid' es de tipo VOID y no puede contener sentencias 'devuelve'

@@ -1,0 +1,211 @@
+	ORG $1000
+START:
+	LEA STACKPTR, A7
+	JMP main
+
+; ===== RUTINAS AUXILIARES =====
+PRINT_SIGNED:
+	TST.W D1
+	BPL PRINT_UNSIGNED
+	MOVE.B #14, D0
+	LEA MINUS_SIGN, A1
+	TRAP #15
+	NEG.W D1
+PRINT_UNSIGNED:
+	MOVE.B #3, D0
+	TRAP #15
+	RTS
+
+READ_NUM_VALID:
+.RNV_RETRY:
+	LEA INPUT_BUFFER, A1
+	MOVE.B #2, D0
+	TRAP #15
+	LEA INPUT_BUFFER, A1
+	CLR.W D2
+	CLR.L D3
+	CLR.L D4
+	MOVE.B (A1), D5
+	CMP.B #0, D5
+	BEQ .RNV_ERR
+	CMP.B #'-', D5
+	BNE .RNV_CHK
+	MOVE.W #1, D2
+	ADDA.L #1, A1
+.RNV_CHK:
+.RNV_LOOP:
+	MOVE.B (A1)+, D5
+	CMP.B #0, D5
+	BEQ .RNV_VALID
+	CMP.B #10, D5
+	BEQ .RNV_VALID
+	CMP.B #13, D5
+	BEQ .RNV_VALID
+	CMP.B #'0', D5
+	BLT .RNV_ERR
+	CMP.B #'9', D5
+	BGT .RNV_ERR
+	ADD.L #1, D4
+	SUB.B #'0', D5
+	MOVE.L D3, D6
+	MULS #10, D3
+	EXT.W D5
+	EXT.L D5
+	ADD.L D5, D3
+	BRA .RNV_LOOP
+.RNV_VALID:
+	TST.L D4
+	BEQ .RNV_ERR
+	MOVE.W D3, D1
+	TST.W D2
+	BEQ .RNV_END
+	NEG.W D1
+.RNV_END:
+	RTS
+.RNV_ERR:
+	LEA ERROR_INPUT_MSG, A1
+	MOVE.B #14, D0
+	TRAP #15
+	BRA .RNV_RETRY
+
+
+ARRAY_INDEX_OUT_OF_BOUNDS:
+	; Indice fuera de rango - mostrar mensaje y detener la simulacion
+	LEA ERROR_INDEX_MSG, A1
+	MOVE.B #14, D0
+	TRAP #15
+	SIMHALT
+
+UNINITIALIZED_ACCESS:
+	; Acceso a posicion no inicializada - mostrar mensaje y detener la simulacion
+	LEA ERROR_UNINIT_MSG, A1
+	MOVE.B #14, D0
+	TRAP #15
+	SIMHALT
+
+ALLOC_SIZE_INVALID:
+	; Tamaño de array inválido en tiempo de ejecución - mostrar mensaje y detener
+	LEA ERROR_ALLOC_MSG, A1
+	MOVE.B #14, D0
+	TRAP #15
+	SIMHALT
+main:
+	; 
+	MOVE.L HEAP_PTR, D0
+	MOVE.L D0, vector
+	MOVE.L #20, D1
+	CMP.L #1, D1
+	BLT ALLOC_SIZE_INVALID
+	ADD.L #20, D0
+	MOVE.L D0, HEAP_PTR
+	TST.L D1
+	BEQ INIT_vector_LOOP_END
+	MOVE.L vector, A0
+INIT_vector_LOOP:
+	MOVE.L #-1, D4
+	MOVE.L D4, (A0)+
+	SUBQ.L #4, D1
+	BGT INIT_vector_LOOP
+INIT_vector_LOOP_END:
+	; vector[0] = 1
+	MOVEA.L vector, A0
+	MOVE.L #0, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.L #1, D1
+	MOVE.L D1, 0(A0, D0.L)
+	; vector[4] = 2
+	MOVEA.L vector, A0
+	MOVE.L #4, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.L #2, D1
+	MOVE.L D1, 0(A0, D0.L)
+	; vector[8] = 3
+	MOVEA.L vector, A0
+	MOVE.L #8, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.L #3, D1
+	MOVE.L D1, 0(A0, D0.L)
+	; vector[12] = 4
+	MOVEA.L vector, A0
+	MOVE.L #12, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.L #4, D1
+	MOVE.L D1, 0(A0, D0.L)
+	; vector[16] = 5
+	MOVEA.L vector, A0
+	MOVE.L #16, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.L #5, D1
+	MOVE.L D1, 0(A0, D0.L)
+	; output "Introduce indice (0-4):"
+	LEA str0, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; output "\n"
+	LEA NEWLINE, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; input i
+	JSR READ_NUM_VALID
+	MOVE.W D1, i
+	; t25 = i * 4
+	MOVE.W i, D0
+	MULS #4, D0
+	MOVE.W D0, t25
+	; t26 = 5
+	MOVE.W #5, t26
+	; t28 = vector[t25]
+	MOVEA.L vector, A0
+	CLR.L D0
+	MOVE.W t25, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.W t26, D2
+	EXT.L D2
+	MOVE.W #4, D3
+	MULS D3, D2
+	CMP.L D2, D0
+	BGE ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.L 0(A0, D0.L), D1
+	CMP.L #-1, D1
+	BEQ UNINITIALIZED_ACCESS
+	MOVE.W D1, t28
+	; x = t28
+	MOVE.W t28, x
+	; output x
+	MOVE.W x, D1
+	JSR PRINT_SIGNED
+	; output "\n"
+	LEA NEWLINE, A1
+	MOVE.B #14, D0
+	TRAP #15
+	BRA HALT
+
+	; DATA SECTION
+NEWLINE:	DC.B 13,10,0
+MINUS_SIGN:	DC.B '-',0
+ERROR_INPUT_MSG:	DC.B 'ERROR: Entrada invalida. Ingrese un numero valido: ',0
+ERROR_INDEX_MSG:	DC.B 'ERROR: Indice fuera de rango',13,10,0
+ERROR_UNINIT_MSG:	DC.B 'ERROR: Acceso a posicion no inicializada',13,10,0
+ERROR_ALLOC_MSG:	DC.B 'ERROR: Tamaño de array inválido (<= 0)',13,10,0
+INPUT_BUFFER:	DS.B 80
+HEAP_PTR:	DC.L $8000
+t25:	DS.W 1
+x:	DS.W 1
+str0:	DC.B 'Introduce indice (0-4):',0
+i:	DS.W 1
+t26:	DS.W 1
+vector:	DS.L 1
+t28:	DS.W 1
+
+HALT:
+	SIMHALT
+
+	ORG $5000
+STACKPTR:
+	END START

@@ -1,0 +1,19 @@
+// TEST ARRAY 15: Index out of bounds - ERROR
+// Objetivo: Verificar que el compilador detecta accesos fuera de los límites del array
+
+principal {
+    escribeN "=== TEST: Index out of bounds (debe fallar) ===".
+    
+    lista de numero vector es [10, 20, 30, 40, 50].
+    
+    // ERROR: Acceso fuera de rango con literal
+    // El array tiene índices 0-4, intentar acceder a índice 10
+    numero valor es vector posicion (10).
+    
+    escribeN valor.
+}
+
+// ERRORES ESPERADOS:
+// 1. Error semántico: Índice fuera de rango: 10 (máximo permitido: 4)
+//    - El array 'vector' tiene 5 elementos (índices 0-4)
+//    - Se intenta acceder al índice 10 que excede el tamaño

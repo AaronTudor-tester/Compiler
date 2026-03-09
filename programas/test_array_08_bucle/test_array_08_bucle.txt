@@ -1,0 +1,16 @@
+// TEST ARRAY 08: Array con bucle for
+// Objetivo: Verificar recorrido de arrays con bucle for
+
+principal {
+    escribeN "=== TEST: Array con bucle for ===".
+    
+    lista de numero vector es [10, 20, 30, 40, 50].
+    
+    escribeN "Recorriendo array:".
+    para numero i es 0, repite si i es menor que 5, i es i mas 1 {
+        numero valor es vector posicion (i).
+        escribeN valor.
+    }
+    
+    escribeN "Test completado".
+}

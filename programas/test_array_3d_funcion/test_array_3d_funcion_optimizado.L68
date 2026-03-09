@@ -1,0 +1,995 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 04/02/2026 11:50:50
+
+00000000                             1  ; Easy68K Assembly Generated
+00001000                             2      ORG $1000
+00001000                             3  START:
+00001000  4FF9 00005000              4      LEA STACKPTR, A7    ; Initialize stack pointer
+00001006  4EF9 00001346              5      JMP main        ; Jump to main program
+0000100C                             6  
+0000100C                             7  ; ===== RUTINAS AUXILIARES =====
+0000100C                             8  PRINT_SIGNED:
+0000100C                             9      ; D1 contiene el número a mostrar (con signo)
+0000100C                            10      ; Si es negativo, muestra '-' y el valor absoluto
+0000100C  4A41                      11      TST.W D1        ; Probar el signo
+0000100E  6A00 0010                 12      BPL PRINT_UNSIGNED  ; Si es positivo, saltar
+00001012                            13      ; Es negativo: mostrar '-'
+00001012  103C 000E                 14      MOVE.B #14, D0
+00001016  43F9 00001913             15      LEA MINUS_SIGN, A1
+0000101C  4E4F                      16      TRAP #15
+0000101E                            17      ; Negar el valor
+0000101E  4441                      18      NEG.W D1
+00001020                            19  PRINT_UNSIGNED:
+00001020                            20      ; Mostrar el número (ahora positivo) usando Task #3
+00001020  103C 0003                 21      MOVE.B #3, D0   ; Task 3 = Display number
+00001024  4E4F                      22      TRAP #15
+00001026  4E75                      23      RTS
+00001028                            24  
+00001028                            25  PRINT_SIGNED_LONG:
+00001028                            26      ; D1 contiene el número de 32 bits a mostrar (con signo)
+00001028  4A81                      27      TST.L D1        ; Probar el signo
+0000102A  6A00 0010                 28      BPL PRINT_UNSIGNED_LONG ; Si es positivo, saltar
+0000102E                            29      ; Es negativo: mostrar '-'
+0000102E  103C 000E                 30      MOVE.B #14, D0
+00001032  43F9 00001913             31      LEA MINUS_SIGN, A1
+00001038  4E4F                      32      TRAP #15
+0000103A                            33      ; Negar el valor
+0000103A  4481                      34      NEG.L D1
+0000103C                            35  PRINT_UNSIGNED_LONG:
+0000103C                            36      ; Mostrar el número de 32 bits (ahora positivo)
+0000103C  103C 0003                 37      MOVE.B #3, D0   ; Task 3 = Display signed number at D1.L
+00001040  4E4F                      38      TRAP #15
+00001042  4E75                      39      RTS
+00001044                            40  
+00001044                            41  PRINT_DECIMAL_2:
+00001044                            42      ; D1 = numero escalado x100 (ej: 350 = 3.50)
+00001044                            43      ; Guardar original en D3 (32-bit)
+00001044  2601                      44      MOVE.L D1, D3
+00001046                            45      ; Manejar signo: si negativo, imprimir '-' y tomar abs
+00001046  4A83                      46      TST.L D3
+00001048  6A00 0010                 47      BPL .PD2_POSITIVE
+0000104C                            48      ; imprimir '-'
+0000104C  103C 000E                 49      MOVE.B #14, D0
+00001050  43F9 00001913             50      LEA MINUS_SIGN, A1
+00001056  4E4F                      51      TRAP #15
+00001058  4483                      52      NEG.L D3
+0000105A                            53  .PD2_POSITIVE:
+0000105A                            54      ; Calcular parte entera: D2 = original / 100
+0000105A  2403                      55      MOVE.L D3, D2
+0000105C  383C 0064                 56      MOVE.W #100, D4
+00001060  85C4                      57      DIVS D4, D2
+00001062                            58      ; Calcular fracción: D3 = remainder = original - (parte_entera*100)
+00001062  2A02                      59      MOVE.L D2, D5
+00001064  383C 0064                 60      MOVE.W #100, D4
+00001068  2C05                      61      MOVE.L D5, D6
+0000106A  4280                      62      CLR.L D0
+0000106C  3004                      63      MOVE.W D4, D0
+0000106E  CDC0                      64      MULS D0, D6
+00001070  9686                      65      SUB.L D6, D3
+00001072                            66      ; Imprimir parte entera usando Task 3
+00001072  4281                      67      CLR.L D1
+00001074  3202                      68      MOVE.W D2, D1
+00001076  103C 0003                 69      MOVE.B #3, D0
+0000107A  4E4F                      70      TRAP #15
+0000107C                            71      ; Imprimir punto decimal
+0000107C  43F9 00001915             72      LEA DECIMAL_POINT, A1
+00001082  103C 000E                 73      MOVE.B #14, D0
+00001086  4E4F                      74      TRAP #15
+00001088                            75      ; Imprimir fracción con 2 dígitos
+00001088  4280                      76      CLR.L D0
+0000108A  3003                      77      MOVE.W D3, D0
+0000108C  B07C 000A                 78      CMP.W #10, D0
+00001090  6C00 000E                 79      BGE .PD2_SKIP_ZERO
+00001094                            80      ; imprimir '0' si <10
+00001094  43F9 00001917             81      LEA ZERO_CHAR, A1
+0000109A  103C 000E                 82      MOVE.B #14, D0
+0000109E  4E4F                      83      TRAP #15
+000010A0                            84  .PD2_SKIP_ZERO:
+000010A0  4281                      85      CLR.L D1
+000010A2  3203                      86      MOVE.W D3, D1
+000010A4  103C 0003                 87      MOVE.B #3, D0
+000010A8  4E4F                      88      TRAP #15
+000010AA  4E75                      89      RTS
+000010AC                            90  
+000010AC                            91  PRINT_BOOL:
+000010AC                            92      ; D1 contiene el valor booleano (0=mentira, 1=cierto)
+000010AC  4A41                      93      TST.W D1        ; Probar si es 0
+000010AE  6700 000C                 94      BEQ .PRINT_MENTIRA  ; Si es 0, imprimir 'mentira'
+000010B2                            95      ; Es cierto (1)
+000010B2  43F9 0000196A             96      LEA STR_CIERTO, A1
+000010B8  6000 0008                 97      BRA .PRINT_BOOL_STR
+000010BC                            98  .PRINT_MENTIRA:
+000010BC  43F9 00001971             99      LEA STR_MENTIRA, A1
+000010C2                           100  .PRINT_BOOL_STR:
+000010C2  103C 000E                101      MOVE.B #14, D0  ; Task 14 = Display string
+000010C6  4E4F                     102      TRAP #15
+000010C8  4E75                     103      RTS
+000010CA                           104  
+000010CA                           105  READ_NUM_VALID:
+000010CA                           106      ; Lee un número validando que la entrada sea válida
+000010CA                           107      ; Si la entrada no es válida, muestra error y vuelve a pedir
+000010CA                           108      ; Resultado en D1.W
+000010CA                           109  .RNV_RETRY:
+000010CA                           110      ; Leer string desde teclado (Task 2)
+000010CA  43F9 00001979            111      LEA INPUT_BUFFER, A1
+000010D0  103C 0002                112      MOVE.B #2, D0   ; Task 2 = Read string
+000010D4  4E4F                     113      TRAP #15
+000010D6                           114      ; A1 apunta al buffer con el string leído
+000010D6  43F9 00001979            115      LEA INPUT_BUFFER, A1
+000010DC                           116      ; Validar: Verificar que solo contenga dígitos y opcionalmente signo
+000010DC  4242                     117      CLR.W D2        ; Flag: 0=positivo, 1=negativo
+000010DE  4283                     118      CLR.L D3        ; Acumulador del número
+000010E0  4284                     119      CLR.L D4        ; Contador de dígitos válidos
+000010E2                           120      ; Verificar primer carácter (puede ser '-' o dígito)
+000010E2  1A11                     121      MOVE.B (A1), D5
+000010E4  BA3C 0000                122      CMP.B #0, D5    ; String vacío?
+000010E8  6700 0060                123      BEQ .RNV_ERR
+000010EC  BA3C 002D                124      CMP.B #'-', D5  ; Es signo negativo?
+000010F0  6600 0008                125      BNE .RNV_CHK
+000010F4                           126      ; Es negativo
+000010F4  343C 0001                127      MOVE.W #1, D2   ; Flag negativo
+000010F8  5289                     128      ADDA.L #1, A1   ; Avanzar al siguiente carácter
+000010FA                           129  .RNV_CHK:
+000010FA                           130      ; Ahora todos los caracteres deben ser dígitos
+000010FA                           131  .RNV_LOOP:
+000010FA  1A19                     132      MOVE.B (A1)+, D5    ; Leer carácter
+000010FC  BA3C 0000                133      CMP.B #0, D5        ; Fin del string?
+00001100  6700 0036                134      BEQ .RNV_VALID
+00001104  BA3C 000A                135      CMP.B #10, D5       ; Salto de línea?
+00001108  6700 002E                136      BEQ .RNV_VALID
+0000110C  BA3C 000D                137      CMP.B #13, D5       ; Retorno de carro?
+00001110  6700 0026                138      BEQ .RNV_VALID
+00001114                           139      ; Verificar que sea dígito (0-9 = ASCII 48-57)
+00001114  BA3C 0030                140      CMP.B #'0', D5
+00001118  6D00 0030                141      BLT .RNV_ERR        ; Menor que '0'
+0000111C  BA3C 0039                142      CMP.B #'9', D5
+00001120  6E00 0028                143      BGT .RNV_ERR        ; Mayor que '9'
+00001124                           144      ; Es un dígito válido
+00001124  5284                     145      ADD.L #1, D4        ; Incrementar contador de dígitos
+00001126                           146      ; Convertir carácter a número: D5 = D5 - '0'
+00001126  0405 0030                147      SUB.B #'0', D5
+0000112A                           148      ; Acumular: D3 = D3 * 10 + D5
+0000112A  2C03                     149      MOVE.L D3, D6
+0000112C  C7FC 000A                150      MULS #10, D3
+00001130  4885                     151      EXT.W D5
+00001132  48C5                     152      EXT.L D5
+00001134  D685                     153      ADD.L D5, D3
+00001136  60C2                     154      BRA .RNV_LOOP
+00001138                           155  .RNV_VALID:
+00001138                           156      ; Verificar que se leyó al menos un dígito
+00001138  4A84                     157      TST.L D4
+0000113A  6700 000E                158      BEQ .RNV_ERR
+0000113E                           159      ; Número válido, mover a D1
+0000113E  3203                     160      MOVE.W D3, D1
+00001140                           161      ; Aplicar signo si es negativo
+00001140  4A42                     162      TST.W D2
+00001142  6700 0004                163      BEQ .RNV_END
+00001146  4441                     164      NEG.W D1
+00001148                           165  .RNV_END:
+00001148  4E75                     166      RTS
+0000114A                           167  .RNV_ERR:
+0000114A                           168      ; Mostrar mensaje de error
+0000114A  43F9 00001936            169      LEA ERROR_INPUT_MSG, A1
+00001150  103C 000E                170      MOVE.B #14, D0  ; Task 14 = Display string
+00001154  4E4F                     171      TRAP #15
+00001156                           172      ; Reintentar
+00001156  6000 FF72                173      BRA .RNV_RETRY
+0000115A                           174  
+0000115A                           175  sumarCubo:
+0000115A                           176      ; ; param cubo : INT_ARRAY_3
+0000115A                           177      ; i = 0
+0000115A  33FC 0000 00001A4C       178      MOVE.W #0, i
+00001162                           179  e0:
+00001162                           180      ; t3 = i < 2
+00001162  33FC 0000 00001A36       181      MOVE.W #0, t3
+0000116A  3039 00001A4C            182      MOVE.W i, D0
+00001170  B07C 0002                183      CMP.W #2, D0
+00001174  6D00 0008                184      BLT t3_true
+00001178  4EF9 00001186            185      JMP t3_false
+0000117E                           186  t3_true:
+0000117E  33FC 0001 00001A36       187      MOVE.W #1, t3
+00001186                           188  t3_false:
+00001186                           189      ; if !(t3) goto e1
+00001186  3039 00001A36            190      MOVE.W t3, D0
+0000118C  B07C 0000                191      CMP.W #0, D0
+00001190  6700 01B2                192      BEQ e1
+00001194                           193      ; j = 0
+00001194  33FC 0000 00001A4E       194      MOVE.W #0, j
+0000119C                           195  e2:
+0000119C                           196      ; t7 = j < 3
+0000119C  33FC 0000 00001A38       197      MOVE.W #0, t7
+000011A4  3039 00001A4E            198      MOVE.W j, D0
+000011AA  B07C 0003                199      CMP.W #3, D0
+000011AE  6D00 0008                200      BLT t7_true
+000011B2  4EF9 000011C0            201      JMP t7_false
+000011B8                           202  t7_true:
+000011B8  33FC 0001 00001A38       203      MOVE.W #1, t7
+000011C0                           204  t7_false:
+000011C0                           205      ; if !(t7) goto e3
+000011C0  3039 00001A38            206      MOVE.W t7, D0
+000011C6  B07C 0000                207      CMP.W #0, D0
+000011CA  6700 015C                208      BEQ e3
+000011CE                           209      ; k = 0
+000011CE  33FC 0000 00001A52       210      MOVE.W #0, k
+000011D6                           211  e4:
+000011D6                           212      ; t11 = k < 2
+000011D6  33FC 0000 000019F6       213      MOVE.W #0, t11
+000011DE  3039 00001A52            214      MOVE.W k, D0
+000011E4  B07C 0002                215      CMP.W #2, D0
+000011E8  6D00 0008                216      BLT t11_true
+000011EC  4EF9 000011FA            217      JMP t11_false
+000011F2                           218  t11_true:
+000011F2  33FC 0001 000019F6       219      MOVE.W #1, t11
+000011FA                           220  t11_false:
+000011FA                           221      ; if !(t11) goto e5
+000011FA  3039 000019F6            222      MOVE.W t11, D0
+00001200  B07C 0000                223      CMP.W #0, D0
+00001204  6700 0106                224      BEQ e5
+00001208                           225      ; t15 = i * 3
+00001208                           226      ; MULT ENTERA: D0 = op1 * op2
+00001208  3039 00001A4C            227      MOVE.W i, D0
+0000120E  C1FC 0003                228      MULS #3, D0
+00001212  33C0 00001A0C            229      MOVE.W D0, t15
+00001218                           230      ; t16 = t15 + j
+00001218  3039 00001A0C            231      MOVE.W t15, D0
+0000121E  D079 00001A4E            232      ADD.W j, D0
+00001224  33C0 00001A0A            233      MOVE.W D0, t16
+0000122A                           234      ; t19 = t16 * 2
+0000122A                           235      ; MULT ENTERA: D0 = op1 * op2
+0000122A  3039 00001A0A            236      MOVE.W t16, D0
+00001230  C1FC 0002                237      MULS #2, D0
+00001234  33C0 00001A0E            238      MOVE.W D0, t19
+0000123A                           239      ; t20 = t19 + k
+0000123A  3039 00001A0E            240      MOVE.W t19, D0
+00001240  D079 00001A52            241      ADD.W k, D0
+00001246  33C0 00001A2C            242      MOVE.W D0, t20
+0000124C                           243      ; t22 = t20 * 4
+0000124C                           244      ; MULT ENTERA: D0 = op1 * op2
+0000124C  3039 00001A2C            245      MOVE.W t20, D0
+00001252  C1FC 0004                246      MULS #4, D0
+00001256  33C0 00001A30            247      MOVE.W D0, t22
+0000125C                           248      ; t26 = i * 3
+0000125C                           249      ; MULT ENTERA: D0 = op1 * op2
+0000125C  3039 00001A4C            250      MOVE.W i, D0
+00001262  C1FC 0003                251      MULS #3, D0
+00001266  33C0 00001A34            252      MOVE.W D0, t26
+0000126C                           253      ; t27 = t26 + j
+0000126C  3039 00001A34            254      MOVE.W t26, D0
+00001272  D079 00001A4E            255      ADD.W j, D0
+00001278  33C0 00001A32            256      MOVE.W D0, t27
+0000127E                           257      ; t30 = t27 * 2
+0000127E                           258      ; MULT ENTERA: D0 = op1 * op2
+0000127E  3039 00001A32            259      MOVE.W t27, D0
+00001284  C1FC 0002                260      MULS #2, D0
+00001288  33C0 00001A42            261      MOVE.W D0, t30
+0000128E                           262      ; t31 = t30 + k
+0000128E  3039 00001A42            263      MOVE.W t30, D0
+00001294  D079 00001A52            264      ADD.W k, D0
+0000129A  33C0 00001A44            265      MOVE.W D0, t31
+000012A0                           266      ; t33 = t31 * 4
+000012A0                           267      ; MULT ENTERA: D0 = op1 * op2
+000012A0  3039 00001A44            268      MOVE.W t31, D0
+000012A6  C1FC 0004                269      MULS #4, D0
+000012AA  33C0 00001A46            270      MOVE.W D0, t33
+000012B0                           271      ; t40 = cubo[t33]
+000012B0                           272      ; Acceso a array con bounds checking
+000012B0  2079 000019D2            273      MOVEA.L cubo, A0
+000012B6  4280                     274      CLR.L D0
+000012B8  3039 00001A46            275      MOVE.W t33, D0
+000012BE  2230 0800                276      MOVE.L 0(A0, D0.L), D1
+000012C2  33C1 00001A58            277      MOVE.W D1, t40
+000012C8                           278      ; t42 = t40 + 1
+000012C8  3039 00001A58            279      MOVE.W t40, D0
+000012CE  5240                     280      ADD.W #1, D0
+000012D0  33C0 00001A5A            281      MOVE.W D0, t42
+000012D6                           282      ; cubo[t22] = t42
+000012D6  2079 000019D2            283      MOVEA.L cubo, A0
+000012DC  4280                     284      CLR.L D0
+000012DE  3039 00001A30            285      MOVE.W t22, D0
+000012E4  4281                     286      CLR.L D1
+000012E6  3239 00001A5A            287      MOVE.W t42, D1
+000012EC  2181 0800                288      MOVE.L D1, 0(A0, D0.L)
+000012F0                           289      ; t45 = k + 1
+000012F0  3039 00001A52            290      MOVE.W k, D0
+000012F6  5240                     291      ADD.W #1, D0
+000012F8  33C0 00001A5C            292      MOVE.W D0, t45
+000012FE                           293      ; k = t45
+000012FE  33F9 00001A5C 00001A52   294      MOVE.W t45, k
+00001308                           295      ; goto e4
+00001308  4EF8 11D6                296      JMP e4
+0000130C                           297  e5:
+0000130C                           298      ; t48 = j + 1
+0000130C  3039 00001A4E            299      MOVE.W j, D0
+00001312  5240                     300      ADD.W #1, D0
+00001314  33C0 00001A62            301      MOVE.W D0, t48
+0000131A                           302      ; j = t48
+0000131A  33F9 00001A62 00001A4E   303      MOVE.W t48, j
+00001324                           304      ; goto e2
+00001324  4EF8 119C                305      JMP e2
+00001328                           306  e3:
+00001328                           307      ; t51 = i + 1
+00001328  3039 00001A4C            308      MOVE.W i, D0
+0000132E  5240                     309      ADD.W #1, D0
+00001330  33C0 000019D6            310      MOVE.W D0, t51
+00001336                           311      ; i = t51
+00001336  33F9 000019D6 00001A4C   312      MOVE.W t51, i
+00001340                           313      ; goto e0
+00001340  4EF8 1162                314      JMP e0
+00001344                           315  e1:
+00001344                           316      ; return null
+00001344  4E75                     317      RTS
+00001346                           318  main:
+00001346                           319      ; 
+00001346  2039 000019CA            320      MOVE.L HEAP_PTR, D0
+0000134C  23C0 000019D8            321      MOVE.L D0, miCubo
+00001352  0680 00000030            322      ADD.L #48, D0
+00001358  23C0 000019CA            323      MOVE.L D0, HEAP_PTR
+0000135E                           324      ; miCubo[0] = 1
+0000135E  2079 000019D8            325      MOVEA.L miCubo, A0
+00001364  7000                     326      MOVE.L #0, D0
+00001366  7201                     327      MOVE.L #1, D1
+00001368  2181 0800                328      MOVE.L D1, 0(A0, D0.L)
+0000136C                           329      ; miCubo[4] = 2
+0000136C  2079 000019D8            330      MOVEA.L miCubo, A0
+00001372  7004                     331      MOVE.L #4, D0
+00001374  7202                     332      MOVE.L #2, D1
+00001376  2181 0800                333      MOVE.L D1, 0(A0, D0.L)
+0000137A                           334      ; miCubo[8] = 3
+0000137A  2079 000019D8            335      MOVEA.L miCubo, A0
+00001380  7008                     336      MOVE.L #8, D0
+00001382  7203                     337      MOVE.L #3, D1
+00001384  2181 0800                338      MOVE.L D1, 0(A0, D0.L)
+00001388                           339      ; miCubo[12] = 4
+00001388  2079 000019D8            340      MOVEA.L miCubo, A0
+0000138E  700C                     341      MOVE.L #12, D0
+00001390  7204                     342      MOVE.L #4, D1
+00001392  2181 0800                343      MOVE.L D1, 0(A0, D0.L)
+00001396                           344      ; miCubo[16] = 5
+00001396  2079 000019D8            345      MOVEA.L miCubo, A0
+0000139C  7010                     346      MOVE.L #16, D0
+0000139E  7205                     347      MOVE.L #5, D1
+000013A0  2181 0800                348      MOVE.L D1, 0(A0, D0.L)
+000013A4                           349      ; miCubo[20] = 6
+000013A4  2079 000019D8            350      MOVEA.L miCubo, A0
+000013AA  7014                     351      MOVE.L #20, D0
+000013AC  7206                     352      MOVE.L #6, D1
+000013AE  2181 0800                353      MOVE.L D1, 0(A0, D0.L)
+000013B2                           354      ; miCubo[24] = 7
+000013B2  2079 000019D8            355      MOVEA.L miCubo, A0
+000013B8  7018                     356      MOVE.L #24, D0
+000013BA  7207                     357      MOVE.L #7, D1
+000013BC  2181 0800                358      MOVE.L D1, 0(A0, D0.L)
+000013C0                           359      ; miCubo[28] = 8
+000013C0  2079 000019D8            360      MOVEA.L miCubo, A0
+000013C6  701C                     361      MOVE.L #28, D0
+000013C8  7208                     362      MOVE.L #8, D1
+000013CA  2181 0800                363      MOVE.L D1, 0(A0, D0.L)
+000013CE                           364      ; miCubo[32] = 9
+000013CE  2079 000019D8            365      MOVEA.L miCubo, A0
+000013D4  7020                     366      MOVE.L #32, D0
+000013D6  7209                     367      MOVE.L #9, D1
+000013D8  2181 0800                368      MOVE.L D1, 0(A0, D0.L)
+000013DC                           369      ; miCubo[36] = 10
+000013DC  2079 000019D8            370      MOVEA.L miCubo, A0
+000013E2  7024                     371      MOVE.L #36, D0
+000013E4  720A                     372      MOVE.L #10, D1
+000013E6  2181 0800                373      MOVE.L D1, 0(A0, D0.L)
+000013EA                           374      ; miCubo[40] = 11
+000013EA  2079 000019D8            375      MOVEA.L miCubo, A0
+000013F0  7028                     376      MOVE.L #40, D0
+000013F2  720B                     377      MOVE.L #11, D1
+000013F4  2181 0800                378      MOVE.L D1, 0(A0, D0.L)
+000013F8                           379      ; miCubo[44] = 12
+000013F8  2079 000019D8            380      MOVEA.L miCubo, A0
+000013FE  702C                     381      MOVE.L #44, D0
+00001400  720C                     382      MOVE.L #12, D1
+00001402  2181 0800                383      MOVE.L D1, 0(A0, D0.L)
+00001406                           384      ; miCubo[0] = 1
+00001406  2079 000019D8            385      MOVEA.L miCubo, A0
+0000140C  7000                     386      MOVE.L #0, D0
+0000140E  7201                     387      MOVE.L #1, D1
+00001410  2181 0800                388      MOVE.L D1, 0(A0, D0.L)
+00001414                           389      ; miCubo[4] = 2
+00001414  2079 000019D8            390      MOVEA.L miCubo, A0
+0000141A  7004                     391      MOVE.L #4, D0
+0000141C  7202                     392      MOVE.L #2, D1
+0000141E  2181 0800                393      MOVE.L D1, 0(A0, D0.L)
+00001422                           394      ; miCubo[8] = 3
+00001422  2079 000019D8            395      MOVEA.L miCubo, A0
+00001428  7008                     396      MOVE.L #8, D0
+0000142A  7203                     397      MOVE.L #3, D1
+0000142C  2181 0800                398      MOVE.L D1, 0(A0, D0.L)
+00001430                           399      ; miCubo[12] = 4
+00001430  2079 000019D8            400      MOVEA.L miCubo, A0
+00001436  700C                     401      MOVE.L #12, D0
+00001438  7204                     402      MOVE.L #4, D1
+0000143A  2181 0800                403      MOVE.L D1, 0(A0, D0.L)
+0000143E                           404      ; miCubo[16] = 5
+0000143E  2079 000019D8            405      MOVEA.L miCubo, A0
+00001444  7010                     406      MOVE.L #16, D0
+00001446  7205                     407      MOVE.L #5, D1
+00001448  2181 0800                408      MOVE.L D1, 0(A0, D0.L)
+0000144C                           409      ; miCubo[20] = 6
+0000144C  2079 000019D8            410      MOVEA.L miCubo, A0
+00001452  7014                     411      MOVE.L #20, D0
+00001454  7206                     412      MOVE.L #6, D1
+00001456  2181 0800                413      MOVE.L D1, 0(A0, D0.L)
+0000145A                           414      ; miCubo[24] = 7
+0000145A  2079 000019D8            415      MOVEA.L miCubo, A0
+00001460  7018                     416      MOVE.L #24, D0
+00001462  7207                     417      MOVE.L #7, D1
+00001464  2181 0800                418      MOVE.L D1, 0(A0, D0.L)
+00001468                           419      ; miCubo[28] = 8
+00001468  2079 000019D8            420      MOVEA.L miCubo, A0
+0000146E  701C                     421      MOVE.L #28, D0
+00001470  7208                     422      MOVE.L #8, D1
+00001472  2181 0800                423      MOVE.L D1, 0(A0, D0.L)
+00001476                           424      ; miCubo[32] = 9
+00001476  2079 000019D8            425      MOVEA.L miCubo, A0
+0000147C  7020                     426      MOVE.L #32, D0
+0000147E  7209                     427      MOVE.L #9, D1
+00001480  2181 0800                428      MOVE.L D1, 0(A0, D0.L)
+00001484                           429      ; miCubo[36] = 10
+00001484  2079 000019D8            430      MOVEA.L miCubo, A0
+0000148A  7024                     431      MOVE.L #36, D0
+0000148C  720A                     432      MOVE.L #10, D1
+0000148E  2181 0800                433      MOVE.L D1, 0(A0, D0.L)
+00001492                           434      ; miCubo[40] = 11
+00001492  2079 000019D8            435      MOVEA.L miCubo, A0
+00001498  7028                     436      MOVE.L #40, D0
+0000149A  720B                     437      MOVE.L #11, D1
+0000149C  2181 0800                438      MOVE.L D1, 0(A0, D0.L)
+000014A0                           439      ; miCubo[44] = 12
+000014A0  2079 000019D8            440      MOVEA.L miCubo, A0
+000014A6  702C                     441      MOVE.L #44, D0
+000014A8  720C                     442      MOVE.L #12, D1
+000014AA  2181 0800                443      MOVE.L D1, 0(A0, D0.L)
+000014AE                           444      ; output "Cubo 3D original:"
+000014AE  43F9 00001A12            445      LEA str0, A1
+000014B4  103C 000E                446      MOVE.B #14, D0  ; Task 14 = Display string
+000014B8  4E4F                     447      TRAP #15
+000014BA                           448      ; output "\n"
+000014BA  43F9 00001910            449      LEA NEWLINE, A1
+000014C0  103C 000E                450      MOVE.B #14, D0  ; Task 14 = Display string
+000014C4  4E4F                     451      TRAP #15
+000014C6                           452      ; output "Capa 0:"
+000014C6  43F9 000019F8            453      LEA str1, A1
+000014CC  103C 000E                454      MOVE.B #14, D0  ; Task 14 = Display string
+000014D0  4E4F                     455      TRAP #15
+000014D2                           456      ; output "\n"
+000014D2  43F9 00001910            457      LEA NEWLINE, A1
+000014D8  103C 000E                458      MOVE.B #14, D0  ; Task 14 = Display string
+000014DC  4E4F                     459      TRAP #15
+000014DE                           460      ; t264 = miCubo[0]
+000014DE                           461      ; Acceso a array con bounds checking
+000014DE  2079 000019D8            462      MOVEA.L miCubo, A0
+000014E4  7000                     463      MOVE.L #0, D0
+000014E6  2230 0800                464      MOVE.L 0(A0, D0.L), D1
+000014EA  33C1 00001A3A            465      MOVE.W D1, t264
+000014F0                           466      ; output t264
+000014F0  3239 00001A3A            467      MOVE.W t264, D1
+000014F6  4EB8 100C                468      JSR PRINT_SIGNED
+000014FA                           469      ; output "\n"
+000014FA  43F9 00001910            470      LEA NEWLINE, A1
+00001500  103C 000E                471      MOVE.B #14, D0  ; Task 14 = Display string
+00001504  4E4F                     472      TRAP #15
+00001506                           473      ; t282 = miCubo[4]
+00001506                           474      ; Acceso a array con bounds checking
+00001506  2079 000019D8            475      MOVEA.L miCubo, A0
+0000150C  7004                     476      MOVE.L #4, D0
+0000150E  2230 0800                477      MOVE.L 0(A0, D0.L), D1
+00001512  33C1 000019CE            478      MOVE.W D1, t282
+00001518                           479      ; output t282
+00001518  3239 000019CE            480      MOVE.W t282, D1
+0000151E  4EB8 100C                481      JSR PRINT_SIGNED
+00001522                           482      ; output "\n"
+00001522  43F9 00001910            483      LEA NEWLINE, A1
+00001528  103C 000E                484      MOVE.B #14, D0  ; Task 14 = Display string
+0000152C  4E4F                     485      TRAP #15
+0000152E                           486      ; t300 = miCubo[8]
+0000152E                           487      ; Acceso a array con bounds checking
+0000152E  2079 000019D8            488      MOVEA.L miCubo, A0
+00001534  7008                     489      MOVE.L #8, D0
+00001536  2230 0800                490      MOVE.L 0(A0, D0.L), D1
+0000153A  33C1 00001A40            491      MOVE.W D1, t300
+00001540                           492      ; output t300
+00001540  3239 00001A40            493      MOVE.W t300, D1
+00001546  4EB8 100C                494      JSR PRINT_SIGNED
+0000154A                           495      ; output "\n"
+0000154A  43F9 00001910            496      LEA NEWLINE, A1
+00001550  103C 000E                497      MOVE.B #14, D0  ; Task 14 = Display string
+00001554  4E4F                     498      TRAP #15
+00001556                           499      ; t318 = miCubo[12]
+00001556                           500      ; Acceso a array con bounds checking
+00001556  2079 000019D8            501      MOVEA.L miCubo, A0
+0000155C  700C                     502      MOVE.L #12, D0
+0000155E  2230 0800                503      MOVE.L 0(A0, D0.L), D1
+00001562  33C1 000019DC            504      MOVE.W D1, t318
+00001568                           505      ; output t318
+00001568  3239 000019DC            506      MOVE.W t318, D1
+0000156E  4EB8 100C                507      JSR PRINT_SIGNED
+00001572                           508      ; output "\n"
+00001572  43F9 00001910            509      LEA NEWLINE, A1
+00001578  103C 000E                510      MOVE.B #14, D0  ; Task 14 = Display string
+0000157C  4E4F                     511      TRAP #15
+0000157E                           512      ; t336 = miCubo[16]
+0000157E                           513      ; Acceso a array con bounds checking
+0000157E  2079 000019D8            514      MOVEA.L miCubo, A0
+00001584  7010                     515      MOVE.L #16, D0
+00001586  2230 0800                516      MOVE.L 0(A0, D0.L), D1
+0000158A  33C1 00001A48            517      MOVE.W D1, t336
+00001590                           518      ; output t336
+00001590  3239 00001A48            519      MOVE.W t336, D1
+00001596  4EB8 100C                520      JSR PRINT_SIGNED
+0000159A                           521      ; output "\n"
+0000159A  43F9 00001910            522      LEA NEWLINE, A1
+000015A0  103C 000E                523      MOVE.B #14, D0  ; Task 14 = Display string
+000015A4  4E4F                     524      TRAP #15
+000015A6                           525      ; t354 = miCubo[20]
+000015A6                           526      ; Acceso a array con bounds checking
+000015A6  2079 000019D8            527      MOVEA.L miCubo, A0
+000015AC  7014                     528      MOVE.L #20, D0
+000015AE  2230 0800                529      MOVE.L 0(A0, D0.L), D1
+000015B2  33C1 00001A24            530      MOVE.W D1, t354
+000015B8                           531      ; output t354
+000015B8  3239 00001A24            532      MOVE.W t354, D1
+000015BE  4EB8 100C                533      JSR PRINT_SIGNED
+000015C2                           534      ; output "\n"
+000015C2  43F9 00001910            535      LEA NEWLINE, A1
+000015C8  103C 000E                536      MOVE.B #14, D0  ; Task 14 = Display string
+000015CC  4E4F                     537      TRAP #15
+000015CE                           538      ; output "Capa 1:"
+000015CE  43F9 00001A02            539      LEA str2, A1
+000015D4  103C 000E                540      MOVE.B #14, D0  ; Task 14 = Display string
+000015D8  4E4F                     541      TRAP #15
+000015DA                           542      ; output "\n"
+000015DA  43F9 00001910            543      LEA NEWLINE, A1
+000015E0  103C 000E                544      MOVE.B #14, D0  ; Task 14 = Display string
+000015E4  4E4F                     545      TRAP #15
+000015E6                           546      ; t372 = miCubo[24]
+000015E6                           547      ; Acceso a array con bounds checking
+000015E6  2079 000019D8            548      MOVEA.L miCubo, A0
+000015EC  7018                     549      MOVE.L #24, D0
+000015EE  2230 0800                550      MOVE.L 0(A0, D0.L), D1
+000015F2  33C1 00001A54            551      MOVE.W D1, t372
+000015F8                           552      ; output t372
+000015F8  3239 00001A54            553      MOVE.W t372, D1
+000015FE  4EB8 100C                554      JSR PRINT_SIGNED
+00001602                           555      ; output "\n"
+00001602  43F9 00001910            556      LEA NEWLINE, A1
+00001608  103C 000E                557      MOVE.B #14, D0  ; Task 14 = Display string
+0000160C  4E4F                     558      TRAP #15
+0000160E                           559      ; t390 = miCubo[28]
+0000160E                           560      ; Acceso a array con bounds checking
+0000160E  2079 000019D8            561      MOVEA.L miCubo, A0
+00001614  701C                     562      MOVE.L #28, D0
+00001616  2230 0800                563      MOVE.L 0(A0, D0.L), D1
+0000161A  33C1 00001A10            564      MOVE.W D1, t390
+00001620                           565      ; output t390
+00001620  3239 00001A10            566      MOVE.W t390, D1
+00001626  4EB8 100C                567      JSR PRINT_SIGNED
+0000162A                           568      ; output "\n"
+0000162A  43F9 00001910            569      LEA NEWLINE, A1
+00001630  103C 000E                570      MOVE.B #14, D0  ; Task 14 = Display string
+00001634  4E4F                     571      TRAP #15
+00001636                           572      ; t408 = miCubo[32]
+00001636                           573      ; Acceso a array con bounds checking
+00001636  2079 000019D8            574      MOVEA.L miCubo, A0
+0000163C  7020                     575      MOVE.L #32, D0
+0000163E  2230 0800                576      MOVE.L 0(A0, D0.L), D1
+00001642  33C1 00001A64            577      MOVE.W D1, t408
+00001648                           578      ; output t408
+00001648  3239 00001A64            579      MOVE.W t408, D1
+0000164E  4EB8 100C                580      JSR PRINT_SIGNED
+00001652                           581      ; output "\n"
+00001652  43F9 00001910            582      LEA NEWLINE, A1
+00001658  103C 000E                583      MOVE.B #14, D0  ; Task 14 = Display string
+0000165C  4E4F                     584      TRAP #15
+0000165E                           585      ; t426 = miCubo[36]
+0000165E                           586      ; Acceso a array con bounds checking
+0000165E  2079 000019D8            587      MOVEA.L miCubo, A0
+00001664  7024                     588      MOVE.L #36, D0
+00001666  2230 0800                589      MOVE.L 0(A0, D0.L), D1
+0000166A  33C1 00001A28            590      MOVE.W D1, t426
+00001670                           591      ; output t426
+00001670  3239 00001A28            592      MOVE.W t426, D1
+00001676  4EB8 100C                593      JSR PRINT_SIGNED
+0000167A                           594      ; output "\n"
+0000167A  43F9 00001910            595      LEA NEWLINE, A1
+00001680  103C 000E                596      MOVE.B #14, D0  ; Task 14 = Display string
+00001684  4E4F                     597      TRAP #15
+00001686                           598      ; t444 = miCubo[40]
+00001686                           599      ; Acceso a array con bounds checking
+00001686  2079 000019D8            600      MOVEA.L miCubo, A0
+0000168C  7028                     601      MOVE.L #40, D0
+0000168E  2230 0800                602      MOVE.L 0(A0, D0.L), D1
+00001692  33C1 00001A5E            603      MOVE.W D1, t444
+00001698                           604      ; output t444
+00001698  3239 00001A5E            605      MOVE.W t444, D1
+0000169E  4EB8 100C                606      JSR PRINT_SIGNED
+000016A2                           607      ; output "\n"
+000016A2  43F9 00001910            608      LEA NEWLINE, A1
+000016A8  103C 000E                609      MOVE.B #14, D0  ; Task 14 = Display string
+000016AC  4E4F                     610      TRAP #15
+000016AE                           611      ; t462 = miCubo[44]
+000016AE                           612      ; Acceso a array con bounds checking
+000016AE  2079 000019D8            613      MOVEA.L miCubo, A0
+000016B4  702C                     614      MOVE.L #44, D0
+000016B6  2230 0800                615      MOVE.L 0(A0, D0.L), D1
+000016BA  33C1 00001A3C            616      MOVE.W D1, t462
+000016C0                           617      ; output t462
+000016C0  3239 00001A3C            618      MOVE.W t462, D1
+000016C6  4EB8 100C                619      JSR PRINT_SIGNED
+000016CA                           620      ; output "\n"
+000016CA  43F9 00001910            621      LEA NEWLINE, A1
+000016D0  103C 000E                622      MOVE.B #14, D0  ; Task 14 = Display string
+000016D4  4E4F                     623      TRAP #15
+000016D6                           624      ; param_s miCubo  
+000016D6                           625      ; param_dim miCubo  
+000016D6                           626      ; Array miCubo using default dimensions: [2, 3]
+000016D6                           627      ; call sumarCubo  
+000016D6  23F9 000019D8 000019D2   628      MOVE.L miCubo, cubo
+000016E0  4EB8 115A                629      JSR sumarCubo
+000016E4                           630      ; output "Cubo 3D tras sumar 1:"
+000016E4  43F9 000019E0            631      LEA str3, A1
+000016EA  103C 000E                632      MOVE.B #14, D0  ; Task 14 = Display string
+000016EE  4E4F                     633      TRAP #15
+000016F0                           634      ; output "\n"
+000016F0  43F9 00001910            635      LEA NEWLINE, A1
+000016F6  103C 000E                636      MOVE.B #14, D0  ; Task 14 = Display string
+000016FA  4E4F                     637      TRAP #15
+000016FC                           638      ; output "Capa 0:"
+000016FC  43F9 000019F8            639      LEA str1, A1
+00001702  103C 000E                640      MOVE.B #14, D0  ; Task 14 = Display string
+00001706  4E4F                     641      TRAP #15
+00001708                           642      ; output "\n"
+00001708  43F9 00001910            643      LEA NEWLINE, A1
+0000170E  103C 000E                644      MOVE.B #14, D0  ; Task 14 = Display string
+00001712  4E4F                     645      TRAP #15
+00001714                           646      ; t480 = miCubo[0]
+00001714                           647      ; Acceso a array con bounds checking
+00001714  2079 000019D8            648      MOVEA.L miCubo, A0
+0000171A  7000                     649      MOVE.L #0, D0
+0000171C  2230 0800                650      MOVE.L 0(A0, D0.L), D1
+00001720  33C1 000019D0            651      MOVE.W D1, t480
+00001726                           652      ; output t480
+00001726  3239 000019D0            653      MOVE.W t480, D1
+0000172C  4EB8 100C                654      JSR PRINT_SIGNED
+00001730                           655      ; output "\n"
+00001730  43F9 00001910            656      LEA NEWLINE, A1
+00001736  103C 000E                657      MOVE.B #14, D0  ; Task 14 = Display string
+0000173A  4E4F                     658      TRAP #15
+0000173C                           659      ; t498 = miCubo[4]
+0000173C                           660      ; Acceso a array con bounds checking
+0000173C  2079 000019D8            661      MOVEA.L miCubo, A0
+00001742  7004                     662      MOVE.L #4, D0
+00001744  2230 0800                663      MOVE.L 0(A0, D0.L), D1
+00001748  33C1 00001A50            664      MOVE.W D1, t498
+0000174E                           665      ; output t498
+0000174E  3239 00001A50            666      MOVE.W t498, D1
+00001754  4EB8 100C                667      JSR PRINT_SIGNED
+00001758                           668      ; output "\n"
+00001758  43F9 00001910            669      LEA NEWLINE, A1
+0000175E  103C 000E                670      MOVE.B #14, D0  ; Task 14 = Display string
+00001762  4E4F                     671      TRAP #15
+00001764                           672      ; t516 = miCubo[8]
+00001764                           673      ; Acceso a array con bounds checking
+00001764  2079 000019D8            674      MOVEA.L miCubo, A0
+0000176A  7008                     675      MOVE.L #8, D0
+0000176C  2230 0800                676      MOVE.L 0(A0, D0.L), D1
+00001770  33C1 000019DE            677      MOVE.W D1, t516
+00001776                           678      ; output t516
+00001776  3239 000019DE            679      MOVE.W t516, D1
+0000177C  4EB8 100C                680      JSR PRINT_SIGNED
+00001780                           681      ; output "\n"
+00001780  43F9 00001910            682      LEA NEWLINE, A1
+00001786  103C 000E                683      MOVE.B #14, D0  ; Task 14 = Display string
+0000178A  4E4F                     684      TRAP #15
+0000178C                           685      ; t534 = miCubo[12]
+0000178C                           686      ; Acceso a array con bounds checking
+0000178C  2079 000019D8            687      MOVEA.L miCubo, A0
+00001792  700C                     688      MOVE.L #12, D0
+00001794  2230 0800                689      MOVE.L 0(A0, D0.L), D1
+00001798  33C1 00001A4A            690      MOVE.W D1, t534
+0000179E                           691      ; output t534
+0000179E  3239 00001A4A            692      MOVE.W t534, D1
+000017A4  4EB8 100C                693      JSR PRINT_SIGNED
+000017A8                           694      ; output "\n"
+000017A8  43F9 00001910            695      LEA NEWLINE, A1
+000017AE  103C 000E                696      MOVE.B #14, D0  ; Task 14 = Display string
+000017B2  4E4F                     697      TRAP #15
+000017B4                           698      ; t552 = miCubo[16]
+000017B4                           699      ; Acceso a array con bounds checking
+000017B4  2079 000019D8            700      MOVEA.L miCubo, A0
+000017BA  7010                     701      MOVE.L #16, D0
+000017BC  2230 0800                702      MOVE.L 0(A0, D0.L), D1
+000017C0  33C1 00001A26            703      MOVE.W D1, t552
+000017C6                           704      ; output t552
+000017C6  3239 00001A26            705      MOVE.W t552, D1
+000017CC  4EB8 100C                706      JSR PRINT_SIGNED
+000017D0                           707      ; output "\n"
+000017D0  43F9 00001910            708      LEA NEWLINE, A1
+000017D6  103C 000E                709      MOVE.B #14, D0  ; Task 14 = Display string
+000017DA  4E4F                     710      TRAP #15
+000017DC                           711      ; t570 = miCubo[20]
+000017DC                           712      ; Acceso a array con bounds checking
+000017DC  2079 000019D8            713      MOVEA.L miCubo, A0
+000017E2  7014                     714      MOVE.L #20, D0
+000017E4  2230 0800                715      MOVE.L 0(A0, D0.L), D1
+000017E8  33C1 00001A56            716      MOVE.W D1, t570
+000017EE                           717      ; output t570
+000017EE  3239 00001A56            718      MOVE.W t570, D1
+000017F4  4EB8 100C                719      JSR PRINT_SIGNED
+000017F8                           720      ; output "\n"
+000017F8  43F9 00001910            721      LEA NEWLINE, A1
+000017FE  103C 000E                722      MOVE.B #14, D0  ; Task 14 = Display string
+00001802  4E4F                     723      TRAP #15
+00001804                           724      ; output "Capa 1:"
+00001804  43F9 00001A02            725      LEA str2, A1
+0000180A  103C 000E                726      MOVE.B #14, D0  ; Task 14 = Display string
+0000180E  4E4F                     727      TRAP #15
+00001810                           728      ; output "\n"
+00001810  43F9 00001910            729      LEA NEWLINE, A1
+00001816  103C 000E                730      MOVE.B #14, D0  ; Task 14 = Display string
+0000181A  4E4F                     731      TRAP #15
+0000181C                           732      ; t588 = miCubo[24]
+0000181C                           733      ; Acceso a array con bounds checking
+0000181C  2079 000019D8            734      MOVEA.L miCubo, A0
+00001822  7018                     735      MOVE.L #24, D0
+00001824  2230 0800                736      MOVE.L 0(A0, D0.L), D1
+00001828  33C1 00001A2E            737      MOVE.W D1, t588
+0000182E                           738      ; output t588
+0000182E  3239 00001A2E            739      MOVE.W t588, D1
+00001834  4EB8 100C                740      JSR PRINT_SIGNED
+00001838                           741      ; output "\n"
+00001838  43F9 00001910            742      LEA NEWLINE, A1
+0000183E  103C 000E                743      MOVE.B #14, D0  ; Task 14 = Display string
+00001842  4E4F                     744      TRAP #15
+00001844                           745      ; t606 = miCubo[28]
+00001844                           746      ; Acceso a array con bounds checking
+00001844  2079 000019D8            747      MOVEA.L miCubo, A0
+0000184A  701C                     748      MOVE.L #28, D0
+0000184C  2230 0800                749      MOVE.L 0(A0, D0.L), D1
+00001850  33C1 00001A66            750      MOVE.W D1, t606
+00001856                           751      ; output t606
+00001856  3239 00001A66            752      MOVE.W t606, D1
+0000185C  4EB8 100C                753      JSR PRINT_SIGNED
+00001860                           754      ; output "\n"
+00001860  43F9 00001910            755      LEA NEWLINE, A1
+00001866  103C 000E                756      MOVE.B #14, D0  ; Task 14 = Display string
+0000186A  4E4F                     757      TRAP #15
+0000186C                           758      ; t624 = miCubo[32]
+0000186C                           759      ; Acceso a array con bounds checking
+0000186C  2079 000019D8            760      MOVEA.L miCubo, A0
+00001872  7020                     761      MOVE.L #32, D0
+00001874  2230 0800                762      MOVE.L 0(A0, D0.L), D1
+00001878  33C1 00001A2A            763      MOVE.W D1, t624
+0000187E                           764      ; output t624
+0000187E  3239 00001A2A            765      MOVE.W t624, D1
+00001884  4EB8 100C                766      JSR PRINT_SIGNED
+00001888                           767      ; output "\n"
+00001888  43F9 00001910            768      LEA NEWLINE, A1
+0000188E  103C 000E                769      MOVE.B #14, D0  ; Task 14 = Display string
+00001892  4E4F                     770      TRAP #15
+00001894                           771      ; t642 = miCubo[36]
+00001894                           772      ; Acceso a array con bounds checking
+00001894  2079 000019D8            773      MOVEA.L miCubo, A0
+0000189A  7024                     774      MOVE.L #36, D0
+0000189C  2230 0800                775      MOVE.L 0(A0, D0.L), D1
+000018A0  33C1 00001A60            776      MOVE.W D1, t642
+000018A6                           777      ; output t642
+000018A6  3239 00001A60            778      MOVE.W t642, D1
+000018AC  4EB8 100C                779      JSR PRINT_SIGNED
+000018B0                           780      ; output "\n"
+000018B0  43F9 00001910            781      LEA NEWLINE, A1
+000018B6  103C 000E                782      MOVE.B #14, D0  ; Task 14 = Display string
+000018BA  4E4F                     783      TRAP #15
+000018BC                           784      ; t660 = miCubo[40]
+000018BC                           785      ; Acceso a array con bounds checking
+000018BC  2079 000019D8            786      MOVEA.L miCubo, A0
+000018C2  7028                     787      MOVE.L #40, D0
+000018C4  2230 0800                788      MOVE.L 0(A0, D0.L), D1
+000018C8  33C1 00001A3E            789      MOVE.W D1, t660
+000018CE                           790      ; output t660
+000018CE  3239 00001A3E            791      MOVE.W t660, D1
+000018D4  4EB8 100C                792      JSR PRINT_SIGNED
+000018D8                           793      ; output "\n"
+000018D8  43F9 00001910            794      LEA NEWLINE, A1
+000018DE  103C 000E                795      MOVE.B #14, D0  ; Task 14 = Display string
+000018E2  4E4F                     796      TRAP #15
+000018E4                           797      ; t678 = miCubo[44]
+000018E4                           798      ; Acceso a array con bounds checking
+000018E4  2079 000019D8            799      MOVEA.L miCubo, A0
+000018EA  702C                     800      MOVE.L #44, D0
+000018EC  2230 0800                801      MOVE.L 0(A0, D0.L), D1
+000018F0  33C1 00001A00            802      MOVE.W D1, t678
+000018F6                           803      ; output t678
+000018F6  3239 00001A00            804      MOVE.W t678, D1
+000018FC  4EB8 100C                805      JSR PRINT_SIGNED
+00001900                           806      ; output "\n"
+00001900  43F9 00001910            807      LEA NEWLINE, A1
+00001906  103C 000E                808      MOVE.B #14, D0  ; Task 14 = Display string
+0000190A  4E4F                     809      TRAP #15
+0000190C  6000 0168                810      BRA HALT
+00001910                           811  
+00001910                           812      ; DATA SECTION
+00001910= 0D 0A 00                 813  NEWLINE:    DC.B 13,10,0
+00001913= 2D 00                    814  MINUS_SIGN: DC.B '-',0
+00001915= 2E 00                    815  DECIMAL_POINT:  DC.B '.',0
+00001917= 30 00                    816  ZERO_CHAR:  DC.B '0',0
+00001919= 45 52 52 4F 52 3A ...    817  DIV_ZERO_MSG:   DC.B 'ERROR: Division entre cero',13,10,0
+00001936= 45 52 52 4F 52 3A ...    818  ERROR_INPUT_MSG:    DC.B 'ERROR: Entrada invalida. Ingrese un numero valido: ',0
+0000196A= 63 69 65 72 74 6F 00     819  STR_CIERTO: DC.B 'cierto',0
+00001971= 6D 65 6E 74 69 72 ...    820  STR_MENTIRA:    DC.B 'mentira',0
+00001979                           821  INPUT_BUFFER:   DS.B 80 ; Buffer para leer entrada del usuario
+000019CA= 00008000                 822  HEAP_PTR:   DC.L $8000  ; Inicio del heap para arrays
+000019CE                           823  t282:   DS.W 1
+000019D0                           824  t480:   DS.W 1
+000019D2                           825  cubo:   DS.L 1
+000019D6                           826  t51:    DS.W 1
+000019D8                           827  miCubo: DS.L 1
+000019DC                           828  t318:   DS.W 1
+000019DE                           829  t516:   DS.W 1
+000019E0= 43 75 62 6F 20 33 ...    830  str3:   DC.B 'Cubo 3D tras sumar 1:',0
+000019F6                           831  t11:    DS.W 1
+000019F8= 43 61 70 61 20 30 ...    832  str1:   DC.B 'Capa 0:',0
+00001A00                           833  t678:   DS.W 1
+00001A02= 43 61 70 61 20 31 ...    834  str2:   DC.B 'Capa 1:',0
+00001A0A                           835  t16:    DS.W 1
+00001A0C                           836  t15:    DS.W 1
+00001A0E                           837  t19:    DS.W 1
+00001A10                           838  t390:   DS.W 1
+00001A12= 43 75 62 6F 20 33 ...    839  str0:   DC.B 'Cubo 3D original:',0
+00001A24                           840  t354:   DS.W 1
+00001A26                           841  t552:   DS.W 1
+00001A28                           842  t426:   DS.W 1
+00001A2A                           843  t624:   DS.W 1
+00001A2C                           844  t20:    DS.W 1
+00001A2E                           845  t588:   DS.W 1
+00001A30                           846  t22:    DS.W 1
+00001A32                           847  t27:    DS.W 1
+00001A34                           848  t26:    DS.W 1
+00001A36                           849  t3: DS.W 1
+00001A38                           850  t7: DS.W 1
+00001A3A                           851  t264:   DS.W 1
+00001A3C                           852  t462:   DS.W 1
+00001A3E                           853  t660:   DS.W 1
+00001A40                           854  t300:   DS.W 1
+00001A42                           855  t30:    DS.W 1
+00001A44                           856  t31:    DS.W 1
+00001A46                           857  t33:    DS.W 1
+00001A48                           858  t336:   DS.W 1
+00001A4A                           859  t534:   DS.W 1
+00001A4C                           860  i:  DS.W 1
+00001A4E                           861  j:  DS.W 1
+00001A50                           862  t498:   DS.W 1
+00001A52                           863  k:  DS.W 1
+00001A54                           864  t372:   DS.W 1
+00001A56                           865  t570:   DS.W 1
+00001A58                           866  t40:    DS.W 1
+00001A5A                           867  t42:    DS.W 1
+00001A5C                           868  t45:    DS.W 1
+00001A5E                           869  t444:   DS.W 1
+00001A60                           870  t642:   DS.W 1
+00001A62                           871  t48:    DS.W 1
+00001A64                           872  t408:   DS.W 1
+00001A66                           873  t606:   DS.W 1
+00001A68                           874  
+00001A68                           875  ; ===== MANEJADOR DE ERROR DE DIVISION ENTRE CERO =====
+00001A68                           876  DIV_ZERO_ERROR:
+00001A68  43F8 1919                877      LEA DIV_ZERO_MSG, A1
+00001A6C  103C 000E                878      MOVE.B #14, D0  ; Task 14 = Display string
+00001A70  4E4F                     879      TRAP #15
+00001A72  6000 0002                880      BRA HALT
+00001A76                           881  
+00001A76                           882  HALT:
+00001A76  FFFF FFFF                883      SIMHALT
+00001A7A                           884  
+00005000                           885      ORG $5000
+00005000                           886  STACKPTR:
+00005000                           887      END START
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+CUBO                19D2
+DECIMAL_POINT       1915
+DIV_ZERO_ERROR      1A68
+DIV_ZERO_MSG        1919
+E0                  1162
+E1                  1344
+E2                  119C
+E3                  1328
+E4                  11D6
+E5                  130C
+ERROR_INPUT_MSG     1936
+HALT                1A76
+HEAP_PTR            19CA
+I                   1A4C
+INPUT_BUFFER        1979
+J                   1A4E
+K                   1A52
+MAIN                1346
+MICUBO              19D8
+MINUS_SIGN          1913
+NEWLINE             1910
+PRINT_BOOL          10AC
+PRINT_BOOL:PRINT_BOOL_STR  10C2
+PRINT_BOOL:PRINT_MENTIRA  10BC
+PRINT_DECIMAL_2     1044
+PRINT_DECIMAL_2:PD2_POSITIVE  105A
+PRINT_DECIMAL_2:PD2_SKIP_ZERO  10A0
+PRINT_SIGNED        100C
+PRINT_SIGNED_LONG   1028
+PRINT_UNSIGNED      1020
+PRINT_UNSIGNED_LONG  103C
+READ_NUM_VALID      10CA
+READ_NUM_VALID:RNV_CHK  10FA
+READ_NUM_VALID:RNV_END  1148
+READ_NUM_VALID:RNV_ERR  114A
+READ_NUM_VALID:RNV_LOOP  10FA
+READ_NUM_VALID:RNV_RETRY  10CA
+READ_NUM_VALID:RNV_VALID  1138
+STACKPTR            5000
+START               1000
+STR0                1A12
+STR1                19F8
+STR2                1A02
+STR3                19E0
+STR_CIERTO          196A
+STR_MENTIRA         1971
+SUMARCUBO           115A
+T11                 19F6
+T11_FALSE           11FA
+T11_TRUE            11F2
+T15                 1A0C
+T16                 1A0A
+T19                 1A0E
+T20                 1A2C
+T22                 1A30
+T26                 1A34
+T264                1A3A
+T27                 1A32
+T282                19CE
+T3                  1A36
+T30                 1A42
+T300                1A40
+T31                 1A44
+T318                19DC
+T33                 1A46
+T336                1A48
+T354                1A24
+T372                1A54
+T390                1A10
+T3_FALSE            1186
+T3_TRUE             117E
+T40                 1A58
+T408                1A64
+T42                 1A5A
+T426                1A28
+T444                1A5E
+T45                 1A5C
+T462                1A3C
+T48                 1A62
+T480                19D0
+T498                1A50
+T51                 19D6
+T516                19DE
+T534                1A4A
+T552                1A26
+T570                1A56
+T588                1A2E
+T606                1A66
+T624                1A2A
+T642                1A60
+T660                1A3E
+T678                1A00
+T7                  1A38
+T7_FALSE            11C0
+T7_TRUE             11B8
+ZERO_CHAR           1917

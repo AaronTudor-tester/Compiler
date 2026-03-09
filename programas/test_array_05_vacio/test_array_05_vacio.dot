@@ -1,0 +1,49 @@
+strict digraph {
+24	[label="Programa"];
+24->1
+24->3
+24->7
+24->11
+24->13
+24->16
+24->18
+24->21
+24->23
+1	[label="print"];
+1->0
+0	[label="=== TEST: Array vacio ===",shape=plaintext];
+3	[label="array: vector[0](INT)"];
+7	[label="[] =\n(Asign. Array)"]
+7->5
+7->6
+5	[label="Acceso Array\n(vector)"]
+5->4
+4	[label="0",shape=plaintext];
+6	[label="100",shape=plaintext];
+11	[label="[] =\n(Asign. Array)"]
+11->9
+11->10
+9	[label="Acceso Array\n(vector)"]
+9->8
+8	[label="1",shape=plaintext];
+10	[label="200",shape=plaintext];
+13	[label="print"];
+13->12
+12	[label="Leyendo posicion 0: ",shape=plaintext];
+16	[label="print"];
+16->15
+15	[label="Acceso Array\n(vector)"]
+15->14
+14	[label="0",shape=plaintext];
+18	[label="print"];
+18->17
+17	[label="Leyendo posicion 1: ",shape=plaintext];
+21	[label="print"];
+21->20
+20	[label="Acceso Array\n(vector)"]
+20->19
+19	[label="1",shape=plaintext];
+23	[label="print"];
+23->22
+22	[label="Test completado",shape=plaintext];
+}

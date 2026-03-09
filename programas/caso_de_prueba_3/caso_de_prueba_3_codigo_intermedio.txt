@@ -1,0 +1,52 @@
+===== CÓDIGO INTERMEDIO =====
+
+main:
+output "=== CASO 3: SUMA CON BUCLE ==="
+output "\n"
+t0 = 0
+suma = t0
+t1 = 0
+contador = t1
+e0:
+t2 = contador
+t3 = 5
+t4 = t2 < t3
+if !(t4) goto e1
+t5 = contador
+t6 = 1
+t7 = t5 + t6
+contador = t7
+t8 = suma
+t9 = contador
+t10 = t8 + t9
+suma = t10
+output "Suma parcial: "
+t11 = suma
+output t11
+output "\n"
+goto e0
+e1:
+output "Suma total:"
+t12 = suma
+output t12
+output "\n"
+output "Tabla de multiplicar del 3:"
+output "\n"
+t13 = 1
+i = t13
+e2:
+t14 = i
+t15 = 10
+t16 = t14 <= t15
+if !(t16) goto e3
+t17 = 3
+t18 = i
+t19 = t17 * t18
+resultado = t19
+t20 = resultado
+output t20
+output " "
+i = i + 1
+goto e2
+e3:
+end:

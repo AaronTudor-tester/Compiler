@@ -1,0 +1,16 @@
+===== CODIGO INTERMEDIO (3-ADDRESS CODE) =====
+
+main:
+t0 = 314
+PI = t0
+t1 = PI
+PI2 = t1
+t2 = 10
+x = t2
+t3 = x
+AA = t3
+t4 = x
+output t4
+t5 = PI
+output t5
+end:

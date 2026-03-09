@@ -1,0 +1,33 @@
+// CASO DE PRUEBA ERROR 1: Errores de tipos y variables no inicializadas
+// Este programa intenta compilar pero fallará por errores semánticos
+
+numero sumar(numero a, numero b) {
+    devuelve a mas b.
+}
+
+principal {
+    // ERROR 1: Variable declarada pero no inicializada
+    numero x.
+    escribe "Valor de x:".
+    escribe x.
+    
+    // ERROR 2: Asignación de tipo incompatible
+    numero resultado es "hola".
+    
+    // ERROR 3: Tipo de parámetro incorrecto
+    numero suma_resultado es sumar(5, "texto").
+}
+
+// ERRORES ESPERADOS:
+// 1. Error semántico (línea 11): Variable no inicializada: x
+//    - Intenta usar variable 'x' sin inicializar
+//    - Se declara "numero x." sin valor inicial
+//
+// 2. Error semántico (línea 15): Tipo incompatible
+//    - Intenta asignar "hola" (frase) a resultado (numero)
+//    - String no es compatible con tipo numérico
+//
+// 3. Error semántico (línea 18): Tipo de argumento incorrecto
+//    - Función sumar espera (numero, numero)
+//    - Se pasa (numero, frase)
+//    - El segundo argumento es un string, no un número

@@ -1,0 +1,72 @@
+// TEST: Pasar array 3D como parámetro a función
+// SINTAXIS: lista de lista de lista de numero matriz[2][3][2] indica 2 profundidad, 3 filas, 2 columnas
+
+vacio sumarCubo(lista de lista de lista de numero cubo[2][3][2]) {
+    numero i es 0.
+    mientras i es menor que 2 {
+        numero j es 0.
+        mientras j es menor que 3 {
+            numero k es 0.
+            mientras k es menor que 2 {
+                cubo posicion (i, j, k) es cubo posicion (i, j, k) mas 1.
+                modifica k mas 1.
+            }
+            modifica j mas 1.
+        }
+        modifica i mas 1.
+    }
+}
+
+principal {
+    lista de lista de lista de numero miCubo es [[[1, 2], [3, 4], [5, 6]], [[7, 8], [9, 10], [11, 12]]].
+    
+    // Inicializar manualmente por si la sintaxis de arrays literales no funciona
+    miCubo posicion (0, 0, 0) es 1.
+    miCubo posicion (0, 0, 1) es 2.
+    miCubo posicion (0, 1, 0) es 3.
+    miCubo posicion (0, 1, 1) es 4.
+    miCubo posicion (0, 2, 0) es 5.
+    miCubo posicion (0, 2, 1) es 6.
+    miCubo posicion (1, 0, 0) es 7.
+    miCubo posicion (1, 0, 1) es 8.
+    miCubo posicion (1, 1, 0) es 9.
+    miCubo posicion (1, 1, 1) es 10.
+    miCubo posicion (1, 2, 0) es 11.
+    miCubo posicion (1, 2, 1) es 12.
+    
+    escribeN "Cubo 3D original:".
+    escribeN "Capa 0:".
+    escribeN miCubo posicion (0, 0, 0).
+    escribeN miCubo posicion (0, 0, 1).
+    escribeN miCubo posicion (0, 1, 0).
+    escribeN miCubo posicion (0, 1, 1).
+    escribeN miCubo posicion (0, 2, 0).
+    escribeN miCubo posicion (0, 2, 1).
+    
+    escribeN "Capa 1:".
+    escribeN miCubo posicion (1, 0, 0).
+    escribeN miCubo posicion (1, 0, 1).
+    escribeN miCubo posicion (1, 1, 0).
+    escribeN miCubo posicion (1, 1, 1).
+    escribeN miCubo posicion (1, 2, 0).
+    escribeN miCubo posicion (1, 2, 1).
+    
+    sumarCubo(miCubo).
+    
+    escribeN "Cubo 3D tras sumar 1:".
+    escribeN "Capa 0:".
+    escribeN miCubo posicion (0, 0, 0).
+    escribeN miCubo posicion (0, 0, 1).
+    escribeN miCubo posicion (0, 1, 0).
+    escribeN miCubo posicion (0, 1, 1).
+    escribeN miCubo posicion (0, 2, 0).
+    escribeN miCubo posicion (0, 2, 1).
+    
+    escribeN "Capa 1:".
+    escribeN miCubo posicion (1, 0, 0).
+    escribeN miCubo posicion (1, 0, 1).
+    escribeN miCubo posicion (1, 1, 0).
+    escribeN miCubo posicion (1, 1, 1).
+    escribeN miCubo posicion (1, 2, 0).
+    escribeN miCubo posicion (1, 2, 1).
+}

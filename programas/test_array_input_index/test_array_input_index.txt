@@ -1,0 +1,16 @@
+// TEST: Leer índice desde teclado y acceder a array
+// Objetivo: Pedir un número al usuario y mostrar el elemento en esa posición.
+
+principal {
+    escribeN "Introduce un indice (0-2):".
+
+    numero idx.
+    lee idx.
+
+    lista de numero arr es [10, 20, 30].
+
+    escribe "Valor en arr[".
+    escribe idx.
+    escribe "]: ".
+    escribeN arr posicion (idx).
+}

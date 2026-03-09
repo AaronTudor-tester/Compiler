@@ -1,0 +1,49 @@
+===== OPTIMIZACIONES REALIZADAS =====
+
+Archivo: .\programas\prueba_division_cero_float\prueba_division_cero_float.txt
+Fecha: 2026-02-11T09:26:04.379245600
+
+--- ESTADÍSTICAS DE CÓDIGO INTERMEDIO ---
+
+Instrucciones originales: 12
+Instrucciones optimizadas: 12
+Instrucciones eliminadas: 0
+Reducción: 0,00%
+
+--- ESTADÍSTICAS DE ENSAMBLADOR ---
+
+Archivo original (.x68): 2303 bytes
+Archivo optimizado (_optimizado.x68): 1923 bytes
+Bytes reducidos: 380 bytes
+Reducción en ensamblador: 16,50%
+
+--- CÓDIGO OPTIMIZADO ---
+
+main:
+x = 10.5
+y = 0.0
+z = 2.0
+resultado = 0.0
+t6 = x / z
+resultado = t6
+output resultado
+output "\n"
+t10 = x / y
+resultado = t10
+output resultado
+
+--- CAMBIOS REALIZADOS POR EL OPTIMIZADOR ---
+
+Asignación diferida:
+  - Línea 1: t0 eliminado y sustituido por 10.5
+  - Línea 2: t1 eliminado y sustituido por 0.0
+  - Línea 3: t2 eliminado y sustituido por 2.0
+  - Línea 4: t3 eliminado y sustituido por 0.0
+  - Línea 5: t4 eliminado y sustituido por x
+  - Línea 5: t5 eliminado y sustituido por z
+  - Línea 7: t7 eliminado y sustituido por resultado
+  - Línea 9: t8 eliminado y sustituido por x
+  - Línea 9: t9 eliminado y sustituido por y
+  - Línea 11: t11 eliminado y sustituido por resultado
+Eliminación de etiquetas muertas:
+  - Línea 12: Se ha eliminado la etiqueta end

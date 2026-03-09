@@ -1,0 +1,21 @@
+principal {
+
+        para numero i es 1, repite si i es menor o igual que 5, i es i mas 1 {
+            escribeN "ITERAMOS".
+            si i es mayor que 2 {
+                salir.
+            }
+        }
+
+        escribeN "hola".
+
+        para numero i es 1, repite si i es menor o igual que 5, modifica i mas 1 {
+            escribe "otro bucle".
+            escribe " ".
+            salir.
+        }
+        si 1 es igual que 1 {
+            salir.
+        }
+        escribe "adios".
+}

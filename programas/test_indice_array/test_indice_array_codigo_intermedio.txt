@@ -1,0 +1,46 @@
+===== CÓDIGO INTERMEDIO =====
+
+main:
+t0 = 5
+t1 = 4
+t2 = t0 * t1
+
+t3 = 1
+t4 = 0
+t5 = 4
+t6 = t4 * t5
+vector[t6] = t3
+t7 = 2
+t8 = 1
+t9 = 4
+t10 = t8 * t9
+vector[t10] = t7
+t11 = 3
+t12 = 2
+t13 = 4
+t14 = t12 * t13
+vector[t14] = t11
+t15 = 4
+t16 = 3
+t17 = 4
+t18 = t16 * t17
+vector[t18] = t15
+t19 = 5
+t20 = 4
+t21 = 4
+t22 = t20 * t21
+vector[t22] = t19
+output "Introduce indice (0-4):"
+output "\n"
+input i
+t23 = i
+t24 = 4
+t25 = t23 * t24
+t27 = 5
+t26 = t27
+t28 = vector[t25]
+x = t28
+t29 = x
+output t29
+output "\n"
+end:

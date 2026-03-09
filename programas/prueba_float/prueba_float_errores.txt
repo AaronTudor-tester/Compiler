@@ -1,0 +1,8 @@
+===== RESULTADO DE LA COMPILACIÓN =====
+
+Archivo: programas\prueba_float\prueba_float.txt
+Fecha: 2026-02-07T16:08:52.324557500
+
+No se han detectado errores.
+
+Compilado con éxito.

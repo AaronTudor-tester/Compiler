@@ -1,0 +1,9 @@
+// Test: overflow por producto de dimensiones literales
+principal {
+    escribeN "=== TEST: overflow producto dimensiones ===".
+
+    // Declaración con dimensiones literales grandes que deberían rechazarse en compilación
+    lista de numero giant de longitud 500, 200.
+
+    escribeN "Si ves esto, la comprobación de overflow no funcionó.".
+}

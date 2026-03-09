@@ -1,0 +1,158 @@
+===== OPTIMIZACIONES REALIZADAS =====
+
+Archivo: .\programas\prueba_todas_funcionalidades\prueba_todas_funcionalidades.txt
+Fecha: 2026-02-11T08:58:32.631067
+
+--- ESTADÍSTICAS DE CÓDIGO INTERMEDIO ---
+
+Instrucciones originales: 85
+Instrucciones optimizadas: 85
+Instrucciones eliminadas: 0
+Reducción: 0,00%
+
+--- ESTADÍSTICAS DE ENSAMBLADOR ---
+
+Archivo original (.x68): 7084 bytes
+Archivo optimizado (_optimizado.x68): 5670 bytes
+Bytes reducidos: 1414 bytes
+Reducción en ensamblador: 19,96%
+
+--- CÓDIGO OPTIMIZADO ---
+
+suma:
+; param n1 : INT
+; param n2 : INT
+t2 = n1 + n2
+return t2
+contarPares:
+; param inicio : INT
+; param fin : INT
+contador = 0
+i = inicio
+limite = fin
+e0:
+t8 = i < limite
+if !(t8) goto e1
+t11 = i != 0
+if !(t11) goto e2
+t14 = i % 2
+residuo = t14
+t17 = residuo == 0
+if !(t17) goto e3
+contador = contador + 1
+e2:
+e3:
+i = i + 1
+goto e0
+e1:
+return contador
+main:
+output "PRUEBA COMPLETA"
+output "\n"
+output "TEST 1: Variables"
+output "\n"
+x = 10
+y = 5
+output "x+y= "
+param_s x  
+param_s y  
+t21 = call suma
+output t21
+output "\n"
+output "TEST 2: Condicionales"
+output "\n"
+t24 = x > y
+if !(t24) goto e6
+output "10>5: SI"
+e6:
+output "\n"
+output "TEST 3: While (1 a 3)"
+output "\n"
+c = 1
+e8:
+t28 = c <= 3
+if !(t28) goto e9
+output c
+output " "
+c = c + 1
+goto e8
+e9:
+output "\n"
+output "TEST 4: Logica"
+output "\n"
+a = true
+b = false
+t34 = a && a
+if !(t34) goto e10
+output "AND: SI"
+e10:
+t37 = a || b
+if !(t37) goto e12
+output "OR: SI"
+e12:
+t38 = ! b
+if !(t38) goto e14
+output "NOT: SI"
+e14:
+output "\n"
+output "TEST 5: Pares(1-11)= "
+output "\n"
+param_s 1  
+param_s 11  
+t41 = call contarPares
+pares = t41
+output pares
+output "\n"
+output "FIN"
+
+--- CAMBIOS REALIZADOS POR EL OPTIMIZADOR ---
+
+Asignación diferida:
+  - Línea 3: t0 eliminado y sustituido por n1
+  - Línea 3: t1 eliminado y sustituido por n2
+  - Línea 8: t3 eliminado y sustituido por 0
+  - Línea 9: t4 eliminado y sustituido por inicio
+  - Línea 10: t5 eliminado y sustituido por fin
+  - Línea 12: t6 eliminado y sustituido por i
+  - Línea 12: t7 eliminado y sustituido por limite
+  - Línea 14: t9 eliminado y sustituido por i
+  - Línea 14: t10 eliminado y sustituido por 0
+  - Línea 16: t12 eliminado y sustituido por i
+  - Línea 16: t13 eliminado y sustituido por 2
+  - Línea 18: t15 eliminado y sustituido por residuo
+  - Línea 18: t16 eliminado y sustituido por 0
+  - Línea 30: t18 eliminado y sustituido por contador
+  - Línea 36: t19 eliminado y sustituido por 10
+  - Línea 37: t20 eliminado y sustituido por 5
+  - Línea 46: t22 eliminado y sustituido por x
+  - Línea 46: t23 eliminado y sustituido por y
+  - Línea 55: t25 eliminado y sustituido por 1
+  - Línea 57: t26 eliminado y sustituido por c
+  - Línea 57: t27 eliminado y sustituido por 3
+  - Línea 59: t29 eliminado y sustituido por c
+  - Línea 67: t30 eliminado y sustituido por true
+  - Línea 68: t31 eliminado y sustituido por false
+  - Línea 69: t32 eliminado y sustituido por a
+  - Línea 69: t33 eliminado y sustituido por a
+  - Línea 75: t35 eliminado y sustituido por a
+  - Línea 75: t36 eliminado y sustituido por b
+  - Línea 90: t39 eliminado y sustituido por 1
+  - Línea 90: t40 eliminado y sustituido por 11
+  - Línea 94: t42 eliminado y sustituido por pares
+Ramificaciones adyacentes:
+  - Línea 19: Salto a e4 reemplazado por salto directo a e3
+  - Línea 21: Salto innecesario a e5 eliminado
+  - Línea 20: Salto a e5 reemplazado por salto directo a e3
+  - Línea 23: Salto innecesario a e3 eliminado
+  - Línea 47: Salto innecesario a e7 eliminado
+  - Línea 69: Salto innecesario a e11 eliminado
+  - Línea 74: Salto innecesario a e13 eliminado
+  - Línea 79: Salto innecesario a e15 eliminado
+Eliminación de etiquetas muertas:
+  - Línea 21: Se ha eliminado la etiqueta e4
+  - Línea 22: Se ha eliminado la etiqueta e5
+  - Línea 48: Se ha eliminado la etiqueta e7
+  - Línea 70: Se ha eliminado la etiqueta e11
+  - Línea 75: Se ha eliminado la etiqueta e13
+  - Línea 80: Se ha eliminado la etiqueta e15
+  - Línea 91: Se ha eliminado la etiqueta end

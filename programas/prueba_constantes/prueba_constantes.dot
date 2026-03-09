@@ -1,0 +1,27 @@
+strict digraph {
+12	[label="Programa"];
+12->1
+12->3
+12->5
+12->7
+12->9
+12->11
+1	[label="=(PI)"]
+1->0
+0	[label="314",shape=plaintext];
+3	[label="=(PI2)"]
+3->2
+2	[label="PI",shape=plaintext];
+5	[label="=(x)"]
+5->4
+4	[label="10",shape=plaintext];
+7	[label="=(AA)"]
+7->6
+6	[label="x",shape=plaintext];
+9	[label="print"];
+9->8
+8	[label="x",shape=plaintext];
+11	[label="print"];
+11->10
+10	[label="PI",shape=plaintext];
+}

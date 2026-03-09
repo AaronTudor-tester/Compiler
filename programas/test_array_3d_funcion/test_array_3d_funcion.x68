@@ -1,0 +1,3493 @@
+	ORG $1000
+START:
+	LEA STACKPTR, A7
+	JMP main
+
+; ===== RUTINAS AUXILIARES =====
+PRINT_SIGNED:
+	TST.W D1
+	BPL PRINT_UNSIGNED
+	MOVE.B #14, D0
+	LEA MINUS_SIGN, A1
+	TRAP #15
+	NEG.W D1
+PRINT_UNSIGNED:
+	MOVE.B #3, D0
+	TRAP #15
+	RTS
+
+
+ARRAY_INDEX_OUT_OF_BOUNDS:
+	; Indice fuera de rango - mostrar mensaje y detener la simulacion
+	LEA ERROR_INDEX_MSG, A1
+	MOVE.B #14, D0
+	TRAP #15
+	SIMHALT
+
+UNINITIALIZED_ACCESS:
+	; Acceso a posicion no inicializada - mostrar mensaje y detener la simulacion
+	LEA ERROR_UNINIT_MSG, A1
+	MOVE.B #14, D0
+	TRAP #15
+	SIMHALT
+
+ALLOC_SIZE_INVALID:
+	; Tamaño de array inválido en tiempo de ejecución - mostrar mensaje y detener
+	LEA ERROR_ALLOC_MSG, A1
+	MOVE.B #14, D0
+	TRAP #15
+	SIMHALT
+sumarCubo:
+	; ; param cubo : INT_ARRAY_3
+	; t0 = 0
+	MOVE.W #0, t0
+	; i = t0
+	MOVE.W t0, i
+e0:
+	; t1 = i
+	MOVE.W i, t1
+	; t2 = 2
+	MOVE.W #2, t2
+	; t3 = t1 < t2
+	MOVE.W #0, t3
+	MOVE.W t1, D0
+	CMP.W t2, D0
+	BLT t3_true
+	JMP t3_false
+t3_true:
+	MOVE.W #1, t3
+t3_false:
+	; if !(t3) goto e1
+	MOVE.W t3, D0
+	CMP.W #0, D0
+	BEQ e1
+	; t4 = 0
+	MOVE.W #0, t4
+	; j = t4
+	MOVE.W t4, j
+e2:
+	; t5 = j
+	MOVE.W j, t5
+	; t6 = 3
+	MOVE.W #3, t6
+	; t7 = t5 < t6
+	MOVE.W #0, t7
+	MOVE.W t5, D0
+	CMP.W t6, D0
+	BLT t7_true
+	JMP t7_false
+t7_true:
+	MOVE.W #1, t7
+t7_false:
+	; if !(t7) goto e3
+	MOVE.W t7, D0
+	CMP.W #0, D0
+	BEQ e3
+	; t8 = 0
+	MOVE.W #0, t8
+	; k = t8
+	MOVE.W t8, k
+e4:
+	; t9 = k
+	MOVE.W k, t9
+	; t10 = 2
+	MOVE.W #2, t10
+	; t11 = t9 < t10
+	MOVE.W #0, t11
+	MOVE.W t9, D0
+	CMP.W t10, D0
+	BLT t11_true
+	JMP t11_false
+t11_true:
+	MOVE.W #1, t11
+t11_false:
+	; if !(t11) goto e5
+	MOVE.W t11, D0
+	CMP.W #0, D0
+	BEQ e5
+	; t12 = i
+	MOVE.W i, t12
+	; t13 = j
+	MOVE.W j, t13
+	; t14 = 3
+	MOVE.W #3, t14
+	; t15 = t12 * t14
+	MOVE.W t12, D0
+	MULS t14, D0
+	MOVE.W D0, t15
+	; t16 = t15 + t13
+	MOVE.W t15, D0
+	ADD.W t13, D0
+	MOVE.W D0, t16
+	; t17 = k
+	MOVE.W k, t17
+	; t18 = 2
+	MOVE.W #2, t18
+	; t19 = t16 * t18
+	MOVE.W t16, D0
+	MULS t18, D0
+	MOVE.W D0, t19
+	; t20 = t19 + t17
+	MOVE.W t19, D0
+	ADD.W t17, D0
+	MOVE.W D0, t20
+	; t21 = 4
+	MOVE.W #4, t21
+	; t22 = t20 * t21
+	MOVE.W t20, D0
+	MULS t21, D0
+	MOVE.W D0, t22
+	; t23 = i
+	MOVE.W i, t23
+	; t24 = j
+	MOVE.W j, t24
+	; t25 = 3
+	MOVE.W #3, t25
+	; t26 = t23 * t25
+	MOVE.W t23, D0
+	MULS t25, D0
+	MOVE.W D0, t26
+	; t27 = t26 + t24
+	MOVE.W t26, D0
+	ADD.W t24, D0
+	MOVE.W D0, t27
+	; t28 = k
+	MOVE.W k, t28
+	; t29 = 2
+	MOVE.W #2, t29
+	; t30 = t27 * t29
+	MOVE.W t27, D0
+	MULS t29, D0
+	MOVE.W D0, t30
+	; t31 = t30 + t28
+	MOVE.W t30, D0
+	ADD.W t28, D0
+	MOVE.W D0, t31
+	; t32 = 4
+	MOVE.W #4, t32
+	; t33 = t31 * t32
+	MOVE.W t31, D0
+	MULS t32, D0
+	MOVE.W D0, t33
+	; t35 = 2
+	MOVE.W #2, t35
+	; t36 = 3
+	MOVE.W #3, t36
+	; t37 = t35 * t36
+	MOVE.W t35, D0
+	MULS t36, D0
+	MOVE.W D0, t37
+	; t38 = 2
+	MOVE.W #2, t38
+	; t39 = t37 * t38
+	MOVE.W t37, D0
+	MULS t38, D0
+	MOVE.W D0, t39
+	; t34 = t39
+	MOVE.W t39, t34
+	; t40 = cubo[t33]
+	MOVEA.L cubo, A0
+	CLR.L D0
+	MOVE.W t33, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.W t34, D2
+	EXT.L D2
+	MOVE.W #4, D3
+	MULS D3, D2
+	CMP.L D2, D0
+	BGE ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.L 0(A0, D0.L), D1
+	CMP.L #-1, D1
+	BEQ UNINITIALIZED_ACCESS
+	MOVE.W D1, t40
+	; t41 = 1
+	MOVE.W #1, t41
+	; t42 = t40 + t41
+	MOVE.W t40, D0
+	ADD.W t41, D0
+	MOVE.W D0, t42
+	; cubo[t22] = t42
+	MOVEA.L cubo, A0
+	CLR.L D0
+	MOVE.W t22, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	CLR.L D1
+	MOVE.W t42, D1
+	MOVE.L D1, 0(A0, D0.L)
+	; t43 = k
+	MOVE.W k, t43
+	; t44 = 1
+	MOVE.W #1, t44
+	; t45 = t43 + t44
+	MOVE.W t43, D0
+	ADD.W t44, D0
+	MOVE.W D0, t45
+	; k = t45
+	MOVE.W t45, k
+	; goto e4
+	JMP e4
+e5:
+	; t46 = j
+	MOVE.W j, t46
+	; t47 = 1
+	MOVE.W #1, t47
+	; t48 = t46 + t47
+	MOVE.W t46, D0
+	ADD.W t47, D0
+	MOVE.W D0, t48
+	; j = t48
+	MOVE.W t48, j
+	; goto e2
+	JMP e2
+e3:
+	; t49 = i
+	MOVE.W i, t49
+	; t50 = 1
+	MOVE.W #1, t50
+	; t51 = t49 + t50
+	MOVE.W t49, D0
+	ADD.W t50, D0
+	MOVE.W D0, t51
+	; i = t51
+	MOVE.W t51, i
+	; goto e0
+	JMP e0
+e1:
+	; return null
+	RTS
+main:
+	; t52 = 12
+	MOVE.W #12, t52
+	; t53 = 4
+	MOVE.W #4, t53
+	; t54 = t52 * t53
+	MOVE.W t52, D0
+	MULS t53, D0
+	MOVE.W D0, t54
+	; 
+	MOVE.L HEAP_PTR, D0
+	MOVE.L D0, miCubo
+	CLR.L D1
+	MOVE.W t54, D1
+	CMP.L #1, D1
+	BLT ALLOC_SIZE_INVALID
+	CLR.L D1
+	MOVE.W t54, D1
+	ADD.L D1, D0
+	MOVE.L D0, HEAP_PTR
+	TST.L D1
+	BEQ INIT_miCubo_LOOP_END
+	MOVE.L miCubo, A0
+INIT_miCubo_LOOP:
+	MOVE.L #-1, D4
+	MOVE.L D4, (A0)+
+	SUBQ.L #4, D1
+	BGT INIT_miCubo_LOOP
+INIT_miCubo_LOOP_END:
+	; t55 = 1
+	MOVE.W #1, t55
+	; t56 = 0
+	MOVE.W #0, t56
+	; t57 = 4
+	MOVE.W #4, t57
+	; t58 = t56 * t57
+	MOVE.W t56, D0
+	MULS t57, D0
+	MOVE.W D0, t58
+	; miCubo[t58] = t55
+	MOVEA.L miCubo, A0
+	CLR.L D0
+	MOVE.W t58, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	CLR.L D1
+	MOVE.W t55, D1
+	MOVE.L D1, 0(A0, D0.L)
+	; t59 = 2
+	MOVE.W #2, t59
+	; t60 = 1
+	MOVE.W #1, t60
+	; t61 = 4
+	MOVE.W #4, t61
+	; t62 = t60 * t61
+	MOVE.W t60, D0
+	MULS t61, D0
+	MOVE.W D0, t62
+	; miCubo[t62] = t59
+	MOVEA.L miCubo, A0
+	CLR.L D0
+	MOVE.W t62, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	CLR.L D1
+	MOVE.W t59, D1
+	MOVE.L D1, 0(A0, D0.L)
+	; t63 = 3
+	MOVE.W #3, t63
+	; t64 = 2
+	MOVE.W #2, t64
+	; t65 = 4
+	MOVE.W #4, t65
+	; t66 = t64 * t65
+	MOVE.W t64, D0
+	MULS t65, D0
+	MOVE.W D0, t66
+	; miCubo[t66] = t63
+	MOVEA.L miCubo, A0
+	CLR.L D0
+	MOVE.W t66, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	CLR.L D1
+	MOVE.W t63, D1
+	MOVE.L D1, 0(A0, D0.L)
+	; t67 = 4
+	MOVE.W #4, t67
+	; t68 = 3
+	MOVE.W #3, t68
+	; t69 = 4
+	MOVE.W #4, t69
+	; t70 = t68 * t69
+	MOVE.W t68, D0
+	MULS t69, D0
+	MOVE.W D0, t70
+	; miCubo[t70] = t67
+	MOVEA.L miCubo, A0
+	CLR.L D0
+	MOVE.W t70, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	CLR.L D1
+	MOVE.W t67, D1
+	MOVE.L D1, 0(A0, D0.L)
+	; t71 = 5
+	MOVE.W #5, t71
+	; t72 = 4
+	MOVE.W #4, t72
+	; t73 = 4
+	MOVE.W #4, t73
+	; t74 = t72 * t73
+	MOVE.W t72, D0
+	MULS t73, D0
+	MOVE.W D0, t74
+	; miCubo[t74] = t71
+	MOVEA.L miCubo, A0
+	CLR.L D0
+	MOVE.W t74, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	CLR.L D1
+	MOVE.W t71, D1
+	MOVE.L D1, 0(A0, D0.L)
+	; t75 = 6
+	MOVE.W #6, t75
+	; t76 = 5
+	MOVE.W #5, t76
+	; t77 = 4
+	MOVE.W #4, t77
+	; t78 = t76 * t77
+	MOVE.W t76, D0
+	MULS t77, D0
+	MOVE.W D0, t78
+	; miCubo[t78] = t75
+	MOVEA.L miCubo, A0
+	CLR.L D0
+	MOVE.W t78, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	CLR.L D1
+	MOVE.W t75, D1
+	MOVE.L D1, 0(A0, D0.L)
+	; t79 = 7
+	MOVE.W #7, t79
+	; t80 = 6
+	MOVE.W #6, t80
+	; t81 = 4
+	MOVE.W #4, t81
+	; t82 = t80 * t81
+	MOVE.W t80, D0
+	MULS t81, D0
+	MOVE.W D0, t82
+	; miCubo[t82] = t79
+	MOVEA.L miCubo, A0
+	CLR.L D0
+	MOVE.W t82, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	CLR.L D1
+	MOVE.W t79, D1
+	MOVE.L D1, 0(A0, D0.L)
+	; t83 = 8
+	MOVE.W #8, t83
+	; t84 = 7
+	MOVE.W #7, t84
+	; t85 = 4
+	MOVE.W #4, t85
+	; t86 = t84 * t85
+	MOVE.W t84, D0
+	MULS t85, D0
+	MOVE.W D0, t86
+	; miCubo[t86] = t83
+	MOVEA.L miCubo, A0
+	CLR.L D0
+	MOVE.W t86, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	CLR.L D1
+	MOVE.W t83, D1
+	MOVE.L D1, 0(A0, D0.L)
+	; t87 = 9
+	MOVE.W #9, t87
+	; t88 = 8
+	MOVE.W #8, t88
+	; t89 = 4
+	MOVE.W #4, t89
+	; t90 = t88 * t89
+	MOVE.W t88, D0
+	MULS t89, D0
+	MOVE.W D0, t90
+	; miCubo[t90] = t87
+	MOVEA.L miCubo, A0
+	CLR.L D0
+	MOVE.W t90, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	CLR.L D1
+	MOVE.W t87, D1
+	MOVE.L D1, 0(A0, D0.L)
+	; t91 = 10
+	MOVE.W #10, t91
+	; t92 = 9
+	MOVE.W #9, t92
+	; t93 = 4
+	MOVE.W #4, t93
+	; t94 = t92 * t93
+	MOVE.W t92, D0
+	MULS t93, D0
+	MOVE.W D0, t94
+	; miCubo[t94] = t91
+	MOVEA.L miCubo, A0
+	CLR.L D0
+	MOVE.W t94, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	CLR.L D1
+	MOVE.W t91, D1
+	MOVE.L D1, 0(A0, D0.L)
+	; t95 = 11
+	MOVE.W #11, t95
+	; t96 = 10
+	MOVE.W #10, t96
+	; t97 = 4
+	MOVE.W #4, t97
+	; t98 = t96 * t97
+	MOVE.W t96, D0
+	MULS t97, D0
+	MOVE.W D0, t98
+	; miCubo[t98] = t95
+	MOVEA.L miCubo, A0
+	CLR.L D0
+	MOVE.W t98, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	CLR.L D1
+	MOVE.W t95, D1
+	MOVE.L D1, 0(A0, D0.L)
+	; t99 = 12
+	MOVE.W #12, t99
+	; t100 = 11
+	MOVE.W #11, t100
+	; t101 = 4
+	MOVE.W #4, t101
+	; t102 = t100 * t101
+	MOVE.W t100, D0
+	MULS t101, D0
+	MOVE.W D0, t102
+	; miCubo[t102] = t99
+	MOVEA.L miCubo, A0
+	CLR.L D0
+	MOVE.W t102, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	CLR.L D1
+	MOVE.W t99, D1
+	MOVE.L D1, 0(A0, D0.L)
+	; t103 = 0
+	MOVE.W #0, t103
+	; t104 = 0
+	MOVE.W #0, t104
+	; t105 = 3
+	MOVE.W #3, t105
+	; t106 = t103 * 3
+	MOVE.W t103, D0
+	MULS #3, D0
+	MOVE.W D0, t106
+	; t107 = t106 + 0
+	MOVE.W t106, D0
+	ADD.W #0, D0
+	MOVE.W D0, t107
+	; t108 = 0
+	MOVE.W #0, t108
+	; t109 = 2
+	MOVE.W #2, t109
+	; t110 = t107 * 2
+	MOVE.W t107, D0
+	MULS #2, D0
+	MOVE.W D0, t110
+	; t111 = t110 + 0
+	MOVE.W t110, D0
+	ADD.W #0, D0
+	MOVE.W D0, t111
+	; t112 = 4
+	MOVE.W #4, t112
+	; t113 = t111 * t112
+	MOVE.W t111, D0
+	MULS t112, D0
+	MOVE.W D0, t113
+	; t114 = 1
+	MOVE.W #1, t114
+	; miCubo[t113] = t114
+	MOVEA.L miCubo, A0
+	CLR.L D0
+	MOVE.W t113, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	CLR.L D1
+	MOVE.W t114, D1
+	MOVE.L D1, 0(A0, D0.L)
+	; t115 = 0
+	MOVE.W #0, t115
+	; t116 = 0
+	MOVE.W #0, t116
+	; t117 = 3
+	MOVE.W #3, t117
+	; t118 = t115 * 3
+	MOVE.W t115, D0
+	MULS #3, D0
+	MOVE.W D0, t118
+	; t119 = t118 + 0
+	MOVE.W t118, D0
+	ADD.W #0, D0
+	MOVE.W D0, t119
+	; t120 = 1
+	MOVE.W #1, t120
+	; t121 = 2
+	MOVE.W #2, t121
+	; t122 = t119 * 2
+	MOVE.W t119, D0
+	MULS #2, D0
+	MOVE.W D0, t122
+	; t123 = t122 + 1
+	MOVE.W t122, D0
+	ADD.W #1, D0
+	MOVE.W D0, t123
+	; t124 = 4
+	MOVE.W #4, t124
+	; t125 = t123 * t124
+	MOVE.W t123, D0
+	MULS t124, D0
+	MOVE.W D0, t125
+	; t126 = 2
+	MOVE.W #2, t126
+	; miCubo[t125] = t126
+	MOVEA.L miCubo, A0
+	CLR.L D0
+	MOVE.W t125, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	CLR.L D1
+	MOVE.W t126, D1
+	MOVE.L D1, 0(A0, D0.L)
+	; t127 = 0
+	MOVE.W #0, t127
+	; t128 = 1
+	MOVE.W #1, t128
+	; t129 = 3
+	MOVE.W #3, t129
+	; t130 = t127 * 3
+	MOVE.W t127, D0
+	MULS #3, D0
+	MOVE.W D0, t130
+	; t131 = t130 + 1
+	MOVE.W t130, D0
+	ADD.W #1, D0
+	MOVE.W D0, t131
+	; t132 = 0
+	MOVE.W #0, t132
+	; t133 = 2
+	MOVE.W #2, t133
+	; t134 = t131 * 2
+	MOVE.W t131, D0
+	MULS #2, D0
+	MOVE.W D0, t134
+	; t135 = t134 + 0
+	MOVE.W t134, D0
+	ADD.W #0, D0
+	MOVE.W D0, t135
+	; t136 = 4
+	MOVE.W #4, t136
+	; t137 = t135 * t136
+	MOVE.W t135, D0
+	MULS t136, D0
+	MOVE.W D0, t137
+	; t138 = 3
+	MOVE.W #3, t138
+	; miCubo[t137] = t138
+	MOVEA.L miCubo, A0
+	CLR.L D0
+	MOVE.W t137, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	CLR.L D1
+	MOVE.W t138, D1
+	MOVE.L D1, 0(A0, D0.L)
+	; t139 = 0
+	MOVE.W #0, t139
+	; t140 = 1
+	MOVE.W #1, t140
+	; t141 = 3
+	MOVE.W #3, t141
+	; t142 = t139 * 3
+	MOVE.W t139, D0
+	MULS #3, D0
+	MOVE.W D0, t142
+	; t143 = t142 + 1
+	MOVE.W t142, D0
+	ADD.W #1, D0
+	MOVE.W D0, t143
+	; t144 = 1
+	MOVE.W #1, t144
+	; t145 = 2
+	MOVE.W #2, t145
+	; t146 = t143 * 2
+	MOVE.W t143, D0
+	MULS #2, D0
+	MOVE.W D0, t146
+	; t147 = t146 + 1
+	MOVE.W t146, D0
+	ADD.W #1, D0
+	MOVE.W D0, t147
+	; t148 = 4
+	MOVE.W #4, t148
+	; t149 = t147 * t148
+	MOVE.W t147, D0
+	MULS t148, D0
+	MOVE.W D0, t149
+	; t150 = 4
+	MOVE.W #4, t150
+	; miCubo[t149] = t150
+	MOVEA.L miCubo, A0
+	CLR.L D0
+	MOVE.W t149, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	CLR.L D1
+	MOVE.W t150, D1
+	MOVE.L D1, 0(A0, D0.L)
+	; t151 = 0
+	MOVE.W #0, t151
+	; t152 = 2
+	MOVE.W #2, t152
+	; t153 = 3
+	MOVE.W #3, t153
+	; t154 = t151 * 3
+	MOVE.W t151, D0
+	MULS #3, D0
+	MOVE.W D0, t154
+	; t155 = t154 + 2
+	MOVE.W t154, D0
+	ADD.W #2, D0
+	MOVE.W D0, t155
+	; t156 = 0
+	MOVE.W #0, t156
+	; t157 = 2
+	MOVE.W #2, t157
+	; t158 = t155 * 2
+	MOVE.W t155, D0
+	MULS #2, D0
+	MOVE.W D0, t158
+	; t159 = t158 + 0
+	MOVE.W t158, D0
+	ADD.W #0, D0
+	MOVE.W D0, t159
+	; t160 = 4
+	MOVE.W #4, t160
+	; t161 = t159 * t160
+	MOVE.W t159, D0
+	MULS t160, D0
+	MOVE.W D0, t161
+	; t162 = 5
+	MOVE.W #5, t162
+	; miCubo[t161] = t162
+	MOVEA.L miCubo, A0
+	CLR.L D0
+	MOVE.W t161, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	CLR.L D1
+	MOVE.W t162, D1
+	MOVE.L D1, 0(A0, D0.L)
+	; t163 = 0
+	MOVE.W #0, t163
+	; t164 = 2
+	MOVE.W #2, t164
+	; t165 = 3
+	MOVE.W #3, t165
+	; t166 = t163 * 3
+	MOVE.W t163, D0
+	MULS #3, D0
+	MOVE.W D0, t166
+	; t167 = t166 + 2
+	MOVE.W t166, D0
+	ADD.W #2, D0
+	MOVE.W D0, t167
+	; t168 = 1
+	MOVE.W #1, t168
+	; t169 = 2
+	MOVE.W #2, t169
+	; t170 = t167 * 2
+	MOVE.W t167, D0
+	MULS #2, D0
+	MOVE.W D0, t170
+	; t171 = t170 + 1
+	MOVE.W t170, D0
+	ADD.W #1, D0
+	MOVE.W D0, t171
+	; t172 = 4
+	MOVE.W #4, t172
+	; t173 = t171 * t172
+	MOVE.W t171, D0
+	MULS t172, D0
+	MOVE.W D0, t173
+	; t174 = 6
+	MOVE.W #6, t174
+	; miCubo[t173] = t174
+	MOVEA.L miCubo, A0
+	CLR.L D0
+	MOVE.W t173, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	CLR.L D1
+	MOVE.W t174, D1
+	MOVE.L D1, 0(A0, D0.L)
+	; t175 = 1
+	MOVE.W #1, t175
+	; t176 = 0
+	MOVE.W #0, t176
+	; t177 = 3
+	MOVE.W #3, t177
+	; t178 = t175 * 3
+	MOVE.W t175, D0
+	MULS #3, D0
+	MOVE.W D0, t178
+	; t179 = t178 + 0
+	MOVE.W t178, D0
+	ADD.W #0, D0
+	MOVE.W D0, t179
+	; t180 = 0
+	MOVE.W #0, t180
+	; t181 = 2
+	MOVE.W #2, t181
+	; t182 = t179 * 2
+	MOVE.W t179, D0
+	MULS #2, D0
+	MOVE.W D0, t182
+	; t183 = t182 + 0
+	MOVE.W t182, D0
+	ADD.W #0, D0
+	MOVE.W D0, t183
+	; t184 = 4
+	MOVE.W #4, t184
+	; t185 = t183 * t184
+	MOVE.W t183, D0
+	MULS t184, D0
+	MOVE.W D0, t185
+	; t186 = 7
+	MOVE.W #7, t186
+	; miCubo[t185] = t186
+	MOVEA.L miCubo, A0
+	CLR.L D0
+	MOVE.W t185, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	CLR.L D1
+	MOVE.W t186, D1
+	MOVE.L D1, 0(A0, D0.L)
+	; t187 = 1
+	MOVE.W #1, t187
+	; t188 = 0
+	MOVE.W #0, t188
+	; t189 = 3
+	MOVE.W #3, t189
+	; t190 = t187 * 3
+	MOVE.W t187, D0
+	MULS #3, D0
+	MOVE.W D0, t190
+	; t191 = t190 + 0
+	MOVE.W t190, D0
+	ADD.W #0, D0
+	MOVE.W D0, t191
+	; t192 = 1
+	MOVE.W #1, t192
+	; t193 = 2
+	MOVE.W #2, t193
+	; t194 = t191 * 2
+	MOVE.W t191, D0
+	MULS #2, D0
+	MOVE.W D0, t194
+	; t195 = t194 + 1
+	MOVE.W t194, D0
+	ADD.W #1, D0
+	MOVE.W D0, t195
+	; t196 = 4
+	MOVE.W #4, t196
+	; t197 = t195 * t196
+	MOVE.W t195, D0
+	MULS t196, D0
+	MOVE.W D0, t197
+	; t198 = 8
+	MOVE.W #8, t198
+	; miCubo[t197] = t198
+	MOVEA.L miCubo, A0
+	CLR.L D0
+	MOVE.W t197, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	CLR.L D1
+	MOVE.W t198, D1
+	MOVE.L D1, 0(A0, D0.L)
+	; t199 = 1
+	MOVE.W #1, t199
+	; t200 = 1
+	MOVE.W #1, t200
+	; t201 = 3
+	MOVE.W #3, t201
+	; t202 = t199 * 3
+	MOVE.W t199, D0
+	MULS #3, D0
+	MOVE.W D0, t202
+	; t203 = t202 + 1
+	MOVE.W t202, D0
+	ADD.W #1, D0
+	MOVE.W D0, t203
+	; t204 = 0
+	MOVE.W #0, t204
+	; t205 = 2
+	MOVE.W #2, t205
+	; t206 = t203 * 2
+	MOVE.W t203, D0
+	MULS #2, D0
+	MOVE.W D0, t206
+	; t207 = t206 + 0
+	MOVE.W t206, D0
+	ADD.W #0, D0
+	MOVE.W D0, t207
+	; t208 = 4
+	MOVE.W #4, t208
+	; t209 = t207 * t208
+	MOVE.W t207, D0
+	MULS t208, D0
+	MOVE.W D0, t209
+	; t210 = 9
+	MOVE.W #9, t210
+	; miCubo[t209] = t210
+	MOVEA.L miCubo, A0
+	CLR.L D0
+	MOVE.W t209, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	CLR.L D1
+	MOVE.W t210, D1
+	MOVE.L D1, 0(A0, D0.L)
+	; t211 = 1
+	MOVE.W #1, t211
+	; t212 = 1
+	MOVE.W #1, t212
+	; t213 = 3
+	MOVE.W #3, t213
+	; t214 = t211 * 3
+	MOVE.W t211, D0
+	MULS #3, D0
+	MOVE.W D0, t214
+	; t215 = t214 + 1
+	MOVE.W t214, D0
+	ADD.W #1, D0
+	MOVE.W D0, t215
+	; t216 = 1
+	MOVE.W #1, t216
+	; t217 = 2
+	MOVE.W #2, t217
+	; t218 = t215 * 2
+	MOVE.W t215, D0
+	MULS #2, D0
+	MOVE.W D0, t218
+	; t219 = t218 + 1
+	MOVE.W t218, D0
+	ADD.W #1, D0
+	MOVE.W D0, t219
+	; t220 = 4
+	MOVE.W #4, t220
+	; t221 = t219 * t220
+	MOVE.W t219, D0
+	MULS t220, D0
+	MOVE.W D0, t221
+	; t222 = 10
+	MOVE.W #10, t222
+	; miCubo[t221] = t222
+	MOVEA.L miCubo, A0
+	CLR.L D0
+	MOVE.W t221, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	CLR.L D1
+	MOVE.W t222, D1
+	MOVE.L D1, 0(A0, D0.L)
+	; t223 = 1
+	MOVE.W #1, t223
+	; t224 = 2
+	MOVE.W #2, t224
+	; t225 = 3
+	MOVE.W #3, t225
+	; t226 = t223 * 3
+	MOVE.W t223, D0
+	MULS #3, D0
+	MOVE.W D0, t226
+	; t227 = t226 + 2
+	MOVE.W t226, D0
+	ADD.W #2, D0
+	MOVE.W D0, t227
+	; t228 = 0
+	MOVE.W #0, t228
+	; t229 = 2
+	MOVE.W #2, t229
+	; t230 = t227 * 2
+	MOVE.W t227, D0
+	MULS #2, D0
+	MOVE.W D0, t230
+	; t231 = t230 + 0
+	MOVE.W t230, D0
+	ADD.W #0, D0
+	MOVE.W D0, t231
+	; t232 = 4
+	MOVE.W #4, t232
+	; t233 = t231 * t232
+	MOVE.W t231, D0
+	MULS t232, D0
+	MOVE.W D0, t233
+	; t234 = 11
+	MOVE.W #11, t234
+	; miCubo[t233] = t234
+	MOVEA.L miCubo, A0
+	CLR.L D0
+	MOVE.W t233, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	CLR.L D1
+	MOVE.W t234, D1
+	MOVE.L D1, 0(A0, D0.L)
+	; t235 = 1
+	MOVE.W #1, t235
+	; t236 = 2
+	MOVE.W #2, t236
+	; t237 = 3
+	MOVE.W #3, t237
+	; t238 = t235 * 3
+	MOVE.W t235, D0
+	MULS #3, D0
+	MOVE.W D0, t238
+	; t239 = t238 + 2
+	MOVE.W t238, D0
+	ADD.W #2, D0
+	MOVE.W D0, t239
+	; t240 = 1
+	MOVE.W #1, t240
+	; t241 = 2
+	MOVE.W #2, t241
+	; t242 = t239 * 2
+	MOVE.W t239, D0
+	MULS #2, D0
+	MOVE.W D0, t242
+	; t243 = t242 + 1
+	MOVE.W t242, D0
+	ADD.W #1, D0
+	MOVE.W D0, t243
+	; t244 = 4
+	MOVE.W #4, t244
+	; t245 = t243 * t244
+	MOVE.W t243, D0
+	MULS t244, D0
+	MOVE.W D0, t245
+	; t246 = 12
+	MOVE.W #12, t246
+	; miCubo[t245] = t246
+	MOVEA.L miCubo, A0
+	CLR.L D0
+	MOVE.W t245, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	CLR.L D1
+	MOVE.W t246, D1
+	MOVE.L D1, 0(A0, D0.L)
+	; output "Cubo 3D original:"
+	LEA str0, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; output "\n"
+	LEA NEWLINE, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; output "Capa 0:"
+	LEA str1, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; output "\n"
+	LEA NEWLINE, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; t247 = 0
+	MOVE.W #0, t247
+	; t248 = 0
+	MOVE.W #0, t248
+	; t249 = 3
+	MOVE.W #3, t249
+	; t250 = t247 * 3
+	MOVE.W t247, D0
+	MULS #3, D0
+	MOVE.W D0, t250
+	; t251 = t250 + 0
+	MOVE.W t250, D0
+	ADD.W #0, D0
+	MOVE.W D0, t251
+	; t252 = 0
+	MOVE.W #0, t252
+	; t253 = 2
+	MOVE.W #2, t253
+	; t254 = t251 * 2
+	MOVE.W t251, D0
+	MULS #2, D0
+	MOVE.W D0, t254
+	; t255 = t254 + 0
+	MOVE.W t254, D0
+	ADD.W #0, D0
+	MOVE.W D0, t255
+	; t256 = 4
+	MOVE.W #4, t256
+	; t257 = t255 * t256
+	MOVE.W t255, D0
+	MULS t256, D0
+	MOVE.W D0, t257
+	; t259 = 2
+	MOVE.W #2, t259
+	; t260 = 3
+	MOVE.W #3, t260
+	; t261 = t259 * t260
+	MOVE.W t259, D0
+	MULS t260, D0
+	MOVE.W D0, t261
+	; t262 = 2
+	MOVE.W #2, t262
+	; t263 = t261 * t262
+	MOVE.W t261, D0
+	MULS t262, D0
+	MOVE.W D0, t263
+	; t258 = t263
+	MOVE.W t263, t258
+	; t264 = miCubo[t257]
+	MOVEA.L miCubo, A0
+	CLR.L D0
+	MOVE.W t257, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.W t258, D2
+	EXT.L D2
+	MOVE.W #4, D3
+	MULS D3, D2
+	CMP.L D2, D0
+	BGE ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.L 0(A0, D0.L), D1
+	CMP.L #-1, D1
+	BEQ UNINITIALIZED_ACCESS
+	MOVE.W D1, t264
+	; output t264
+	MOVE.W t264, D1
+	JSR PRINT_SIGNED
+	; output "\n"
+	LEA NEWLINE, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; t265 = 0
+	MOVE.W #0, t265
+	; t266 = 0
+	MOVE.W #0, t266
+	; t267 = 3
+	MOVE.W #3, t267
+	; t268 = t265 * 3
+	MOVE.W t265, D0
+	MULS #3, D0
+	MOVE.W D0, t268
+	; t269 = t268 + 0
+	MOVE.W t268, D0
+	ADD.W #0, D0
+	MOVE.W D0, t269
+	; t270 = 1
+	MOVE.W #1, t270
+	; t271 = 2
+	MOVE.W #2, t271
+	; t272 = t269 * 2
+	MOVE.W t269, D0
+	MULS #2, D0
+	MOVE.W D0, t272
+	; t273 = t272 + 1
+	MOVE.W t272, D0
+	ADD.W #1, D0
+	MOVE.W D0, t273
+	; t274 = 4
+	MOVE.W #4, t274
+	; t275 = t273 * t274
+	MOVE.W t273, D0
+	MULS t274, D0
+	MOVE.W D0, t275
+	; t277 = 2
+	MOVE.W #2, t277
+	; t278 = 3
+	MOVE.W #3, t278
+	; t279 = t277 * t278
+	MOVE.W t277, D0
+	MULS t278, D0
+	MOVE.W D0, t279
+	; t280 = 2
+	MOVE.W #2, t280
+	; t281 = t279 * t280
+	MOVE.W t279, D0
+	MULS t280, D0
+	MOVE.W D0, t281
+	; t276 = t281
+	MOVE.W t281, t276
+	; t282 = miCubo[t275]
+	MOVEA.L miCubo, A0
+	CLR.L D0
+	MOVE.W t275, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.W t276, D2
+	EXT.L D2
+	MOVE.W #4, D3
+	MULS D3, D2
+	CMP.L D2, D0
+	BGE ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.L 0(A0, D0.L), D1
+	CMP.L #-1, D1
+	BEQ UNINITIALIZED_ACCESS
+	MOVE.W D1, t282
+	; output t282
+	MOVE.W t282, D1
+	JSR PRINT_SIGNED
+	; output "\n"
+	LEA NEWLINE, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; t283 = 0
+	MOVE.W #0, t283
+	; t284 = 1
+	MOVE.W #1, t284
+	; t285 = 3
+	MOVE.W #3, t285
+	; t286 = t283 * 3
+	MOVE.W t283, D0
+	MULS #3, D0
+	MOVE.W D0, t286
+	; t287 = t286 + 1
+	MOVE.W t286, D0
+	ADD.W #1, D0
+	MOVE.W D0, t287
+	; t288 = 0
+	MOVE.W #0, t288
+	; t289 = 2
+	MOVE.W #2, t289
+	; t290 = t287 * 2
+	MOVE.W t287, D0
+	MULS #2, D0
+	MOVE.W D0, t290
+	; t291 = t290 + 0
+	MOVE.W t290, D0
+	ADD.W #0, D0
+	MOVE.W D0, t291
+	; t292 = 4
+	MOVE.W #4, t292
+	; t293 = t291 * t292
+	MOVE.W t291, D0
+	MULS t292, D0
+	MOVE.W D0, t293
+	; t295 = 2
+	MOVE.W #2, t295
+	; t296 = 3
+	MOVE.W #3, t296
+	; t297 = t295 * t296
+	MOVE.W t295, D0
+	MULS t296, D0
+	MOVE.W D0, t297
+	; t298 = 2
+	MOVE.W #2, t298
+	; t299 = t297 * t298
+	MOVE.W t297, D0
+	MULS t298, D0
+	MOVE.W D0, t299
+	; t294 = t299
+	MOVE.W t299, t294
+	; t300 = miCubo[t293]
+	MOVEA.L miCubo, A0
+	CLR.L D0
+	MOVE.W t293, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.W t294, D2
+	EXT.L D2
+	MOVE.W #4, D3
+	MULS D3, D2
+	CMP.L D2, D0
+	BGE ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.L 0(A0, D0.L), D1
+	CMP.L #-1, D1
+	BEQ UNINITIALIZED_ACCESS
+	MOVE.W D1, t300
+	; output t300
+	MOVE.W t300, D1
+	JSR PRINT_SIGNED
+	; output "\n"
+	LEA NEWLINE, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; t301 = 0
+	MOVE.W #0, t301
+	; t302 = 1
+	MOVE.W #1, t302
+	; t303 = 3
+	MOVE.W #3, t303
+	; t304 = t301 * 3
+	MOVE.W t301, D0
+	MULS #3, D0
+	MOVE.W D0, t304
+	; t305 = t304 + 1
+	MOVE.W t304, D0
+	ADD.W #1, D0
+	MOVE.W D0, t305
+	; t306 = 1
+	MOVE.W #1, t306
+	; t307 = 2
+	MOVE.W #2, t307
+	; t308 = t305 * 2
+	MOVE.W t305, D0
+	MULS #2, D0
+	MOVE.W D0, t308
+	; t309 = t308 + 1
+	MOVE.W t308, D0
+	ADD.W #1, D0
+	MOVE.W D0, t309
+	; t310 = 4
+	MOVE.W #4, t310
+	; t311 = t309 * t310
+	MOVE.W t309, D0
+	MULS t310, D0
+	MOVE.W D0, t311
+	; t313 = 2
+	MOVE.W #2, t313
+	; t314 = 3
+	MOVE.W #3, t314
+	; t315 = t313 * t314
+	MOVE.W t313, D0
+	MULS t314, D0
+	MOVE.W D0, t315
+	; t316 = 2
+	MOVE.W #2, t316
+	; t317 = t315 * t316
+	MOVE.W t315, D0
+	MULS t316, D0
+	MOVE.W D0, t317
+	; t312 = t317
+	MOVE.W t317, t312
+	; t318 = miCubo[t311]
+	MOVEA.L miCubo, A0
+	CLR.L D0
+	MOVE.W t311, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.W t312, D2
+	EXT.L D2
+	MOVE.W #4, D3
+	MULS D3, D2
+	CMP.L D2, D0
+	BGE ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.L 0(A0, D0.L), D1
+	CMP.L #-1, D1
+	BEQ UNINITIALIZED_ACCESS
+	MOVE.W D1, t318
+	; output t318
+	MOVE.W t318, D1
+	JSR PRINT_SIGNED
+	; output "\n"
+	LEA NEWLINE, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; t319 = 0
+	MOVE.W #0, t319
+	; t320 = 2
+	MOVE.W #2, t320
+	; t321 = 3
+	MOVE.W #3, t321
+	; t322 = t319 * 3
+	MOVE.W t319, D0
+	MULS #3, D0
+	MOVE.W D0, t322
+	; t323 = t322 + 2
+	MOVE.W t322, D0
+	ADD.W #2, D0
+	MOVE.W D0, t323
+	; t324 = 0
+	MOVE.W #0, t324
+	; t325 = 2
+	MOVE.W #2, t325
+	; t326 = t323 * 2
+	MOVE.W t323, D0
+	MULS #2, D0
+	MOVE.W D0, t326
+	; t327 = t326 + 0
+	MOVE.W t326, D0
+	ADD.W #0, D0
+	MOVE.W D0, t327
+	; t328 = 4
+	MOVE.W #4, t328
+	; t329 = t327 * t328
+	MOVE.W t327, D0
+	MULS t328, D0
+	MOVE.W D0, t329
+	; t331 = 2
+	MOVE.W #2, t331
+	; t332 = 3
+	MOVE.W #3, t332
+	; t333 = t331 * t332
+	MOVE.W t331, D0
+	MULS t332, D0
+	MOVE.W D0, t333
+	; t334 = 2
+	MOVE.W #2, t334
+	; t335 = t333 * t334
+	MOVE.W t333, D0
+	MULS t334, D0
+	MOVE.W D0, t335
+	; t330 = t335
+	MOVE.W t335, t330
+	; t336 = miCubo[t329]
+	MOVEA.L miCubo, A0
+	CLR.L D0
+	MOVE.W t329, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.W t330, D2
+	EXT.L D2
+	MOVE.W #4, D3
+	MULS D3, D2
+	CMP.L D2, D0
+	BGE ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.L 0(A0, D0.L), D1
+	CMP.L #-1, D1
+	BEQ UNINITIALIZED_ACCESS
+	MOVE.W D1, t336
+	; output t336
+	MOVE.W t336, D1
+	JSR PRINT_SIGNED
+	; output "\n"
+	LEA NEWLINE, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; t337 = 0
+	MOVE.W #0, t337
+	; t338 = 2
+	MOVE.W #2, t338
+	; t339 = 3
+	MOVE.W #3, t339
+	; t340 = t337 * 3
+	MOVE.W t337, D0
+	MULS #3, D0
+	MOVE.W D0, t340
+	; t341 = t340 + 2
+	MOVE.W t340, D0
+	ADD.W #2, D0
+	MOVE.W D0, t341
+	; t342 = 1
+	MOVE.W #1, t342
+	; t343 = 2
+	MOVE.W #2, t343
+	; t344 = t341 * 2
+	MOVE.W t341, D0
+	MULS #2, D0
+	MOVE.W D0, t344
+	; t345 = t344 + 1
+	MOVE.W t344, D0
+	ADD.W #1, D0
+	MOVE.W D0, t345
+	; t346 = 4
+	MOVE.W #4, t346
+	; t347 = t345 * t346
+	MOVE.W t345, D0
+	MULS t346, D0
+	MOVE.W D0, t347
+	; t349 = 2
+	MOVE.W #2, t349
+	; t350 = 3
+	MOVE.W #3, t350
+	; t351 = t349 * t350
+	MOVE.W t349, D0
+	MULS t350, D0
+	MOVE.W D0, t351
+	; t352 = 2
+	MOVE.W #2, t352
+	; t353 = t351 * t352
+	MOVE.W t351, D0
+	MULS t352, D0
+	MOVE.W D0, t353
+	; t348 = t353
+	MOVE.W t353, t348
+	; t354 = miCubo[t347]
+	MOVEA.L miCubo, A0
+	CLR.L D0
+	MOVE.W t347, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.W t348, D2
+	EXT.L D2
+	MOVE.W #4, D3
+	MULS D3, D2
+	CMP.L D2, D0
+	BGE ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.L 0(A0, D0.L), D1
+	CMP.L #-1, D1
+	BEQ UNINITIALIZED_ACCESS
+	MOVE.W D1, t354
+	; output t354
+	MOVE.W t354, D1
+	JSR PRINT_SIGNED
+	; output "\n"
+	LEA NEWLINE, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; output "Capa 1:"
+	LEA str2, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; output "\n"
+	LEA NEWLINE, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; t355 = 1
+	MOVE.W #1, t355
+	; t356 = 0
+	MOVE.W #0, t356
+	; t357 = 3
+	MOVE.W #3, t357
+	; t358 = t355 * 3
+	MOVE.W t355, D0
+	MULS #3, D0
+	MOVE.W D0, t358
+	; t359 = t358 + 0
+	MOVE.W t358, D0
+	ADD.W #0, D0
+	MOVE.W D0, t359
+	; t360 = 0
+	MOVE.W #0, t360
+	; t361 = 2
+	MOVE.W #2, t361
+	; t362 = t359 * 2
+	MOVE.W t359, D0
+	MULS #2, D0
+	MOVE.W D0, t362
+	; t363 = t362 + 0
+	MOVE.W t362, D0
+	ADD.W #0, D0
+	MOVE.W D0, t363
+	; t364 = 4
+	MOVE.W #4, t364
+	; t365 = t363 * t364
+	MOVE.W t363, D0
+	MULS t364, D0
+	MOVE.W D0, t365
+	; t367 = 2
+	MOVE.W #2, t367
+	; t368 = 3
+	MOVE.W #3, t368
+	; t369 = t367 * t368
+	MOVE.W t367, D0
+	MULS t368, D0
+	MOVE.W D0, t369
+	; t370 = 2
+	MOVE.W #2, t370
+	; t371 = t369 * t370
+	MOVE.W t369, D0
+	MULS t370, D0
+	MOVE.W D0, t371
+	; t366 = t371
+	MOVE.W t371, t366
+	; t372 = miCubo[t365]
+	MOVEA.L miCubo, A0
+	CLR.L D0
+	MOVE.W t365, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.W t366, D2
+	EXT.L D2
+	MOVE.W #4, D3
+	MULS D3, D2
+	CMP.L D2, D0
+	BGE ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.L 0(A0, D0.L), D1
+	CMP.L #-1, D1
+	BEQ UNINITIALIZED_ACCESS
+	MOVE.W D1, t372
+	; output t372
+	MOVE.W t372, D1
+	JSR PRINT_SIGNED
+	; output "\n"
+	LEA NEWLINE, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; t373 = 1
+	MOVE.W #1, t373
+	; t374 = 0
+	MOVE.W #0, t374
+	; t375 = 3
+	MOVE.W #3, t375
+	; t376 = t373 * 3
+	MOVE.W t373, D0
+	MULS #3, D0
+	MOVE.W D0, t376
+	; t377 = t376 + 0
+	MOVE.W t376, D0
+	ADD.W #0, D0
+	MOVE.W D0, t377
+	; t378 = 1
+	MOVE.W #1, t378
+	; t379 = 2
+	MOVE.W #2, t379
+	; t380 = t377 * 2
+	MOVE.W t377, D0
+	MULS #2, D0
+	MOVE.W D0, t380
+	; t381 = t380 + 1
+	MOVE.W t380, D0
+	ADD.W #1, D0
+	MOVE.W D0, t381
+	; t382 = 4
+	MOVE.W #4, t382
+	; t383 = t381 * t382
+	MOVE.W t381, D0
+	MULS t382, D0
+	MOVE.W D0, t383
+	; t385 = 2
+	MOVE.W #2, t385
+	; t386 = 3
+	MOVE.W #3, t386
+	; t387 = t385 * t386
+	MOVE.W t385, D0
+	MULS t386, D0
+	MOVE.W D0, t387
+	; t388 = 2
+	MOVE.W #2, t388
+	; t389 = t387 * t388
+	MOVE.W t387, D0
+	MULS t388, D0
+	MOVE.W D0, t389
+	; t384 = t389
+	MOVE.W t389, t384
+	; t390 = miCubo[t383]
+	MOVEA.L miCubo, A0
+	CLR.L D0
+	MOVE.W t383, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.W t384, D2
+	EXT.L D2
+	MOVE.W #4, D3
+	MULS D3, D2
+	CMP.L D2, D0
+	BGE ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.L 0(A0, D0.L), D1
+	CMP.L #-1, D1
+	BEQ UNINITIALIZED_ACCESS
+	MOVE.W D1, t390
+	; output t390
+	MOVE.W t390, D1
+	JSR PRINT_SIGNED
+	; output "\n"
+	LEA NEWLINE, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; t391 = 1
+	MOVE.W #1, t391
+	; t392 = 1
+	MOVE.W #1, t392
+	; t393 = 3
+	MOVE.W #3, t393
+	; t394 = t391 * 3
+	MOVE.W t391, D0
+	MULS #3, D0
+	MOVE.W D0, t394
+	; t395 = t394 + 1
+	MOVE.W t394, D0
+	ADD.W #1, D0
+	MOVE.W D0, t395
+	; t396 = 0
+	MOVE.W #0, t396
+	; t397 = 2
+	MOVE.W #2, t397
+	; t398 = t395 * 2
+	MOVE.W t395, D0
+	MULS #2, D0
+	MOVE.W D0, t398
+	; t399 = t398 + 0
+	MOVE.W t398, D0
+	ADD.W #0, D0
+	MOVE.W D0, t399
+	; t400 = 4
+	MOVE.W #4, t400
+	; t401 = t399 * t400
+	MOVE.W t399, D0
+	MULS t400, D0
+	MOVE.W D0, t401
+	; t403 = 2
+	MOVE.W #2, t403
+	; t404 = 3
+	MOVE.W #3, t404
+	; t405 = t403 * t404
+	MOVE.W t403, D0
+	MULS t404, D0
+	MOVE.W D0, t405
+	; t406 = 2
+	MOVE.W #2, t406
+	; t407 = t405 * t406
+	MOVE.W t405, D0
+	MULS t406, D0
+	MOVE.W D0, t407
+	; t402 = t407
+	MOVE.W t407, t402
+	; t408 = miCubo[t401]
+	MOVEA.L miCubo, A0
+	CLR.L D0
+	MOVE.W t401, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.W t402, D2
+	EXT.L D2
+	MOVE.W #4, D3
+	MULS D3, D2
+	CMP.L D2, D0
+	BGE ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.L 0(A0, D0.L), D1
+	CMP.L #-1, D1
+	BEQ UNINITIALIZED_ACCESS
+	MOVE.W D1, t408
+	; output t408
+	MOVE.W t408, D1
+	JSR PRINT_SIGNED
+	; output "\n"
+	LEA NEWLINE, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; t409 = 1
+	MOVE.W #1, t409
+	; t410 = 1
+	MOVE.W #1, t410
+	; t411 = 3
+	MOVE.W #3, t411
+	; t412 = t409 * 3
+	MOVE.W t409, D0
+	MULS #3, D0
+	MOVE.W D0, t412
+	; t413 = t412 + 1
+	MOVE.W t412, D0
+	ADD.W #1, D0
+	MOVE.W D0, t413
+	; t414 = 1
+	MOVE.W #1, t414
+	; t415 = 2
+	MOVE.W #2, t415
+	; t416 = t413 * 2
+	MOVE.W t413, D0
+	MULS #2, D0
+	MOVE.W D0, t416
+	; t417 = t416 + 1
+	MOVE.W t416, D0
+	ADD.W #1, D0
+	MOVE.W D0, t417
+	; t418 = 4
+	MOVE.W #4, t418
+	; t419 = t417 * t418
+	MOVE.W t417, D0
+	MULS t418, D0
+	MOVE.W D0, t419
+	; t421 = 2
+	MOVE.W #2, t421
+	; t422 = 3
+	MOVE.W #3, t422
+	; t423 = t421 * t422
+	MOVE.W t421, D0
+	MULS t422, D0
+	MOVE.W D0, t423
+	; t424 = 2
+	MOVE.W #2, t424
+	; t425 = t423 * t424
+	MOVE.W t423, D0
+	MULS t424, D0
+	MOVE.W D0, t425
+	; t420 = t425
+	MOVE.W t425, t420
+	; t426 = miCubo[t419]
+	MOVEA.L miCubo, A0
+	CLR.L D0
+	MOVE.W t419, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.W t420, D2
+	EXT.L D2
+	MOVE.W #4, D3
+	MULS D3, D2
+	CMP.L D2, D0
+	BGE ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.L 0(A0, D0.L), D1
+	CMP.L #-1, D1
+	BEQ UNINITIALIZED_ACCESS
+	MOVE.W D1, t426
+	; output t426
+	MOVE.W t426, D1
+	JSR PRINT_SIGNED
+	; output "\n"
+	LEA NEWLINE, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; t427 = 1
+	MOVE.W #1, t427
+	; t428 = 2
+	MOVE.W #2, t428
+	; t429 = 3
+	MOVE.W #3, t429
+	; t430 = t427 * 3
+	MOVE.W t427, D0
+	MULS #3, D0
+	MOVE.W D0, t430
+	; t431 = t430 + 2
+	MOVE.W t430, D0
+	ADD.W #2, D0
+	MOVE.W D0, t431
+	; t432 = 0
+	MOVE.W #0, t432
+	; t433 = 2
+	MOVE.W #2, t433
+	; t434 = t431 * 2
+	MOVE.W t431, D0
+	MULS #2, D0
+	MOVE.W D0, t434
+	; t435 = t434 + 0
+	MOVE.W t434, D0
+	ADD.W #0, D0
+	MOVE.W D0, t435
+	; t436 = 4
+	MOVE.W #4, t436
+	; t437 = t435 * t436
+	MOVE.W t435, D0
+	MULS t436, D0
+	MOVE.W D0, t437
+	; t439 = 2
+	MOVE.W #2, t439
+	; t440 = 3
+	MOVE.W #3, t440
+	; t441 = t439 * t440
+	MOVE.W t439, D0
+	MULS t440, D0
+	MOVE.W D0, t441
+	; t442 = 2
+	MOVE.W #2, t442
+	; t443 = t441 * t442
+	MOVE.W t441, D0
+	MULS t442, D0
+	MOVE.W D0, t443
+	; t438 = t443
+	MOVE.W t443, t438
+	; t444 = miCubo[t437]
+	MOVEA.L miCubo, A0
+	CLR.L D0
+	MOVE.W t437, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.W t438, D2
+	EXT.L D2
+	MOVE.W #4, D3
+	MULS D3, D2
+	CMP.L D2, D0
+	BGE ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.L 0(A0, D0.L), D1
+	CMP.L #-1, D1
+	BEQ UNINITIALIZED_ACCESS
+	MOVE.W D1, t444
+	; output t444
+	MOVE.W t444, D1
+	JSR PRINT_SIGNED
+	; output "\n"
+	LEA NEWLINE, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; t445 = 1
+	MOVE.W #1, t445
+	; t446 = 2
+	MOVE.W #2, t446
+	; t447 = 3
+	MOVE.W #3, t447
+	; t448 = t445 * 3
+	MOVE.W t445, D0
+	MULS #3, D0
+	MOVE.W D0, t448
+	; t449 = t448 + 2
+	MOVE.W t448, D0
+	ADD.W #2, D0
+	MOVE.W D0, t449
+	; t450 = 1
+	MOVE.W #1, t450
+	; t451 = 2
+	MOVE.W #2, t451
+	; t452 = t449 * 2
+	MOVE.W t449, D0
+	MULS #2, D0
+	MOVE.W D0, t452
+	; t453 = t452 + 1
+	MOVE.W t452, D0
+	ADD.W #1, D0
+	MOVE.W D0, t453
+	; t454 = 4
+	MOVE.W #4, t454
+	; t455 = t453 * t454
+	MOVE.W t453, D0
+	MULS t454, D0
+	MOVE.W D0, t455
+	; t457 = 2
+	MOVE.W #2, t457
+	; t458 = 3
+	MOVE.W #3, t458
+	; t459 = t457 * t458
+	MOVE.W t457, D0
+	MULS t458, D0
+	MOVE.W D0, t459
+	; t460 = 2
+	MOVE.W #2, t460
+	; t461 = t459 * t460
+	MOVE.W t459, D0
+	MULS t460, D0
+	MOVE.W D0, t461
+	; t456 = t461
+	MOVE.W t461, t456
+	; t462 = miCubo[t455]
+	MOVEA.L miCubo, A0
+	CLR.L D0
+	MOVE.W t455, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.W t456, D2
+	EXT.L D2
+	MOVE.W #4, D3
+	MULS D3, D2
+	CMP.L D2, D0
+	BGE ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.L 0(A0, D0.L), D1
+	CMP.L #-1, D1
+	BEQ UNINITIALIZED_ACCESS
+	MOVE.W D1, t462
+	; output t462
+	MOVE.W t462, D1
+	JSR PRINT_SIGNED
+	; output "\n"
+	LEA NEWLINE, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; param_s miCubo  
+	; call sumarCubo  
+	MOVE.L miCubo, cubo
+	JSR sumarCubo
+	; output "Cubo 3D tras sumar 1:"
+	LEA str3, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; output "\n"
+	LEA NEWLINE, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; output "Capa 0:"
+	LEA str1, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; output "\n"
+	LEA NEWLINE, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; t463 = 0
+	MOVE.W #0, t463
+	; t464 = 0
+	MOVE.W #0, t464
+	; t465 = 3
+	MOVE.W #3, t465
+	; t466 = t463 * 3
+	MOVE.W t463, D0
+	MULS #3, D0
+	MOVE.W D0, t466
+	; t467 = t466 + 0
+	MOVE.W t466, D0
+	ADD.W #0, D0
+	MOVE.W D0, t467
+	; t468 = 0
+	MOVE.W #0, t468
+	; t469 = 2
+	MOVE.W #2, t469
+	; t470 = t467 * 2
+	MOVE.W t467, D0
+	MULS #2, D0
+	MOVE.W D0, t470
+	; t471 = t470 + 0
+	MOVE.W t470, D0
+	ADD.W #0, D0
+	MOVE.W D0, t471
+	; t472 = 4
+	MOVE.W #4, t472
+	; t473 = t471 * t472
+	MOVE.W t471, D0
+	MULS t472, D0
+	MOVE.W D0, t473
+	; t475 = 2
+	MOVE.W #2, t475
+	; t476 = 3
+	MOVE.W #3, t476
+	; t477 = t475 * t476
+	MOVE.W t475, D0
+	MULS t476, D0
+	MOVE.W D0, t477
+	; t478 = 2
+	MOVE.W #2, t478
+	; t479 = t477 * t478
+	MOVE.W t477, D0
+	MULS t478, D0
+	MOVE.W D0, t479
+	; t474 = t479
+	MOVE.W t479, t474
+	; t480 = miCubo[t473]
+	MOVEA.L miCubo, A0
+	CLR.L D0
+	MOVE.W t473, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.W t474, D2
+	EXT.L D2
+	MOVE.W #4, D3
+	MULS D3, D2
+	CMP.L D2, D0
+	BGE ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.L 0(A0, D0.L), D1
+	CMP.L #-1, D1
+	BEQ UNINITIALIZED_ACCESS
+	MOVE.W D1, t480
+	; output t480
+	MOVE.W t480, D1
+	JSR PRINT_SIGNED
+	; output "\n"
+	LEA NEWLINE, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; t481 = 0
+	MOVE.W #0, t481
+	; t482 = 0
+	MOVE.W #0, t482
+	; t483 = 3
+	MOVE.W #3, t483
+	; t484 = t481 * 3
+	MOVE.W t481, D0
+	MULS #3, D0
+	MOVE.W D0, t484
+	; t485 = t484 + 0
+	MOVE.W t484, D0
+	ADD.W #0, D0
+	MOVE.W D0, t485
+	; t486 = 1
+	MOVE.W #1, t486
+	; t487 = 2
+	MOVE.W #2, t487
+	; t488 = t485 * 2
+	MOVE.W t485, D0
+	MULS #2, D0
+	MOVE.W D0, t488
+	; t489 = t488 + 1
+	MOVE.W t488, D0
+	ADD.W #1, D0
+	MOVE.W D0, t489
+	; t490 = 4
+	MOVE.W #4, t490
+	; t491 = t489 * t490
+	MOVE.W t489, D0
+	MULS t490, D0
+	MOVE.W D0, t491
+	; t493 = 2
+	MOVE.W #2, t493
+	; t494 = 3
+	MOVE.W #3, t494
+	; t495 = t493 * t494
+	MOVE.W t493, D0
+	MULS t494, D0
+	MOVE.W D0, t495
+	; t496 = 2
+	MOVE.W #2, t496
+	; t497 = t495 * t496
+	MOVE.W t495, D0
+	MULS t496, D0
+	MOVE.W D0, t497
+	; t492 = t497
+	MOVE.W t497, t492
+	; t498 = miCubo[t491]
+	MOVEA.L miCubo, A0
+	CLR.L D0
+	MOVE.W t491, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.W t492, D2
+	EXT.L D2
+	MOVE.W #4, D3
+	MULS D3, D2
+	CMP.L D2, D0
+	BGE ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.L 0(A0, D0.L), D1
+	CMP.L #-1, D1
+	BEQ UNINITIALIZED_ACCESS
+	MOVE.W D1, t498
+	; output t498
+	MOVE.W t498, D1
+	JSR PRINT_SIGNED
+	; output "\n"
+	LEA NEWLINE, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; t499 = 0
+	MOVE.W #0, t499
+	; t500 = 1
+	MOVE.W #1, t500
+	; t501 = 3
+	MOVE.W #3, t501
+	; t502 = t499 * 3
+	MOVE.W t499, D0
+	MULS #3, D0
+	MOVE.W D0, t502
+	; t503 = t502 + 1
+	MOVE.W t502, D0
+	ADD.W #1, D0
+	MOVE.W D0, t503
+	; t504 = 0
+	MOVE.W #0, t504
+	; t505 = 2
+	MOVE.W #2, t505
+	; t506 = t503 * 2
+	MOVE.W t503, D0
+	MULS #2, D0
+	MOVE.W D0, t506
+	; t507 = t506 + 0
+	MOVE.W t506, D0
+	ADD.W #0, D0
+	MOVE.W D0, t507
+	; t508 = 4
+	MOVE.W #4, t508
+	; t509 = t507 * t508
+	MOVE.W t507, D0
+	MULS t508, D0
+	MOVE.W D0, t509
+	; t511 = 2
+	MOVE.W #2, t511
+	; t512 = 3
+	MOVE.W #3, t512
+	; t513 = t511 * t512
+	MOVE.W t511, D0
+	MULS t512, D0
+	MOVE.W D0, t513
+	; t514 = 2
+	MOVE.W #2, t514
+	; t515 = t513 * t514
+	MOVE.W t513, D0
+	MULS t514, D0
+	MOVE.W D0, t515
+	; t510 = t515
+	MOVE.W t515, t510
+	; t516 = miCubo[t509]
+	MOVEA.L miCubo, A0
+	CLR.L D0
+	MOVE.W t509, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.W t510, D2
+	EXT.L D2
+	MOVE.W #4, D3
+	MULS D3, D2
+	CMP.L D2, D0
+	BGE ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.L 0(A0, D0.L), D1
+	CMP.L #-1, D1
+	BEQ UNINITIALIZED_ACCESS
+	MOVE.W D1, t516
+	; output t516
+	MOVE.W t516, D1
+	JSR PRINT_SIGNED
+	; output "\n"
+	LEA NEWLINE, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; t517 = 0
+	MOVE.W #0, t517
+	; t518 = 1
+	MOVE.W #1, t518
+	; t519 = 3
+	MOVE.W #3, t519
+	; t520 = t517 * 3
+	MOVE.W t517, D0
+	MULS #3, D0
+	MOVE.W D0, t520
+	; t521 = t520 + 1
+	MOVE.W t520, D0
+	ADD.W #1, D0
+	MOVE.W D0, t521
+	; t522 = 1
+	MOVE.W #1, t522
+	; t523 = 2
+	MOVE.W #2, t523
+	; t524 = t521 * 2
+	MOVE.W t521, D0
+	MULS #2, D0
+	MOVE.W D0, t524
+	; t525 = t524 + 1
+	MOVE.W t524, D0
+	ADD.W #1, D0
+	MOVE.W D0, t525
+	; t526 = 4
+	MOVE.W #4, t526
+	; t527 = t525 * t526
+	MOVE.W t525, D0
+	MULS t526, D0
+	MOVE.W D0, t527
+	; t529 = 2
+	MOVE.W #2, t529
+	; t530 = 3
+	MOVE.W #3, t530
+	; t531 = t529 * t530
+	MOVE.W t529, D0
+	MULS t530, D0
+	MOVE.W D0, t531
+	; t532 = 2
+	MOVE.W #2, t532
+	; t533 = t531 * t532
+	MOVE.W t531, D0
+	MULS t532, D0
+	MOVE.W D0, t533
+	; t528 = t533
+	MOVE.W t533, t528
+	; t534 = miCubo[t527]
+	MOVEA.L miCubo, A0
+	CLR.L D0
+	MOVE.W t527, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.W t528, D2
+	EXT.L D2
+	MOVE.W #4, D3
+	MULS D3, D2
+	CMP.L D2, D0
+	BGE ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.L 0(A0, D0.L), D1
+	CMP.L #-1, D1
+	BEQ UNINITIALIZED_ACCESS
+	MOVE.W D1, t534
+	; output t534
+	MOVE.W t534, D1
+	JSR PRINT_SIGNED
+	; output "\n"
+	LEA NEWLINE, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; t535 = 0
+	MOVE.W #0, t535
+	; t536 = 2
+	MOVE.W #2, t536
+	; t537 = 3
+	MOVE.W #3, t537
+	; t538 = t535 * 3
+	MOVE.W t535, D0
+	MULS #3, D0
+	MOVE.W D0, t538
+	; t539 = t538 + 2
+	MOVE.W t538, D0
+	ADD.W #2, D0
+	MOVE.W D0, t539
+	; t540 = 0
+	MOVE.W #0, t540
+	; t541 = 2
+	MOVE.W #2, t541
+	; t542 = t539 * 2
+	MOVE.W t539, D0
+	MULS #2, D0
+	MOVE.W D0, t542
+	; t543 = t542 + 0
+	MOVE.W t542, D0
+	ADD.W #0, D0
+	MOVE.W D0, t543
+	; t544 = 4
+	MOVE.W #4, t544
+	; t545 = t543 * t544
+	MOVE.W t543, D0
+	MULS t544, D0
+	MOVE.W D0, t545
+	; t547 = 2
+	MOVE.W #2, t547
+	; t548 = 3
+	MOVE.W #3, t548
+	; t549 = t547 * t548
+	MOVE.W t547, D0
+	MULS t548, D0
+	MOVE.W D0, t549
+	; t550 = 2
+	MOVE.W #2, t550
+	; t551 = t549 * t550
+	MOVE.W t549, D0
+	MULS t550, D0
+	MOVE.W D0, t551
+	; t546 = t551
+	MOVE.W t551, t546
+	; t552 = miCubo[t545]
+	MOVEA.L miCubo, A0
+	CLR.L D0
+	MOVE.W t545, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.W t546, D2
+	EXT.L D2
+	MOVE.W #4, D3
+	MULS D3, D2
+	CMP.L D2, D0
+	BGE ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.L 0(A0, D0.L), D1
+	CMP.L #-1, D1
+	BEQ UNINITIALIZED_ACCESS
+	MOVE.W D1, t552
+	; output t552
+	MOVE.W t552, D1
+	JSR PRINT_SIGNED
+	; output "\n"
+	LEA NEWLINE, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; t553 = 0
+	MOVE.W #0, t553
+	; t554 = 2
+	MOVE.W #2, t554
+	; t555 = 3
+	MOVE.W #3, t555
+	; t556 = t553 * 3
+	MOVE.W t553, D0
+	MULS #3, D0
+	MOVE.W D0, t556
+	; t557 = t556 + 2
+	MOVE.W t556, D0
+	ADD.W #2, D0
+	MOVE.W D0, t557
+	; t558 = 1
+	MOVE.W #1, t558
+	; t559 = 2
+	MOVE.W #2, t559
+	; t560 = t557 * 2
+	MOVE.W t557, D0
+	MULS #2, D0
+	MOVE.W D0, t560
+	; t561 = t560 + 1
+	MOVE.W t560, D0
+	ADD.W #1, D0
+	MOVE.W D0, t561
+	; t562 = 4
+	MOVE.W #4, t562
+	; t563 = t561 * t562
+	MOVE.W t561, D0
+	MULS t562, D0
+	MOVE.W D0, t563
+	; t565 = 2
+	MOVE.W #2, t565
+	; t566 = 3
+	MOVE.W #3, t566
+	; t567 = t565 * t566
+	MOVE.W t565, D0
+	MULS t566, D0
+	MOVE.W D0, t567
+	; t568 = 2
+	MOVE.W #2, t568
+	; t569 = t567 * t568
+	MOVE.W t567, D0
+	MULS t568, D0
+	MOVE.W D0, t569
+	; t564 = t569
+	MOVE.W t569, t564
+	; t570 = miCubo[t563]
+	MOVEA.L miCubo, A0
+	CLR.L D0
+	MOVE.W t563, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.W t564, D2
+	EXT.L D2
+	MOVE.W #4, D3
+	MULS D3, D2
+	CMP.L D2, D0
+	BGE ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.L 0(A0, D0.L), D1
+	CMP.L #-1, D1
+	BEQ UNINITIALIZED_ACCESS
+	MOVE.W D1, t570
+	; output t570
+	MOVE.W t570, D1
+	JSR PRINT_SIGNED
+	; output "\n"
+	LEA NEWLINE, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; output "Capa 1:"
+	LEA str2, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; output "\n"
+	LEA NEWLINE, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; t571 = 1
+	MOVE.W #1, t571
+	; t572 = 0
+	MOVE.W #0, t572
+	; t573 = 3
+	MOVE.W #3, t573
+	; t574 = t571 * 3
+	MOVE.W t571, D0
+	MULS #3, D0
+	MOVE.W D0, t574
+	; t575 = t574 + 0
+	MOVE.W t574, D0
+	ADD.W #0, D0
+	MOVE.W D0, t575
+	; t576 = 0
+	MOVE.W #0, t576
+	; t577 = 2
+	MOVE.W #2, t577
+	; t578 = t575 * 2
+	MOVE.W t575, D0
+	MULS #2, D0
+	MOVE.W D0, t578
+	; t579 = t578 + 0
+	MOVE.W t578, D0
+	ADD.W #0, D0
+	MOVE.W D0, t579
+	; t580 = 4
+	MOVE.W #4, t580
+	; t581 = t579 * t580
+	MOVE.W t579, D0
+	MULS t580, D0
+	MOVE.W D0, t581
+	; t583 = 2
+	MOVE.W #2, t583
+	; t584 = 3
+	MOVE.W #3, t584
+	; t585 = t583 * t584
+	MOVE.W t583, D0
+	MULS t584, D0
+	MOVE.W D0, t585
+	; t586 = 2
+	MOVE.W #2, t586
+	; t587 = t585 * t586
+	MOVE.W t585, D0
+	MULS t586, D0
+	MOVE.W D0, t587
+	; t582 = t587
+	MOVE.W t587, t582
+	; t588 = miCubo[t581]
+	MOVEA.L miCubo, A0
+	CLR.L D0
+	MOVE.W t581, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.W t582, D2
+	EXT.L D2
+	MOVE.W #4, D3
+	MULS D3, D2
+	CMP.L D2, D0
+	BGE ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.L 0(A0, D0.L), D1
+	CMP.L #-1, D1
+	BEQ UNINITIALIZED_ACCESS
+	MOVE.W D1, t588
+	; output t588
+	MOVE.W t588, D1
+	JSR PRINT_SIGNED
+	; output "\n"
+	LEA NEWLINE, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; t589 = 1
+	MOVE.W #1, t589
+	; t590 = 0
+	MOVE.W #0, t590
+	; t591 = 3
+	MOVE.W #3, t591
+	; t592 = t589 * 3
+	MOVE.W t589, D0
+	MULS #3, D0
+	MOVE.W D0, t592
+	; t593 = t592 + 0
+	MOVE.W t592, D0
+	ADD.W #0, D0
+	MOVE.W D0, t593
+	; t594 = 1
+	MOVE.W #1, t594
+	; t595 = 2
+	MOVE.W #2, t595
+	; t596 = t593 * 2
+	MOVE.W t593, D0
+	MULS #2, D0
+	MOVE.W D0, t596
+	; t597 = t596 + 1
+	MOVE.W t596, D0
+	ADD.W #1, D0
+	MOVE.W D0, t597
+	; t598 = 4
+	MOVE.W #4, t598
+	; t599 = t597 * t598
+	MOVE.W t597, D0
+	MULS t598, D0
+	MOVE.W D0, t599
+	; t601 = 2
+	MOVE.W #2, t601
+	; t602 = 3
+	MOVE.W #3, t602
+	; t603 = t601 * t602
+	MOVE.W t601, D0
+	MULS t602, D0
+	MOVE.W D0, t603
+	; t604 = 2
+	MOVE.W #2, t604
+	; t605 = t603 * t604
+	MOVE.W t603, D0
+	MULS t604, D0
+	MOVE.W D0, t605
+	; t600 = t605
+	MOVE.W t605, t600
+	; t606 = miCubo[t599]
+	MOVEA.L miCubo, A0
+	CLR.L D0
+	MOVE.W t599, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.W t600, D2
+	EXT.L D2
+	MOVE.W #4, D3
+	MULS D3, D2
+	CMP.L D2, D0
+	BGE ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.L 0(A0, D0.L), D1
+	CMP.L #-1, D1
+	BEQ UNINITIALIZED_ACCESS
+	MOVE.W D1, t606
+	; output t606
+	MOVE.W t606, D1
+	JSR PRINT_SIGNED
+	; output "\n"
+	LEA NEWLINE, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; t607 = 1
+	MOVE.W #1, t607
+	; t608 = 1
+	MOVE.W #1, t608
+	; t609 = 3
+	MOVE.W #3, t609
+	; t610 = t607 * 3
+	MOVE.W t607, D0
+	MULS #3, D0
+	MOVE.W D0, t610
+	; t611 = t610 + 1
+	MOVE.W t610, D0
+	ADD.W #1, D0
+	MOVE.W D0, t611
+	; t612 = 0
+	MOVE.W #0, t612
+	; t613 = 2
+	MOVE.W #2, t613
+	; t614 = t611 * 2
+	MOVE.W t611, D0
+	MULS #2, D0
+	MOVE.W D0, t614
+	; t615 = t614 + 0
+	MOVE.W t614, D0
+	ADD.W #0, D0
+	MOVE.W D0, t615
+	; t616 = 4
+	MOVE.W #4, t616
+	; t617 = t615 * t616
+	MOVE.W t615, D0
+	MULS t616, D0
+	MOVE.W D0, t617
+	; t619 = 2
+	MOVE.W #2, t619
+	; t620 = 3
+	MOVE.W #3, t620
+	; t621 = t619 * t620
+	MOVE.W t619, D0
+	MULS t620, D0
+	MOVE.W D0, t621
+	; t622 = 2
+	MOVE.W #2, t622
+	; t623 = t621 * t622
+	MOVE.W t621, D0
+	MULS t622, D0
+	MOVE.W D0, t623
+	; t618 = t623
+	MOVE.W t623, t618
+	; t624 = miCubo[t617]
+	MOVEA.L miCubo, A0
+	CLR.L D0
+	MOVE.W t617, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.W t618, D2
+	EXT.L D2
+	MOVE.W #4, D3
+	MULS D3, D2
+	CMP.L D2, D0
+	BGE ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.L 0(A0, D0.L), D1
+	CMP.L #-1, D1
+	BEQ UNINITIALIZED_ACCESS
+	MOVE.W D1, t624
+	; output t624
+	MOVE.W t624, D1
+	JSR PRINT_SIGNED
+	; output "\n"
+	LEA NEWLINE, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; t625 = 1
+	MOVE.W #1, t625
+	; t626 = 1
+	MOVE.W #1, t626
+	; t627 = 3
+	MOVE.W #3, t627
+	; t628 = t625 * 3
+	MOVE.W t625, D0
+	MULS #3, D0
+	MOVE.W D0, t628
+	; t629 = t628 + 1
+	MOVE.W t628, D0
+	ADD.W #1, D0
+	MOVE.W D0, t629
+	; t630 = 1
+	MOVE.W #1, t630
+	; t631 = 2
+	MOVE.W #2, t631
+	; t632 = t629 * 2
+	MOVE.W t629, D0
+	MULS #2, D0
+	MOVE.W D0, t632
+	; t633 = t632 + 1
+	MOVE.W t632, D0
+	ADD.W #1, D0
+	MOVE.W D0, t633
+	; t634 = 4
+	MOVE.W #4, t634
+	; t635 = t633 * t634
+	MOVE.W t633, D0
+	MULS t634, D0
+	MOVE.W D0, t635
+	; t637 = 2
+	MOVE.W #2, t637
+	; t638 = 3
+	MOVE.W #3, t638
+	; t639 = t637 * t638
+	MOVE.W t637, D0
+	MULS t638, D0
+	MOVE.W D0, t639
+	; t640 = 2
+	MOVE.W #2, t640
+	; t641 = t639 * t640
+	MOVE.W t639, D0
+	MULS t640, D0
+	MOVE.W D0, t641
+	; t636 = t641
+	MOVE.W t641, t636
+	; t642 = miCubo[t635]
+	MOVEA.L miCubo, A0
+	CLR.L D0
+	MOVE.W t635, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.W t636, D2
+	EXT.L D2
+	MOVE.W #4, D3
+	MULS D3, D2
+	CMP.L D2, D0
+	BGE ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.L 0(A0, D0.L), D1
+	CMP.L #-1, D1
+	BEQ UNINITIALIZED_ACCESS
+	MOVE.W D1, t642
+	; output t642
+	MOVE.W t642, D1
+	JSR PRINT_SIGNED
+	; output "\n"
+	LEA NEWLINE, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; t643 = 1
+	MOVE.W #1, t643
+	; t644 = 2
+	MOVE.W #2, t644
+	; t645 = 3
+	MOVE.W #3, t645
+	; t646 = t643 * 3
+	MOVE.W t643, D0
+	MULS #3, D0
+	MOVE.W D0, t646
+	; t647 = t646 + 2
+	MOVE.W t646, D0
+	ADD.W #2, D0
+	MOVE.W D0, t647
+	; t648 = 0
+	MOVE.W #0, t648
+	; t649 = 2
+	MOVE.W #2, t649
+	; t650 = t647 * 2
+	MOVE.W t647, D0
+	MULS #2, D0
+	MOVE.W D0, t650
+	; t651 = t650 + 0
+	MOVE.W t650, D0
+	ADD.W #0, D0
+	MOVE.W D0, t651
+	; t652 = 4
+	MOVE.W #4, t652
+	; t653 = t651 * t652
+	MOVE.W t651, D0
+	MULS t652, D0
+	MOVE.W D0, t653
+	; t655 = 2
+	MOVE.W #2, t655
+	; t656 = 3
+	MOVE.W #3, t656
+	; t657 = t655 * t656
+	MOVE.W t655, D0
+	MULS t656, D0
+	MOVE.W D0, t657
+	; t658 = 2
+	MOVE.W #2, t658
+	; t659 = t657 * t658
+	MOVE.W t657, D0
+	MULS t658, D0
+	MOVE.W D0, t659
+	; t654 = t659
+	MOVE.W t659, t654
+	; t660 = miCubo[t653]
+	MOVEA.L miCubo, A0
+	CLR.L D0
+	MOVE.W t653, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.W t654, D2
+	EXT.L D2
+	MOVE.W #4, D3
+	MULS D3, D2
+	CMP.L D2, D0
+	BGE ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.L 0(A0, D0.L), D1
+	CMP.L #-1, D1
+	BEQ UNINITIALIZED_ACCESS
+	MOVE.W D1, t660
+	; output t660
+	MOVE.W t660, D1
+	JSR PRINT_SIGNED
+	; output "\n"
+	LEA NEWLINE, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; t661 = 1
+	MOVE.W #1, t661
+	; t662 = 2
+	MOVE.W #2, t662
+	; t663 = 3
+	MOVE.W #3, t663
+	; t664 = t661 * 3
+	MOVE.W t661, D0
+	MULS #3, D0
+	MOVE.W D0, t664
+	; t665 = t664 + 2
+	MOVE.W t664, D0
+	ADD.W #2, D0
+	MOVE.W D0, t665
+	; t666 = 1
+	MOVE.W #1, t666
+	; t667 = 2
+	MOVE.W #2, t667
+	; t668 = t665 * 2
+	MOVE.W t665, D0
+	MULS #2, D0
+	MOVE.W D0, t668
+	; t669 = t668 + 1
+	MOVE.W t668, D0
+	ADD.W #1, D0
+	MOVE.W D0, t669
+	; t670 = 4
+	MOVE.W #4, t670
+	; t671 = t669 * t670
+	MOVE.W t669, D0
+	MULS t670, D0
+	MOVE.W D0, t671
+	; t673 = 2
+	MOVE.W #2, t673
+	; t674 = 3
+	MOVE.W #3, t674
+	; t675 = t673 * t674
+	MOVE.W t673, D0
+	MULS t674, D0
+	MOVE.W D0, t675
+	; t676 = 2
+	MOVE.W #2, t676
+	; t677 = t675 * t676
+	MOVE.W t675, D0
+	MULS t676, D0
+	MOVE.W D0, t677
+	; t672 = t677
+	MOVE.W t677, t672
+	; t678 = miCubo[t671]
+	MOVEA.L miCubo, A0
+	CLR.L D0
+	MOVE.W t671, D0
+	TST.L D0
+	BMI ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.W t672, D2
+	EXT.L D2
+	MOVE.W #4, D3
+	MULS D3, D2
+	CMP.L D2, D0
+	BGE ARRAY_INDEX_OUT_OF_BOUNDS
+	MOVE.L 0(A0, D0.L), D1
+	CMP.L #-1, D1
+	BEQ UNINITIALIZED_ACCESS
+	MOVE.W D1, t678
+	; output t678
+	MOVE.W t678, D1
+	JSR PRINT_SIGNED
+	; output "\n"
+	LEA NEWLINE, A1
+	MOVE.B #14, D0
+	TRAP #15
+end:
+	BRA HALT
+
+	; DATA SECTION
+NEWLINE:	DC.B 13,10,0
+MINUS_SIGN:	DC.B '-',0
+ERROR_INDEX_MSG:	DC.B 'ERROR: Indice fuera de rango',13,10,0
+ERROR_UNINIT_MSG:	DC.B 'ERROR: Acceso a posicion no inicializada',13,10,0
+ERROR_ALLOC_MSG:	DC.B 'ERROR: Tamaño de array inválido (<= 0)',13,10,0
+HEAP_PTR:	DC.L $8000
+t520:	DS.W 1
+t641:	DS.W 1
+t640:	DS.W 1
+t515:	DS.W 1
+t636:	DS.W 1
+cubo:	DS.L 1
+t514:	DS.W 1
+t635:	DS.W 1
+t517:	DS.W 1
+t638:	DS.W 1
+miCubo:	DS.L 1
+t516:	DS.W 1
+t637:	DS.W 1
+str3:	DC.B 'Cubo 3D tras sumar 1:',0
+t511:	DS.W 1
+t632:	DS.W 1
+t510:	DS.W 1
+t631:	DS.W 1
+str1:	DC.B 'Capa 0:',0
+t513:	DS.W 1
+t634:	DS.W 1
+str2:	DC.B 'Capa 1:',0
+t512:	DS.W 1
+t633:	DS.W 1
+t519:	DS.W 1
+t518:	DS.W 1
+t639:	DS.W 1
+str0:	DC.B 'Cubo 3D original:',0
+t630:	DS.W 1
+t504:	DS.W 1
+t625:	DS.W 1
+t503:	DS.W 1
+t624:	DS.W 1
+t506:	DS.W 1
+t627:	DS.W 1
+t505:	DS.W 1
+t626:	DS.W 1
+t500:	DS.W 1
+t621:	DS.W 1
+t620:	DS.W 1
+t502:	DS.W 1
+t623:	DS.W 1
+t501:	DS.W 1
+t622:	DS.W 1
+t508:	DS.W 1
+t629:	DS.W 1
+t507:	DS.W 1
+t628:	DS.W 1
+t509:	DS.W 1
+t540:	DS.W 1
+t661:	DS.W 1
+t660:	DS.W 1
+t300:	DS.W 1
+t421:	DS.W 1
+t542:	DS.W 1
+t663:	DS.W 1
+t420:	DS.W 1
+t541:	DS.W 1
+t662:	DS.W 1
+t416:	DS.W 1
+t537:	DS.W 1
+t658:	DS.W 1
+t415:	DS.W 1
+t536:	DS.W 1
+t657:	DS.W 1
+t418:	DS.W 1
+t539:	DS.W 1
+t417:	DS.W 1
+t538:	DS.W 1
+t659:	DS.W 1
+t412:	DS.W 1
+t533:	DS.W 1
+t654:	DS.W 1
+t411:	DS.W 1
+t532:	DS.W 1
+t653:	DS.W 1
+t414:	DS.W 1
+t535:	DS.W 1
+t656:	DS.W 1
+t413:	DS.W 1
+t534:	DS.W 1
+t655:	DS.W 1
+t419:	DS.W 1
+t650:	DS.W 1
+i:	DS.W 1
+j:	DS.W 1
+t410:	DS.W 1
+t531:	DS.W 1
+t652:	DS.W 1
+k:	DS.W 1
+t530:	DS.W 1
+t651:	DS.W 1
+t405:	DS.W 1
+t526:	DS.W 1
+t647:	DS.W 1
+t404:	DS.W 1
+t525:	DS.W 1
+t646:	DS.W 1
+t407:	DS.W 1
+t528:	DS.W 1
+t649:	DS.W 1
+t406:	DS.W 1
+t527:	DS.W 1
+t648:	DS.W 1
+t401:	DS.W 1
+t522:	DS.W 1
+t643:	DS.W 1
+t400:	DS.W 1
+t521:	DS.W 1
+t642:	DS.W 1
+t403:	DS.W 1
+t524:	DS.W 1
+t645:	DS.W 1
+t402:	DS.W 1
+t523:	DS.W 1
+t644:	DS.W 1
+t409:	DS.W 1
+t408:	DS.W 1
+t529:	DS.W 1
+t320:	DS.W 1
+t441:	DS.W 1
+t562:	DS.W 1
+t440:	DS.W 1
+t561:	DS.W 1
+t201:	DS.W 1
+t322:	DS.W 1
+t443:	DS.W 1
+t564:	DS.W 1
+t200:	DS.W 1
+t321:	DS.W 1
+t442:	DS.W 1
+t563:	DS.W 1
+t560:	DS.W 1
+t317:	DS.W 1
+t438:	DS.W 1
+t559:	DS.W 1
+t316:	DS.W 1
+t437:	DS.W 1
+t558:	DS.W 1
+t319:	DS.W 1
+t318:	DS.W 1
+t439:	DS.W 1
+t313:	DS.W 1
+t434:	DS.W 1
+t555:	DS.W 1
+t676:	DS.W 1
+t312:	DS.W 1
+t433:	DS.W 1
+t554:	DS.W 1
+t675:	DS.W 1
+t315:	DS.W 1
+t436:	DS.W 1
+t557:	DS.W 1
+t678:	DS.W 1
+t314:	DS.W 1
+t435:	DS.W 1
+t556:	DS.W 1
+t677:	DS.W 1
+t430:	DS.W 1
+t551:	DS.W 1
+t672:	DS.W 1
+t550:	DS.W 1
+t671:	DS.W 1
+t311:	DS.W 1
+t432:	DS.W 1
+t553:	DS.W 1
+t674:	DS.W 1
+t310:	DS.W 1
+t431:	DS.W 1
+t552:	DS.W 1
+t673:	DS.W 1
+t670:	DS.W 1
+t306:	DS.W 1
+t427:	DS.W 1
+t548:	DS.W 1
+t669:	DS.W 1
+t305:	DS.W 1
+t426:	DS.W 1
+t547:	DS.W 1
+t668:	DS.W 1
+t308:	DS.W 1
+t429:	DS.W 1
+t307:	DS.W 1
+t428:	DS.W 1
+t549:	DS.W 1
+t302:	DS.W 1
+t423:	DS.W 1
+t544:	DS.W 1
+t665:	DS.W 1
+t301:	DS.W 1
+t422:	DS.W 1
+t543:	DS.W 1
+t664:	DS.W 1
+t304:	DS.W 1
+t425:	DS.W 1
+t546:	DS.W 1
+t667:	DS.W 1
+t303:	DS.W 1
+t424:	DS.W 1
+t545:	DS.W 1
+t666:	DS.W 1
+t309:	DS.W 1
+t100:	DS.W 1
+t221:	DS.W 1
+t342:	DS.W 1
+t463:	DS.W 1
+t584:	DS.W 1
+t220:	DS.W 1
+t341:	DS.W 1
+t462:	DS.W 1
+t583:	DS.W 1
+t102:	DS.W 1
+t223:	DS.W 1
+t344:	DS.W 1
+t465:	DS.W 1
+t586:	DS.W 1
+t101:	DS.W 1
+t222:	DS.W 1
+t343:	DS.W 1
+t464:	DS.W 1
+t585:	DS.W 1
+t580:	DS.W 1
+t340:	DS.W 1
+t461:	DS.W 1
+t582:	DS.W 1
+t460:	DS.W 1
+t581:	DS.W 1
+t218:	DS.W 1
+t339:	DS.W 1
+t217:	DS.W 1
+t338:	DS.W 1
+t459:	DS.W 1
+t219:	DS.W 1
+t214:	DS.W 1
+t335:	DS.W 1
+t456:	DS.W 1
+t577:	DS.W 1
+t213:	DS.W 1
+t334:	DS.W 1
+t455:	DS.W 1
+t576:	DS.W 1
+t216:	DS.W 1
+t337:	DS.W 1
+t458:	DS.W 1
+t579:	DS.W 1
+t215:	DS.W 1
+t336:	DS.W 1
+t457:	DS.W 1
+t578:	DS.W 1
+t210:	DS.W 1
+t331:	DS.W 1
+t452:	DS.W 1
+t573:	DS.W 1
+t330:	DS.W 1
+t451:	DS.W 1
+t572:	DS.W 1
+t212:	DS.W 1
+t333:	DS.W 1
+t454:	DS.W 1
+t575:	DS.W 1
+t211:	DS.W 1
+t332:	DS.W 1
+t453:	DS.W 1
+t574:	DS.W 1
+t450:	DS.W 1
+t571:	DS.W 1
+t570:	DS.W 1
+t207:	DS.W 1
+t328:	DS.W 1
+t449:	DS.W 1
+t206:	DS.W 1
+t327:	DS.W 1
+t448:	DS.W 1
+t569:	DS.W 1
+t209:	DS.W 1
+t208:	DS.W 1
+t329:	DS.W 1
+t203:	DS.W 1
+t324:	DS.W 1
+t445:	DS.W 1
+t566:	DS.W 1
+t202:	DS.W 1
+t323:	DS.W 1
+t444:	DS.W 1
+t565:	DS.W 1
+t205:	DS.W 1
+t326:	DS.W 1
+t447:	DS.W 1
+t568:	DS.W 1
+t204:	DS.W 1
+t325:	DS.W 1
+t446:	DS.W 1
+t567:	DS.W 1
+t122:	DS.W 1
+t243:	DS.W 1
+t364:	DS.W 1
+t485:	DS.W 1
+t121:	DS.W 1
+t242:	DS.W 1
+t363:	DS.W 1
+t484:	DS.W 1
+t124:	DS.W 1
+t245:	DS.W 1
+t366:	DS.W 1
+t487:	DS.W 1
+t123:	DS.W 1
+t244:	DS.W 1
+t365:	DS.W 1
+t486:	DS.W 1
+t360:	DS.W 1
+t481:	DS.W 1
+t480:	DS.W 1
+t120:	DS.W 1
+t241:	DS.W 1
+t362:	DS.W 1
+t483:	DS.W 1
+t240:	DS.W 1
+t361:	DS.W 1
+t482:	DS.W 1
+t119:	DS.W 1
+t118:	DS.W 1
+t239:	DS.W 1
+t115:	DS.W 1
+t236:	DS.W 1
+t357:	DS.W 1
+t478:	DS.W 1
+t599:	DS.W 1
+t114:	DS.W 1
+t235:	DS.W 1
+t356:	DS.W 1
+t477:	DS.W 1
+t598:	DS.W 1
+t117:	DS.W 1
+t238:	DS.W 1
+t359:	DS.W 1
+t116:	DS.W 1
+t237:	DS.W 1
+t358:	DS.W 1
+t479:	DS.W 1
+t111:	DS.W 1
+t232:	DS.W 1
+t353:	DS.W 1
+t474:	DS.W 1
+t595:	DS.W 1
+t110:	DS.W 1
+t231:	DS.W 1
+t352:	DS.W 1
+t473:	DS.W 1
+t594:	DS.W 1
+t113:	DS.W 1
+t234:	DS.W 1
+t355:	DS.W 1
+t476:	DS.W 1
+t597:	DS.W 1
+t112:	DS.W 1
+t233:	DS.W 1
+t354:	DS.W 1
+t475:	DS.W 1
+t596:	DS.W 1
+t470:	DS.W 1
+t591:	DS.W 1
+t590:	DS.W 1
+t230:	DS.W 1
+t351:	DS.W 1
+t472:	DS.W 1
+t593:	DS.W 1
+t350:	DS.W 1
+t471:	DS.W 1
+t592:	DS.W 1
+t108:	DS.W 1
+t229:	DS.W 1
+t107:	DS.W 1
+t228:	DS.W 1
+t349:	DS.W 1
+t109:	DS.W 1
+t104:	DS.W 1
+t225:	DS.W 1
+t346:	DS.W 1
+t467:	DS.W 1
+t588:	DS.W 1
+t103:	DS.W 1
+t224:	DS.W 1
+t345:	DS.W 1
+t466:	DS.W 1
+t587:	DS.W 1
+t106:	DS.W 1
+t227:	DS.W 1
+t348:	DS.W 1
+t469:	DS.W 1
+t105:	DS.W 1
+t226:	DS.W 1
+t347:	DS.W 1
+t468:	DS.W 1
+t589:	DS.W 1
+t380:	DS.W 1
+t144:	DS.W 1
+t265:	DS.W 1
+t386:	DS.W 1
+t143:	DS.W 1
+t264:	DS.W 1
+t385:	DS.W 1
+t146:	DS.W 1
+t267:	DS.W 1
+t388:	DS.W 1
+t145:	DS.W 1
+t266:	DS.W 1
+t387:	DS.W 1
+t140:	DS.W 1
+t261:	DS.W 1
+t382:	DS.W 1
+t260:	DS.W 1
+t381:	DS.W 1
+t142:	DS.W 1
+t263:	DS.W 1
+t384:	DS.W 1
+t141:	DS.W 1
+t262:	DS.W 1
+t383:	DS.W 1
+t137:	DS.W 1
+t258:	DS.W 1
+t379:	DS.W 1
+t136:	DS.W 1
+t257:	DS.W 1
+t378:	DS.W 1
+t499:	DS.W 1
+t139:	DS.W 1
+t138:	DS.W 1
+t259:	DS.W 1
+t490:	DS.W 1
+t133:	DS.W 1
+t254:	DS.W 1
+t375:	DS.W 1
+t496:	DS.W 1
+t132:	DS.W 1
+t253:	DS.W 1
+t374:	DS.W 1
+t495:	DS.W 1
+t135:	DS.W 1
+t256:	DS.W 1
+t377:	DS.W 1
+t498:	DS.W 1
+t134:	DS.W 1
+t255:	DS.W 1
+t376:	DS.W 1
+t497:	DS.W 1
+t250:	DS.W 1
+t371:	DS.W 1
+t492:	DS.W 1
+t370:	DS.W 1
+t491:	DS.W 1
+t131:	DS.W 1
+t252:	DS.W 1
+t373:	DS.W 1
+t494:	DS.W 1
+t130:	DS.W 1
+t251:	DS.W 1
+t372:	DS.W 1
+t493:	DS.W 1
+t129:	DS.W 1
+t126:	DS.W 1
+t247:	DS.W 1
+t368:	DS.W 1
+t489:	DS.W 1
+t125:	DS.W 1
+t246:	DS.W 1
+t367:	DS.W 1
+t488:	DS.W 1
+t128:	DS.W 1
+t249:	DS.W 1
+t127:	DS.W 1
+t248:	DS.W 1
+t369:	DS.W 1
+t160:	DS.W 1
+t281:	DS.W 1
+t280:	DS.W 1
+t166:	DS.W 1
+t287:	DS.W 1
+t165:	DS.W 1
+t286:	DS.W 1
+t168:	DS.W 1
+t289:	DS.W 1
+t167:	DS.W 1
+t288:	DS.W 1
+t162:	DS.W 1
+t283:	DS.W 1
+t161:	DS.W 1
+t282:	DS.W 1
+t164:	DS.W 1
+t285:	DS.W 1
+t163:	DS.W 1
+t284:	DS.W 1
+t10:	DS.W 1
+t12:	DS.W 1
+t159:	DS.W 1
+t11:	DS.W 1
+t158:	DS.W 1
+t279:	DS.W 1
+t14:	DS.W 1
+t13:	DS.W 1
+t16:	DS.W 1
+t15:	DS.W 1
+t18:	DS.W 1
+t17:	DS.W 1
+t19:	DS.W 1
+t270:	DS.W 1
+t391:	DS.W 1
+t390:	DS.W 1
+t155:	DS.W 1
+t276:	DS.W 1
+t397:	DS.W 1
+t154:	DS.W 1
+t275:	DS.W 1
+t396:	DS.W 1
+t157:	DS.W 1
+t278:	DS.W 1
+t399:	DS.W 1
+t156:	DS.W 1
+t277:	DS.W 1
+t398:	DS.W 1
+t151:	DS.W 1
+t272:	DS.W 1
+t393:	DS.W 1
+t150:	DS.W 1
+t271:	DS.W 1
+t392:	DS.W 1
+t153:	DS.W 1
+t274:	DS.W 1
+t395:	DS.W 1
+t152:	DS.W 1
+t273:	DS.W 1
+t394:	DS.W 1
+t21:	DS.W 1
+t20:	DS.W 1
+t23:	DS.W 1
+t148:	DS.W 1
+t269:	DS.W 1
+t22:	DS.W 1
+t147:	DS.W 1
+t268:	DS.W 1
+t389:	DS.W 1
+t25:	DS.W 1
+t24:	DS.W 1
+t149:	DS.W 1
+t27:	DS.W 1
+t26:	DS.W 1
+t29:	DS.W 1
+t28:	DS.W 1
+t180:	DS.W 1
+t182:	DS.W 1
+t181:	DS.W 1
+t188:	DS.W 1
+t187:	DS.W 1
+t189:	DS.W 1
+t184:	DS.W 1
+t183:	DS.W 1
+t186:	DS.W 1
+t185:	DS.W 1
+t30:	DS.W 1
+t32:	DS.W 1
+t31:	DS.W 1
+t34:	DS.W 1
+t33:	DS.W 1
+t36:	DS.W 1
+t35:	DS.W 1
+t38:	DS.W 1
+t37:	DS.W 1
+t39:	DS.W 1
+t290:	DS.W 1
+t171:	DS.W 1
+t292:	DS.W 1
+t170:	DS.W 1
+t291:	DS.W 1
+t177:	DS.W 1
+t298:	DS.W 1
+t176:	DS.W 1
+t297:	DS.W 1
+t179:	DS.W 1
+t178:	DS.W 1
+t299:	DS.W 1
+t173:	DS.W 1
+t294:	DS.W 1
+t172:	DS.W 1
+t293:	DS.W 1
+t175:	DS.W 1
+t296:	DS.W 1
+t174:	DS.W 1
+t295:	DS.W 1
+t41:	DS.W 1
+t40:	DS.W 1
+t43:	DS.W 1
+t42:	DS.W 1
+t45:	DS.W 1
+t44:	DS.W 1
+t169:	DS.W 1
+t47:	DS.W 1
+t46:	DS.W 1
+t49:	DS.W 1
+t48:	DS.W 1
+t50:	DS.W 1
+t52:	DS.W 1
+t51:	DS.W 1
+t54:	DS.W 1
+t53:	DS.W 1
+t56:	DS.W 1
+t55:	DS.W 1
+t58:	DS.W 1
+t57:	DS.W 1
+t59:	DS.W 1
+t191:	DS.W 1
+t190:	DS.W 1
+t193:	DS.W 1
+t192:	DS.W 1
+t199:	DS.W 1
+t198:	DS.W 1
+t195:	DS.W 1
+t194:	DS.W 1
+t61:	DS.W 1
+t197:	DS.W 1
+t60:	DS.W 1
+t196:	DS.W 1
+t63:	DS.W 1
+t62:	DS.W 1
+t65:	DS.W 1
+t64:	DS.W 1
+t67:	DS.W 1
+t66:	DS.W 1
+t69:	DS.W 1
+t68:	DS.W 1
+t0:	DS.W 1
+t1:	DS.W 1
+t2:	DS.W 1
+t3:	DS.W 1
+t4:	DS.W 1
+t5:	DS.W 1
+t6:	DS.W 1
+t7:	DS.W 1
+t8:	DS.W 1
+t9:	DS.W 1
+t70:	DS.W 1
+t72:	DS.W 1
+t71:	DS.W 1
+t74:	DS.W 1
+t73:	DS.W 1
+t76:	DS.W 1
+t75:	DS.W 1
+t78:	DS.W 1
+t77:	DS.W 1
+t79:	DS.W 1
+t81:	DS.W 1
+t80:	DS.W 1
+t83:	DS.W 1
+t82:	DS.W 1
+t85:	DS.W 1
+t84:	DS.W 1
+t87:	DS.W 1
+t86:	DS.W 1
+t89:	DS.W 1
+t88:	DS.W 1
+t90:	DS.W 1
+t92:	DS.W 1
+t91:	DS.W 1
+t94:	DS.W 1
+t93:	DS.W 1
+t96:	DS.W 1
+t95:	DS.W 1
+t98:	DS.W 1
+t97:	DS.W 1
+t99:	DS.W 1
+t614:	DS.W 1
+t613:	DS.W 1
+t616:	DS.W 1
+t615:	DS.W 1
+t610:	DS.W 1
+t612:	DS.W 1
+t611:	DS.W 1
+t618:	DS.W 1
+t617:	DS.W 1
+t619:	DS.W 1
+t603:	DS.W 1
+t602:	DS.W 1
+t605:	DS.W 1
+t604:	DS.W 1
+t601:	DS.W 1
+t600:	DS.W 1
+t607:	DS.W 1
+t606:	DS.W 1
+t609:	DS.W 1
+t608:	DS.W 1
+
+HALT:
+	SIMHALT
+
+	ORG $5000
+STACKPTR:
+	END START

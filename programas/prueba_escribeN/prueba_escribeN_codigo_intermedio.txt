@@ -1,0 +1,19 @@
+===== CODIGO INTERMEDIO (3-ADDRESS CODE) =====
+
+main:
+output "Hola"
+output " mundo"
+output " sin salto de linea"
+output "Con salto de linea"
+output "\n"
+output "Segunda linea"
+output "\n"
+t0 = 42
+x = t0
+output "El valor es: "
+t1 = x
+output t1
+output "\n"
+output "Final del programa"
+output "\n"
+end:

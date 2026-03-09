@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/C:/Users/JaumeJH/Downloads/compiladores/Compilador-Natural/src/compiler/sintactic/Parser.java</file>
+            <file>file:/C:/Users/JaumeJH/Downloads/compiladores/Compilador-Natural/src/compiler/sintactic/Symbols/NodoReturn.java</file>
+            <file>file:/C:/Users/JaumeJH/Downloads/compiladores/Compilador-Natural/src/compiler/lexic/Scanner.java</file>
+            <file>file:/C:/Users/JaumeJH/Downloads/compiladores/Compilador-Natural/src/compiler/sintactic/Symbols/NodoInput.java</file>
+            <file>file:/C:/Users/JaumeJH/Downloads/compiladores/Compilador-Natural/src/compiler/sintactic/Symbols/NodoLlamadaFuncion.java</file>
+            <file>file:/C:/Users/JaumeJH/Downloads/compiladores/Compilador-Natural/src/compiler/sintactic/Symbols/NodoBreak.java</file>
+            <file>file:/C:/Users/JaumeJH/Downloads/compiladores/Compilador-Natural/src/compiler/sintactic/Symbols/NodoOutput.java</file>
+            <file>file:/C:/Users/JaumeJH/Downloads/compiladores/Compilador-Natural/src/compiler/sintactic/Symbols/NodoOperacionBinaria.java</file>
+            <file>file:/C:/Users/JaumeJH/Downloads/compiladores/Compilador-Natural/src/compiler/sintactic/Symbols/TipoParametro.java</file>
+            <file>file:/C:/Users/JaumeJH/Downloads/compiladores/Compilador-Natural/src/compiler/sintactic/Symbols/NodoSwitch.java</file>
+            <file>file:/C:/Users/JaumeJH/Downloads/compiladores/Compilador-Natural/src/compiler/sintactic/Symbols/NodoDeclaracion.java</file>
+            <file>file:/C:/Users/JaumeJH/Downloads/compiladores/Compilador-Natural/src/compiler/sintactic/Symbols/TipoDato.java</file>
+            <file>file:/C:/Users/JaumeJH/Downloads/compiladores/Compilador-Natural/src/compiler/sintactic/Symbols/NodoAST.java</file>
+            <file>file:/C:/Users/JaumeJH/Downloads/compiladores/Compilador-Natural/src/compiler/sintactic/Symbols/NodoVariable.java</file>
+            <file>file:/C:/Users/JaumeJH/Downloads/compiladores/Compilador-Natural/src/lenguaje/LenguajeNatural.java</file>
+            <file>file:/C:/Users/JaumeJH/Downloads/compiladores/Compilador-Natural/src/compiler/codigo_ensamblador/Generador68K.java</file>
+            <file>file:/C:/Users/JaumeJH/Downloads/compiladores/Compilador-Natural/src/compiler/sintactic/Symbols/Simbolo.java</file>
+            <file>file:/C:/Users/JaumeJH/Downloads/compiladores/Compilador-Natural/src/compiler/sintactic/Symbols/NodoOperacionUnaria.java</file>
+            <file>file:/C:/Users/JaumeJH/Downloads/compiladores/Compilador-Natural/src/compiler/lexic/lexic_natural.flex</file>
+            <file>file:/C:/Users/JaumeJH/Downloads/compiladores/Compilador-Natural/src/compiler/sintactic/Symbols/NodoWhile.java</file>
+            <file>file:/C:/Users/JaumeJH/Downloads/compiladores/Compilador-Natural/src/compiler/sintactic/Symbols/NodoPrograma.java</file>
+        </group>
+    </open-files>
+</project-private>

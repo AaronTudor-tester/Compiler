@@ -1,0 +1,68 @@
+===== OPTIMIZACIONES REALIZADAS =====
+
+Archivo: programas\test_array_05_vacio\test_array_05_vacio.txt
+Fecha: 2026-02-03T12:22:58.779481
+
+--- ESTADISTICAS DE CODIGO INTERMEDIO ---
+
+Instrucciones originales: 16
+Instrucciones optimizadas: 15
+Instrucciones eliminadas: 1
+Reduccion: 6,25%
+
+--- ESTADISTICAS DE ENSAMBLADOR ---
+
+Archivo original (.x68): 5422 bytes
+Archivo optimizado (_optimizado.x68): 4208 bytes
+Bytes reducidos: 1214 bytes
+Reduccion en ensamblador: 22,39%
+
+--- CODIGO OPTIMIZADO ---
+
+main:
+output "=== TEST: Array vacio ==="
+output "\n"
+vector[0] = 100
+vector[4] = 200
+output "Leyendo posicion 0: "
+t16 = vector[0]
+output t16
+output "\n"
+output "Leyendo posicion 1: "
+t20 = vector[4]
+output t20
+output "\n"
+output "Test completado"
+output "\n"
+
+--- CAMBIOS REALIZADOS POR EL OPTIMIZADOR ---
+
+Asignación diferida:
+  - Línea 3: t0 eliminado y sustituido por 1
+  - Línea 3: t1 eliminado y sustituido por 3
+  - Línea 4: t3 eliminado y sustituido por 4
+  - Línea 6: t5 eliminado y sustituido por 0
+  - Línea 6: t6 eliminado y sustituido por 4
+  - Línea 7: t8 eliminado y sustituido por 100
+  - Línea 8: t9 eliminado y sustituido por 1
+  - Línea 8: t10 eliminado y sustituido por 4
+  - Línea 9: t12 eliminado y sustituido por 200
+  - Línea 11: t13 eliminado y sustituido por 0
+  - Línea 11: t14 eliminado y sustituido por 4
+  - Línea 16: t17 eliminado y sustituido por 1
+  - Línea 16: t18 eliminado y sustituido por 4
+  - Línea 3: t2 eliminado y sustituido por 3
+  - Línea 5: t7 eliminado y sustituido por 0
+  - Línea 6: t11 eliminado y sustituido por 4
+  - Línea 8: t15 eliminado y sustituido por 0
+  - Línea 12: t19 eliminado y sustituido por 4
+  - Línea 3: t4 eliminado y sustituido por 12
+Eliminación de etiquetas muertas:
+  - Línea 22: Se ha eliminado la etiqueta end
+Cálculo de constantes:
+  - Línea 3: t2 = 1 * 3 -> t2 = 3
+  - Línea 6: t7 = 0 * 4 -> t7 = 0
+  - Línea 8: t11 = 1 * 4 -> t11 = 4
+  - Línea 11: t15 = 0 * 4 -> t15 = 0
+  - Línea 16: t19 = 1 * 4 -> t19 = 4
+  - Línea 3: t4 = 3 * 4 -> t4 = 12

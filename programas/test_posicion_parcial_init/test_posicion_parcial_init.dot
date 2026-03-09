@@ -1,0 +1,43 @@
+strict digraph {
+21	[label="Programa"];
+21->0
+21->2
+21->3
+21->5
+21->9
+21->13
+21->17
+21->20
+0	[label="decl: idx (INT)"];
+2	[label="print"];
+2->1
+1	[label="Introduce indice (0..3):",shape=plaintext];
+3	[label="input(idx)"];
+5	[label="array: arr[0](INT)"];
+9	[label="[] =\n(Asign. Array)"]
+9->7
+9->8
+7	[label="Acceso Array\n(arr)"]
+7->6
+6	[label="0",shape=plaintext];
+8	[label="10",shape=plaintext];
+13	[label="[] =\n(Asign. Array)"]
+13->11
+13->12
+11	[label="Acceso Array\n(arr)"]
+11->10
+10	[label="1",shape=plaintext];
+12	[label="20",shape=plaintext];
+17	[label="[] =\n(Asign. Array)"]
+17->15
+17->16
+15	[label="Acceso Array\n(arr)"]
+15->14
+14	[label="3",shape=plaintext];
+16	[label="40",shape=plaintext];
+20	[label="print"];
+20->19
+19	[label="Acceso Array\n(arr)"]
+19->18
+18	[label="idx",shape=plaintext];
+}

@@ -1,0 +1,107 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 11/02/2026 6:56:15
+
+00001000                             1              ORG $1000
+00001000                             2  START:
+00001000  4FF9 00005000              3              LEA STACKPTR, A7
+00001006  4EF9 00001028              4              JMP main
+0000100C                             5  
+0000100C                             6  ; ===== RUTINAS AUXILIARES =====
+0000100C                             7  PRINT_SIGNED:
+0000100C  4A41                       8              TST.W D1
+0000100E  6A00 0010                  9              BPL PRINT_UNSIGNED
+00001012  103C 000E                 10              MOVE.B #14, D0
+00001016  43F9 000010B3             11              LEA MINUS_SIGN, A1
+0000101C  4E4F                      12              TRAP #15
+0000101E  4441                      13              NEG.W D1
+00001020                            14  PRINT_UNSIGNED:
+00001020  103C 0003                 15              MOVE.B #3, D0
+00001024  4E4F                      16              TRAP #15
+00001026  4E75                      17              RTS
+00001028                            18  
+00001028                            19  main:
+00001028                            20              ; a = 10
+00001028  33FC 000A 000010D6        21              MOVE.W #10, a
+00001030                            22              ; b = 0
+00001030  33FC 0000 000010DA        23              MOVE.W #0, b
+00001038                            24              ; c = 5
+00001038  33FC 0005 000010DC        25              MOVE.W #5, c
+00001040                            26              ; t5 = a / c
+00001040  3039 000010D6             27              MOVE.W a, D0
+00001046  4A79 000010DC             28              TST.W c
+0000104C  6700 0094                 29              BEQ DIV_ZERO_ERROR
+00001050  81F9 000010DC             30              DIVS c, D0
+00001056  33C0 000010D8             31              MOVE.W D0, t5
+0000105C                            32              ; resultado = t5
+0000105C  33F9 000010D8 000010DE    33              MOVE.W t5, resultado
+00001066                            34              ; output resultado
+00001066  3239 000010DE             35              MOVE.W resultado, D1
+0000106C  4EB8 100C                 36              JSR PRINT_SIGNED
+00001070                            37              ; output "\n"
+00001070  43F9 000010B0             38              LEA NEWLINE, A1
+00001076  103C 000E                 39              MOVE.B #14, D0
+0000107A  4E4F                      40              TRAP #15
+0000107C                            41              ; t9 = a / b
+0000107C  3039 000010D6             42              MOVE.W a, D0
+00001082  4A79 000010DA             43              TST.W b
+00001088  6700 0058                 44              BEQ DIV_ZERO_ERROR
+0000108C  81F9 000010DA             45              DIVS b, D0
+00001092  33C0 000010E0             46              MOVE.W D0, t9
+00001098                            47              ; resultado = t9
+00001098  33F9 000010E0 000010DE    48              MOVE.W t9, resultado
+000010A2                            49              ; output resultado
+000010A2  3239 000010DE             50              MOVE.W resultado, D1
+000010A8  4EB8 100C                 51              JSR PRINT_SIGNED
+000010AC  6000 0042                 52              BRA HALT
+000010B0                            53  
+000010B0                            54              ; DATA SECTION
+000010B0= 0D 0A 00                  55  NEWLINE:    DC.B 13,10,0
+000010B3= 2D 00                     56  MINUS_SIGN: DC.B '-',0
+000010B5= 45 52 52 4F 52 3A ...     57  DIV_ZERO_MSG:       DC.B 'ERROR: Division entre cero',13,10,0
+000010D2= 00008000                  58  HEAP_PTR:   DC.L $8000
+000010D6                            59  a:          DS.W 1
+000010D8                            60  t5:         DS.W 1
+000010DA                            61  b:          DS.W 1
+000010DC                            62  c:          DS.W 1
+000010DE                            63  resultado:  DS.W 1
+000010E0                            64  t9:         DS.W 1
+000010E2                            65  
+000010E2                            66  ; ===== MANEJADOR DE ERROR DE DIVISION ENTRE CERO =====
+000010E2                            67  DIV_ZERO_ERROR:
+000010E2  43F8 10B5                 68              LEA DIV_ZERO_MSG, A1
+000010E6  103C 000E                 69              MOVE.B #14, D0
+000010EA  4E4F                      70              TRAP #15
+000010EC  6000 0002                 71              BRA HALT
+000010F0                            72  
+000010F0                            73  HALT:
+000010F0  FFFF FFFF                 74              SIMHALT
+000010F4                            75  
+00005000                            76              ORG $5000
+00005000                            77  STACKPTR:
+00005000                            78              END START
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+A                   10D6
+B                   10DA
+C                   10DC
+DIV_ZERO_ERROR      10E2
+DIV_ZERO_MSG        10B5
+HALT                10F0
+HEAP_PTR            10D2
+MAIN                1028
+MINUS_SIGN          10B3
+NEWLINE             10B0
+PRINT_SIGNED        100C
+PRINT_UNSIGNED      1020
+RESULTADO           10DE
+STACKPTR            5000
+START               1000
+T5                  10D8
+T9                  10E0

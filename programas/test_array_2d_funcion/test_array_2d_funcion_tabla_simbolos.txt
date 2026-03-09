@@ -1,0 +1,7 @@
+===== TABLA DE SÍMBOLOS =====
+
+FUNCION: Simbolo{nombre='sumarMatriz', tipoRetorno=VOID, parametros=[INT[][]], linea=4}
+  VARIABLE: Simbolo{nombre='matriz', tipo=INT, valor=null, linea=4, inicializada=true}
+  VARIABLE: Simbolo{nombre='i', tipo=INT, valor=0, linea=6, inicializada=true}
+    VARIABLE: Simbolo{nombre='j', tipo=INT, valor=0, linea=8, inicializada=true}
+  VARIABLE: Simbolo{nombre='mat', tipo=INT, valor=[1, 2, 3, 4, 5, 6], linea=19, inicializada=true}

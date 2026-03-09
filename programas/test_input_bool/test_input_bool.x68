@@ -1,0 +1,157 @@
+	ORG $1000
+START:
+	LEA STACKPTR, A7
+	JMP main
+
+; ===== RUTINAS AUXILIARES =====
+PRINT_SIGNED:
+	TST.W D1
+	BPL PRINT_UNSIGNED
+	MOVE.B #14, D0
+	LEA MINUS_SIGN, A1
+	TRAP #15
+	NEG.W D1
+PRINT_UNSIGNED:
+	MOVE.B #3, D0
+	TRAP #15
+	RTS
+
+PRINT_BOOL:
+	TST.W D1
+	BEQ .PRINT_MENTIRA
+	LEA STR_CIERTO, A1
+	BRA .PRINT_BOOL_STR
+.PRINT_MENTIRA:
+	LEA STR_MENTIRA, A1
+.PRINT_BOOL_STR:
+	MOVE.B #14, D0
+	TRAP #15
+	RTS
+
+READ_BOOL:
+.RB_RETRY:
+	LEA INPUT_BUFFER, A1
+	MOVE.B #2, D0
+	TRAP #15
+	LEA INPUT_BUFFER, A1
+	LEA STR_CIERTO, A2
+	JSR STRING_COMPARE
+	TST.W D0
+	BEQ .RB_TRUE
+	LEA INPUT_BUFFER, A1
+	LEA STR_MENTIRA, A2
+	JSR STRING_COMPARE
+	TST.W D0
+	BEQ .RB_FALSE
+	LEA ERROR_BOOL_MSG, A1
+	MOVE.B #14, D0
+	TRAP #15
+	BRA .RB_RETRY
+.RB_TRUE:
+	MOVE.W #1, D1
+	RTS
+.RB_FALSE:
+	MOVE.W #0, D1
+	RTS
+
+STRING_COMPARE:
+.SC_LOOP:
+	MOVE.B (A1)+, D2
+	MOVE.B (A2)+, D3
+	CMP.B #'A', D2
+	BLT .SC_SKIP1
+	CMP.B #'Z', D2
+	BGT .SC_SKIP1
+	ADD.B #32, D2
+.SC_SKIP1:
+	CMP.B #'A', D3
+	BLT .SC_SKIP2
+	CMP.B #'Z', D3
+	BGT .SC_SKIP2
+	ADD.B #32, D3
+.SC_SKIP2:
+	CMP.B #10, D2
+	BEQ .SC_END_D2
+	CMP.B #13, D2
+	BEQ .SC_END_D2
+	BRA .SC_CONT
+.SC_END_D2:
+	CLR.B D2
+.SC_CONT:
+	CMP.B D2, D3
+	BNE .SC_DIFFERENT
+	TST.B D2
+	BEQ .SC_EQUAL
+	BRA .SC_LOOP
+.SC_EQUAL:
+	MOVE.W #0, D0
+	RTS
+.SC_DIFFERENT:
+	MOVE.W #1, D0
+	RTS
+
+main:
+	; output "=== TEST: Lectura de booleanos ==="
+	LEA str0, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; output "\n"
+	LEA NEWLINE, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; output "Introduce un valor booleano (cierto/mentira):"
+	LEA str1, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; output "\n"
+	LEA NEWLINE, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; input usuario
+	JSR READ_BOOL
+	MOVE.W D1, usuario
+	; output "Has introducido: "
+	LEA str2, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; t0 = usuario
+	MOVE.W usuario, t0
+	; output t0
+	MOVE.W t0, D1
+	JSR PRINT_BOOL
+	; output "\n"
+	LEA NEWLINE, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; output "Test completado"
+	LEA str3, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; output "\n"
+	LEA NEWLINE, A1
+	MOVE.B #14, D0
+	TRAP #15
+end:
+	BRA HALT
+
+	; DATA SECTION
+NEWLINE:	DC.B 13,10,0
+MINUS_SIGN:	DC.B '-',0
+STR_CIERTO:	DC.B 'cierto',0
+STR_MENTIRA:	DC.B 'mentira',0
+ERROR_BOOL_MSG:	DC.B 'ERROR: Entrada invalida. Ingrese cierto o mentira: ',0
+INPUT_BUFFER:	DS.B 80
+HEAP_PTR:	DC.L $8000
+str3:	DC.B 'Test completado',0
+str1:	DC.B 'Introduce un valor booleano (cierto/mentira):',0
+str2:	DC.B 'Has introducido: ',0
+str0:	DC.B '=== TEST: Lectura de booleanos ===',0
+usuario:	DS.W 1
+t0:	DS.W 1
+
+HALT:
+	SIMHALT
+
+	ORG $5000
+STACKPTR:
+	END START

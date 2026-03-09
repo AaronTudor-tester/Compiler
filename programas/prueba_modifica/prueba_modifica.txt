@@ -1,0 +1,52 @@
+principal {
+
+    decimal x es 2.0.
+    escribe x.
+    escribe "\n".
+    modifica x mas 3.0.
+    escribe x.
+    escribe "\n".
+    modifica x menos 2.0.
+    escribe x.
+    escribe "\n".
+    modifica x multiplicado 4.0.
+    escribe x.
+    escribe "\n".
+    modifica x dividido 3.0.
+    escribe x.
+    escribe "\n".
+    decrementa x.
+    modifica x resto 2.0.
+    escribe x.
+    escribe "\n".
+
+    x es 1.0.
+    escribe "x es: ".
+    escribe x.
+    escribe "\n".
+    escribe "x es: ".
+    modifica x mas 5 menos incrementa x mas 2 mas x decrementa mas 1 menos incrementa x.
+    escribe x.
+    escribe "\n".
+    escribe "BUCLES:".
+    escribe "\n".
+
+
+        para decimal i es 1.0, repite si i es menor o igual que 5.0, x es i mas 0.5 {
+            escribe "ITERAMOS".
+            escribe "\n".
+            escribe x.
+            escribe "\n".
+            escribe i.
+            escribe "\n".
+            modifica i mas 1.
+        }
+
+        escribe "hola".
+        escribe "\n".
+
+        para decimal i es 1.0, repite si i es menor o igual que 5, modifica i mas 1 {
+            escribe "otro bucle".
+            escribe "\n".
+        }
+}

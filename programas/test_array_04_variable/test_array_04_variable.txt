@@ -1,0 +1,14 @@
+// TEST ARRAY 04: Índice con variable
+// Objetivo: Verificar que se puede usar una variable como índice
+
+principal {
+    escribeN "=== TEST: Indice con variable ===".
+    
+    lista de numero vector es [10, 20, 30, 40, 50].
+    numero indice es 2.
+    
+    escribeN "Leyendo posicion con variable (indice=2):".
+    escribeN vector posicion (indice).
+    
+    escribeN "Test completado".
+}

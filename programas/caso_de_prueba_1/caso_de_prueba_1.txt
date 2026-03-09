@@ -1,0 +1,42 @@
+// CASO DE PRUEBA 1: OPERACIONES BASICAS
+// Demuestra:
+// - Declaración de variables
+// - Operaciones aritméticas
+// - Salida de datos
+
+principal {
+    escribeN "=== CASO 1: OPERACIONES BASICAS ===".
+    
+    numero a es 10.
+    numero b es 5.
+    
+    numero suma es a mas b.
+    escribe "Suma: ".
+    escribeN suma.
+    
+    numero resta es a menos b.
+    escribe "Resta: ".
+    escribeN resta.
+    
+    numero multiplicacion es a multiplicado b.
+    escribe "Multiplicación: ".
+    escribeN multiplicacion.
+    
+    numero division es a dividido b.
+    escribe "División: ".
+    escribeN division.
+    
+    numero modulo es a resto b.
+    escribe "Módulo: ".
+    escribeN modulo.
+}
+
+// FUNCIONAMIENTO:
+// 1. Declara dos números: a=10, b=5
+// 2. Realiza operaciones aritméticas
+// 3. Imprime resultados:
+//    - Suma: 15
+//    - Resta: 5
+//    - Multiplicación: 50
+//    - División: 2
+//    - Módulo: 0

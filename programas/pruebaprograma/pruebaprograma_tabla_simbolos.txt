@@ -1,0 +1,20 @@
+===== TABLA DE SÍMBOLOS =====
+
+VARIABLE: Simbolo{nombre='contador', tipo=INT, valor=0, linea=4, inicializada=true}
+FUNCION: Simbolo{nombre='suma', tipoRetorno=INT, parametros=[INT, INT], linea=4}
+FUNCION: Simbolo{nombre='prueba', tipoRetorno=INT, parametros=[INT, INT, INT], linea=10}
+  VARIABLE: Simbolo{nombre='a', tipo=INT, valor=null, linea=4, inicializada=true}
+  VARIABLE: Simbolo{nombre='b', tipo=INT, valor=null, linea=4, inicializada=true}
+  VARIABLE: Simbolo{nombre='resultado', tipo=INT, valor=null, linea=6, inicializada=true}
+  VARIABLE: Simbolo{nombre='a', tipo=INT, valor=null, linea=10, inicializada=true}
+  VARIABLE: Simbolo{nombre='b', tipo=INT, valor=null, linea=10, inicializada=true}
+  VARIABLE: Simbolo{nombre='c', tipo=INT, valor=null, linea=10, inicializada=true}
+  VARIABLE: Simbolo{nombre='x', tipo=INT, valor=null, linea=24, inicializada=true}
+  VARIABLE: Simbolo{nombre='z', tipo=INT, valor=null, linea=25, inicializada=true}
+  VARIABLE: Simbolo{nombre='y', tipo=INT, valor=20, linea=26, inicializada=true}
+  VARIABLE: Simbolo{nombre='l', tipo=INT, valor=null, linea=27, inicializada=true}
+  VARIABLE: Simbolo{nombre='llueve', tipo=BOOL, valor=true, linea=28, inicializada=true}
+  VARIABLE: Simbolo{nombre='noLlueve', tipo=BOOL, valor=null, linea=29, inicializada=true}
+  VARIABLE: Simbolo{nombre='total', tipo=INT, valor=null, linea=33, inicializada=true}
+  VARIABLE: Simbolo{nombre='total2', tipo=INT, valor=null, linea=34, inicializada=true}
+        VARIABLE: Simbolo{nombre='pruebaBlques', tipo=INT, valor=null, linea=55, inicializada=true}

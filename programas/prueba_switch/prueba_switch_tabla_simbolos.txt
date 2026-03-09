@@ -1,0 +1,5 @@
+===== TABLA DE SÍMBOLOS =====
+
+  VARIABLE: Simbolo{nombre='opcion', tipo=INT, valor=1, linea=7, inicializada=true}
+  VARIABLE: Simbolo{nombre='opcion2', tipo=INT, valor=2, linea=16, inicializada=true}
+  VARIABLE: Simbolo{nombre='opcion3', tipo=INT, valor=5, linea=25, inicializada=true}

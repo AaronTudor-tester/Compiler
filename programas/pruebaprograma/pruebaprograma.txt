@@ -1,0 +1,60 @@
+numero contador es 0.
+
+// Definición de Función
+numero suma ( numero a , numero b ) {
+    numero resultado.
+    resultado es a mas b.
+   devuelve resultado.
+}
+
+numero prueba ( numero a , numero b, numero c ) {
+ si a es menor que 20 {
+   escribe a.
+   devuelve prueba(a mas 2, b, c) .
+}
+escribe "fin".
+devuelve 555.
+}
+
+// Bloque Principal (El MAIN)
+principal  {
+    
+    // Declaración y asignación
+    numero x es menos 15.
+    numero z es menos x.
+    numero y es 20.
+    numero l es (5 mas (z menos 10)).
+    pregunta llueve es cierto.
+    pregunta noLlueve es no llueve.
+    l es menos (5 mas 16).
+    
+    // Llamada a función
+   numero total es suma ( x , y ) .
+   numero total2 es suma ( 7 , (3 mas 1) ) .
+   suma (2,3).
+   // suma ("w", 5 ) . no debería funcionar
+   // suma () . no debería funcionar
+
+    // Salida por pantalla
+    escribeN total .
+    
+    // Condicional (IF / ELSE)
+    si total es mayor que 25 {
+        escribeN "El numero es grande" .
+    } sino {
+        escribeN "El numero es pequeno" .
+    }
+
+    // Bucle (WHILE)
+    mientras contador es menor que 3 {
+        incrementa contador .
+        escribeN "Contando..." .
+        si contador es mayor que 2 {
+            si contador es igual que 2 {
+                numero pruebaBlques es contador.
+            }
+        }
+    }
+    prueba(1,2,3).
+
+}

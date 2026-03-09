@@ -1,0 +1,21 @@
+// TEST ARRAY 09: Operaciones con elementos de array
+// Objetivo: Verificar operaciones aritméticas con valores del array
+
+principal {
+    escribeN "=== TEST: Operaciones con array ===".
+    
+    lista de numero numeros es [10, 20, 30].
+    
+    numero a es numeros posicion (0).
+    numero b es numeros posicion (1).
+    numero suma es a mas b.
+    escribeN "10 + 20 = ".
+    escribeN suma.
+    
+    numero c es numeros posicion (2).
+    numero producto es b multiplicado c.
+    escribeN "20 * 30 = ".
+    escribeN producto.
+    
+    escribeN "Test completado".
+}

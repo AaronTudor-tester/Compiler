@@ -1,0 +1,18 @@
+===== TABLA DE SÍMBOLOS =====
+
+VARIABLE: Simbolo{nombre='n1', tipo=INT, valor=null, linea=7, inicializada=true}
+VARIABLE: Simbolo{nombre='n2', tipo=INT, valor=null, linea=7, inicializada=true}
+VARIABLE: Simbolo{nombre='inicio', tipo=INT, valor=null, linea=12, inicializada=true}
+VARIABLE: Simbolo{nombre='fin', tipo=INT, valor=null, linea=12, inicializada=true}
+VARIABLE: Simbolo{nombre='contador', tipo=INT, valor=0, linea=14, inicializada=true}
+VARIABLE: Simbolo{nombre='i', tipo=INT, valor=null, linea=15, inicializada=true}
+VARIABLE: Simbolo{nombre='limite', tipo=INT, valor=null, linea=16, inicializada=true}
+FUNCION: Simbolo{nombre='suma', tipoRetorno=INT, parametros=[INT, INT], linea=7}
+FUNCION: Simbolo{nombre='contarPares', tipoRetorno=INT, parametros=[INT, INT], linea=12}
+    VARIABLE: Simbolo{nombre='residuo', tipo=INT, valor=null, linea=19, inicializada=true}
+  VARIABLE: Simbolo{nombre='x', tipo=INT, valor=10, linea=35, inicializada=true}
+  VARIABLE: Simbolo{nombre='y', tipo=INT, valor=5, linea=36, inicializada=true}
+  VARIABLE: Simbolo{nombre='c', tipo=INT, valor=1, linea=50, inicializada=true}
+  VARIABLE: Simbolo{nombre='a', tipo=BOOL, valor=true, linea=60, inicializada=true}
+  VARIABLE: Simbolo{nombre='b', tipo=BOOL, valor=false, linea=61, inicializada=true}
+  VARIABLE: Simbolo{nombre='pares', tipo=INT, valor=null, linea=75, inicializada=true}

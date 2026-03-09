@@ -1,0 +1,109 @@
+===== CÓDIGO INTERMEDIO =====
+
+t0 = 2
+a = t0
+t1 = 3
+b = t1
+suma2:
+; param x : INT
+t2 = x
+t3 = 100
+t4 = t2 < t3
+if !(t4) goto e0
+t5 = x
+output t5
+output "\n"
+t6 = x
+t7 = 37
+t8 = t6 + t7
+param_s t8  
+t9 = call suma2
+return t9
+goto e1
+e0:
+e1:
+t10 = 9
+x = t10
+t11 = 1
+t12 = NEG t11
+t13 = x
+t14 = t12 + t13
+return t14
+funcVoid:
+output "hola"
+output "\n"
+return null
+suma:
+t15 = a
+t16 = 2
+t17 = t15 + t16
+a = t17
+t18 = a
+t19 = b
+t20 = t18 + t19
+resultado = t20
+t21 = a
+t22 = 100
+t23 = t21 < t22
+if !(t23) goto e2
+t24 = 23
+param_s t24  
+t25 = call suma2
+t26 = a
+t27 = 1
+t28 = t26 + t27
+param_s t28  
+t29 = call suma2
+t30 = t25 + t29
+t31 = 3
+t32 = t30 + t31
+return t32
+goto e3
+e2:
+e3:
+t33 = resultado
+return t33
+sumaNormal:
+; param a1 : INT
+; param b1 : INT
+t34 = a1
+t35 = b1
+t36 = t34 + t35
+return t36
+main:
+t37 = 2.0
+t38 = 2.3
+t39 = t37 + t38
+www = t39
+t40 = www
+output t40
+t41 = call suma
+output t41
+output "\n"
+t42 = 3
+b = t42
+t43 = call suma
+t44 = call suma
+t45 = t43 + t44
+t46 = 1
+param_s t46  
+t47 = call suma2
+t48 = t45 + t47
+output t48
+output "\n"
+call funcVoid  
+t49 = 3
+y = t49
+t50 = 200
+param_s t50  
+t51 = call suma2
+output t51
+output "\n"
+t52 = 2
+t53 = 3
+param_s t52  
+param_s t53  
+t54 = call sumaNormal
+output t54
+output "\n"
+end:

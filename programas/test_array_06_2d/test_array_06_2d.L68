@@ -1,0 +1,745 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 04/02/2026 20:31:42
+
+00000000                             1  ; Easy68K Assembly Generated
+00001000                             2              ORG $1000
+00001000                             3  START:
+00001000  4FF9 00005000              4              LEA STACKPTR, A7                ; Initialize stack pointer
+00001006  4EF9 000010CA              5              JMP main; Jump to main program
+0000100C                             6  
+0000100C                             7  ; ===== RUTINAS AUXILIARES =====
+0000100C                             8  PRINT_SIGNED:
+0000100C                             9              ; D1 contiene el número a mostrar (con signo)
+0000100C                            10              ; Si es negativo, muestra '-' y el valor absoluto
+0000100C  4A41                      11              TST.W D1; Probar el signo
+0000100E  6A00 0010                 12              BPL PRINT_UNSIGNED              ; Si es positivo, saltar
+00001012                            13              ; Es negativo: mostrar '-'
+00001012  103C 000E                 14              MOVE.B #14, D0
+00001016  43F9 0000168B             15              LEA MINUS_SIGN, A1
+0000101C  4E4F                      16              TRAP #15
+0000101E                            17              ; Negar el valor
+0000101E  4441                      18              NEG.W D1
+00001020                            19  PRINT_UNSIGNED:
+00001020                            20              ; Mostrar el número (ahora positivo) usando Task #3
+00001020  103C 0003                 21              MOVE.B #3, D0                   ; Task 3 = Display number
+00001024  4E4F                      22              TRAP #15
+00001026  4E75                      23              RTS
+00001028                            24  
+00001028                            25  PRINT_SIGNED_LONG:
+00001028                            26              ; D1 contiene el número de 32 bits a mostrar (con signo)
+00001028  4A81                      27              TST.L D1; Probar el signo
+0000102A  6A00 0010                 28              BPL PRINT_UNSIGNED_LONG         ; Si es positivo, saltar
+0000102E                            29              ; Es negativo: mostrar '-'
+0000102E  103C 000E                 30              MOVE.B #14, D0
+00001032  43F9 0000168B             31              LEA MINUS_SIGN, A1
+00001038  4E4F                      32              TRAP #15
+0000103A                            33              ; Negar el valor
+0000103A  4481                      34              NEG.L D1
+0000103C                            35  PRINT_UNSIGNED_LONG:
+0000103C                            36              ; Mostrar el número de 32 bits (ahora positivo)
+0000103C  103C 0003                 37              MOVE.B #3, D0                   ; Task 3 = Display signed number at D1.L
+00001040  4E4F                      38              TRAP #15
+00001042  4E75                      39              RTS
+00001044                            40  
+00001044                            41  PRINT_DECIMAL_2:
+00001044                            42              ; D1 = numero escalado x100 (ej: 350 = 3.50)
+00001044                            43              ; Guardar original en D3 (32-bit)
+00001044  2601                      44              MOVE.L D1, D3
+00001046                            45              ; Manejar signo: si negativo, imprimir '-' y tomar abs
+00001046  4A83                      46              TST.L D3
+00001048  6A00 0010                 47              BPL .PD2_POSITIVE
+0000104C                            48              ; imprimir '-'
+0000104C  103C 000E                 49              MOVE.B #14, D0
+00001050  43F9 0000168B             50              LEA MINUS_SIGN, A1
+00001056  4E4F                      51              TRAP #15
+00001058  4483                      52              NEG.L D3
+0000105A                            53  .PD2_POSITIVE:
+0000105A                            54              ; Calcular parte entera: D2 = original / 100
+0000105A  2403                      55              MOVE.L D3, D2
+0000105C  383C 0064                 56              MOVE.W #100, D4
+00001060  85C4                      57              DIVS D4, D2
+00001062                            58              ; Calcular fracción: D3 = remainder = original - (parte_entera*100)
+00001062  2A02                      59              MOVE.L D2, D5
+00001064  383C 0064                 60              MOVE.W #100, D4
+00001068  2C05                      61              MOVE.L D5, D6
+0000106A  4280                      62              CLR.L D0
+0000106C  3004                      63              MOVE.W D4, D0
+0000106E  CDC0                      64              MULS D0, D6
+00001070  9686                      65              SUB.L D6, D3
+00001072                            66              ; Imprimir parte entera usando Task 3
+00001072  4281                      67              CLR.L D1
+00001074  3202                      68              MOVE.W D2, D1
+00001076  103C 0003                 69              MOVE.B #3, D0
+0000107A  4E4F                      70              TRAP #15
+0000107C                            71              ; Imprimir punto decimal
+0000107C  43F9 0000168D             72              LEA DECIMAL_POINT, A1
+00001082  103C 000E                 73              MOVE.B #14, D0
+00001086  4E4F                      74              TRAP #15
+00001088                            75              ; Imprimir fracción con 2 dígitos
+00001088  4280                      76              CLR.L D0
+0000108A  3003                      77              MOVE.W D3, D0
+0000108C  B07C 000A                 78              CMP.W #10, D0
+00001090  6C00 000E                 79              BGE .PD2_SKIP_ZERO
+00001094                            80              ; imprimir '0' si <10
+00001094  43F9 0000168F             81              LEA ZERO_CHAR, A1
+0000109A  103C 000E                 82              MOVE.B #14, D0
+0000109E  4E4F                      83              TRAP #15
+000010A0                            84  .PD2_SKIP_ZERO:
+000010A0  4281                      85              CLR.L D1
+000010A2  3203                      86              MOVE.W D3, D1
+000010A4  103C 0003                 87              MOVE.B #3, D0
+000010A8  4E4F                      88              TRAP #15
+000010AA  4E75                      89              RTS
+000010AC                            90  
+000010AC                            91  PRINT_BOOL:
+000010AC                            92              ; D1 contiene el valor booleano (0=mentira, 1=cierto)
+000010AC  4A41                      93              TST.W D1; Probar si es 0
+000010AE  6700 000C                 94              BEQ .PRINT_MENTIRA              ; Si es 0, imprimir 'mentira'
+000010B2                            95              ; Es cierto (1)
+000010B2  43F9 000016AE             96              LEA STR_CIERTO, A1
+000010B8  6000 0008                 97              BRA .PRINT_BOOL_STR
+000010BC                            98  .PRINT_MENTIRA:
+000010BC  43F9 000016B5             99              LEA STR_MENTIRA, A1
+000010C2                           100  .PRINT_BOOL_STR:
+000010C2  103C 000E                101              MOVE.B #14, D0                  ; Task 14 = Display string
+000010C6  4E4F                     102              TRAP #15
+000010C8  4E75                     103              RTS
+000010CA                           104  
+000010CA                           105  main:
+000010CA                           106              ; output "=== TEST: Array 2D completo ==="
+000010CA  43F9 00001754            107              LEA str0, A1
+000010D0  103C 000E                108              MOVE.B #14, D0                  ; Task 14 = Display string
+000010D4  4E4F                     109              TRAP #15
+000010D6                           110              ; output "\n"
+000010D6  43F9 00001688            111              LEA NEWLINE, A1
+000010DC  103C 000E                112              MOVE.B #14, D0                  ; Task 14 = Display string
+000010E0  4E4F                     113              TRAP #15
+000010E2                           114              ; t0 = 1
+000010E2  33FC 0001 0000179C       115              MOVE.W #1, t0
+000010EA                           116              ; t1 = 2
+000010EA  33FC 0002 0000179E       117              MOVE.W #2, t1
+000010F2                           118              ; t2 = t0 * t1
+000010F2                           119              ; MULT ENTERA: D0 = op1 * op2
+000010F2  3039 0000179C            120              MOVE.W t0, D0
+000010F8  C1F9 0000179E            121              MULS t1, D0
+000010FE  33C0 000017A0            122              MOVE.W D0, t2
+00001104                           123              ; t3 = 2
+00001104  33FC 0002 000017A2       124              MOVE.W #2, t3
+0000110C                           125              ; t4 = t2 * t3
+0000110C                           126              ; MULT ENTERA: D0 = op1 * op2
+0000110C  3039 000017A0            127              MOVE.W t2, D0
+00001112  C1F9 000017A2            128              MULS t3, D0
+00001118  33C0 000017A4            129              MOVE.W D0, t4
+0000111E                           130              ; t5 = 4
+0000111E  33FC 0004 000017A8       131              MOVE.W #4, t5
+00001126                           132              ; t6 = t4 * t5
+00001126                           133              ; MULT ENTERA: D0 = op1 * op2
+00001126  3039 000017A4            134              MOVE.W t4, D0
+0000112C  C1F9 000017A8            135              MULS t5, D0
+00001132  33C0 000017AA            136              MOVE.W D0, t6
+00001138                           137              ; 
+00001138  2039 000016BE            138              MOVE.L HEAP_PTR, D0
+0000113E  23C0 000017B4            139              MOVE.L D0, matriz
+00001144  4281                     140              CLR.L D1
+00001146  3239 000017AA            141              MOVE.W t6, D1
+0000114C  D081                     142              ADD.L D1, D0
+0000114E  23C0 000016BE            143              MOVE.L D0, HEAP_PTR
+00001154                           144              ; output "Inicializando matriz 2x2:"
+00001154  43F9 0000170C            145              LEA str1, A1
+0000115A  103C 000E                146              MOVE.B #14, D0                  ; Task 14 = Display string
+0000115E  4E4F                     147              TRAP #15
+00001160                           148              ; output "\n"
+00001160  43F9 00001688            149              LEA NEWLINE, A1
+00001166  103C 000E                150              MOVE.B #14, D0                  ; Task 14 = Display string
+0000116A  4E4F                     151              TRAP #15
+0000116C                           152              ; t7 = 0
+0000116C  33FC 0000 000017AC       153              MOVE.W #0, t7
+00001174                           154              ; t8 = 0
+00001174  33FC 0000 000017AE       155              MOVE.W #0, t8
+0000117C                           156              ; t9 = 2
+0000117C  33FC 0002 000017B0       157              MOVE.W #2, t9
+00001184                           158              ; t10 = t7 * t9
+00001184                           159              ; MULT ENTERA: D0 = op1 * op2
+00001184  3039 000017AC            160              MOVE.W t7, D0
+0000118A  C1F9 000017B0            161              MULS t9, D0
+00001190  33C0 000016C8            162              MOVE.W D0, t10
+00001196                           163              ; t11 = t10 + t8
+00001196  3039 000016C8            164              MOVE.W t10, D0
+0000119C  D079 000017AE            165              ADD.W t8, D0
+000011A2  33C0 000016F8            166              MOVE.W D0, t11
+000011A8                           167              ; t12 = 4
+000011A8  33FC 0004 000016CE       168              MOVE.W #4, t12
+000011B0                           169              ; t13 = t11 * t12
+000011B0                           170              ; MULT ENTERA: D0 = op1 * op2
+000011B0  3039 000016F8            171              MOVE.W t11, D0
+000011B6  C1F9 000016CE            172              MULS t12, D0
+000011BC  33C0 0000172A            173              MOVE.W D0, t13
+000011C2                           174              ; t14 = 1
+000011C2  33FC 0001 00001726       175              MOVE.W #1, t14
+000011CA                           176              ; matriz[t13] = t14
+000011CA  2079 000017B4            177              MOVEA.L matriz, A0
+000011D0  4280                     178              CLR.L D0
+000011D2  3039 0000172A            179              MOVE.W t13, D0
+000011D8  4281                     180              CLR.L D1
+000011DA  3239 00001726            181              MOVE.W t14, D1
+000011E0  2181 0800                182              MOVE.L D1, 0(A0, D0.L)
+000011E4                           183              ; t15 = 0
+000011E4  33FC 0000 0000174A       184              MOVE.W #0, t15
+000011EC                           185              ; t16 = 1
+000011EC  33FC 0001 00001748       186              MOVE.W #1, t16
+000011F4                           187              ; t17 = 2
+000011F4  33FC 0002 00001750       188              MOVE.W #2, t17
+000011FC                           189              ; t18 = t15 * t17
+000011FC                           190              ; MULT ENTERA: D0 = op1 * op2
+000011FC  3039 0000174A            191              MOVE.W t15, D0
+00001202  C1F9 00001750            192              MULS t17, D0
+00001208  33C0 0000174E            193              MOVE.W D0, t18
+0000120E                           194              ; t19 = t18 + t16
+0000120E  3039 0000174E            195              MOVE.W t18, D0
+00001214  D079 00001748            196              ADD.W t16, D0
+0000121A  33C0 00001752            197              MOVE.W D0, t19
+00001220                           198              ; t20 = 4
+00001220  33FC 0004 00001780       199              MOVE.W #4, t20
+00001228                           200              ; t21 = t19 * t20
+00001228                           201              ; MULT ENTERA: D0 = op1 * op2
+00001228  3039 00001752            202              MOVE.W t19, D0
+0000122E  C1F9 00001780            203              MULS t20, D0
+00001234  33C0 0000177C            204              MOVE.W D0, t21
+0000123A                           205              ; t22 = 2
+0000123A  33FC 0002 00001788       206              MOVE.W #2, t22
+00001242                           207              ; matriz[t21] = t22
+00001242  2079 000017B4            208              MOVEA.L matriz, A0
+00001248  4280                     209              CLR.L D0
+0000124A  3039 0000177C            210              MOVE.W t21, D0
+00001250  4281                     211              CLR.L D1
+00001252  3239 00001788            212              MOVE.W t22, D1
+00001258  2181 0800                213              MOVE.L D1, 0(A0, D0.L)
+0000125C                           214              ; t23 = 1
+0000125C  33FC 0001 00001784       215              MOVE.W #1, t23
+00001264                           216              ; t24 = 0
+00001264  33FC 0000 00001790       217              MOVE.W #0, t24
+0000126C                           218              ; t25 = 2
+0000126C  33FC 0002 0000178C       219              MOVE.W #2, t25
+00001274                           220              ; t26 = t23 * t25
+00001274                           221              ; MULT ENTERA: D0 = op1 * op2
+00001274  3039 00001784            222              MOVE.W t23, D0
+0000127A  C1F9 0000178C            223              MULS t25, D0
+00001280  33C0 00001796            224              MOVE.W D0, t26
+00001286                           225              ; t27 = t26 + t24
+00001286  3039 00001796            226              MOVE.W t26, D0
+0000128C  D079 00001790            227              ADD.W t24, D0
+00001292  33C0 00001794            228              MOVE.W D0, t27
+00001298                           229              ; t28 = 4
+00001298  33FC 0004 0000179A       230              MOVE.W #4, t28
+000012A0                           231              ; t29 = t27 * t28
+000012A0                           232              ; MULT ENTERA: D0 = op1 * op2
+000012A0  3039 00001794            233              MOVE.W t27, D0
+000012A6  C1F9 0000179A            234              MULS t28, D0
+000012AC  33C0 00001798            235              MOVE.W D0, t29
+000012B2                           236              ; t30 = 3
+000012B2  33FC 0003 000017BC       237              MOVE.W #3, t30
+000012BA                           238              ; matriz[t29] = t30
+000012BA  2079 000017B4            239              MOVEA.L matriz, A0
+000012C0  4280                     240              CLR.L D0
+000012C2  3039 00001798            241              MOVE.W t29, D0
+000012C8  4281                     242              CLR.L D1
+000012CA  3239 000017BC            243              MOVE.W t30, D1
+000012D0  2181 0800                244              MOVE.L D1, 0(A0, D0.L)
+000012D4                           245              ; t31 = 1
+000012D4  33FC 0001 000017C6       246              MOVE.W #1, t31
+000012DC                           247              ; t32 = 1
+000012DC  33FC 0001 000017C2       248              MOVE.W #1, t32
+000012E4                           249              ; t33 = 2
+000012E4  33FC 0002 000017CE       250              MOVE.W #2, t33
+000012EC                           251              ; t34 = t31 * t33
+000012EC                           252              ; MULT ENTERA: D0 = op1 * op2
+000012EC  3039 000017C6            253              MOVE.W t31, D0
+000012F2  C1F9 000017CE            254              MULS t33, D0
+000012F8  33C0 000017CA            255              MOVE.W D0, t34
+000012FE                           256              ; t35 = t34 + t32
+000012FE  3039 000017CA            257              MOVE.W t34, D0
+00001304  D079 000017C2            258              ADD.W t32, D0
+0000130A  33C0 000017D4            259              MOVE.W D0, t35
+00001310                           260              ; t36 = 4
+00001310  33FC 0004 000017D2       261              MOVE.W #4, t36
+00001318                           262              ; t37 = t35 * t36
+00001318                           263              ; MULT ENTERA: D0 = op1 * op2
+00001318  3039 000017D4            264              MOVE.W t35, D0
+0000131E  C1F9 000017D2            265              MULS t36, D0
+00001324  33C0 000017DA            266              MOVE.W D0, t37
+0000132A                           267              ; t38 = 4
+0000132A  33FC 0004 000017D8       268              MOVE.W #4, t38
+00001332                           269              ; matriz[t37] = t38
+00001332  2079 000017B4            270              MOVEA.L matriz, A0
+00001338  4280                     271              CLR.L D0
+0000133A  3039 000017DA            272              MOVE.W t37, D0
+00001340  4281                     273              CLR.L D1
+00001342  3239 000017D8            274              MOVE.W t38, D1
+00001348  2181 0800                275              MOVE.L D1, 0(A0, D0.L)
+0000134C                           276              ; output "Leyendo matriz con bucle:"
+0000134C  43F9 0000172C            277              LEA str2, A1
+00001352  103C 000E                278              MOVE.B #14, D0                  ; Task 14 = Display string
+00001356  4E4F                     279              TRAP #15
+00001358                           280              ; output "\n"
+00001358  43F9 00001688            281              LEA NEWLINE, A1
+0000135E  103C 000E                282              MOVE.B #14, D0                  ; Task 14 = Display string
+00001362  4E4F                     283              TRAP #15
+00001364                           284              ; t39 = 0
+00001364  33FC 0000 000017DC       285              MOVE.W #0, t39
+0000136C                           286              ; i = t39
+0000136C  33F9 000017DC 000017E4   287              MOVE.W t39, i
+00001376                           288  e0:
+00001376                           289              ; t40 = i
+00001376  33F9 000017E4 000017EE   290              MOVE.W i, t40
+00001380                           291              ; t41 = 2
+00001380  33FC 0002 000017EC       292              MOVE.W #2, t41
+00001388                           293              ; t42 = t40 < t41
+00001388  33FC 0000 000017F2       294              MOVE.W #0, t42
+00001390  3039 000017EE            295              MOVE.W t40, D0
+00001396  B079 000017EC            296              CMP.W t41, D0
+0000139C  6D00 0008                297              BLT t42_true
+000013A0  4EF9 000013AE            298              JMP t42_false
+000013A6                           299  t42_true:
+000013A6  33FC 0001 000017F2       300              MOVE.W #1, t42
+000013AE                           301  t42_false:
+000013AE                           302              ; if !(t42) goto e1
+000013AE  3039 000017F2            303              MOVE.W t42, D0
+000013B4  B07C 0000                304              CMP.W #0, D0
+000013B8  6700 015A                305              BEQ e1
+000013BC                           306              ; t43 = 0
+000013BC  33FC 0000 000017F0       307              MOVE.W #0, t43
+000013C4                           308              ; j = t43
+000013C4  33F9 000017F0 000017E6   309              MOVE.W t43, j
+000013CE                           310  e2:
+000013CE                           311              ; t44 = j
+000013CE  33F9 000017E6 000017F6   312              MOVE.W j, t44
+000013D8                           313              ; t45 = 2
+000013D8  33FC 0002 000017F4       314              MOVE.W #2, t45
+000013E0                           315              ; t46 = t44 < t45
+000013E0  33FC 0000 000017FA       316              MOVE.W #0, t46
+000013E8  3039 000017F6            317              MOVE.W t44, D0
+000013EE  B079 000017F4            318              CMP.W t45, D0
+000013F4  6D00 0008                319              BLT t46_true
+000013F8  4EF9 00001406            320              JMP t46_false
+000013FE                           321  t46_true:
+000013FE  33FC 0001 000017FA       322              MOVE.W #1, t46
+00001406                           323  t46_false:
+00001406                           324              ; if !(t46) goto e3
+00001406  3039 000017FA            325              MOVE.W t46, D0
+0000140C  B07C 0000                326              CMP.W #0, D0
+00001410  6700 00D0                327              BEQ e3
+00001414                           328              ; t47 = i
+00001414  33F9 000017E4 000017F8   329              MOVE.W i, t47
+0000141E                           330              ; t48 = j
+0000141E  33F9 000017E6 000017FE   331              MOVE.W j, t48
+00001428                           332              ; t49 = 2
+00001428  33FC 0002 000017FC       333              MOVE.W #2, t49
+00001430                           334              ; t50 = t47 * t49
+00001430                           335              ; MULT ENTERA: D0 = op1 * op2
+00001430  3039 000017F8            336              MOVE.W t47, D0
+00001436  C1F9 000017FC            337              MULS t49, D0
+0000143C  33C0 000016C2            338              MOVE.W D0, t50
+00001442                           339              ; t51 = t50 + t48
+00001442  3039 000016C2            340              MOVE.W t50, D0
+00001448  D079 000017FE            341              ADD.W t48, D0
+0000144E  33C0 000016C6            342              MOVE.W D0, t51
+00001454                           343              ; t52 = 4
+00001454  33FC 0004 000016C4       344              MOVE.W #4, t52
+0000145C                           345              ; t53 = t51 * t52
+0000145C                           346              ; MULT ENTERA: D0 = op1 * op2
+0000145C  3039 000016C6            347              MOVE.W t51, D0
+00001462  C1F9 000016C4            348              MULS t52, D0
+00001468  33C0 000016CC            349              MOVE.W D0, t53
+0000146E                           350              ; t54 = matriz[t53]
+0000146E  2079 000017B4            351              MOVEA.L matriz, A0
+00001474  4280                     352              CLR.L D0
+00001476  3039 000016CC            353              MOVE.W t53, D0
+0000147C  2230 0800                354              MOVE.L 0(A0, D0.L), D1
+00001480  33C1 000016CA            355              MOVE.W D1, t54
+00001486                           356              ; valor = t54
+00001486  33F9 000016CA 000017E2   357              MOVE.W t54, valor
+00001490                           358              ; t55 = valor
+00001490  33F9 000017E2 000016FA   359              MOVE.W valor, t55
+0000149A                           360              ; output t55
+0000149A  3239 000016FA            361              MOVE.W t55, D1
+000014A0  4EB8 100C                362              JSR PRINT_SIGNED
+000014A4                           363              ; output "\n"
+000014A4  43F9 00001688            364              LEA NEWLINE, A1
+000014AA  103C 000E                365              MOVE.B #14, D0                  ; Task 14 = Display string
+000014AE  4E4F                     366              TRAP #15
+000014B0                           367              ; t56 = j
+000014B0  33F9 000017E6 000016D0   368              MOVE.W j, t56
+000014BA                           369              ; t57 = 1
+000014BA  33FC 0001 00001746       370              MOVE.W #1, t57
+000014C2                           371              ; t58 = t56 + t57
+000014C2  3039 000016D0            372              MOVE.W t56, D0
+000014C8  D079 00001746            373              ADD.W t57, D0
+000014CE  33C0 00001728            374              MOVE.W D0, t58
+000014D4                           375              ; j = t58
+000014D4  33F9 00001728 000017E6   376              MOVE.W t58, j
+000014DE                           377              ; goto e2
+000014DE  4EF8 13CE                378              JMP e2
+000014E2                           379  e3:
+000014E2                           380              ; t59 = i
+000014E2  33F9 000017E4 0000174C   381              MOVE.W i, t59
+000014EC                           382              ; t60 = 1
+000014EC  33FC 0001 00001776       383              MOVE.W #1, t60
+000014F4                           384              ; t61 = t59 + t60
+000014F4  3039 0000174C            385              MOVE.W t59, D0
+000014FA  D079 00001776            386              ADD.W t60, D0
+00001500  33C0 00001774            387              MOVE.W D0, t61
+00001506                           388              ; i = t61
+00001506  33F9 00001774 000017E4   389              MOVE.W t61, i
+00001510                           390              ; goto e0
+00001510  4EF8 1376                391              JMP e0
+00001514                           392  e1:
+00001514                           393              ; output "Operacion: matriz[0,0] + matriz[1,1]:"
+00001514  43F9 000016D2            394              LEA str3, A1
+0000151A  103C 000E                395              MOVE.B #14, D0                  ; Task 14 = Display string
+0000151E  4E4F                     396              TRAP #15
+00001520                           397              ; output "\n"
+00001520  43F9 00001688            398              LEA NEWLINE, A1
+00001526  103C 000E                399              MOVE.B #14, D0                  ; Task 14 = Display string
+0000152A  4E4F                     400              TRAP #15
+0000152C                           401              ; t62 = 0
+0000152C  33FC 0000 0000177A       402              MOVE.W #0, t62
+00001534                           403              ; t63 = 0
+00001534  33FC 0000 00001778       404              MOVE.W #0, t63
+0000153C                           405              ; t64 = 2
+0000153C  33FC 0002 00001782       406              MOVE.W #2, t64
+00001544                           407              ; t65 = t62 * t64
+00001544                           408              ; MULT ENTERA: D0 = op1 * op2
+00001544  3039 0000177A            409              MOVE.W t62, D0
+0000154A  C1F9 00001782            410              MULS t64, D0
+00001550  33C0 0000177E            411              MOVE.W D0, t65
+00001556                           412              ; t66 = t65 + t63
+00001556  3039 0000177E            413              MOVE.W t65, D0
+0000155C  D079 00001778            414              ADD.W t63, D0
+00001562  33C0 0000178A            415              MOVE.W D0, t66
+00001568                           416              ; t67 = 4
+00001568  33FC 0004 00001786       417              MOVE.W #4, t67
+00001570                           418              ; t68 = t66 * t67
+00001570                           419              ; MULT ENTERA: D0 = op1 * op2
+00001570  3039 0000178A            420              MOVE.W t66, D0
+00001576  C1F9 00001786            421              MULS t67, D0
+0000157C  33C0 00001792            422              MOVE.W D0, t68
+00001582                           423              ; t69 = matriz[t68]
+00001582  2079 000017B4            424              MOVEA.L matriz, A0
+00001588  4280                     425              CLR.L D0
+0000158A  3039 00001792            426              MOVE.W t68, D0
+00001590  2230 0800                427              MOVE.L 0(A0, D0.L), D1
+00001594  33C1 0000178E            428              MOVE.W D1, t69
+0000159A                           429              ; a = t69
+0000159A  33F9 0000178E 000017DE   430              MOVE.W t69, a
+000015A4                           431              ; t70 = 1
+000015A4  33FC 0001 000017B2       432              MOVE.W #1, t70
+000015AC                           433              ; t71 = 1
+000015AC  33FC 0001 000017BA       434              MOVE.W #1, t71
+000015B4                           435              ; t72 = 2
+000015B4  33FC 0002 000017B8       436              MOVE.W #2, t72
+000015BC                           437              ; t73 = t70 * t72
+000015BC                           438              ; MULT ENTERA: D0 = op1 * op2
+000015BC  3039 000017B2            439              MOVE.W t70, D0
+000015C2  C1F9 000017B8            440              MULS t72, D0
+000015C8  33C0 000017C0            441              MOVE.W D0, t73
+000015CE                           442              ; t74 = t73 + t71
+000015CE  3039 000017C0            443              MOVE.W t73, D0
+000015D4  D079 000017BA            444              ADD.W t71, D0
+000015DA  33C0 000017BE            445              MOVE.W D0, t74
+000015E0                           446              ; t75 = 4
+000015E0  33FC 0004 000017C8       447              MOVE.W #4, t75
+000015E8                           448              ; t76 = t74 * t75
+000015E8                           449              ; MULT ENTERA: D0 = op1 * op2
+000015E8  3039 000017BE            450              MOVE.W t74, D0
+000015EE  C1F9 000017C8            451              MULS t75, D0
+000015F4  33C0 000017C4            452              MOVE.W D0, t76
+000015FA                           453              ; t77 = matriz[t76]
+000015FA  2079 000017B4            454              MOVEA.L matriz, A0
+00001600  4280                     455              CLR.L D0
+00001602  3039 000017C4            456              MOVE.W t76, D0
+00001608  2230 0800                457              MOVE.L 0(A0, D0.L), D1
+0000160C  33C1 000017D0            458              MOVE.W D1, t77
+00001612                           459              ; b = t77
+00001612  33F9 000017D0 000017E0   460              MOVE.W t77, b
+0000161C                           461              ; t78 = a
+0000161C  33F9 000017DE 000017CC   462              MOVE.W a, t78
+00001626                           463              ; t79 = b
+00001626  33F9 000017E0 000017D6   464              MOVE.W b, t79
+00001630                           465              ; t80 = t78 + t79
+00001630  3039 000017CC            466              MOVE.W t78, D0
+00001636  D079 000017D6            467              ADD.W t79, D0
+0000163C  33C0 000017EA            468              MOVE.W D0, t80
+00001642                           469              ; suma = t80
+00001642  33F9 000017EA 000017A6   470              MOVE.W t80, suma
+0000164C                           471              ; t81 = suma
+0000164C  33F9 000017A6 000017E8   472              MOVE.W suma, t81
+00001656                           473              ; output t81
+00001656  3239 000017E8            474              MOVE.W t81, D1
+0000165C  4EB8 100C                475              JSR PRINT_SIGNED
+00001660                           476              ; output "\n"
+00001660  43F9 00001688            477              LEA NEWLINE, A1
+00001666  103C 000E                478              MOVE.B #14, D0                  ; Task 14 = Display string
+0000166A  4E4F                     479              TRAP #15
+0000166C                           480              ; output "Test completado"
+0000166C  43F9 000016FC            481              LEA str4, A1
+00001672  103C 000E                482              MOVE.B #14, D0                  ; Task 14 = Display string
+00001676  4E4F                     483              TRAP #15
+00001678                           484              ; output "\n"
+00001678  43F9 00001688            485              LEA NEWLINE, A1
+0000167E  103C 000E                486              MOVE.B #14, D0                  ; Task 14 = Display string
+00001682  4E4F                     487              TRAP #15
+00001684                           488  end:
+00001684  6000 0188                489              BRA HALT
+00001688                           490  
+00001688                           491              ; DATA SECTION
+00001688= 0D 0A 00                 492  NEWLINE:    DC.B 13,10,0
+0000168B= 2D 00                    493  MINUS_SIGN: DC.B '-',0
+0000168D= 2E 00                    494  DECIMAL_POINT:      DC.B '.',0
+0000168F= 30 00                    495  ZERO_CHAR:  DC.B '0',0
+00001691= 45 52 52 4F 52 3A ...    496  DIV_ZERO_MSG:       DC.B 'ERROR: Division entre cero',13,10,0
+000016AE= 63 69 65 72 74 6F 00     497  STR_CIERTO: DC.B 'cierto',0
+000016B5= 6D 65 6E 74 69 72 ...    498  STR_MENTIRA:DC.B 'mentira',0
+000016BE= 00008000                 499  HEAP_PTR:   DC.L $8000                      ; Inicio del heap para arrays
+000016C2                           500  t50:        DS.W 1
+000016C4                           501  t52:        DS.W 1
+000016C6                           502  t51:        DS.W 1
+000016C8                           503  t10:        DS.W 1
+000016CA                           504  t54:        DS.W 1
+000016CC                           505  t53:        DS.W 1
+000016CE                           506  t12:        DS.W 1
+000016D0                           507  t56:        DS.W 1
+000016D2= 4F 70 65 72 61 63 ...    508  str3:       DC.B 'Operacion: matriz[0,0] + matriz[1,1]:',0
+000016F8                           509  t11:        DS.W 1
+000016FA                           510  t55:        DS.W 1
+000016FC= 54 65 73 74 20 63 ...    511  str4:       DC.B 'Test completado',0
+0000170C= 49 6E 69 63 69 61 ...    512  str1:       DC.B 'Inicializando matriz 2x2:',0
+00001726                           513  t14:        DS.W 1
+00001728                           514  t58:        DS.W 1
+0000172A                           515  t13:        DS.W 1
+0000172C= 4C 65 79 65 6E 64 ...    516  str2:       DC.B 'Leyendo matriz con bucle:',0
+00001746                           517  t57:        DS.W 1
+00001748                           518  t16:        DS.W 1
+0000174A                           519  t15:        DS.W 1
+0000174C                           520  t59:        DS.W 1
+0000174E                           521  t18:        DS.W 1
+00001750                           522  t17:        DS.W 1
+00001752                           523  t19:        DS.W 1
+00001754= 3D 3D 3D 20 54 45 ...    524  str0:       DC.B '=== TEST: Array 2D completo ===',0
+00001774                           525  t61:        DS.W 1
+00001776                           526  t60:        DS.W 1
+00001778                           527  t63:        DS.W 1
+0000177A                           528  t62:        DS.W 1
+0000177C                           529  t21:        DS.W 1
+0000177E                           530  t65:        DS.W 1
+00001780                           531  t20:        DS.W 1
+00001782                           532  t64:        DS.W 1
+00001784                           533  t23:        DS.W 1
+00001786                           534  t67:        DS.W 1
+00001788                           535  t22:        DS.W 1
+0000178A                           536  t66:        DS.W 1
+0000178C                           537  t25:        DS.W 1
+0000178E                           538  t69:        DS.W 1
+00001790                           539  t24:        DS.W 1
+00001792                           540  t68:        DS.W 1
+00001794                           541  t27:        DS.W 1
+00001796                           542  t26:        DS.W 1
+00001798                           543  t29:        DS.W 1
+0000179A                           544  t28:        DS.W 1
+0000179C                           545  t0:         DS.W 1
+0000179E                           546  t1:         DS.W 1
+000017A0                           547  t2:         DS.W 1
+000017A2                           548  t3:         DS.W 1
+000017A4                           549  t4:         DS.W 1
+000017A6                           550  suma:       DS.W 1
+000017A8                           551  t5:         DS.W 1
+000017AA                           552  t6:         DS.W 1
+000017AC                           553  t7:         DS.W 1
+000017AE                           554  t8:         DS.W 1
+000017B0                           555  t9:         DS.W 1
+000017B2                           556  t70:        DS.W 1
+000017B4                           557  matriz:     DS.L 1
+000017B8                           558  t72:        DS.W 1
+000017BA                           559  t71:        DS.W 1
+000017BC                           560  t30:        DS.W 1
+000017BE                           561  t74:        DS.W 1
+000017C0                           562  t73:        DS.W 1
+000017C2                           563  t32:        DS.W 1
+000017C4                           564  t76:        DS.W 1
+000017C6                           565  t31:        DS.W 1
+000017C8                           566  t75:        DS.W 1
+000017CA                           567  t34:        DS.W 1
+000017CC                           568  t78:        DS.W 1
+000017CE                           569  t33:        DS.W 1
+000017D0                           570  t77:        DS.W 1
+000017D2                           571  t36:        DS.W 1
+000017D4                           572  t35:        DS.W 1
+000017D6                           573  t79:        DS.W 1
+000017D8                           574  t38:        DS.W 1
+000017DA                           575  t37:        DS.W 1
+000017DC                           576  t39:        DS.W 1
+000017DE                           577  a:          DS.W 1
+000017E0                           578  b:          DS.W 1
+000017E2                           579  valor:      DS.W 1
+000017E4                           580  i:          DS.W 1
+000017E6                           581  j:          DS.W 1
+000017E8                           582  t81:        DS.W 1
+000017EA                           583  t80:        DS.W 1
+000017EC                           584  t41:        DS.W 1
+000017EE                           585  t40:        DS.W 1
+000017F0                           586  t43:        DS.W 1
+000017F2                           587  t42:        DS.W 1
+000017F4                           588  t45:        DS.W 1
+000017F6                           589  t44:        DS.W 1
+000017F8                           590  t47:        DS.W 1
+000017FA                           591  t46:        DS.W 1
+000017FC                           592  t49:        DS.W 1
+000017FE                           593  t48:        DS.W 1
+00001800                           594  
+00001800                           595  ; ===== MANEJADOR DE ERROR DE DIVISION ENTRE CERO =====
+00001800                           596  DIV_ZERO_ERROR:
+00001800  43F8 1691                597              LEA DIV_ZERO_MSG, A1
+00001804  103C 000E                598              MOVE.B #14, D0                  ; Task 14 = Display string
+00001808  4E4F                     599              TRAP #15
+0000180A  6000 0002                600              BRA HALT
+0000180E                           601  
+0000180E                           602  HALT:
+0000180E  FFFF FFFF                603              SIMHALT
+00001812                           604  
+00005000                           605              ORG $5000
+00005000                           606  STACKPTR:
+00005000                           607              END START
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+A                   17DE
+B                   17E0
+DECIMAL_POINT       168D
+DIV_ZERO_ERROR      1800
+DIV_ZERO_MSG        1691
+E0                  1376
+E1                  1514
+E2                  13CE
+E3                  14E2
+END                 1684
+HALT                180E
+HEAP_PTR            16BE
+I                   17E4
+J                   17E6
+MAIN                10CA
+MATRIZ              17B4
+MINUS_SIGN          168B
+NEWLINE             1688
+PRINT_BOOL          10AC
+PRINT_BOOL:PRINT_BOOL_STR  10C2
+PRINT_BOOL:PRINT_MENTIRA  10BC
+PRINT_DECIMAL_2     1044
+PRINT_DECIMAL_2:PD2_POSITIVE  105A
+PRINT_DECIMAL_2:PD2_SKIP_ZERO  10A0
+PRINT_SIGNED        100C
+PRINT_SIGNED_LONG   1028
+PRINT_UNSIGNED      1020
+PRINT_UNSIGNED_LONG  103C
+STACKPTR            5000
+START               1000
+STR0                1754
+STR1                170C
+STR2                172C
+STR3                16D2
+STR4                16FC
+STR_CIERTO          16AE
+STR_MENTIRA         16B5
+SUMA                17A6
+T0                  179C
+T1                  179E
+T10                 16C8
+T11                 16F8
+T12                 16CE
+T13                 172A
+T14                 1726
+T15                 174A
+T16                 1748
+T17                 1750
+T18                 174E
+T19                 1752
+T2                  17A0
+T20                 1780
+T21                 177C
+T22                 1788
+T23                 1784
+T24                 1790
+T25                 178C
+T26                 1796
+T27                 1794
+T28                 179A
+T29                 1798
+T3                  17A2
+T30                 17BC
+T31                 17C6
+T32                 17C2
+T33                 17CE
+T34                 17CA
+T35                 17D4
+T36                 17D2
+T37                 17DA
+T38                 17D8
+T39                 17DC
+T4                  17A4
+T40                 17EE
+T41                 17EC
+T42                 17F2
+T42_FALSE           13AE
+T42_TRUE            13A6
+T43                 17F0
+T44                 17F6
+T45                 17F4
+T46                 17FA
+T46_FALSE           1406
+T46_TRUE            13FE
+T47                 17F8
+T48                 17FE
+T49                 17FC
+T5                  17A8
+T50                 16C2
+T51                 16C6
+T52                 16C4
+T53                 16CC
+T54                 16CA
+T55                 16FA
+T56                 16D0
+T57                 1746
+T58                 1728
+T59                 174C
+T6                  17AA
+T60                 1776
+T61                 1774
+T62                 177A
+T63                 1778
+T64                 1782
+T65                 177E
+T66                 178A
+T67                 1786
+T68                 1792
+T69                 178E
+T7                  17AC
+T70                 17B2
+T71                 17BA
+T72                 17B8
+T73                 17C0
+T74                 17BE
+T75                 17C8
+T76                 17C4
+T77                 17D0
+T78                 17CC
+T79                 17D6
+T8                  17AE
+T80                 17EA
+T81                 17E8
+T9                  17B0
+VALOR               17E2
+ZERO_CHAR           168F

@@ -1,0 +1,298 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 11/02/2026 8:42:06
+
+00001000                             1              ORG $1000
+00001000                             2  START:
+00001000  4FF9 00005000              3              LEA STACKPTR, A7
+00001006  4EF9 000010D0              4              JMP main
+0000100C                             5  
+0000100C                             6  ; ===== RUTINAS AUXILIARES =====
+0000100C                             7  PRINT_SIGNED:
+0000100C  4A41                       8              TST.W D1
+0000100E  6A00 0010                  9              BPL PRINT_UNSIGNED
+00001012  103C 000E                 10              MOVE.B #14, D0
+00001016  43F9 00001271             11              LEA MINUS_SIGN, A1
+0000101C  4E4F                      12              TRAP #15
+0000101E  4441                      13              NEG.W D1
+00001020                            14  PRINT_UNSIGNED:
+00001020  103C 0003                 15              MOVE.B #3, D0
+00001024  4E4F                      16              TRAP #15
+00001026  4E75                      17              RTS
+00001028                            18  
+00001028                            19  PRINT_DECIMAL_2:
+00001028  2601                      20              MOVE.L D1, D3
+0000102A  4A83                      21              TST.L D3
+0000102C  6A00 0010                 22              BPL .PD2_POSITIVE
+00001030  103C 000E                 23              MOVE.B #14, D0
+00001034  43F9 00001271             24              LEA MINUS_SIGN, A1
+0000103A  4E4F                      25              TRAP #15
+0000103C  4483                      26              NEG.L D3
+0000103E                            27  .PD2_POSITIVE:
+0000103E  2403                      28              MOVE.L D3, D2
+00001040  383C 0064                 29              MOVE.W #100, D4
+00001044  85C4                      30              DIVS D4, D2
+00001046  2A02                      31              MOVE.L D2, D5
+00001048  383C 0064                 32              MOVE.W #100, D4
+0000104C  2C05                      33              MOVE.L D5, D6
+0000104E  4280                      34              CLR.L D0
+00001050  3004                      35              MOVE.W D4, D0
+00001052  CDC0                      36              MULS D0, D6
+00001054  9686                      37              SUB.L D6, D3
+00001056  4281                      38              CLR.L D1
+00001058  3202                      39              MOVE.W D2, D1
+0000105A  103C 0003                 40              MOVE.B #3, D0
+0000105E  4E4F                      41              TRAP #15
+00001060  43F9 00001273             42              LEA DECIMAL_POINT, A1
+00001066  103C 000E                 43              MOVE.B #14, D0
+0000106A  4E4F                      44              TRAP #15
+0000106C  4280                      45              CLR.L D0
+0000106E  3003                      46              MOVE.W D3, D0
+00001070  B07C 000A                 47              CMP.W #10, D0
+00001074  6C00 000E                 48              BGE .PD2_SKIP_ZERO
+00001078  43F9 00001275             49              LEA ZERO_CHAR, A1
+0000107E  103C 000E                 50              MOVE.B #14, D0
+00001082  4E4F                      51              TRAP #15
+00001084                            52  .PD2_SKIP_ZERO:
+00001084  4281                      53              CLR.L D1
+00001086  3203                      54              MOVE.W D3, D1
+00001088  103C 0003                 55              MOVE.B #3, D0
+0000108C  4E4F                      56              TRAP #15
+0000108E  4E75                      57              RTS
+00001090                            58  
+00001090                            59  suma:
+00001090                            60              ; ; param a : INT
+00001090                            61              ; t0 = a
+00001090  33F9 0000129A 000012C2    62              MOVE.W a, t0
+0000109A                            63              ; t1 = 1
+0000109A  33FC 0001 000012C4        64              MOVE.W #1, t1
+000010A2                            65              ; t2 = t0 + t1
+000010A2  3039 000012C2             66              MOVE.W t0, D0
+000010A8  D079 000012C4             67              ADD.W t1, D0
+000010AE  33C0 000012C8             68              MOVE.W D0, t2
+000010B4                            69              ; a = t2
+000010B4  33F9 000012C8 0000129A    70              MOVE.W t2, a
+000010BE                            71              ; t3 = a
+000010BE  33F9 0000129A 000012CA    72              MOVE.W a, t3
+000010C8                            73              ; return t3
+000010C8  3039 000012CA             74              MOVE.W t3, D0
+000010CE  4E75                      75              RTS
+000010D0                            76  main:
+000010D0                            77              ; t4 = 4.12
+000010D0  33FC 019C 00001298        78              MOVE.W #412, t4
+000010D8                            79              ; t5 = 3.0
+000010D8  33FC 012C 0000129C        80              MOVE.W #300, t5
+000010E0                            81              ; t6 = t4 * t5
+000010E0  3039 00001298             82              MOVE.W t4, D0
+000010E6  3239 0000129C             83              MOVE.W t5, D1
+000010EC  C1C1                      84              MULS D1, D0
+000010EE  343C 0064                 85              MOVE.W #100, D2
+000010F2  81C2                      86              DIVS D2, D0
+000010F4  33C0 0000129E             87              MOVE.W D0, t6
+000010FA                            88              ; t7 = 1.75
+000010FA  33FC 00AF 000012A0        89              MOVE.W #175, t7
+00001102                            90              ; t8 = t6 / t7
+00001102  3039 0000129E             91              MOVE.W t6, D0
+00001108  3239 000012A0             92              MOVE.W t7, D1
+0000110E  4A41                      93              TST.W D1
+00001110  6700 01BA                 94              BEQ DIV_ZERO_ERROR
+00001114  343C 0064                 95              MOVE.W #100, D2
+00001118  C1C2                      96              MULS D2, D0
+0000111A  81C1                      97              DIVS D1, D0
+0000111C  33C0 000012A2             98              MOVE.W D0, t8
+00001122                            99              ; t9 = 2.0
+00001122  33FC 00C8 000012A4       100              MOVE.W #200, t9
+0000112A                           101              ; t10 = t8 % t9
+0000112A  3039 000012A2            102              MOVE.W t8, D0
+00001130  3239 000012A4            103              MOVE.W t9, D1
+00001136  4A41                     104              TST.W D1
+00001138  6700 0192                105              BEQ DIV_ZERO_ERROR
+0000113C  48C0                     106              EXT.L D0
+0000113E  2400                     107              MOVE.L D0, D2
+00001140  81C1                     108              DIVS D1, D0
+00001142  4283                     109              CLR.L D3
+00001144  3600                     110              MOVE.W D0, D3
+00001146  C7C1                     111              MULS D1, D3
+00001148  9483                     112              SUB.L D3, D2
+0000114A  33C2 000012AE            113              MOVE.W D2, t10
+00001150                           114              ; output t10
+00001150  4281                     115              CLR.L D1
+00001152  3239 000012AE            116              MOVE.W t10, D1
+00001158  48C1                     117              EXT.L D1
+0000115A  4EB8 1028                118              JSR PRINT_DECIMAL_2
+0000115E                           119              ; output "\n"
+0000115E  43F9 0000126E            120              LEA NEWLINE, A1
+00001164  103C 000E                121              MOVE.B #14, D0
+00001168  4E4F                     122              TRAP #15
+0000116A                           123              ; t11 = 3
+0000116A  33FC 0003 000012B4       124              MOVE.W #3, t11
+00001172                           125              ; sum = t11
+00001172  33F9 000012B4 000012AC   126              MOVE.W t11, sum
+0000117C                           127              ; param_s sum  
+0000117C                           128              ; t12 = call suma
+0000117C  4EB8 1090                129              JSR suma
+00001180  33C0 000012B2            130              MOVE.W D0, t12
+00001186                           131              ; sum = t12
+00001186  33F9 000012B2 000012AC   132              MOVE.W t12, sum
+00001190                           133              ; t13 = sum
+00001190  33F9 000012AC 000012B8   134              MOVE.W sum, t13
+0000119A                           135              ; output t13
+0000119A  3239 000012B8            136              MOVE.W t13, D1
+000011A0  4EB8 100C                137              JSR PRINT_SIGNED
+000011A4                           138              ; output "\n"
+000011A4  43F9 0000126E            139              LEA NEWLINE, A1
+000011AA  103C 000E                140              MOVE.B #14, D0
+000011AE  4E4F                     141              TRAP #15
+000011B0                           142              ; t14 = 4.3
+000011B0  33FC 01AE 000012B6       143              MOVE.W #430, t14
+000011B8                           144              ; t15 = 3
+000011B8  33FC 0003 000012BC       145              MOVE.W #3, t15
+000011C0                           146              ; t16 = t14 > t15
+000011C0  33FC 0000 000012BA       147              MOVE.W #0, t16
+000011C8  3039 000012B6            148              MOVE.W t14, D0
+000011CE  B079 000012BC            149              CMP.W t15, D0
+000011D4  6E00 0008                150              BGT t16_true
+000011D8  4EF9 000011E6            151              JMP t16_false
+000011DE                           152  t16_true:
+000011DE  33FC 0001 000012BA       153              MOVE.W #1, t16
+000011E6                           154  t16_false:
+000011E6                           155              ; t17 = a
+000011E6  33F9 0000129A 000012C0   156              MOVE.W a, t17
+000011F0                           157              ; t18 = 0
+000011F0  33FC 0000 000012BE       158              MOVE.W #0, t18
+000011F8                           159              ; t19 = t17 > t18
+000011F8  33FC 0000 000012C6       160              MOVE.W #0, t19
+00001200  3039 000012C0            161              MOVE.W t17, D0
+00001206  B079 000012BE            162              CMP.W t18, D0
+0000120C  6E00 0008                163              BGT t19_true
+00001210  4EF9 0000121E            164              JMP t19_false
+00001216                           165  t19_true:
+00001216  33FC 0001 000012C6       166              MOVE.W #1, t19
+0000121E                           167  t19_false:
+0000121E                           168              ; t20 = t16 && t19
+0000121E  33FC 0000 000012B0       169              MOVE.W #0, t20
+00001226  3039 000012BA            170              MOVE.W t16, D0
+0000122C  B07C 0000                171              CMP.W #0, D0
+00001230  6700 0018                172              BEQ t20_false
+00001234  3039 000012C6            173              MOVE.W t19, D0
+0000123A  B07C 0000                174              CMP.W #0, D0
+0000123E  6700 000A                175              BEQ t20_false
+00001242  33FC 0001 000012B0       176              MOVE.W #1, t20
+0000124A                           177  t20_false:
+0000124A                           178              ; if !(t20) goto e0
+0000124A  3039 000012B0            179              MOVE.W t20, D0
+00001250  B07C 0000                180              CMP.W #0, D0
+00001254  6700 0014                181              BEQ e0
+00001258                           182              ; output "hola"
+00001258  43F9 000012A6            183              LEA str0, A1
+0000125E  103C 000E                184              MOVE.B #14, D0
+00001262  4E4F                     185              TRAP #15
+00001264                           186              ; goto e1
+00001264  4EF9 0000126A            187              JMP e1
+0000126A                           188  e0:
+0000126A                           189  e1:
+0000126A                           190  end:
+0000126A  6000 006E                191              BRA HALT
+0000126E                           192  
+0000126E                           193              ; DATA SECTION
+0000126E= 0D 0A 00                 194  NEWLINE:    DC.B 13,10,0
+00001271= 2D 00                    195  MINUS_SIGN: DC.B '-',0
+00001273= 2E 00                    196  DECIMAL_POINT:      DC.B '.',0
+00001275= 30 00                    197  ZERO_CHAR:  DC.B '0',0
+00001277= 45 52 52 4F 52 3A ...    198  DIV_ZERO_MSG:       DC.B 'ERROR: Division entre cero',13,10,0
+00001294= 00008000                 199  HEAP_PTR:   DC.L $8000
+00001298                           200  t4:         DS.W 1
+0000129A                           201  a:          DS.W 1
+0000129C                           202  t5:         DS.W 1
+0000129E                           203  t6:         DS.W 1
+000012A0                           204  t7:         DS.W 1
+000012A2                           205  t8:         DS.W 1
+000012A4                           206  t9:         DS.W 1
+000012A6= 68 6F 6C 61 00           207  str0:       DC.B 'hola',0
+000012AC                           208  sum:        DS.W 1
+000012AE                           209  t10:        DS.W 1
+000012B0                           210  t20:        DS.W 1
+000012B2                           211  t12:        DS.W 1
+000012B4                           212  t11:        DS.W 1
+000012B6                           213  t14:        DS.W 1
+000012B8                           214  t13:        DS.W 1
+000012BA                           215  t16:        DS.W 1
+000012BC                           216  t15:        DS.W 1
+000012BE                           217  t18:        DS.W 1
+000012C0                           218  t17:        DS.W 1
+000012C2                           219  t0:         DS.W 1
+000012C4                           220  t1:         DS.W 1
+000012C6                           221  t19:        DS.W 1
+000012C8                           222  t2:         DS.W 1
+000012CA                           223  t3:         DS.W 1
+000012CC                           224  
+000012CC                           225  ; ===== MANEJADOR DE ERROR DE DIVISION ENTRE CERO =====
+000012CC                           226  DIV_ZERO_ERROR:
+000012CC  43F8 1277                227              LEA DIV_ZERO_MSG, A1
+000012D0  103C 000E                228              MOVE.B #14, D0
+000012D4  4E4F                     229              TRAP #15
+000012D6  6000 0002                230              BRA HALT
+000012DA                           231  
+000012DA                           232  HALT:
+000012DA  FFFF FFFF                233              SIMHALT
+000012DE                           234  
+00005000                           235              ORG $5000
+00005000                           236  STACKPTR:
+00005000                           237              END START
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+A                   129A
+DECIMAL_POINT       1273
+DIV_ZERO_ERROR      12CC
+DIV_ZERO_MSG        1277
+E0                  126A
+E1                  126A
+END                 126A
+HALT                12DA
+HEAP_PTR            1294
+MAIN                10D0
+MINUS_SIGN          1271
+NEWLINE             126E
+PRINT_DECIMAL_2     1028
+PRINT_DECIMAL_2:PD2_POSITIVE  103E
+PRINT_DECIMAL_2:PD2_SKIP_ZERO  1084
+PRINT_SIGNED        100C
+PRINT_UNSIGNED      1020
+STACKPTR            5000
+START               1000
+STR0                12A6
+SUM                 12AC
+SUMA                1090
+T0                  12C2
+T1                  12C4
+T10                 12AE
+T11                 12B4
+T12                 12B2
+T13                 12B8
+T14                 12B6
+T15                 12BC
+T16                 12BA
+T16_FALSE           11E6
+T16_TRUE            11DE
+T17                 12C0
+T18                 12BE
+T19                 12C6
+T19_FALSE           121E
+T19_TRUE            1216
+T2                  12C8
+T20                 12B0
+T20_FALSE           124A
+T3                  12CA
+T4                  1298
+T5                  129C
+T6                  129E
+T7                  12A0
+T8                  12A2
+T9                  12A4
+ZERO_CHAR           1275

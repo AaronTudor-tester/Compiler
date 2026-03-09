@@ -1,0 +1,65 @@
+===== CÓDIGO INTERMEDIO =====
+
+main:
+output "=== TEST: Arrays de decimal ==="
+output "\n"
+t0 = 3
+t1 = 4
+t2 = t0 * t1
+
+t3 = 10.5
+t4 = 0
+t5 = 4
+t6 = t4 * t5
+precios[t6] = t3
+t7 = 20.99
+t8 = 1
+t9 = 4
+t10 = t8 * t9
+precios[t10] = t7
+t11 = 15.75
+t12 = 2
+t13 = 4
+t14 = t12 * t13
+precios[t14] = t11
+output "Mostrando precios:"
+output "\n"
+t15 = 0
+t16 = 4
+t17 = t15 * t16
+t19 = 3
+t18 = t19
+t20 = precios[t17]
+p1 = t20
+t21 = p1
+output t21
+output "\n"
+t22 = 1
+t23 = 4
+t24 = t22 * t23
+t26 = 3
+t25 = t26
+t27 = precios[t24]
+p2 = t27
+t28 = p2
+output t28
+output "\n"
+output "Suma de precios[0] + precios[2]:"
+output "\n"
+t29 = 2
+t30 = 4
+t31 = t29 * t30
+t33 = 3
+t32 = t33
+t34 = precios[t31]
+p3 = t34
+t35 = p1
+t36 = p3
+t37 = t35 + t36
+total = t37
+t38 = total
+output t38
+output "\n"
+output "Test completado"
+output "\n"
+end:

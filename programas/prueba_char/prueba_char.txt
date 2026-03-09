@@ -1,0 +1,24 @@
+principal {
+    constante letra x es 'z'.
+    constante letra y es '7'.
+    
+    escribeN x.
+    escribeN y.
+
+    letra a es 'x'.
+    letra b es 'y'.
+    letra c es '5'.
+    
+    escribeN a.
+    escribeN b.
+    escribeN c.
+
+    escribeN "asd".
+
+    frase aa es "aasd asd".
+    frase ab es "ggg wwww".
+    
+    escribeN aa.
+    escribeN ab.
+
+}

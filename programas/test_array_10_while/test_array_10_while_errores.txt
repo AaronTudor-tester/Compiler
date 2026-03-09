@@ -1,0 +1,8 @@
+===== RESULTADO DE LA COMPILACION =====
+
+Archivo: programas/test_array_10_while/test_array_10_while.txt
+Fecha: 2026-02-03T11:23:34.623919
+
+? No se detectaron errores.
+
+Compilacion exitosa.

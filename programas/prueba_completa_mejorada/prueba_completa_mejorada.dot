@@ -1,0 +1,255 @@
+strict digraph {
+126	[label="Programa"];
+126->7
+126->15
+126->17
+126->19
+126->21
+126->23
+126->27
+126->29
+126->31
+126->33
+126->43
+126->45
+126->47
+126->60
+126->62
+126->64
+126->81
+126->83
+126->85
+126->87
+126->100
+126->102
+126->104
+126->113
+126->115
+126->119
+126->121
+126->123
+126->125
+7	[label="func: sumaDosNumeros"];
+7->0
+7->1
+7->6
+0	[label="decl: a (INT)"];
+1	[label="decl: b (INT)"];
+6	[label="Bloque"];
+6->5
+5	[label="return"];
+5->4
+4	[label="SUMA"];
+4->2
+4->3
+2	[label="a",shape=plaintext];
+3	[label="b",shape=plaintext];
+15	[label="func: multiplicar"];
+15->8
+15->9
+15->14
+8	[label="decl: x (INT)"];
+9	[label="decl: y (INT)"];
+14	[label="Bloque"];
+14->13
+13	[label="return"];
+13->12
+12	[label="PROD"];
+12->10
+12->11
+10	[label="x",shape=plaintext];
+11	[label="y",shape=plaintext];
+17	[label="print"];
+17->16
+16	[label="=== PROGRAMA COMPLETO DE PRUEBAS ===",shape=plaintext];
+19	[label="print"];
+19->18
+18	[label="PRUEBA 1: Funciones",shape=plaintext];
+21	[label="=(num1)"]
+21->20
+20	[label="5",shape=plaintext];
+23	[label="=(num2)"]
+23->22
+22	[label="3",shape=plaintext];
+27	[label="=(suma)"]
+27->26
+26	[label="call: sumaDosNumeros"];
+26->24
+26->25
+24	[label="num1",shape=plaintext];
+25	[label="num2",shape=plaintext];
+29	[label="print"];
+29->28
+28	[label="5 + 3 = ",shape=plaintext];
+31	[label="print"];
+31->30
+30	[label="suma",shape=plaintext];
+33	[label="print"];
+33->32
+32	[label="PRUEBA 2: IF",shape=plaintext];
+43	[label="if"];
+43->36
+43->39
+43->42
+36	[label="MAYOR"];
+36->34
+36->35
+34	[label="suma",shape=plaintext];
+35	[label="7",shape=plaintext];
+39	[label="Bloque"];
+39->38
+38	[label="print"];
+38->37
+37	[label="Suma es mayor que 7",shape=plaintext];
+42	[label="Bloque"];
+42->41
+41	[label="print"];
+41->40
+40	[label="Suma no es mayor que 7",shape=plaintext];
+45	[label="print"];
+45->44
+44	[label="PRUEBA 3: WHILE - Cuenta del 1 al 5",shape=plaintext];
+47	[label="=(contador)"]
+47->46
+46	[label="1",shape=plaintext];
+60	[label="while"];
+60->50
+60->59
+50	[label="MEIGUAL"];
+50->48
+50->49
+48	[label="contador",shape=plaintext];
+49	[label="5",shape=plaintext];
+59	[label="Bloque"];
+59->52
+59->54
+59->58
+52	[label="print"];
+52->51
+51	[label="contador",shape=plaintext];
+54	[label="print"];
+54->53
+53	[label=" ",shape=plaintext];
+58	[label="=(contador)"]
+58->57
+57	[label="SUMA"];
+57->55
+57->56
+55	[label="contador",shape=plaintext];
+56	[label="1",shape=plaintext];
+62	[label="print"];
+62->61
+61	[label="PRUEBA 4: SWITCH - Menu",shape=plaintext];
+64	[label="=(opcion)"]
+64->63
+63	[label="2",shape=plaintext];
+81	[label="switch"];
+81->65
+81->70
+81->75
+81->80
+65	[label="opcion",shape=plaintext];
+70	[label="case"];
+70->66
+70->69
+66	[label="1",shape=plaintext];
+69	[label="Bloque"];
+69->68
+68	[label="print"];
+68->67
+67	[label="Elegiste opcion 1",shape=plaintext];
+75	[label="case"];
+75->71
+75->74
+71	[label="2",shape=plaintext];
+74	[label="Bloque"];
+74->73
+73	[label="print"];
+73->72
+72	[label="Elegiste opcion 2",shape=plaintext];
+80	[label="case"];
+80->76
+80->79
+76	[label="3",shape=plaintext];
+79	[label="Bloque"];
+79->78
+78	[label="print"];
+78->77
+77	[label="Elegiste opcion 3",shape=plaintext];
+83	[label="print"];
+83->82
+82	[label="\n",shape=plaintext];
+85	[label="print"];
+85->84
+84	[label="PRUEBA 5: REPEAT - Numeros impares hasta 9",shape=plaintext];
+87	[label="=(num)"]
+87->86
+86	[label="1",shape=plaintext];
+100	[label="repeat-until"];
+100->96
+100->99
+96	[label="Bloque"];
+96->89
+96->93
+96->95
+89	[label="print"];
+89->88
+88	[label="num",shape=plaintext];
+93	[label="=(num)"]
+93->92
+92	[label="SUMA"];
+92->90
+92->91
+90	[label="num",shape=plaintext];
+91	[label="2",shape=plaintext];
+95	[label="print"];
+95->94
+94	[label=" ",shape=plaintext];
+99	[label="MEIGUAL"];
+99->97
+99->98
+97	[label="num",shape=plaintext];
+98	[label="9",shape=plaintext];
+102	[label="print"];
+102->101
+101	[label="PRUEBA 6: Operador NOT",shape=plaintext];
+104	[label="=(esVerdadero)"]
+104->103
+103	[label="true",shape=plaintext];
+113	[label="if"];
+113->106
+113->109
+113->112
+106	[label="NOT"];
+106->105
+105	[label="esVerdadero",shape=plaintext];
+109	[label="Bloque"];
+109->108
+108	[label="print"];
+108->107
+107	[label="NO es verdadero",shape=plaintext];
+112	[label="Bloque"];
+112->111
+111	[label="print"];
+111->110
+110	[label="SI es verdadero",shape=plaintext];
+115	[label="print"];
+115->114
+114	[label="PRUEBA 7: Funcion multiplicar",shape=plaintext];
+119	[label="=(resultado)"]
+119->118
+118	[label="call: multiplicar"];
+118->116
+118->117
+116	[label="4",shape=plaintext];
+117	[label="6",shape=plaintext];
+121	[label="print"];
+121->120
+120	[label="4 * 6 = ",shape=plaintext];
+123	[label="print"];
+123->122
+122	[label="resultado",shape=plaintext];
+125	[label="print"];
+125->124
+124	[label="FIN DEL PROGRAMA",shape=plaintext];
+}

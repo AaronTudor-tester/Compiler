@@ -1,0 +1,10 @@
+vacio funcionVoid() {
+    escribe "Hola".
+    devuelve 5.
+}
+
+principal {
+    funcionVoid().
+}
+
+//Programa que tiene que fallar 

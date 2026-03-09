@@ -1,0 +1,196 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 11/02/2026 21:13:54
+
+00001000                             1              ORG $1000
+00001000                             2  START:
+00001000  4FF9 00005000              3              LEA STACKPTR, A7
+00001006  4EF9 00001028              4              JMP main
+0000100C                             5  
+0000100C                             6  ; ===== RUTINAS AUXILIARES =====
+0000100C                             7  PRINT_SIGNED:
+0000100C  4A41                       8              TST.W D1
+0000100E  6A00 0010                  9              BPL PRINT_UNSIGNED
+00001012  103C 000E                 10              MOVE.B #14, D0
+00001016  43F9 00001199             11              LEA MINUS_SIGN, A1
+0000101C  4E4F                      12              TRAP #15
+0000101E  4441                      13              NEG.W D1
+00001020                            14  PRINT_UNSIGNED:
+00001020  103C 0003                 15              MOVE.B #3, D0
+00001024  4E4F                      16              TRAP #15
+00001026  4E75                      17              RTS
+00001028                            18  
+00001028                            19  main:
+00001028                            20              ; output "=== CASO 3: SUMA CON BUCLE ==="
+00001028  43F9 000011A8             21              LEA str0, A1
+0000102E  103C 000E                 22              MOVE.B #14, D0
+00001032  4E4F                      23              TRAP #15
+00001034                            24              ; output "\n"
+00001034  43F9 00001196             25              LEA NEWLINE, A1
+0000103A  103C 000E                 26              MOVE.B #14, D0
+0000103E  4E4F                      27              TRAP #15
+00001040                            28              ; suma = 0
+00001040  33FC 0000 000011A0        29              MOVE.W #0, suma
+00001048                            30              ; contador = 0
+00001048  33FC 0000 000011E8        31              MOVE.W #0, contador
+00001050                            32  e0:
+00001050                            33              ; t4 = contador < 5
+00001050  33FC 0000 000011A2        34              MOVE.W #0, t4
+00001058  3039 000011E8             35              MOVE.W contador, D0
+0000105E  B07C 0005                 36              CMP.W #5, D0
+00001062  6D00 0008                 37              BLT t4_true
+00001066  4EF9 00001074             38              JMP t4_false
+0000106C                            39  t4_true:
+0000106C  33FC 0001 000011A2        40              MOVE.W #1, t4
+00001074                            41  t4_false:
+00001074                            42              ; if !(t4) goto e1
+00001074  3039 000011A2             43              MOVE.W t4, D0
+0000107A  B07C 0000                 44              CMP.W #0, D0
+0000107E  6700 005C                 45              BEQ e1
+00001082                            46              ; t7 = contador + 1
+00001082  3039 000011E8             47              MOVE.W contador, D0
+00001088  5240                      48              ADD.W #1, D0
+0000108A  33C0 000011A4             49              MOVE.W D0, t7
+00001090                            50              ; contador = t7
+00001090  33F9 000011A4 000011E8    51              MOVE.W t7, contador
+0000109A                            52              ; t10 = suma + contador
+0000109A  3039 000011A0             53              MOVE.W suma, D0
+000010A0  D079 000011E8             54              ADD.W contador, D0
+000010A6  33C0 000011CA             55              MOVE.W D0, t10
+000010AC                            56              ; suma = t10
+000010AC  33F9 000011CA 000011A0    57              MOVE.W t10, suma
+000010B6                            58              ; output "Suma parcial: "
+000010B6  43F9 000011EC             59              LEA str1, A1
+000010BC  103C 000E                 60              MOVE.B #14, D0
+000010C0  4E4F                      61              TRAP #15
+000010C2                            62              ; output suma
+000010C2  3239 000011A0             63              MOVE.W suma, D1
+000010C8  4EB8 100C                 64              JSR PRINT_SIGNED
+000010CC                            65              ; output "\n"
+000010CC  43F9 00001196             66              LEA NEWLINE, A1
+000010D2  103C 000E                 67              MOVE.B #14, D0
+000010D6  4E4F                      68              TRAP #15
+000010D8                            69              ; goto e0
+000010D8  4EF8 1050                 70              JMP e0
+000010DC                            71  e1:
+000010DC                            72              ; output "Suma total:"
+000010DC  43F9 000011FB             73              LEA str2, A1
+000010E2  103C 000E                 74              MOVE.B #14, D0
+000010E6  4E4F                      75              TRAP #15
+000010E8                            76              ; output suma
+000010E8  3239 000011A0             77              MOVE.W suma, D1
+000010EE  4EB8 100C                 78              JSR PRINT_SIGNED
+000010F2                            79              ; output "\n"
+000010F2  43F9 00001196             80              LEA NEWLINE, A1
+000010F8  103C 000E                 81              MOVE.B #14, D0
+000010FC  4E4F                      82              TRAP #15
+000010FE                            83              ; output "Tabla de multiplicar del 3:"
+000010FE  43F9 000011CC             84              LEA str3, A1
+00001104  103C 000E                 85              MOVE.B #14, D0
+00001108  4E4F                      86              TRAP #15
+0000110A                            87              ; output "\n"
+0000110A  43F9 00001196             88              LEA NEWLINE, A1
+00001110  103C 000E                 89              MOVE.B #14, D0
+00001114  4E4F                      90              TRAP #15
+00001116                            91              ; i = 1
+00001116  33FC 0001 000011C8        92              MOVE.W #1, i
+0000111E                            93  e2:
+0000111E                            94              ; t16 = i <= 10
+0000111E  33FC 0000 00001208        95              MOVE.W #0, t16
+00001126  3039 000011C8             96              MOVE.W i, D0
+0000112C  B07C 000A                 97              CMP.W #10, D0
+00001130  6F00 0008                 98              BLE t16_true
+00001134  4EF9 00001142             99              JMP t16_false
+0000113A                           100  t16_true:
+0000113A  33FC 0001 00001208       101              MOVE.W #1, t16
+00001142                           102  t16_false:
+00001142                           103              ; if !(t16) goto e3
+00001142  3039 00001208            104              MOVE.W t16, D0
+00001148  B07C 0000                105              CMP.W #0, D0
+0000114C  6700 0044                106              BEQ e3
+00001150                           107              ; t19 = 3 * i
+00001150  303C 0003                108              MOVE.W #3, D0
+00001154  C1F9 000011C8            109              MULS i, D0
+0000115A  33C0 0000120A            110              MOVE.W D0, t19
+00001160                           111              ; resultado = t19
+00001160  33F9 0000120A 000011A6   112              MOVE.W t19, resultado
+0000116A                           113              ; output resultado
+0000116A  3239 000011A6            114              MOVE.W resultado, D1
+00001170  4EB8 100C                115              JSR PRINT_SIGNED
+00001174                           116              ; output " "
+00001174  43F9 000011EA            117              LEA str4, A1
+0000117A  103C 000E                118              MOVE.B #14, D0
+0000117E  4E4F                     119              TRAP #15
+00001180                           120              ; i = i + 1
+00001180  3039 000011C8            121              MOVE.W i, D0
+00001186  5240                     122              ADD.W #1, D0
+00001188  33C0 000011C8            123              MOVE.W D0, i
+0000118E                           124              ; goto e2
+0000118E  4EF8 111E                125              JMP e2
+00001192                           126  e3:
+00001192  6000 0078                127              BRA HALT
+00001196                           128  
+00001196                           129              ; DATA SECTION
+00001196= 0D 0A 00                 130  NEWLINE:    DC.B 13,10,0
+00001199= 2D 00                    131  MINUS_SIGN: DC.B '-',0
+0000119C= 00008000                 132  HEAP_PTR:   DC.L $8000
+000011A0                           133  suma:       DS.W 1
+000011A2                           134  t4:         DS.W 1
+000011A4                           135  t7:         DS.W 1
+000011A6                           136  resultado:  DS.W 1
+000011A8= 3D 3D 3D 20 43 41 ...    137  str0:       DC.B '=== CASO 3: SUMA CON BUCLE ===',0
+000011C8                           138  i:          DS.W 1
+000011CA                           139  t10:        DS.W 1
+000011CC= 54 61 62 6C 61 20 ...    140  str3:       DC.B 'Tabla de multiplicar del 3:',0
+000011E8                           141  contador:   DS.W 1
+000011EA= 20 00                    142  str4:       DC.B ' ',0
+000011EC= 53 75 6D 61 20 70 ...    143  str1:       DC.B 'Suma parcial: ',0
+000011FB= 53 75 6D 61 20 74 ...    144  str2:       DC.B 'Suma total:',0
+00001208                           145  t16:        DS.W 1
+0000120A                           146  t19:        DS.W 1
+0000120C                           147  
+0000120C                           148  HALT:
+0000120C  FFFF FFFF                149              SIMHALT
+00001210                           150  
+00005000                           151              ORG $5000
+00005000                           152  STACKPTR:
+00005000                           153              END START
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+CONTADOR            11E8
+E0                  1050
+E1                  10DC
+E2                  111E
+E3                  1192
+HALT                120C
+HEAP_PTR            119C
+I                   11C8
+MAIN                1028
+MINUS_SIGN          1199
+NEWLINE             1196
+PRINT_SIGNED        100C
+PRINT_UNSIGNED      1020
+RESULTADO           11A6
+STACKPTR            5000
+START               1000
+STR0                11A8
+STR1                11EC
+STR2                11FB
+STR3                11CC
+STR4                11EA
+SUMA                11A0
+T10                 11CA
+T16                 1208
+T16_FALSE           1142
+T16_TRUE            113A
+T19                 120A
+T4                  11A2
+T4_FALSE            1074
+T4_TRUE             106C
+T7                  11A4

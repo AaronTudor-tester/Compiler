@@ -1,0 +1,463 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 11/02/2026 18:26:46
+
+00001000                             1              ORG $1000
+00001000                             2  START:
+00001000  4FF9 00005000              3              LEA STACKPTR, A7
+00001006  4EF9 00001048              4              JMP main
+0000100C                             5  
+0000100C                             6  ; ===== RUTINAS AUXILIARES =====
+0000100C                             7  PRINT_SIGNED:
+0000100C  4A41                       8              TST.W D1
+0000100E  6A00 0010                  9              BPL PRINT_UNSIGNED
+00001012  103C 000E                 10              MOVE.B #14, D0
+00001016  43F9 00001469             11              LEA MINUS_SIGN, A1
+0000101C  4E4F                      12              TRAP #15
+0000101E  4441                      13              NEG.W D1
+00001020                            14  PRINT_UNSIGNED:
+00001020  103C 0003                 15              MOVE.B #3, D0
+00001024  4E4F                      16              TRAP #15
+00001026  4E75                      17              RTS
+00001028                            18  
+00001028                            19  
+00001028                            20  ARRAY_INDEX_OUT_OF_BOUNDS:
+00001028                            21              ; Indice fuera de rango - mostrar mensaje y detener la simulacion
+00001028  43F9 0000146B             22              LEA ERROR_INDEX_MSG, A1
+0000102E  103C 000E                 23              MOVE.B #14, D0
+00001032  4E4F                      24              TRAP #15
+00001034  FFFF FFFF                 25              SIMHALT
+00001038                            26  
+00001038                            27  ALLOC_SIZE_INVALID:
+00001038                            28              ; Tamaño de array inválido en tiempo de ejecución - mostrar mensaje y detener
+00001038  43F9 0000148A             29              LEA ERROR_ALLOC_MSG, A1
+0000103E  103C 000E                 30              MOVE.B #14, D0
+00001042  4E4F                      31              TRAP #15
+00001044  FFFF FFFF                 32              SIMHALT
+00001048                            33  main:
+00001048                            34              ; output "=== TEST: Arrays de char ==="
+00001048  43F9 0000150C             35              LEA str0, A1
+0000104E  103C 000E                 36              MOVE.B #14, D0
+00001052  4E4F                      37              TRAP #15
+00001054                            38              ; output "\n"
+00001054  43F9 00001466             39              LEA NEWLINE, A1
+0000105A  103C 000E                 40              MOVE.B #14, D0
+0000105E  4E4F                      41              TRAP #15
+00001060                            42              ; t0 = 5
+00001060  33FC 0005 0000153C        43              MOVE.W #5, t0
+00001068                            44              ; t1 = 2
+00001068  33FC 0002 0000153E        45              MOVE.W #2, t1
+00001070                            46              ; t2 = t0 * t1
+00001070  3039 0000153C             47              MOVE.W t0, D0
+00001076  C1F9 0000153E             48              MULS t1, D0
+0000107C  33C0 00001540             49              MOVE.W D0, t2
+00001082                            50              ; 
+00001082  2039 000014B6             51              MOVE.L HEAP_PTR, D0
+00001088  23C0 00001550             52              MOVE.L D0, vocales
+0000108E  4281                      53              CLR.L D1
+00001090  3239 00001540             54              MOVE.W t2, D1
+00001096  B2BC 00000001             55              CMP.L #1, D1
+0000109C  6D9A                      56              BLT ALLOC_SIZE_INVALID
+0000109E  4281                      57              CLR.L D1
+000010A0  3239 00001540             58              MOVE.W t2, D1
+000010A6  D081                      59              ADD.L D1, D0
+000010A8  23C0 000014B6             60              MOVE.L D0, HEAP_PTR
+000010AE                            61              ; t3 = 97
+000010AE  33FC 0061 00001542        62              MOVE.W #97, t3
+000010B6                            63              ; t4 = 0
+000010B6  33FC 0000 00001544        64              MOVE.W #0, t4
+000010BE                            65              ; t5 = 2
+000010BE  33FC 0002 00001546        66              MOVE.W #2, t5
+000010C6                            67              ; t6 = t4 * t5
+000010C6  3039 00001544             68              MOVE.W t4, D0
+000010CC  C1F9 00001546             69              MULS t5, D0
+000010D2  33C0 00001548             70              MOVE.W D0, t6
+000010D8                            71              ; vocales[t6] = t3
+000010D8  2079 00001550             72              MOVEA.L vocales, A0
+000010DE  4280                      73              CLR.L D0
+000010E0  3039 00001548             74              MOVE.W t6, D0
+000010E6  4A80                      75              TST.L D0
+000010E8  6B00 FF3E                 76              BMI ARRAY_INDEX_OUT_OF_BOUNDS
+000010EC  3239 00001542             77              MOVE.W t3, D1
+000010F2  3181 0800                 78              MOVE.W D1, 0(A0, D0.L)
+000010F6                            79              ; t7 = 101
+000010F6  33FC 0065 0000154A        80              MOVE.W #101, t7
+000010FE                            81              ; t8 = 1
+000010FE  33FC 0001 0000154C        82              MOVE.W #1, t8
+00001106                            83              ; t9 = 2
+00001106  33FC 0002 0000154E        84              MOVE.W #2, t9
+0000110E                            85              ; t10 = t8 * t9
+0000110E  3039 0000154C             86              MOVE.W t8, D0
+00001114  C1F9 0000154E             87              MULS t9, D0
+0000111A  33C0 000014BA             88              MOVE.W D0, t10
+00001120                            89              ; vocales[t10] = t7
+00001120  2079 00001550             90              MOVEA.L vocales, A0
+00001126  4280                      91              CLR.L D0
+00001128  3039 000014BA             92              MOVE.W t10, D0
+0000112E  4A80                      93              TST.L D0
+00001130  6B00 FEF6                 94              BMI ARRAY_INDEX_OUT_OF_BOUNDS
+00001134  3239 0000154A             95              MOVE.W t7, D1
+0000113A  3181 0800                 96              MOVE.W D1, 0(A0, D0.L)
+0000113E                            97              ; t11 = 105
+0000113E  33FC 0069 000014D0        98              MOVE.W #105, t11
+00001146                            99              ; t12 = 2
+00001146  33FC 0002 000014BE       100              MOVE.W #2, t12
+0000114E                           101              ; t13 = 2
+0000114E  33FC 0002 000014E8       102              MOVE.W #2, t13
+00001156                           103              ; t14 = t12 * t13
+00001156  3039 000014BE            104              MOVE.W t12, D0
+0000115C  C1F9 000014E8            105              MULS t13, D0
+00001162  33C0 000014D2            106              MOVE.W D0, t14
+00001168                           107              ; vocales[t14] = t11
+00001168  2079 00001550            108              MOVEA.L vocales, A0
+0000116E  4280                     109              CLR.L D0
+00001170  3039 000014D2            110              MOVE.W t14, D0
+00001176  4A80                     111              TST.L D0
+00001178  6B00 FEAE                112              BMI ARRAY_INDEX_OUT_OF_BOUNDS
+0000117C  3239 000014D0            113              MOVE.W t11, D1
+00001182  3181 0800                114              MOVE.W D1, 0(A0, D0.L)
+00001186                           115              ; t15 = 111
+00001186  33FC 006F 00001504       116              MOVE.W #111, t15
+0000118E                           117              ; t16 = 3
+0000118E  33FC 0003 00001502       118              MOVE.W #3, t16
+00001196                           119              ; t17 = 2
+00001196  33FC 0002 00001508       120              MOVE.W #2, t17
+0000119E                           121              ; t18 = t16 * t17
+0000119E  3039 00001502            122              MOVE.W t16, D0
+000011A4  C1F9 00001508            123              MULS t17, D0
+000011AA  33C0 00001506            124              MOVE.W D0, t18
+000011B0                           125              ; vocales[t18] = t15
+000011B0  2079 00001550            126              MOVEA.L vocales, A0
+000011B6  4280                     127              CLR.L D0
+000011B8  3039 00001506            128              MOVE.W t18, D0
+000011BE  4A80                     129              TST.L D0
+000011C0  6B00 FE66                130              BMI ARRAY_INDEX_OUT_OF_BOUNDS
+000011C4  3239 00001504            131              MOVE.W t15, D1
+000011CA  3181 0800                132              MOVE.W D1, 0(A0, D0.L)
+000011CE                           133              ; t19 = 117
+000011CE  33FC 0075 0000150A       134              MOVE.W #117, t19
+000011D6                           135              ; t20 = 4
+000011D6  33FC 0004 0000152C       136              MOVE.W #4, t20
+000011DE                           137              ; t21 = 2
+000011DE  33FC 0002 0000152A       138              MOVE.W #2, t21
+000011E6                           139              ; t22 = t20 * t21
+000011E6  3039 0000152C            140              MOVE.W t20, D0
+000011EC  C1F9 0000152A            141              MULS t21, D0
+000011F2  33C0 00001530            142              MOVE.W D0, t22
+000011F8                           143              ; vocales[t22] = t19
+000011F8  2079 00001550            144              MOVEA.L vocales, A0
+000011FE  4280                     145              CLR.L D0
+00001200  3039 00001530            146              MOVE.W t22, D0
+00001206  4A80                     147              TST.L D0
+00001208  6B00 FE1E                148              BMI ARRAY_INDEX_OUT_OF_BOUNDS
+0000120C  3239 0000150A            149              MOVE.W t19, D1
+00001212  3181 0800                150              MOVE.W D1, 0(A0, D0.L)
+00001216                           151              ; output "Mostrando vocales:"
+00001216  43F9 000014D4            152              LEA str1, A1
+0000121C  103C 000E                153              MOVE.B #14, D0
+00001220  4E4F                     154              TRAP #15
+00001222                           155              ; output "\n"
+00001222  43F9 00001466            156              LEA NEWLINE, A1
+00001228  103C 000E                157              MOVE.B #14, D0
+0000122C  4E4F                     158              TRAP #15
+0000122E                           159              ; t23 = 0
+0000122E  33FC 0000 0000152E       160              MOVE.W #0, t23
+00001236                           161              ; t24 = 2
+00001236  33FC 0002 00001534       162              MOVE.W #2, t24
+0000123E                           163              ; t25 = t23 * t24
+0000123E  3039 0000152E            164              MOVE.W t23, D0
+00001244  C1F9 00001534            165              MULS t24, D0
+0000124A  33C0 00001532            166              MOVE.W D0, t25
+00001250                           167              ; t27 = 5
+00001250  33FC 0005 00001536       168              MOVE.W #5, t27
+00001258                           169              ; t26 = t27
+00001258  33F9 00001536 00001538   170              MOVE.W t27, t26
+00001262                           171              ; t28 = vocales[t25]
+00001262  2079 00001550            172              MOVEA.L vocales, A0
+00001268  4280                     173              CLR.L D0
+0000126A  3039 00001532            174              MOVE.W t25, D0
+00001270  4A80                     175              TST.L D0
+00001272  6B00 FDB4                176              BMI ARRAY_INDEX_OUT_OF_BOUNDS
+00001276  3439 00001538            177              MOVE.W t26, D2
+0000127C  48C2                     178              EXT.L D2
+0000127E  363C 0002                179              MOVE.W #2, D3
+00001282  C5C3                     180              MULS D3, D2
+00001284  B082                     181              CMP.L D2, D0
+00001286  6C00 FDA0                182              BGE ARRAY_INDEX_OUT_OF_BOUNDS
+0000128A  3230 0800                183              MOVE.W 0(A0, D0.L), D1
+0000128E  48C1                     184              EXT.L D1
+00001290  33C1 0000153B            185              MOVE.W D1, t28
+00001296                           186              ; primera = t28
+00001296  13F9 0000153B 00001558   187              MOVE.B t28, primera
+000012A0                           188              ; t29 = primera
+000012A0  13F9 00001558 0000153A   189              MOVE.B primera, t29
+000012AA                           190              ; output t29
+000012AA  1239 0000153A            191              MOVE.B t29, D1
+000012B0  103C 0006                192              MOVE.B #6, D0
+000012B4  4E4F                     193              TRAP #15
+000012B6                           194              ; output "\n"
+000012B6  43F9 00001466            195              LEA NEWLINE, A1
+000012BC  103C 000E                196              MOVE.B #14, D0
+000012C0  4E4F                     197              TRAP #15
+000012C2                           198              ; t30 = 2
+000012C2  33FC 0002 00001554       199              MOVE.W #2, t30
+000012CA                           200              ; t31 = 2
+000012CA  33FC 0002 0000155A       201              MOVE.W #2, t31
+000012D2                           202              ; t32 = t30 * t31
+000012D2  3039 00001554            203              MOVE.W t30, D0
+000012D8  C1F9 0000155A            204              MULS t31, D0
+000012DE  33C0 00001556            205              MOVE.W D0, t32
+000012E4                           206              ; t34 = 5
+000012E4  33FC 0005 0000155C       207              MOVE.W #5, t34
+000012EC                           208              ; t33 = t34
+000012EC  33F9 0000155C 0000155E   209              MOVE.W t34, t33
+000012F6                           210              ; t35 = vocales[t32]
+000012F6  2079 00001550            211              MOVEA.L vocales, A0
+000012FC  4280                     212              CLR.L D0
+000012FE  3039 00001556            213              MOVE.W t32, D0
+00001304  4A80                     214              TST.L D0
+00001306  6B00 FD20                215              BMI ARRAY_INDEX_OUT_OF_BOUNDS
+0000130A  3439 0000155E            216              MOVE.W t33, D2
+00001310  48C2                     217              EXT.L D2
+00001312  363C 0002                218              MOVE.W #2, D3
+00001316  C5C3                     219              MULS D3, D2
+00001318  B082                     220              CMP.L D2, D0
+0000131A  6C00 FD0C                221              BGE ARRAY_INDEX_OUT_OF_BOUNDS
+0000131E  3230 0800                222              MOVE.W 0(A0, D0.L), D1
+00001322  48C1                     223              EXT.L D1
+00001324  33C1 00001561            224              MOVE.W D1, t35
+0000132A                           225              ; tercera = t35
+0000132A  13F9 00001561 000014BC   226              MOVE.B t35, tercera
+00001334                           227              ; t36 = tercera
+00001334  13F9 000014BC 00001560   228              MOVE.B tercera, t36
+0000133E                           229              ; output t36
+0000133E  1239 00001560            230              MOVE.B t36, D1
+00001344  103C 0006                231              MOVE.B #6, D0
+00001348  4E4F                     232              TRAP #15
+0000134A                           233              ; output "\n"
+0000134A  43F9 00001466            234              LEA NEWLINE, A1
+00001350  103C 000E                235              MOVE.B #14, D0
+00001354  4E4F                     236              TRAP #15
+00001356                           237              ; output "Modificando posicion 1:"
+00001356  43F9 000014EA            238              LEA str2, A1
+0000135C  103C 000E                239              MOVE.B #14, D0
+00001360  4E4F                     240              TRAP #15
+00001362                           241              ; output "\n"
+00001362  43F9 00001466            242              LEA NEWLINE, A1
+00001368  103C 000E                243              MOVE.B #14, D0
+0000136C  4E4F                     244              TRAP #15
+0000136E                           245              ; t37 = 1
+0000136E  33FC 0001 00001564       246              MOVE.W #1, t37
+00001376                           247              ; t38 = 2
+00001376  33FC 0002 00001562       248              MOVE.W #2, t38
+0000137E                           249              ; t39 = t37 * t38
+0000137E  3039 00001564            250              MOVE.W t37, D0
+00001384  C1F9 00001562            251              MULS t38, D0
+0000138A  33C0 00001566            252              MOVE.W D0, t39
+00001390                           253              ; t40 = 69
+00001390  33FC 0045 0000156C       254              MOVE.W #69, t40
+00001398                           255              ; vocales[t39] = t40
+00001398  2079 00001550            256              MOVEA.L vocales, A0
+0000139E  4280                     257              CLR.L D0
+000013A0  3039 00001566            258              MOVE.W t39, D0
+000013A6  4A80                     259              TST.L D0
+000013A8  6B00 FC7E                260              BMI ARRAY_INDEX_OUT_OF_BOUNDS
+000013AC  3239 0000156C            261              MOVE.W t40, D1
+000013B2  3181 0800                262              MOVE.W D1, 0(A0, D0.L)
+000013B6                           263              ; t41 = 1
+000013B6  33FC 0001 0000156A       264              MOVE.W #1, t41
+000013BE                           265              ; t42 = 2
+000013BE  33FC 0002 00001570       266              MOVE.W #2, t42
+000013C6                           267              ; t43 = t41 * t42
+000013C6  3039 0000156A            268              MOVE.W t41, D0
+000013CC  C1F9 00001570            269              MULS t42, D0
+000013D2  33C0 0000156E            270              MOVE.W D0, t43
+000013D8                           271              ; t45 = 5
+000013D8  33FC 0005 00001572       272              MOVE.W #5, t45
+000013E0                           273              ; t44 = t45
+000013E0  33F9 00001572 00001574   274              MOVE.W t45, t44
+000013EA                           275              ; t46 = vocales[t43]
+000013EA  2079 00001550            276              MOVEA.L vocales, A0
+000013F0  4280                     277              CLR.L D0
+000013F2  3039 0000156E            278              MOVE.W t43, D0
+000013F8  4A80                     279              TST.L D0
+000013FA  6B00 FC2C                280              BMI ARRAY_INDEX_OUT_OF_BOUNDS
+000013FE  3439 00001574            281              MOVE.W t44, D2
+00001404  48C2                     282              EXT.L D2
+00001406  363C 0002                283              MOVE.W #2, D3
+0000140A  C5C3                     284              MULS D3, D2
+0000140C  B082                     285              CMP.L D2, D0
+0000140E  6C00 FC18                286              BGE ARRAY_INDEX_OUT_OF_BOUNDS
+00001412  3230 0800                287              MOVE.W 0(A0, D0.L), D1
+00001416  48C1                     288              EXT.L D1
+00001418  33C1 00001577            289              MOVE.W D1, t46
+0000141E                           290              ; nueva = t46
+0000141E  13F9 00001577 00001568   291              MOVE.B t46, nueva
+00001428                           292              ; t47 = nueva
+00001428  13F9 00001568 00001576   293              MOVE.B nueva, t47
+00001432                           294              ; output t47
+00001432  1239 00001576            295              MOVE.B t47, D1
+00001438  103C 0006                296              MOVE.B #6, D0
+0000143C  4E4F                     297              TRAP #15
+0000143E                           298              ; output "\n"
+0000143E  43F9 00001466            299              LEA NEWLINE, A1
+00001444  103C 000E                300              MOVE.B #14, D0
+00001448  4E4F                     301              TRAP #15
+0000144A                           302              ; output "Test completado"
+0000144A  43F9 000014C0            303              LEA str3, A1
+00001450  103C 000E                304              MOVE.B #14, D0
+00001454  4E4F                     305              TRAP #15
+00001456                           306              ; output "\n"
+00001456  43F9 00001466            307              LEA NEWLINE, A1
+0000145C  103C 000E                308              MOVE.B #14, D0
+00001460  4E4F                     309              TRAP #15
+00001462                           310  end:
+00001462  6000 0114                311              BRA HALT
+00001466                           312  
+00001466                           313              ; DATA SECTION
+00001466= 0D 0A 00                 314  NEWLINE:    DC.B 13,10,0
+00001469= 2D 00                    315  MINUS_SIGN: DC.B '-',0
+0000146B= 45 52 52 4F 52 3A ...    316  ERROR_INDEX_MSG:    DC.B 'ERROR: Indice fuera de rango',13,10,0
+0000148A= 45 52 52 4F 52 3A ...    317  ERROR_ALLOC_MSG:    DC.B 'ERROR: Tamaño de array inválido (<= 0)',13,10,0
+000014B6= 00008000                 318  HEAP_PTR:   DC.L $8000
+000014BA                           319  t10:        DS.W 1
+000014BC                           320  tercera:    DS.B 1
+000014BE                           321  t12:        DS.W 1
+000014C0= 54 65 73 74 20 63 ...    322  str3:       DC.B 'Test completado',0
+000014D0                           323  t11:        DS.W 1
+000014D2                           324  t14:        DS.W 1
+000014D4= 4D 6F 73 74 72 61 ...    325  str1:       DC.B 'Mostrando vocales:',0
+000014E8                           326  t13:        DS.W 1
+000014EA= 4D 6F 64 69 66 69 ...    327  str2:       DC.B 'Modificando posicion 1:',0
+00001502                           328  t16:        DS.W 1
+00001504                           329  t15:        DS.W 1
+00001506                           330  t18:        DS.W 1
+00001508                           331  t17:        DS.W 1
+0000150A                           332  t19:        DS.W 1
+0000150C= 3D 3D 3D 20 54 45 ...    333  str0:       DC.B '=== TEST: Arrays de char ===',0
+0000152A                           334  t21:        DS.W 1
+0000152C                           335  t20:        DS.W 1
+0000152E                           336  t23:        DS.W 1
+00001530                           337  t22:        DS.W 1
+00001532                           338  t25:        DS.W 1
+00001534                           339  t24:        DS.W 1
+00001536                           340  t27:        DS.W 1
+00001538                           341  t26:        DS.W 1
+0000153A                           342  t29:        DS.B 1
+0000153B                           343  t28:        DS.B 1
+0000153C                           344  t0:         DS.W 1
+0000153E                           345  t1:         DS.W 1
+00001540                           346  t2:         DS.W 1
+00001542                           347  t3:         DS.W 1
+00001544                           348  t4:         DS.W 1
+00001546                           349  t5:         DS.W 1
+00001548                           350  t6:         DS.W 1
+0000154A                           351  t7:         DS.W 1
+0000154C                           352  t8:         DS.W 1
+0000154E                           353  t9:         DS.W 1
+00001550                           354  vocales:    DS.L 1
+00001554                           355  t30:        DS.W 1
+00001556                           356  t32:        DS.W 1
+00001558                           357  primera:    DS.B 1
+0000155A                           358  t31:        DS.W 1
+0000155C                           359  t34:        DS.W 1
+0000155E                           360  t33:        DS.W 1
+00001560                           361  t36:        DS.B 1
+00001561                           362  t35:        DS.B 1
+00001562                           363  t38:        DS.W 1
+00001564                           364  t37:        DS.W 1
+00001566                           365  t39:        DS.W 1
+00001568                           366  nueva:      DS.B 1
+0000156A                           367  t41:        DS.W 1
+0000156C                           368  t40:        DS.W 1
+0000156E                           369  t43:        DS.W 1
+00001570                           370  t42:        DS.W 1
+00001572                           371  t45:        DS.W 1
+00001574                           372  t44:        DS.W 1
+00001576                           373  t47:        DS.B 1
+00001577                           374  t46:        DS.B 1
+00001578                           375  
+00001578                           376  HALT:
+00001578  FFFF FFFF                377              SIMHALT
+0000157C                           378  
+00005000                           379              ORG $5000
+00005000                           380  STACKPTR:
+00005000                           381              END START
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+ALLOC_SIZE_INVALID  1038
+ARRAY_INDEX_OUT_OF_BOUNDS  1028
+END                 1462
+ERROR_ALLOC_MSG     148A
+ERROR_INDEX_MSG     146B
+HALT                1578
+HEAP_PTR            14B6
+MAIN                1048
+MINUS_SIGN          1469
+NEWLINE             1466
+NUEVA               1568
+PRIMERA             1558
+PRINT_SIGNED        100C
+PRINT_UNSIGNED      1020
+STACKPTR            5000
+START               1000
+STR0                150C
+STR1                14D4
+STR2                14EA
+STR3                14C0
+T0                  153C
+T1                  153E
+T10                 14BA
+T11                 14D0
+T12                 14BE
+T13                 14E8
+T14                 14D2
+T15                 1504
+T16                 1502
+T17                 1508
+T18                 1506
+T19                 150A
+T2                  1540
+T20                 152C
+T21                 152A
+T22                 1530
+T23                 152E
+T24                 1534
+T25                 1532
+T26                 1538
+T27                 1536
+T28                 153B
+T29                 153A
+T3                  1542
+T30                 1554
+T31                 155A
+T32                 1556
+T33                 155E
+T34                 155C
+T35                 1561
+T36                 1560
+T37                 1564
+T38                 1562
+T39                 1566
+T4                  1544
+T40                 156C
+T41                 156A
+T42                 1570
+T43                 156E
+T44                 1574
+T45                 1572
+T46                 1577
+T47                 1576
+T5                  1546
+T6                  1548
+T7                  154A
+T8                  154C
+T9                  154E
+TERCERA             14BC
+VOCALES             1550

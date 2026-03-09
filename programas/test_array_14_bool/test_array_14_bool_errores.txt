@@ -1,0 +1,8 @@
+===== RESULTADO DE LA COMPILACIÓN =====
+
+Archivo: programas\test_array_14_bool\test_array_14_bool.txt
+Fecha: 2026-02-07T16:09:37.292925700
+
+No se han detectado errores.
+
+Compilado con éxito.

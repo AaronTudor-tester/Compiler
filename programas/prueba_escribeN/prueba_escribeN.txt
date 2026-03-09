@@ -1,0 +1,14 @@
+principal {
+    escribe "Hola".
+    escribe " mundo".
+    escribeN " sin salto de linea".
+    
+    escribeN "Con salto de linea".
+    escribeN "Segunda linea".
+    
+    numero x es 42.
+    escribe "El valor es: ".
+    escribeN x.
+    
+    escribeN "Final del programa".
+}

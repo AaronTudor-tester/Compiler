@@ -1,0 +1,48 @@
+===== OPTIMIZACIONES REALIZADAS =====
+
+Archivo: programas\prueba_float\prueba_float.txt
+Fecha: 2026-02-08T11:59:57.105988400
+
+--- ESTADÍSTICAS DE CÓDIGO INTERMEDIO ---
+
+Instrucciones originales: 16
+Instrucciones optimizadas: 16
+Instrucciones eliminadas: 0
+Reducción: 0,00%
+
+--- ESTADÍSTICAS DE ENSAMBLADOR ---
+
+Archivo original (.x68): 1939 bytes
+Archivo optimizado (_optimizado.x68): 1749 bytes
+Bytes reducidos: 190 bytes
+Reducción en ensamblador: 9,80%
+
+--- CÓDIGO OPTIMIZADO ---
+
+sumaDosDecimales:
+; param a : FLOAT
+; param b : FLOAT
+t2 = a + b
+return t2
+main:
+output "=== PRUEBA FLOAT ==="
+x = 3.5
+y = 2.25
+param_s x  
+param_s y  
+t5 = call sumaDosDecimales
+z = t5
+output "Resultado esperado ~5.75"
+output "\n"
+output z
+
+--- CAMBIOS REALIZADOS POR EL OPTIMIZADOR ---
+
+Asignación diferida:
+  - Línea 3: t0 eliminado y sustituido por a
+  - Línea 3: t1 eliminado y sustituido por b
+  - Línea 7: t3 eliminado y sustituido por 3.5
+  - Línea 8: t4 eliminado y sustituido por 2.25
+  - Línea 15: t6 eliminado y sustituido por z
+Eliminación de etiquetas muertas:
+  - Línea 16: Se ha eliminado la etiqueta end

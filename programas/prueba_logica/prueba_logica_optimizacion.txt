@@ -1,0 +1,125 @@
+===== OPTIMIZACIONES REALIZADAS =====
+
+Archivo: programas\prueba_logica\prueba_logica.txt
+Fecha: 2026-02-03T12:34:57.114984500
+
+--- ESTADISTICAS DE CODIGO INTERMEDIO ---
+
+Instrucciones originales: 77
+Instrucciones optimizadas: 77
+Instrucciones eliminadas: 0
+Reduccion: 0,00%
+
+--- ESTADISTICAS DE ENSAMBLADOR ---
+
+Archivo original (.x68): 10167 bytes
+Archivo optimizado (_optimizado.x68): 9315 bytes
+Bytes reducidos: 852 bytes
+Reduccion en ensamblador: 8,38%
+
+--- CODIGO OPTIMIZADO ---
+
+main:
+output "=== PRUEBA DE OPERADORES LOGICOS ==="
+output "\n"
+x = 5
+y = 10
+z = 15
+output "TEST 1: AND (y ademas)"
+output "\n"
+t5 = x < y
+t8 = y < z
+t9 = t5 && t8
+if !(t9) goto e0
+output "5 < 10 AND 10 < 15: VERDADERO"
+output "\n"
+goto e1
+e0:
+output "5 < 10 AND 10 < 15: FALSO"
+output "\n"
+e1:
+t12 = x > y
+t15 = y < z
+t16 = t12 && t15
+if !(t16) goto e2
+output "5 > 10 AND 10 < 15: VERDADERO"
+output "\n"
+goto e3
+e2:
+output "5 > 10 AND 10 < 15: FALSO"
+output "\n"
+e3:
+output "TEST 2: OR (o bien)"
+output "\n"
+t19 = x > y
+t22 = y < z
+t23 = t19 || t22
+if !(t23) goto e4
+output "5 > 10 OR 10 < 15: VERDADERO"
+output "\n"
+goto e5
+e4:
+output "5 > 10 OR 10 < 15: FALSO"
+output "\n"
+e5:
+t26 = x > y
+t29 = y > z
+t30 = t26 || t29
+if !(t30) goto e6
+output "5 > 10 OR 10 > 15: VERDADERO"
+output "\n"
+goto e7
+e6:
+output "5 > 10 OR 10 > 15: FALSO"
+output "\n"
+e7:
+output "TEST 3: NOT (no)"
+output "\n"
+verd = true
+fals = false
+t33 = ! verd
+if !(t33) goto e8
+output "NOT(true): VERDADERO"
+output "\n"
+goto e9
+e8:
+output "NOT(true): FALSO"
+output "\n"
+e9:
+t34 = ! fals
+if !(t34) goto e10
+output "NOT(false): VERDADERO"
+output "\n"
+goto e11
+e10:
+output "NOT(false): FALSO"
+output "\n"
+e11:
+output "FIN"
+
+--- CAMBIOS REALIZADOS POR EL OPTIMIZADOR ---
+
+Asignación diferida:
+  - Línea 3: t0 eliminado y sustituido por 5
+  - Línea 4: t1 eliminado y sustituido por 10
+  - Línea 5: t2 eliminado y sustituido por 15
+  - Línea 8: t3 eliminado y sustituido por x
+  - Línea 8: t4 eliminado y sustituido por y
+  - Línea 9: t6 eliminado y sustituido por y
+  - Línea 9: t7 eliminado y sustituido por z
+  - Línea 19: t10 eliminado y sustituido por x
+  - Línea 19: t11 eliminado y sustituido por y
+  - Línea 20: t13 eliminado y sustituido por y
+  - Línea 20: t14 eliminado y sustituido por z
+  - Línea 32: t17 eliminado y sustituido por x
+  - Línea 32: t18 eliminado y sustituido por y
+  - Línea 33: t20 eliminado y sustituido por y
+  - Línea 33: t21 eliminado y sustituido por z
+  - Línea 43: t24 eliminado y sustituido por x
+  - Línea 43: t25 eliminado y sustituido por y
+  - Línea 44: t27 eliminado y sustituido por y
+  - Línea 44: t28 eliminado y sustituido por z
+  - Línea 56: t31 eliminado y sustituido por true
+  - Línea 57: t32 eliminado y sustituido por false
+Eliminación de etiquetas muertas:
+  - Línea 77: Se ha eliminado la etiqueta end

@@ -1,0 +1,221 @@
+strict digraph {
+113	[label="Programa"];
+113->35
+113->44
+113->49
+113->54
+113->59
+113->64
+113->69
+113->74
+113->76
+113->80
+113->84
+113->88
+113->92
+113->94
+113->96
+113->100
+113->104
+113->108
+113->112
+35	[label="func: sumarMatriz"];
+35->2
+35->34
+2	[label="decl: matriz (INT[][])"];
+34	[label="Bloque"];
+34->4
+34->33
+4	[label="=(i)"]
+4->3
+3	[label="0",shape=plaintext];
+33	[label="while"];
+33->7
+33->32
+7	[label="MENOR"];
+7->5
+7->6
+5	[label="i",shape=plaintext];
+6	[label="2",shape=plaintext];
+32	[label="Bloque"];
+32->9
+32->27
+32->31
+9	[label="=(j)"]
+9->8
+8	[label="0",shape=plaintext];
+27	[label="while"];
+27->12
+27->26
+12	[label="MENOR"];
+12->10
+12->11
+10	[label="j",shape=plaintext];
+11	[label="3",shape=plaintext];
+26	[label="Bloque"];
+26->21
+26->25
+21	[label="[] =\n(Asign. Array)"]
+21->15
+21->20
+15	[label="Acceso Array\n(matriz)"]
+15->13
+15->14
+13	[label="i",shape=plaintext];
+14	[label="j",shape=plaintext];
+20	[label="SUMA"];
+20->18
+20->19
+18	[label="Acceso Array\n(matriz)"]
+18->16
+18->17
+16	[label="i",shape=plaintext];
+17	[label="j",shape=plaintext];
+19	[label="1",shape=plaintext];
+25	[label="=(j)"]
+25->24
+24	[label="SUMA"];
+24->23
+24->22
+23	[label="j",shape=plaintext];
+22	[label="1",shape=plaintext];
+31	[label="=(i)"]
+31->30
+30	[label="SUMA"];
+30->29
+30->28
+29	[label="i",shape=plaintext];
+28	[label="1",shape=plaintext];
+44	[label="array: mat[6](INT)"];
+44->36
+44->37
+44->38
+44->39
+44->40
+44->41
+36	[label="1",shape=plaintext];
+37	[label="2",shape=plaintext];
+38	[label="3",shape=plaintext];
+39	[label="4",shape=plaintext];
+40	[label="5",shape=plaintext];
+41	[label="6",shape=plaintext];
+49	[label="[] =\n(Asign. Array)"]
+49->47
+49->48
+47	[label="Acceso Array\n(mat)"]
+47->45
+47->46
+45	[label="0",shape=plaintext];
+46	[label="0",shape=plaintext];
+48	[label="1",shape=plaintext];
+54	[label="[] =\n(Asign. Array)"]
+54->52
+54->53
+52	[label="Acceso Array\n(mat)"]
+52->50
+52->51
+50	[label="0",shape=plaintext];
+51	[label="1",shape=plaintext];
+53	[label="2",shape=plaintext];
+59	[label="[] =\n(Asign. Array)"]
+59->57
+59->58
+57	[label="Acceso Array\n(mat)"]
+57->55
+57->56
+55	[label="0",shape=plaintext];
+56	[label="2",shape=plaintext];
+58	[label="3",shape=plaintext];
+64	[label="[] =\n(Asign. Array)"]
+64->62
+64->63
+62	[label="Acceso Array\n(mat)"]
+62->60
+62->61
+60	[label="1",shape=plaintext];
+61	[label="0",shape=plaintext];
+63	[label="4",shape=plaintext];
+69	[label="[] =\n(Asign. Array)"]
+69->67
+69->68
+67	[label="Acceso Array\n(mat)"]
+67->65
+67->66
+65	[label="1",shape=plaintext];
+66	[label="1",shape=plaintext];
+68	[label="5",shape=plaintext];
+74	[label="[] =\n(Asign. Array)"]
+74->72
+74->73
+72	[label="Acceso Array\n(mat)"]
+72->70
+72->71
+70	[label="1",shape=plaintext];
+71	[label="2",shape=plaintext];
+73	[label="6",shape=plaintext];
+76	[label="print"];
+76->75
+75	[label="Matriz original:",shape=plaintext];
+80	[label="print"];
+80->79
+79	[label="Acceso Array\n(mat)"]
+79->77
+79->78
+77	[label="0",shape=plaintext];
+78	[label="0",shape=plaintext];
+84	[label="print"];
+84->83
+83	[label="Acceso Array\n(mat)"]
+83->81
+83->82
+81	[label="0",shape=plaintext];
+82	[label="2",shape=plaintext];
+88	[label="print"];
+88->87
+87	[label="Acceso Array\n(mat)"]
+87->85
+87->86
+85	[label="1",shape=plaintext];
+86	[label="0",shape=plaintext];
+92	[label="print"];
+92->91
+91	[label="Acceso Array\n(mat)"]
+91->89
+91->90
+89	[label="1",shape=plaintext];
+90	[label="2",shape=plaintext];
+94	[label="call: sumarMatriz"];
+94->93
+93	[label="mat",shape=plaintext];
+96	[label="print"];
+96->95
+95	[label="Matriz tras sumar 1:",shape=plaintext];
+100	[label="print"];
+100->99
+99	[label="Acceso Array\n(mat)"]
+99->97
+99->98
+97	[label="0",shape=plaintext];
+98	[label="0",shape=plaintext];
+104	[label="print"];
+104->103
+103	[label="Acceso Array\n(mat)"]
+103->101
+103->102
+101	[label="0",shape=plaintext];
+102	[label="2",shape=plaintext];
+108	[label="print"];
+108->107
+107	[label="Acceso Array\n(mat)"]
+107->105
+107->106
+105	[label="1",shape=plaintext];
+106	[label="0",shape=plaintext];
+112	[label="print"];
+112->111
+111	[label="Acceso Array\n(mat)"]
+111->109
+111->110
+109	[label="1",shape=plaintext];
+110	[label="2",shape=plaintext];
+}

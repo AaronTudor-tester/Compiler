@@ -1,0 +1,111 @@
+===== OPTIMIZACIONES REALIZADAS =====
+
+Archivo: programas\test_array_14_bool\test_array_14_bool.txt
+Fecha: 2026-02-08T12:11:41.204125400
+
+--- ESTADÍSTICAS DE CÓDIGO INTERMEDIO ---
+
+Instrucciones originales: 26
+Instrucciones optimizadas: 25
+Instrucciones eliminadas: 1
+Reducción: 3,85%
+
+--- ESTADÍSTICAS DE ENSAMBLADOR ---
+
+Archivo original (.x68): 4972 bytes
+Archivo optimizado (_optimizado.x68): 2685 bytes
+Bytes reducidos: 2287 bytes
+Reducción en ensamblador: 46,00%
+
+--- CÓDIGO OPTIMIZADO ---
+
+main:
+output "=== TEST: Arrays de booleano ==="
+output "\n"
+output "Inicializando flags:"
+output "\n"
+flags[0] = true
+flags[2] = false
+flags[4] = true
+flags[6] = false
+output "Mostrando flags:"
+output "\n"
+t27 = flags[0]
+output t27
+output "\n"
+t34 = flags[2]
+output t34
+output "\n"
+output "Modificando posicion 2:"
+output "\n"
+flags[4] = false
+t45 = flags[4]
+output t45
+output "\n"
+output "Test completado"
+output "\n"
+
+--- CAMBIOS REALIZADOS POR EL OPTIMIZADOR ---
+
+Fusión Lectura Array:
+  - Línea 38: Se eliminó temporal t26 asignando directo a f1
+  - Línea 38: Se eliminó temporal f1 asignando directo a t27
+  - Línea 46: Se eliminó temporal t33 asignando directo a f2
+  - Línea 46: Se eliminó temporal f2 asignando directo a t34
+  - Línea 61: Se eliminó temporal t44 asignando directo a f3
+  - Línea 61: Se eliminó temporal f3 asignando directo a t45
+Asignación diferida:
+  - Línea 3: t0 eliminado y sustituido por 1
+  - Línea 3: t1 eliminado y sustituido por 4
+  - Línea 4: t3 eliminado y sustituido por 2
+  - Línea 8: t5 eliminado y sustituido por 0
+  - Línea 8: t6 eliminado y sustituido por 2
+  - Línea 9: t8 eliminado y sustituido por true
+  - Línea 10: t9 eliminado y sustituido por 1
+  - Línea 10: t10 eliminado y sustituido por 2
+  - Línea 11: t12 eliminado y sustituido por false
+  - Línea 12: t13 eliminado y sustituido por 2
+  - Línea 12: t14 eliminado y sustituido por 2
+  - Línea 13: t16 eliminado y sustituido por true
+  - Línea 14: t17 eliminado y sustituido por 3
+  - Línea 14: t18 eliminado y sustituido por 2
+  - Línea 15: t20 eliminado y sustituido por false
+  - Línea 18: t21 eliminado y sustituido por 0
+  - Línea 18: t22 eliminado y sustituido por 2
+  - Línea 19: t25 eliminado y sustituido por 4
+  - Línea 23: t28 eliminado y sustituido por 1
+  - Línea 23: t29 eliminado y sustituido por 2
+  - Línea 24: t32 eliminado y sustituido por 4
+  - Línea 30: t35 eliminado y sustituido por 2
+  - Línea 30: t36 eliminado y sustituido por 2
+  - Línea 31: t38 eliminado y sustituido por false
+  - Línea 32: t39 eliminado y sustituido por 2
+  - Línea 32: t40 eliminado y sustituido por 2
+  - Línea 33: t43 eliminado y sustituido por 4
+  - Línea 3: t2 eliminado y sustituido por 4
+  - Línea 7: t7 eliminado y sustituido por 0
+  - Línea 8: t11 eliminado y sustituido por 2
+  - Línea 9: t15 eliminado y sustituido por 4
+  - Línea 10: t19 eliminado y sustituido por 6
+  - Línea 13: t23 eliminado y sustituido por 0
+  - Línea 16: t30 eliminado y sustituido por 2
+  - Línea 21: t37 eliminado y sustituido por 4
+  - Línea 22: t41 eliminado y sustituido por 4
+  - Línea 3: t4 eliminado y sustituido por 8
+Eliminación de etiquetas muertas:
+  - Línea 39: Se ha eliminado la etiqueta end
+Eliminación de código muerto:
+  - Línea 19: Se eliminó t24
+  - Línea 24: Se eliminó t31
+  - Línea 33: Se eliminó t42
+Cálculo de constantes:
+  - Línea 3: t2 = 1 * 4 -> t2 = 4
+  - Línea 8: t7 = 0 * 2 -> t7 = 0
+  - Línea 10: t11 = 1 * 2 -> t11 = 2
+  - Línea 12: t15 = 2 * 2 -> t15 = 4
+  - Línea 14: t19 = 3 * 2 -> t19 = 6
+  - Línea 18: t23 = 0 * 2 -> t23 = 0
+  - Línea 22: t30 = 1 * 2 -> t30 = 2
+  - Línea 28: t37 = 2 * 2 -> t37 = 4
+  - Línea 30: t41 = 2 * 2 -> t41 = 4
+  - Línea 3: t4 = 4 * 2 -> t4 = 8

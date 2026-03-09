@@ -1,0 +1,305 @@
+strict digraph {
+151	[label="Programa"];
+151->1
+151->3
+151->5
+151->6
+151->17
+151->19
+151->21
+151->24
+151->27
+151->29
+151->34
+151->44
+151->50
+151->52
+151->56
+151->60
+151->62
+151->64
+151->65
+151->66
+151->76
+151->78
+151->87
+151->89
+151->98
+151->100
+151->124
+151->135
+151->137
+151->139
+151->150
+1	[label="=(x)"]
+1->0
+0	[label="10",shape=plaintext];
+3	[label="=(y)"]
+3->2
+2	[label="20",shape=plaintext];
+5	[label="=(z)"]
+5->4
+4	[label="5.5",shape=plaintext];
+6	[label="decl: w (INT)"];
+17	[label="for"];
+17->8
+17->11
+17->13
+17->16
+8	[label="=(i)"]
+8->7
+7	[label="1",shape=plaintext];
+11	[label="MEIGUAL"];
+11->9
+11->10
+9	[label="i",shape=plaintext];
+10	[label="5",shape=plaintext];
+13	[label="INCR"];
+13->12
+12	[label="i",shape=plaintext];
+16	[label="Bloque"];
+16->15
+15	[label="print"];
+15->14
+14	[label="ITERAMOS",shape=plaintext];
+19	[label="=(crement)"]
+19->18
+18	[label="0",shape=plaintext];
+21	[label="=(incr)"]
+21->20
+20	[label="1",shape=plaintext];
+24	[label="=(crement)"]
+24->23
+23	[label="INCR"];
+23->22
+22	[label="incr",shape=plaintext];
+27	[label="=(crement)"]
+27->26
+26	[label="INCR"];
+26->25
+25	[label="incr",shape=plaintext];
+29	[label="print"];
+29->28
+28	[label="crement",shape=plaintext];
+34	[label="=(asignaIncremento)"]
+34->33
+33	[label="SUMA"];
+33->31
+33->32
+31	[label="INCR"];
+31->30
+30	[label="x",shape=plaintext];
+32	[label="5.0",shape=plaintext];
+44	[label="if"];
+44->40
+44->43
+40	[label="MENOR"];
+40->37
+40->39
+37	[label="SUMA"];
+37->35
+37->36
+35	[label="asignaIncremento",shape=plaintext];
+36	[label="0.5",shape=plaintext];
+39	[label="INCR"];
+39->38
+38	[label="asignaIncremento",shape=plaintext];
+43	[label="Bloque"];
+43->42
+42	[label="print"];
+42->41
+41	[label="incrementado",shape=plaintext];
+50	[label="=(a)"]
+50->49
+49	[label="RESTA"];
+49->47
+49->48
+47	[label="SUMA"];
+47->45
+47->46
+45	[label="3",shape=plaintext];
+46	[label="10",shape=plaintext];
+48	[label="y",shape=plaintext];
+52	[label="print"];
+52->51
+51	[label="a",shape=plaintext];
+56	[label="=(w)"]
+56->55
+55	[label="PROD"];
+55->53
+55->54
+53	[label="10",shape=plaintext];
+54	[label="y",shape=plaintext];
+60	[label="print"];
+60->59
+59	[label="SUMA"];
+59->57
+59->58
+57	[label="z",shape=plaintext];
+58	[label="1.5",shape=plaintext];
+62	[label="=(hola2)"]
+62->61
+61	[label="Hola mundo",shape=plaintext];
+64	[label="print"];
+64->63
+63	[label="hola2",shape=plaintext];
+65	[label="decl: edad (INT)"];
+66	[label="input(edad)"];
+76	[label="if"];
+76->69
+76->72
+76->75
+69	[label="MAYOR"];
+69->67
+69->68
+67	[label="edad",shape=plaintext];
+68	[label="17",shape=plaintext];
+72	[label="Bloque"];
+72->71
+71	[label="print"];
+71->70
+70	[label="Eres mayor de edad",shape=plaintext];
+75	[label="Bloque"];
+75->74
+74	[label="print"];
+74->73
+73	[label="Eres menor de edad",shape=plaintext];
+78	[label="=(j)"]
+78->77
+77	[label="0",shape=plaintext];
+87	[label="while"];
+87->81
+87->86
+81	[label="MEIGUAL"];
+81->79
+81->80
+79	[label="j",shape=plaintext];
+80	[label="5",shape=plaintext];
+86	[label="Bloque"];
+86->83
+86->85
+83	[label="print"];
+83->82
+82	[label="j",shape=plaintext];
+85	[label="INCR"];
+85->84
+84	[label="j",shape=plaintext];
+89	[label="=(n)"]
+89->88
+88	[label="5",shape=plaintext];
+98	[label="repeat-until"];
+98->94
+98->97
+94	[label="Bloque"];
+94->91
+94->93
+91	[label="print"];
+91->90
+90	[label="n",shape=plaintext];
+93	[label="DECR"];
+93->92
+92	[label="n",shape=plaintext];
+97	[label="DIST"];
+97->95
+97->96
+95	[label="n",shape=plaintext];
+96	[label="0",shape=plaintext];
+100	[label="=(opcion)"]
+100->99
+99	[label="2",shape=plaintext];
+124	[label="switch"];
+124->101
+124->107
+124->113
+124->119
+124->123
+101	[label="opcion",shape=plaintext];
+107	[label="case"];
+107->102
+107->106
+102	[label="1",shape=plaintext];
+106	[label="Bloque"];
+106->104
+106->105
+104	[label="print"];
+104->103
+103	[label="uno",shape=plaintext];
+105	[label="break",shape=plaintext];
+113	[label="case"];
+113->108
+113->112
+108	[label="2",shape=plaintext];
+112	[label="Bloque"];
+112->110
+112->111
+110	[label="print"];
+110->109
+109	[label="dos",shape=plaintext];
+111	[label="break",shape=plaintext];
+119	[label="case"];
+119->114
+119->118
+114	[label="3",shape=plaintext];
+118	[label="Bloque"];
+118->116
+118->117
+116	[label="print"];
+116->115
+115	[label="tres",shape=plaintext];
+117	[label="break",shape=plaintext];
+123	[label="case"];
+123->122
+122	[label="Bloque"];
+122->121
+121	[label="print"];
+121->120
+120	[label="Opción no válida",shape=plaintext];
+135	[label="for"];
+135->126
+135->129
+135->131
+135->134
+126	[label="=(i)"]
+126->125
+125	[label="0",shape=plaintext];
+129	[label="MENOR"];
+129->127
+129->128
+127	[label="i",shape=plaintext];
+128	[label="5",shape=plaintext];
+131	[label="INCR"];
+131->130
+130	[label="i",shape=plaintext];
+134	[label="Bloque"];
+134->133
+133	[label="=(pruebaaaa)"]
+133->132
+132	[label="1",shape=plaintext];
+137	[label="=(llueve)"]
+137->136
+136	[label="true",shape=plaintext];
+139	[label="=(paraguas)"]
+139->138
+138	[label="false",shape=plaintext];
+150	[label="if"];
+150->143
+150->146
+150->149
+143	[label="AND"];
+143->140
+143->142
+140	[label="llueve",shape=plaintext];
+142	[label="NOT"];
+142->141
+141	[label="paraguas",shape=plaintext];
+146	[label="Bloque"];
+146->145
+145	[label="print"];
+145->144
+144	[label="Me voy a mojar",shape=plaintext];
+149	[label="Bloque"];
+149->148
+148	[label="print"];
+148->147
+147	[label="Todo bien",shape=plaintext];
+}

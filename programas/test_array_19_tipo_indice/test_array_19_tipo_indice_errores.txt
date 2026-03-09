@@ -1,0 +1,8 @@
+===== ERRORES DETECTADOS EN LA COMPILACION =====
+
+Archivo: programas\test_array_19_tipo_indice\test_array_19_tipo_indice.txt
+Fecha: 2026-02-04T10:44:36.260187300
+
+1 error(es) encontrado(s):
+
+1. [Línea 10, Columna 51] ERROR SINTACTICO: El indice debe ser de tipo numero, pero se proporciono tipo STRING

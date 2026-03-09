@@ -1,0 +1,8 @@
+===== RESULTADO DE LA COMPILACION =====
+
+Archivo: programas\test_array_12_decimal\test_array_12_decimal.txt
+Fecha: 2026-02-04T12:12:25.685038700
+
+? No se detectaron errores.
+
+Compilacion exitosa.

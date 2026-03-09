@@ -1,0 +1,15 @@
+===== CÓDIGO INTERMEDIO =====
+
+main:
+output "=== TEST: Lectura de decimales ==="
+output "\n"
+output "Introduce un numero decimal (ej: 12.34):"
+output "\n"
+input numero1
+output "Has introducido: "
+t0 = numero1
+output t0
+output "\n"
+output "Test completado"
+output "\n"
+end:

@@ -1,0 +1,15 @@
+===== ERRORES DETECTADOS EN LA COMPILACIÓN =====
+
+Archivo: programas\test_errores_dimensiones\test_errores_dimensiones.txt
+Fecha: 2026-02-11T12:20:02.433684900
+
+8 error(es) encontrado(s):
+
+1. [Línea 9, Columna 34] ERROR SINTACTICO: Estructura incorrecta
+2. [Línea 15, Columna 5] ERROR SEMANTICO: Las dimensiones del array esperadas [1], no coinciden con las dimensiones declaradas[2]
+3. [Línea 18, Columna 5] ERROR SEMANTICO: Las dimensiones del array esperadas [1], no coinciden con las dimensiones declaradas[2]
+4. [Línea 21, Columna 5] ERROR SEMANTICO: Las dimensiones del array esperadas [2], no coinciden con las dimensiones declaradas[1]
+5. [Línea 24, Columna 5] ERROR SEMANTICO: Las dimensiones del array esperadas [2], no coinciden con las dimensiones declaradas[3]
+6. [Línea 24, Columna 32] ERROR SINTACTICO: Estructura incorrecta
+7. [Línea 27, Columna 43] ERROR SINTACTICO: Estructura incorrecta
+8. [Línea 32, Columna 5] ERROR SEMANTICO: Las dimensiones del array esperadas [3], no coinciden con las dimensiones declaradas[2]

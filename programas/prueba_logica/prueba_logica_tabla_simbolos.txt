@@ -1,0 +1,7 @@
+===== TABLA DE SIMBOLOS =====
+
+  VARIABLE: Simbolo{nombre='x', tipo=INT, valor=5, linea=7, inicializada=true}
+  VARIABLE: Simbolo{nombre='y', tipo=INT, valor=10, linea=8, inicializada=true}
+  VARIABLE: Simbolo{nombre='z', tipo=INT, valor=15, linea=11, inicializada=true}
+  VARIABLE: Simbolo{nombre='verd', tipo=BOOL, valor=true, linea=45, inicializada=true}
+  VARIABLE: Simbolo{nombre='fals', tipo=BOOL, valor=false, linea=47, inicializada=true}

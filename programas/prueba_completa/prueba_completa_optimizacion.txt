@@ -1,0 +1,120 @@
+===== OPTIMIZACIONES REALIZADAS =====
+
+Archivo: .\programas\prueba_completa\prueba_completa.txt
+Fecha: 2026-02-11T08:51:34.124221700
+
+--- ESTADÍSTICAS DE CÓDIGO INTERMEDIO ---
+
+Instrucciones originales: 73
+Instrucciones optimizadas: 73
+Instrucciones eliminadas: 0
+Reducción: 0,00%
+
+--- ESTADÍSTICAS DE ENSAMBLADOR ---
+
+Archivo original (.x68): 5739 bytes
+Archivo optimizado (_optimizado.x68): 5032 bytes
+Bytes reducidos: 707 bytes
+Reducción en ensamblador: 12,32%
+
+--- CÓDIGO OPTIMIZADO ---
+
+suma:
+; param a : INT
+; param b : INT
+t2 = a + b
+return t2
+main:
+output "=== TEST 1: Operaciones Basicas ==="
+output "\n"
+x = 10
+y = 5
+output "x + y = "
+param_s x  
+param_s y  
+t5 = call suma
+output t5
+output "\n"
+output "=== TEST 2: Condicionales ==="
+output "\n"
+t8 = x > y
+if !(t8) goto e0
+output "10 es mayor que 5"
+output "\n"
+goto e1
+e0:
+output "10 no es mayor que 5"
+output "\n"
+e1:
+output "=== TEST 3: While ==="
+output "\n"
+contador = 0
+e2:
+t12 = contador < 3
+if !(t12) goto e3
+output "Iteracion: "
+output contador
+output "\n"
+contador = contador + 1
+goto e2
+e3:
+output "=== TEST 4: Operaciones Unarias ==="
+output "\n"
+z = 15
+output "z = "
+output z
+output "\n"
+output "Negacion de z = "
+t16 = NEG z
+negZ = t16
+output negZ
+output "\n"
+output "=== TEST 5: Strings ==="
+output "\n"
+output "Hola Mundo"
+output "\n"
+output "Compilador funcionando!"
+output "\n"
+output "=== TEST 6: Comparaciones ==="
+output "\n"
+t20 = 10 == 10
+if !(t20) goto e4
+output "10 igual a 10: VERDADERO"
+output "\n"
+e4:
+t23 = 5 > 8
+if !(t23) goto e6
+output "5 > 8: VERDADERO"
+output "\n"
+goto e7
+e6:
+output "5 > 8: FALSO"
+output "\n"
+e7:
+output "=== FIN DE PRUEBAS ==="
+
+--- CAMBIOS REALIZADOS POR EL OPTIMIZADOR ---
+
+Asignación diferida:
+  - Línea 3: t0 eliminado y sustituido por a
+  - Línea 3: t1 eliminado y sustituido por b
+  - Línea 8: t3 eliminado y sustituido por 10
+  - Línea 9: t4 eliminado y sustituido por 5
+  - Línea 18: t6 eliminado y sustituido por x
+  - Línea 18: t7 eliminado y sustituido por y
+  - Línea 29: t9 eliminado y sustituido por 0
+  - Línea 31: t10 eliminado y sustituido por contador
+  - Línea 31: t11 eliminado y sustituido por 3
+  - Línea 34: t13 eliminado y sustituido por contador
+  - Línea 41: t14 eliminado y sustituido por 15
+  - Línea 43: t15 eliminado y sustituido por z
+  - Línea 48: t17 eliminado y sustituido por negZ
+  - Línea 58: t18 eliminado y sustituido por 10
+  - Línea 58: t19 eliminado y sustituido por 10
+  - Línea 65: t21 eliminado y sustituido por 5
+  - Línea 65: t22 eliminado y sustituido por 8
+Ramificaciones adyacentes:
+  - Línea 62: Salto innecesario a e5 eliminado
+Eliminación de etiquetas muertas:
+  - Línea 63: Se ha eliminado la etiqueta e5
+  - Línea 74: Se ha eliminado la etiqueta end

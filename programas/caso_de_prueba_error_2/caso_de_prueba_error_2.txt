@@ -1,0 +1,44 @@
+// CASO DE PRUEBA ERROR 2: Errores de funciones y constantes
+// Este programa intenta compilar pero fallará por errores semánticos
+
+constante numero LIMITE es 100.
+
+numero funcionNoExiste(numero a) {
+    devuelve a multiplicado 2.
+}
+
+    // ERROR 1: Función con retorno pero declarada void
+    vacio calcular() {
+        devuelve 42.
+    }
+
+principal {
+    // ERROR 2: Llamada a función no declarada
+    numero resultado1 es funcionInexistente(5).
+    
+    // ERROR 3: Número incorrecto de parámetros
+    numero resultado2 es funcionNoExiste(10, 20).
+    
+    // ERROR 4: Intento de reasignar una constante
+    LIMITE es 50.
+    escribe LIMITE.
+    
+}
+
+// ERRORES ESPERADOS:
+// 1. Error semántico (línea 16): Función no definida
+//    - Intenta llamar 'funcionInexistente' que nunca fue declarada
+//    - Solo existe 'funcionNoExiste'
+//
+// 2. Error semántico (línea 19): Número de argumentos incorrecto
+//    - Función 'funcionNoExiste' espera 1 parámetro
+//    - Se pasan 2 argumentos (10, 20)
+//
+// 3. Error semántico (línea 22): No se puede modificar una constante
+//    - LIMITE fue declarada como 'constante'
+//    - Las constantes no pueden ser reasignadas después de su inicialización
+//    - Intenta hacer "LIMITE es 50" lo cual está prohibido
+//
+// 1. Error semántico (línea 11): Retorno inválido
+//    - Función 'calcular' está declarada como 'vacio'
+//    - No debe tener retorno, pero intenta devolver 42

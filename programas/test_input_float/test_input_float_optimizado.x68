@@ -1,0 +1,200 @@
+	ORG $1000
+START:
+	LEA STACKPTR, A7
+	JMP main
+
+; ===== RUTINAS AUXILIARES =====
+PRINT_SIGNED:
+	TST.W D1
+	BPL PRINT_UNSIGNED
+	MOVE.B #14, D0
+	LEA MINUS_SIGN, A1
+	TRAP #15
+	NEG.W D1
+PRINT_UNSIGNED:
+	MOVE.B #3, D0
+	TRAP #15
+	RTS
+
+PRINT_DECIMAL_2:
+	MOVE.L D1, D3
+	TST.L D3
+	BPL .PD2_POSITIVE
+	MOVE.B #14, D0
+	LEA MINUS_SIGN, A1
+	TRAP #15
+	NEG.L D3
+.PD2_POSITIVE:
+	MOVE.L D3, D2
+	MOVE.W #100, D4
+	DIVS D4, D2
+	MOVE.L D2, D5
+	MOVE.W #100, D4
+	MOVE.L D5, D6
+	CLR.L D0
+	MOVE.W D4, D0
+	MULS D0, D6
+	SUB.L D6, D3
+	CLR.L D1
+	MOVE.W D2, D1
+	MOVE.B #3, D0
+	TRAP #15
+	LEA DECIMAL_POINT, A1
+	MOVE.B #14, D0
+	TRAP #15
+	CLR.L D0
+	MOVE.W D3, D0
+	CMP.W #10, D0
+	BGE .PD2_SKIP_ZERO
+	LEA ZERO_CHAR, A1
+	MOVE.B #14, D0
+	TRAP #15
+.PD2_SKIP_ZERO:
+	CLR.L D1
+	MOVE.W D3, D1
+	MOVE.B #3, D0
+	TRAP #15
+	RTS
+
+READ_FLOAT:
+.RF_RETRY:
+	LEA INPUT_BUFFER, A1
+	MOVE.B #2, D0
+	TRAP #15
+	LEA INPUT_BUFFER, A1
+	CLR.W D2
+	CLR.W D3
+	CLR.W D4
+	CLR.W D5
+	MOVE.B (A1), D6
+	CMP.B #0, D6
+	BEQ .RF_ERROR
+	CMP.B #'-', D6
+	BNE .RF_PARSE_INT
+	MOVE.W #1, D2
+	ADDA.L #1, A1
+.RF_PARSE_INT:
+	MOVE.B (A1)+, D6
+	CMP.B #0, D6
+	BEQ .RF_FINISH
+	CMP.B #10, D6
+	BEQ .RF_FINISH
+	CMP.B #13, D6
+	BEQ .RF_FINISH
+	CMP.B #'.', D6
+	BEQ .RF_PARSE_DEC
+	CMP.B #'0', D6
+	BLT .RF_ERROR
+	CMP.B #'9', D6
+	BGT .RF_ERROR
+	SUB.B #'0', D6
+	MOVE.W #10, D7
+	MULS D7, D3
+	ADD.W D6, D3
+	BRA .RF_PARSE_INT
+.RF_PARSE_DEC:
+	CLR.W D5
+.RF_DEC_LOOP:
+	MOVE.B (A1)+, D6
+	CMP.B #0, D6
+	BEQ .RF_FINISH
+	CMP.B #10, D6
+	BEQ .RF_FINISH
+	CMP.B #13, D6
+	BEQ .RF_FINISH
+	CMP.B #'0', D6
+	BLT .RF_ERROR
+	CMP.B #'9', D6
+	BGT .RF_ERROR
+	CMP.W #2, D5
+	BGE .RF_DEC_LOOP
+	SUB.B #'0', D6
+	MOVE.W #10, D7
+	MULS D7, D4
+	ADD.W D6, D4
+	ADD.W #1, D5
+	BRA .RF_DEC_LOOP
+.RF_FINISH:
+	MOVE.W #100, D7
+	MULS D7, D3
+	CMP.W #1, D5
+	BNE .RF_TWO_DIGITS
+	MOVE.W #10, D7
+	MULS D7, D4
+.RF_TWO_DIGITS:
+	ADD.W D4, D3
+	TST.W D2
+	BEQ .RF_POSITIVE
+	NEG.W D3
+.RF_POSITIVE:
+	MOVE.W D3, D1
+	RTS
+.RF_ERROR:
+	LEA ERROR_FLOAT_MSG, A1
+	MOVE.B #14, D0
+	TRAP #15
+	BRA .RF_RETRY
+
+main:
+	; output "=== TEST: Lectura de decimales ==="
+	LEA str0, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; output "\n"
+	LEA NEWLINE, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; output "Introduce un numero decimal (ej: 12.34):"
+	LEA str1, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; output "\n"
+	LEA NEWLINE, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; input numero1
+	JSR READ_FLOAT
+	MOVE.W D1, numero1
+	; output "Has introducido: "
+	LEA str2, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; output numero1
+	CLR.L D1
+	MOVE.W numero1, D1
+	EXT.L D1
+	JSR PRINT_DECIMAL_2
+	; output "\n"
+	LEA NEWLINE, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; output "Test completado"
+	LEA str3, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; output "\n"
+	LEA NEWLINE, A1
+	MOVE.B #14, D0
+	TRAP #15
+	BRA HALT
+
+	; DATA SECTION
+NEWLINE:	DC.B 13,10,0
+MINUS_SIGN:	DC.B '-',0
+DECIMAL_POINT:	DC.B '.',0
+ZERO_CHAR:	DC.B '0',0
+ERROR_FLOAT_MSG:	DC.B 'ERROR: Entrada invalida. Ingrese un decimal valido (ej: 12.34): ',0
+INPUT_BUFFER:	DS.B 80
+HEAP_PTR:	DC.L $8000
+numero1:	DS.W 1
+str3:	DC.B 'Test completado',0
+str1:	DC.B 'Introduce un numero decimal (ej: 12.34):',0
+str2:	DC.B 'Has introducido: ',0
+str0:	DC.B '=== TEST: Lectura de decimales ===',0
+
+HALT:
+	SIMHALT
+
+	ORG $5000
+STACKPTR:
+	END START

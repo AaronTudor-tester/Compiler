@@ -1,0 +1,47 @@
+===== OPTIMIZACIONES REALIZADAS =====
+
+Archivo: .\programas\test_correcto_funcion\test_correcto_funcion.txt
+Fecha: 2026-02-11T20:39:00.281084800
+
+--- ESTADÍSTICAS DE CÓDIGO INTERMEDIO ---
+
+Instrucciones originales: 16
+Instrucciones optimizadas: 16
+Instrucciones eliminadas: 0
+Reducción: 0,00%
+
+--- ESTADÍSTICAS DE ENSAMBLADOR ---
+
+Archivo original (.x68): 1112 bytes
+Archivo optimizado (_optimizado.x68): 959 bytes
+Bytes reducidos: 153 bytes
+Reducción en ensamblador: 13,76%
+
+--- CÓDIGO OPTIMIZADO ---
+
+suma:
+; param a : INT
+; param b : INT
+t2 = a + b
+return t2
+saludo:
+output "Hola mundo"
+output "\n"
+return null
+main:
+param_s 2  
+param_s 3  
+t5 = call suma
+output t5
+output "\n"
+call saludo  
+
+--- CAMBIOS REALIZADOS POR EL OPTIMIZADOR ---
+
+Asignación diferida:
+  - Línea 3: t0 eliminado y sustituido por a
+  - Línea 3: t1 eliminado y sustituido por b
+  - Línea 10: t3 eliminado y sustituido por 2
+  - Línea 10: t4 eliminado y sustituido por 3
+Eliminación de etiquetas muertas:
+  - Línea 16: Se ha eliminado la etiqueta end

@@ -1,0 +1,8 @@
+===== ERRORES DETECTADOS EN LA COMPILACIÓN =====
+
+Archivo: .\programas\test_array_15_index_out_bounds\test_array_15_index_out_bounds.txt
+Fecha: 2026-02-11T20:34:40.579347600
+
+1 error(es) encontrado(s):
+
+1. [Línea 11, Columna 41] ERROR SINTACTICO: Idice fuera de rango: 10 no está en el rango establecido de 0 a 4

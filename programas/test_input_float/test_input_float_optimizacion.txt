@@ -1,0 +1,39 @@
+===== OPTIMIZACIONES REALIZADAS =====
+
+Archivo: .\programas\test_input_float\test_input_float.txt
+Fecha: 2026-02-11T16:48:47.125840400
+
+--- ESTADÍSTICAS DE CÓDIGO INTERMEDIO ---
+
+Instrucciones originales: 11
+Instrucciones optimizadas: 11
+Instrucciones eliminadas: 0
+Reducción: 0,00%
+
+--- ESTADÍSTICAS DE ENSAMBLADOR ---
+
+Archivo original (.x68): 3160 bytes
+Archivo optimizado (_optimizado.x68): 3118 bytes
+Bytes reducidos: 42 bytes
+Reducción en ensamblador: 1,33%
+
+--- CÓDIGO OPTIMIZADO ---
+
+main:
+output "=== TEST: Lectura de decimales ==="
+output "\n"
+output "Introduce un numero decimal (ej: 12.34):"
+output "\n"
+input numero1
+output "Has introducido: "
+output numero1
+output "\n"
+output "Test completado"
+output "\n"
+
+--- CAMBIOS REALIZADOS POR EL OPTIMIZADOR ---
+
+Asignación diferida:
+  - Línea 7: t0 eliminado y sustituido por numero1
+Eliminación de etiquetas muertas:
+  - Línea 11: Se ha eliminado la etiqueta end

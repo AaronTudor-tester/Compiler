@@ -1,0 +1,32 @@
+===== CÓDIGO INTERMEDIO =====
+
+main:
+t0 = 2
+x = t0
+t2 = x
+t3 = 4
+t4 = t2 + t3
+t5 = 5
+t6 = t4 > t5
+if !(t6) goto e0
+t7 = true
+t1 = t7
+goto e1
+e0:
+t8 = false
+t1 = t8
+e1:
+a = t1
+t9 = x
+output t9
+output "\n"
+t10 = a
+output t10
+output "\n"
+t11 = a
+if !(t11) goto e2
+output "hola"
+goto e3
+e2:
+e3:
+end:

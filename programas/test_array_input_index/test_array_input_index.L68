@@ -1,0 +1,348 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 11/02/2026 20:38:28
+
+00001000                             1              ORG $1000
+00001000                             2  START:
+00001000  4FF9 00005000              3              LEA STACKPTR, A7
+00001006  4EF9 000010E8              4              JMP main
+0000100C                             5  
+0000100C                             6  ; ===== RUTINAS AUXILIARES =====
+0000100C                             7  PRINT_SIGNED:
+0000100C  4A41                       8              TST.W D1
+0000100E  6A00 0010                  9              BPL PRINT_UNSIGNED
+00001012  103C 000E                 10              MOVE.B #14, D0
+00001016  43F9 00001305             11              LEA MINUS_SIGN, A1
+0000101C  4E4F                      12              TRAP #15
+0000101E  4441                      13              NEG.W D1
+00001020                            14  PRINT_UNSIGNED:
+00001020  103C 0003                 15              MOVE.B #3, D0
+00001024  4E4F                      16              TRAP #15
+00001026  4E75                      17              RTS
+00001028                            18  
+00001028                            19  READ_NUM_VALID:
+00001028                            20  .RNV_RETRY:
+00001028  43F9 000013B0             21              LEA INPUT_BUFFER, A1
+0000102E  103C 0002                 22              MOVE.B #2, D0
+00001032  4E4F                      23              TRAP #15
+00001034  43F9 000013B0             24              LEA INPUT_BUFFER, A1
+0000103A  4242                      25              CLR.W D2
+0000103C  4283                      26              CLR.L D3
+0000103E  4284                      27              CLR.L D4
+00001040  1A11                      28              MOVE.B (A1), D5
+00001042  BA3C 0000                 29              CMP.B #0, D5
+00001046  6700 0060                 30              BEQ .RNV_ERR
+0000104A  BA3C 002D                 31              CMP.B #'-', D5
+0000104E  6600 0008                 32              BNE .RNV_CHK
+00001052  343C 0001                 33              MOVE.W #1, D2
+00001056  5289                      34              ADDA.L #1, A1
+00001058                            35  .RNV_CHK:
+00001058                            36  .RNV_LOOP:
+00001058  1A19                      37              MOVE.B (A1)+, D5
+0000105A  BA3C 0000                 38              CMP.B #0, D5
+0000105E  6700 0036                 39              BEQ .RNV_VALID
+00001062  BA3C 000A                 40              CMP.B #10, D5
+00001066  6700 002E                 41              BEQ .RNV_VALID
+0000106A  BA3C 000D                 42              CMP.B #13, D5
+0000106E  6700 0026                 43              BEQ .RNV_VALID
+00001072  BA3C 0030                 44              CMP.B #'0', D5
+00001076  6D00 0030                 45              BLT .RNV_ERR
+0000107A  BA3C 0039                 46              CMP.B #'9', D5
+0000107E  6E00 0028                 47              BGT .RNV_ERR
+00001082  5284                      48              ADD.L #1, D4
+00001084  0405 0030                 49              SUB.B #'0', D5
+00001088  2C03                      50              MOVE.L D3, D6
+0000108A  C7FC 000A                 51              MULS #10, D3
+0000108E  4885                      52              EXT.W D5
+00001090  48C5                      53              EXT.L D5
+00001092  D685                      54              ADD.L D5, D3
+00001094  60C2                      55              BRA .RNV_LOOP
+00001096                            56  .RNV_VALID:
+00001096  4A84                      57              TST.L D4
+00001098  6700 000E                 58              BEQ .RNV_ERR
+0000109C  3203                      59              MOVE.W D3, D1
+0000109E  4A42                      60              TST.W D2
+000010A0  6700 0004                 61              BEQ .RNV_END
+000010A4  4441                      62              NEG.W D1
+000010A6                            63  .RNV_END:
+000010A6  4E75                      64              RTS
+000010A8                            65  .RNV_ERR:
+000010A8  43F9 00001307             66              LEA ERROR_INPUT_MSG, A1
+000010AE  103C 000E                 67              MOVE.B #14, D0
+000010B2  4E4F                      68              TRAP #15
+000010B4  6000 FF72                 69              BRA .RNV_RETRY
+000010B8                            70  
+000010B8                            71  
+000010B8                            72  ARRAY_INDEX_OUT_OF_BOUNDS:
+000010B8                            73              ; Indice fuera de rango - mostrar mensaje y detener la simulacion
+000010B8  43F9 0000133B             74              LEA ERROR_INDEX_MSG, A1
+000010BE  103C 000E                 75              MOVE.B #14, D0
+000010C2  4E4F                      76              TRAP #15
+000010C4  FFFF FFFF                 77              SIMHALT
+000010C8                            78  
+000010C8                            79  UNINITIALIZED_ACCESS:
+000010C8                            80              ; Acceso a posicion no inicializada - mostrar mensaje y detener la simulacion
+000010C8  43F9 0000135A             81              LEA ERROR_UNINIT_MSG, A1
+000010CE  103C 000E                 82              MOVE.B #14, D0
+000010D2  4E4F                      83              TRAP #15
+000010D4  FFFF FFFF                 84              SIMHALT
+000010D8                            85  
+000010D8                            86  ALLOC_SIZE_INVALID:
+000010D8                            87              ; Tamaño de array inválido en tiempo de ejecución - mostrar mensaje y detener
+000010D8  43F9 00001385             88              LEA ERROR_ALLOC_MSG, A1
+000010DE  103C 000E                 89              MOVE.B #14, D0
+000010E2  4E4F                      90              TRAP #15
+000010E4  FFFF FFFF                 91              SIMHALT
+000010E8                            92  main:
+000010E8                            93              ; output "Introduce un indice (0-2):"
+000010E8  43F9 0000143A             94              LEA str0, A1
+000010EE  103C 000E                 95              MOVE.B #14, D0
+000010F2  4E4F                      96              TRAP #15
+000010F4                            97              ; output "\n"
+000010F4  43F9 00001302             98              LEA NEWLINE, A1
+000010FA  103C 000E                 99              MOVE.B #14, D0
+000010FE  4E4F                     100              TRAP #15
+00001100                           101              ; input idx
+00001100  4EB8 1028                102              JSR READ_NUM_VALID
+00001104  33C1 0000145A            103              MOVE.W D1, idx
+0000110A                           104              ; t0 = 3
+0000110A  33FC 0003 0000145C       105              MOVE.W #3, t0
+00001112                           106              ; t1 = 4
+00001112  33FC 0004 0000145E       107              MOVE.W #4, t1
+0000111A                           108              ; t2 = t0 * t1
+0000111A  3039 0000145C            109              MOVE.W t0, D0
+00001120  C1F9 0000145E            110              MULS t1, D0
+00001126  33C0 00001460            111              MOVE.W D0, t2
+0000112C                           112              ; 
+0000112C  2039 00001400            113              MOVE.L HEAP_PTR, D0
+00001132  23C0 00001436            114              MOVE.L D0, arr
+00001138  4281                     115              CLR.L D1
+0000113A  3239 00001460            116              MOVE.W t2, D1
+00001140  B2BC 00000001            117              CMP.L #1, D1
+00001146  6D90                     118              BLT ALLOC_SIZE_INVALID
+00001148  4281                     119              CLR.L D1
+0000114A  3239 00001460            120              MOVE.W t2, D1
+00001150  D081                     121              ADD.L D1, D0
+00001152  23C0 00001400            122              MOVE.L D0, HEAP_PTR
+00001158  4A81                     123              TST.L D1
+0000115A  6700 0010                124              BEQ INIT_arr_LOOP_END
+0000115E  2079 00001436            125              MOVE.L arr, A0
+00001164                           126  INIT_arr_LOOP:
+00001164  78FF                     127              MOVE.L #-1, D4
+00001166  20C4                     128              MOVE.L D4, (A0)+
+00001168  5981                     129              SUBQ.L #4, D1
+0000116A  6EF8                     130              BGT INIT_arr_LOOP
+0000116C                           131  INIT_arr_LOOP_END:
+0000116C                           132              ; t3 = 10
+0000116C  33FC 000A 00001462       133              MOVE.W #10, t3
+00001174                           134              ; t4 = 0
+00001174  33FC 0000 00001404       135              MOVE.W #0, t4
+0000117C                           136              ; t5 = 4
+0000117C  33FC 0004 00001406       137              MOVE.W #4, t5
+00001184                           138              ; t6 = t4 * t5
+00001184  3039 00001404            139              MOVE.W t4, D0
+0000118A  C1F9 00001406            140              MULS t5, D0
+00001190  33C0 00001408            141              MOVE.W D0, t6
+00001196                           142              ; arr[t6] = t3
+00001196  2079 00001436            143              MOVEA.L arr, A0
+0000119C  4280                     144              CLR.L D0
+0000119E  3039 00001408            145              MOVE.W t6, D0
+000011A4  4A80                     146              TST.L D0
+000011A6  6B00 FF10                147              BMI ARRAY_INDEX_OUT_OF_BOUNDS
+000011AA  4281                     148              CLR.L D1
+000011AC  3239 00001462            149              MOVE.W t3, D1
+000011B2  2181 0800                150              MOVE.L D1, 0(A0, D0.L)
+000011B6                           151              ; t7 = 20
+000011B6  33FC 0014 0000140A       152              MOVE.W #20, t7
+000011BE                           153              ; t8 = 1
+000011BE  33FC 0001 0000140C       154              MOVE.W #1, t8
+000011C6                           155              ; t9 = 4
+000011C6  33FC 0004 0000140E       156              MOVE.W #4, t9
+000011CE                           157              ; t10 = t8 * t9
+000011CE  3039 0000140C            158              MOVE.W t8, D0
+000011D4  C1F9 0000140E            159              MULS t9, D0
+000011DA  33C0 00001410            160              MOVE.W D0, t10
+000011E0                           161              ; arr[t10] = t7
+000011E0  2079 00001436            162              MOVEA.L arr, A0
+000011E6  4280                     163              CLR.L D0
+000011E8  3039 00001410            164              MOVE.W t10, D0
+000011EE  4A80                     165              TST.L D0
+000011F0  6B00 FEC6                166              BMI ARRAY_INDEX_OUT_OF_BOUNDS
+000011F4  4281                     167              CLR.L D1
+000011F6  3239 0000140A            168              MOVE.W t7, D1
+000011FC  2181 0800                169              MOVE.L D1, 0(A0, D0.L)
+00001200                           170              ; t11 = 30
+00001200  33FC 001E 00001414       171              MOVE.W #30, t11
+00001208                           172              ; t12 = 2
+00001208  33FC 0002 00001412       173              MOVE.W #2, t12
+00001210                           174              ; t13 = 4
+00001210  33FC 0004 00001426       175              MOVE.W #4, t13
+00001218                           176              ; t14 = t12 * t13
+00001218  3039 00001412            177              MOVE.W t12, D0
+0000121E  C1F9 00001426            178              MULS t13, D0
+00001224  33C0 00001416            179              MOVE.W D0, t14
+0000122A                           180              ; arr[t14] = t11
+0000122A  2079 00001436            181              MOVEA.L arr, A0
+00001230  4280                     182              CLR.L D0
+00001232  3039 00001416            183              MOVE.W t14, D0
+00001238  4A80                     184              TST.L D0
+0000123A  6B00 FE7C                185              BMI ARRAY_INDEX_OUT_OF_BOUNDS
+0000123E  4281                     186              CLR.L D1
+00001240  3239 00001414            187              MOVE.W t11, D1
+00001246  2181 0800                188              MOVE.L D1, 0(A0, D0.L)
+0000124A                           189              ; output "Valor en arr["
+0000124A  43F9 00001418            190              LEA str1, A1
+00001250  103C 000E                191              MOVE.B #14, D0
+00001254  4E4F                     192              TRAP #15
+00001256                           193              ; t15 = idx
+00001256  33F9 0000145A 0000142E   194              MOVE.W idx, t15
+00001260                           195              ; output t15
+00001260  3239 0000142E            196              MOVE.W t15, D1
+00001266  4EB8 100C                197              JSR PRINT_SIGNED
+0000126A                           198              ; output "]: "
+0000126A  43F9 00001428            199              LEA str2, A1
+00001270  103C 000E                200              MOVE.B #14, D0
+00001274  4E4F                     201              TRAP #15
+00001276                           202              ; t16 = idx
+00001276  33F9 0000145A 0000142C   203              MOVE.W idx, t16
+00001280                           204              ; t17 = 4
+00001280  33FC 0004 00001432       205              MOVE.W #4, t17
+00001288                           206              ; t18 = t16 * t17
+00001288  3039 0000142C            207              MOVE.W t16, D0
+0000128E  C1F9 00001432            208              MULS t17, D0
+00001294  33C0 00001430            209              MOVE.W D0, t18
+0000129A                           210              ; t20 = 3
+0000129A  33FC 0003 00001458       211              MOVE.W #3, t20
+000012A2                           212              ; t19 = t20
+000012A2  33F9 00001458 00001434   213              MOVE.W t20, t19
+000012AC                           214              ; t21 = arr[t18]
+000012AC  2079 00001436            215              MOVEA.L arr, A0
+000012B2  4280                     216              CLR.L D0
+000012B4  3039 00001430            217              MOVE.W t18, D0
+000012BA  4A80                     218              TST.L D0
+000012BC  6B00 FDFA                219              BMI ARRAY_INDEX_OUT_OF_BOUNDS
+000012C0  3439 00001434            220              MOVE.W t19, D2
+000012C6  48C2                     221              EXT.L D2
+000012C8  363C 0004                222              MOVE.W #4, D3
+000012CC  C5C3                     223              MULS D3, D2
+000012CE  B082                     224              CMP.L D2, D0
+000012D0  6C00 FDE6                225              BGE ARRAY_INDEX_OUT_OF_BOUNDS
+000012D4  2230 0800                226              MOVE.L 0(A0, D0.L), D1
+000012D8  B2BC FFFFFFFF            227              CMP.L #-1, D1
+000012DE  6700 FDE8                228              BEQ UNINITIALIZED_ACCESS
+000012E2  33C1 00001456            229              MOVE.W D1, t21
+000012E8                           230              ; output t21
+000012E8  3239 00001456            231              MOVE.W t21, D1
+000012EE  4EB8 100C                232              JSR PRINT_SIGNED
+000012F2                           233              ; output "\n"
+000012F2  43F9 00001302            234              LEA NEWLINE, A1
+000012F8  103C 000E                235              MOVE.B #14, D0
+000012FC  4E4F                     236              TRAP #15
+000012FE                           237  end:
+000012FE  6000 0164                238              BRA HALT
+00001302                           239  
+00001302                           240              ; DATA SECTION
+00001302= 0D 0A 00                 241  NEWLINE:    DC.B 13,10,0
+00001305= 2D 00                    242  MINUS_SIGN: DC.B '-',0
+00001307= 45 52 52 4F 52 3A ...    243  ERROR_INPUT_MSG:    DC.B 'ERROR: Entrada invalida. Ingrese un numero valido: ',0
+0000133B= 45 52 52 4F 52 3A ...    244  ERROR_INDEX_MSG:    DC.B 'ERROR: Indice fuera de rango',13,10,0
+0000135A= 45 52 52 4F 52 3A ...    245  ERROR_UNINIT_MSG:   DC.B 'ERROR: Acceso a posicion no inicializada',13,10,0
+00001385= 45 52 52 4F 52 3A ...    246  ERROR_ALLOC_MSG:    DC.B 'ERROR: Tamaño de array inválido (<= 0)',13,10,0
+000013B0                           247  INPUT_BUFFER:       DS.B 80
+00001400= 00008000                 248  HEAP_PTR:   DC.L $8000
+00001404                           249  t4:         DS.W 1
+00001406                           250  t5:         DS.W 1
+00001408                           251  t6:         DS.W 1
+0000140A                           252  t7:         DS.W 1
+0000140C                           253  t8:         DS.W 1
+0000140E                           254  t9:         DS.W 1
+00001410                           255  t10:        DS.W 1
+00001412                           256  t12:        DS.W 1
+00001414                           257  t11:        DS.W 1
+00001416                           258  t14:        DS.W 1
+00001418= 56 61 6C 6F 72 20 ...    259  str1:       DC.B 'Valor en arr[',0
+00001426                           260  t13:        DS.W 1
+00001428= 5D 3A 20 00              261  str2:       DC.B ']: ',0
+0000142C                           262  t16:        DS.W 1
+0000142E                           263  t15:        DS.W 1
+00001430                           264  t18:        DS.W 1
+00001432                           265  t17:        DS.W 1
+00001434                           266  t19:        DS.W 1
+00001436                           267  arr:        DS.L 1
+0000143A= 49 6E 74 72 6F 64 ...    268  str0:       DC.B 'Introduce un indice (0-2):',0
+00001456                           269  t21:        DS.W 1
+00001458                           270  t20:        DS.W 1
+0000145A                           271  idx:        DS.W 1
+0000145C                           272  t0:         DS.W 1
+0000145E                           273  t1:         DS.W 1
+00001460                           274  t2:         DS.W 1
+00001462                           275  t3:         DS.W 1
+00001464                           276  
+00001464                           277  HALT:
+00001464  FFFF FFFF                278              SIMHALT
+00001468                           279  
+00005000                           280              ORG $5000
+00005000                           281  STACKPTR:
+00005000                           282              END START
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+ALLOC_SIZE_INVALID  10D8
+ARR                 1436
+ARRAY_INDEX_OUT_OF_BOUNDS  10B8
+END                 12FE
+ERROR_ALLOC_MSG     1385
+ERROR_INDEX_MSG     133B
+ERROR_INPUT_MSG     1307
+ERROR_UNINIT_MSG    135A
+HALT                1464
+HEAP_PTR            1400
+IDX                 145A
+INIT_ARR_LOOP       1164
+INIT_ARR_LOOP_END   116C
+INPUT_BUFFER        13B0
+MAIN                10E8
+MINUS_SIGN          1305
+NEWLINE             1302
+PRINT_SIGNED        100C
+PRINT_UNSIGNED      1020
+READ_NUM_VALID      1028
+READ_NUM_VALID:RNV_CHK  1058
+READ_NUM_VALID:RNV_END  10A6
+READ_NUM_VALID:RNV_ERR  10A8
+READ_NUM_VALID:RNV_LOOP  1058
+READ_NUM_VALID:RNV_RETRY  1028
+READ_NUM_VALID:RNV_VALID  1096
+STACKPTR            5000
+START               1000
+STR0                143A
+STR1                1418
+STR2                1428
+T0                  145C
+T1                  145E
+T10                 1410
+T11                 1414
+T12                 1412
+T13                 1426
+T14                 1416
+T15                 142E
+T16                 142C
+T17                 1432
+T18                 1430
+T19                 1434
+T2                  1460
+T20                 1458
+T21                 1456
+T3                  1462
+T4                  1404
+T5                  1406
+T6                  1408
+T7                  140A
+T8                  140C
+T9                  140E
+UNINITIALIZED_ACCESS  10C8

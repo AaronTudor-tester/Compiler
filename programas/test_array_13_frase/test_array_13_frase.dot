@@ -1,0 +1,65 @@
+strict digraph {
+32	[label="Programa"];
+32->1
+32->6
+32->8
+32->11
+32->13
+32->16
+32->18
+32->20
+32->24
+32->27
+32->29
+32->31
+1	[label="print"];
+1->0
+0	[label="=== TEST: Arrays de frase ===",shape=plaintext];
+6	[label="array: nombres[3](STRING)"];
+6->2
+6->3
+6->4
+2	[label="Ana",shape=plaintext];
+3	[label="Luis",shape=plaintext];
+4	[label="Maria",shape=plaintext];
+8	[label="print"];
+8->7
+7	[label="Mostrando nombres:",shape=plaintext];
+11	[label="=(nombre1)"]
+11->10
+10	[label="Acceso Array\n(nombres)"]
+10->9
+9	[label="0",shape=plaintext];
+13	[label="print"];
+13->12
+12	[label="nombre1",shape=plaintext];
+16	[label="=(nombre2)"]
+16->15
+15	[label="Acceso Array\n(nombres)"]
+15->14
+14	[label="1",shape=plaintext];
+18	[label="print"];
+18->17
+17	[label="nombre2",shape=plaintext];
+20	[label="print"];
+20->19
+19	[label="Modificando posicion 2:",shape=plaintext];
+24	[label="[] =\n(Asign. Array)"]
+24->22
+24->23
+22	[label="Acceso Array\n(nombres)"]
+22->21
+21	[label="2",shape=plaintext];
+23	[label="Pedro",shape=plaintext];
+27	[label="=(nombre3)"]
+27->26
+26	[label="Acceso Array\n(nombres)"]
+26->25
+25	[label="2",shape=plaintext];
+29	[label="print"];
+29->28
+28	[label="nombre3",shape=plaintext];
+31	[label="print"];
+31->30
+30	[label="Test completado",shape=plaintext];
+}

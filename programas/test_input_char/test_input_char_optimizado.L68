@@ -1,0 +1,110 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 11/02/2026 16:38:49
+
+00001000                             1              ORG $1000
+00001000                             2  START:
+00001000  4FF9 00005000              3              LEA STACKPTR, A7
+00001006  4EF9 00001030              4              JMP main
+0000100C                             5  
+0000100C                             6  ; ===== RUTINAS AUXILIARES =====
+0000100C                             7  PRINT_SIGNED:
+0000100C  4A41                       8              TST.W D1
+0000100E  6A00 0010                  9              BPL PRINT_UNSIGNED
+00001012  103C 000E                 10              MOVE.B #14, D0
+00001016  43F9 000010AD             11              LEA MINUS_SIGN, A1
+0000101C  4E4F                      12              TRAP #15
+0000101E  4441                      13              NEG.W D1
+00001020                            14  PRINT_UNSIGNED:
+00001020  103C 0003                 15              MOVE.B #3, D0
+00001024  4E4F                      16              TRAP #15
+00001026  4E75                      17              RTS
+00001028                            18  
+00001028                            19  READ_CHAR:
+00001028  103C 0005                 20              MOVE.B #5, D0
+0000102C  4E4F                      21              TRAP #15
+0000102E  4E75                      22              RTS
+00001030                            23  
+00001030                            24  main:
+00001030                            25              ; output "=== TEST: Lectura de char ==="
+00001030  43F9 00001142             26              LEA str0, A1
+00001036  103C 000E                 27              MOVE.B #14, D0
+0000103A  4E4F                      28              TRAP #15
+0000103C                            29              ; output "\n"
+0000103C  43F9 000010AA             30              LEA NEWLINE, A1
+00001042  103C 000E                 31              MOVE.B #14, D0
+00001046  4E4F                      32              TRAP #15
+00001048                            33              ; output "Introduce un char (ej: g):"
+00001048  43F9 00001115             34              LEA str1, A1
+0000104E  103C 000E                 35              MOVE.B #14, D0
+00001052  4E4F                      36              TRAP #15
+00001054                            37              ; output "\n"
+00001054  43F9 000010AA             38              LEA NEWLINE, A1
+0000105A  103C 000E                 39              MOVE.B #14, D0
+0000105E  4E4F                      40              TRAP #15
+00001060                            41              ; input c
+00001060  4EB8 1028                 42              JSR READ_CHAR
+00001064  13C1 00001104             43              MOVE.B D1, c
+0000106A                            44              ; output "Has introducido: "
+0000106A  43F9 00001130             45              LEA str2, A1
+00001070  103C 000E                 46              MOVE.B #14, D0
+00001074  4E4F                      47              TRAP #15
+00001076                            48              ; output c
+00001076  1239 00001104             49              MOVE.B c, D1
+0000107C  103C 0006                 50              MOVE.B #6, D0
+00001080  4E4F                      51              TRAP #15
+00001082                            52              ; output "\n"
+00001082  43F9 000010AA             53              LEA NEWLINE, A1
+00001088  103C 000E                 54              MOVE.B #14, D0
+0000108C  4E4F                      55              TRAP #15
+0000108E                            56              ; output "Test completado"
+0000108E  43F9 00001105             57              LEA str3, A1
+00001094  103C 000E                 58              MOVE.B #14, D0
+00001098  4E4F                      59              TRAP #15
+0000109A                            60              ; output "\n"
+0000109A  43F9 000010AA             61              LEA NEWLINE, A1
+000010A0  103C 000E                 62              MOVE.B #14, D0
+000010A4  4E4F                      63              TRAP #15
+000010A6  6000 00B8                 64              BRA HALT
+000010AA                            65  
+000010AA                            66              ; DATA SECTION
+000010AA= 0D 0A 00                  67  NEWLINE:    DC.B 13,10,0
+000010AD= 2D 00                     68  MINUS_SIGN: DC.B '-',0
+000010AF                            69  INPUT_BUFFER:       DS.B 80
+00001100= 00008000                  70  HEAP_PTR:   DC.L $8000
+00001104                            71  c:          DS.B 1
+00001105= 54 65 73 74 20 63 ...     72  str3:       DC.B 'Test completado',0
+00001115= 49 6E 74 72 6F 64 ...     73  str1:       DC.B 'Introduce un char (ej: g):',0
+00001130= 48 61 73 20 69 6E ...     74  str2:       DC.B 'Has introducido: ',0
+00001142= 3D 3D 3D 20 54 45 ...     75  str0:       DC.B '=== TEST: Lectura de char ===',0
+00001160                            76  
+00001160                            77  HALT:
+00001160  FFFF FFFF                 78              SIMHALT
+00001164                            79  
+00005000                            80              ORG $5000
+00005000                            81  STACKPTR:
+00005000                            82              END START
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+C                   1104
+HALT                1160
+HEAP_PTR            1100
+INPUT_BUFFER        10AF
+MAIN                1030
+MINUS_SIGN          10AD
+NEWLINE             10AA
+PRINT_SIGNED        100C
+PRINT_UNSIGNED      1020
+READ_CHAR           1028
+STACKPTR            5000
+START               1000
+STR0                1142
+STR1                1115
+STR2                1130
+STR3                1105

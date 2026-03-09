@@ -1,0 +1,43 @@
+strict digraph {
+20	[label="Programa"];
+20->1
+20->3
+20->5
+20->7
+20->11
+20->13
+20->17
+20->19
+1	[label="=(x)"]
+1->0
+0	[label="10.5",shape=plaintext];
+3	[label="=(y)"]
+3->2
+2	[label="0.0",shape=plaintext];
+5	[label="=(z)"]
+5->4
+4	[label="2.0",shape=plaintext];
+7	[label="=(resultado)"]
+7->6
+6	[label="0.0",shape=plaintext];
+11	[label="=(resultado)"]
+11->10
+10	[label="DIV"];
+10->8
+10->9
+8	[label="x",shape=plaintext];
+9	[label="z",shape=plaintext];
+13	[label="print"];
+13->12
+12	[label="resultado",shape=plaintext];
+17	[label="=(resultado)"]
+17->16
+16	[label="DIV"];
+16->14
+16->15
+14	[label="x",shape=plaintext];
+15	[label="y",shape=plaintext];
+19	[label="print"];
+19->18
+18	[label="resultado",shape=plaintext];
+}

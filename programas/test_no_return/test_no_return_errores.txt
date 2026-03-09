@@ -1,0 +1,8 @@
+===== ERRORES DETECTADOS EN LA COMPILACIÓN =====
+
+Archivo: .\programas\test_no_return\test_no_return.txt
+Fecha: 2026-02-11T09:22:35.794418300
+
+1 error(es) encontrado(s):
+
+1. [Línea 6, Columna 1] ERROR SEMANTICO: La función 'suma' debe devolver un valor de tipo INT

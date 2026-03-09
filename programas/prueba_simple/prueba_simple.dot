@@ -1,0 +1,19 @@
+strict digraph {
+8	[label="Programa"];
+8->1
+8->3
+8->5
+8->7
+1	[label="print"];
+1->0
+0	[label="10",shape=plaintext];
+3	[label="print"];
+3->2
+2	[label="Hola",shape=plaintext];
+5	[label="print"];
+5->4
+4	[label="20",shape=plaintext];
+7	[label="print"];
+7->6
+6	[label="Mundo",shape=plaintext];
+}

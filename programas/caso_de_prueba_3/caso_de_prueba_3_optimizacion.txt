@@ -1,0 +1,76 @@
+===== OPTIMIZACIONES REALIZADAS =====
+
+Archivo: .\programas\caso_de_prueba_3\caso_de_prueba_3.txt
+Fecha: 2026-02-11T21:17:16.555865600
+
+--- ESTADÍSTICAS DE CÓDIGO INTERMEDIO ---
+
+Instrucciones originales: 33
+Instrucciones optimizadas: 33
+Instrucciones eliminadas: 0
+Reducción: 0,00%
+
+--- ESTADÍSTICAS DE ENSAMBLADOR ---
+
+Archivo original (.x68): 2924 bytes
+Archivo optimizado (_optimizado.x68): 2287 bytes
+Bytes reducidos: 637 bytes
+Reducción en ensamblador: 21,79%
+
+--- CÓDIGO OPTIMIZADO ---
+
+main:
+output "=== CASO 3: SUMA CON BUCLE ==="
+output "\n"
+suma = 0
+contador = 0
+e0:
+t4 = contador < 5
+if !(t4) goto e1
+t7 = contador + 1
+contador = t7
+t10 = suma + contador
+suma = t10
+output "Suma parcial: "
+output suma
+output "\n"
+goto e0
+e1:
+output "Suma total:"
+output suma
+output "\n"
+output "Tabla de multiplicar del 3:"
+output "\n"
+i = 1
+e2:
+t16 = i <= 10
+if !(t16) goto e3
+t19 = 3 * i
+resultado = t19
+output resultado
+output " "
+i = i + 1
+goto e2
+e3:
+
+--- CAMBIOS REALIZADOS POR EL OPTIMIZADOR ---
+
+Asignación diferida:
+  - Línea 3: t0 eliminado y sustituido por 0
+  - Línea 4: t1 eliminado y sustituido por 0
+  - Línea 6: t2 eliminado y sustituido por contador
+  - Línea 6: t3 eliminado y sustituido por 5
+  - Línea 8: t5 eliminado y sustituido por contador
+  - Línea 8: t6 eliminado y sustituido por 1
+  - Línea 10: t8 eliminado y sustituido por suma
+  - Línea 10: t9 eliminado y sustituido por contador
+  - Línea 13: t11 eliminado y sustituido por suma
+  - Línea 18: t12 eliminado y sustituido por suma
+  - Línea 22: t13 eliminado y sustituido por 1
+  - Línea 24: t14 eliminado y sustituido por i
+  - Línea 24: t15 eliminado y sustituido por 10
+  - Línea 26: t17 eliminado y sustituido por 3
+  - Línea 26: t18 eliminado y sustituido por i
+  - Línea 28: t20 eliminado y sustituido por resultado
+Eliminación de etiquetas muertas:
+  - Línea 33: Se ha eliminado la etiqueta end

@@ -1,0 +1,99 @@
+strict digraph {
+48	[label="Programa"];
+48->1
+48->3
+48->5
+48->24
+48->26
+48->28
+48->30
+48->32
+48->47
+1	[label="print"];
+1->0
+0	[label="=== CASO 3: SUMA CON BUCLE ===",shape=plaintext];
+3	[label="=(suma)"]
+3->2
+2	[label="0",shape=plaintext];
+5	[label="=(contador)"]
+5->4
+4	[label="0",shape=plaintext];
+24	[label="while"];
+24->8
+24->23
+8	[label="MENOR"];
+8->6
+8->7
+6	[label="contador",shape=plaintext];
+7	[label="5",shape=plaintext];
+23	[label="Bloque"];
+23->12
+23->16
+23->18
+23->20
+23->22
+12	[label="=(contador)"]
+12->11
+11	[label="SUMA"];
+11->9
+11->10
+9	[label="contador",shape=plaintext];
+10	[label="1",shape=plaintext];
+16	[label="=(suma)"]
+16->15
+15	[label="SUMA"];
+15->13
+15->14
+13	[label="suma",shape=plaintext];
+14	[label="contador",shape=plaintext];
+18	[label="print"];
+18->17
+17	[label="Suma parcial: ",shape=plaintext];
+20	[label="print"];
+20->19
+19	[label="suma",shape=plaintext];
+22	[label="print"];
+22->21
+21	[label="\n",shape=plaintext];
+26	[label="print"];
+26->25
+25	[label="Suma total:",shape=plaintext];
+28	[label="print"];
+28->27
+27	[label="suma",shape=plaintext];
+30	[label="print"];
+30->29
+29	[label="Tabla de multiplicar del 3:",shape=plaintext];
+32	[label="=(i)"]
+32->31
+31	[label="1",shape=plaintext];
+47	[label="while"];
+47->35
+47->46
+35	[label="MEIGUAL"];
+35->33
+35->34
+33	[label="i",shape=plaintext];
+34	[label="10",shape=plaintext];
+46	[label="Bloque"];
+46->39
+46->41
+46->43
+46->45
+39	[label="=(resultado)"]
+39->38
+38	[label="PROD"];
+38->36
+38->37
+36	[label="3",shape=plaintext];
+37	[label="i",shape=plaintext];
+41	[label="print"];
+41->40
+40	[label="resultado",shape=plaintext];
+43	[label="print"];
+43->42
+42	[label=" ",shape=plaintext];
+45	[label="INCR"];
+45->44
+44	[label="i",shape=plaintext];
+}

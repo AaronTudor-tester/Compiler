@@ -1,0 +1,22 @@
+// TEST ARRAY 12: Arrays de decimal
+// Objetivo: Verificar arrays de números decimales
+
+principal {
+    escribeN "=== TEST: Arrays de decimal ===".
+    
+    lista de decimal precios es [10.5, 20.99, 15.75].
+    
+    escribeN "Mostrando precios:".
+    decimal p1 es precios posicion (0).
+    escribeN p1.
+    
+    decimal p2 es precios posicion (1).
+    escribeN p2.
+    
+    escribeN "Suma de precios[0] + precios[2]:".
+    decimal p3 es precios posicion (2).
+    decimal total es p1 mas p3.
+    escribeN total.
+    
+    escribeN "Test completado".
+}

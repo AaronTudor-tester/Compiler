@@ -1,0 +1,121 @@
+===== CODIGO INTERMEDIO (3-ADDRESS CODE) =====
+
+main:
+output "=== TEST: Array 2D completo ==="
+output "\n"
+t0 = 1
+t1 = 2
+t2 = t0 * t1
+t3 = 2
+t4 = t2 * t3
+t5 = 4
+t6 = t4 * t5
+
+output "Inicializando matriz 2x2:"
+output "\n"
+t7 = 0
+t8 = 0
+t9 = 2
+t10 = t7 * t9
+t11 = t10 + t8
+t12 = 4
+t13 = t11 * t12
+t14 = 1
+matriz[t13] = t14
+t15 = 0
+t16 = 1
+t17 = 2
+t18 = t15 * t17
+t19 = t18 + t16
+t20 = 4
+t21 = t19 * t20
+t22 = 2
+matriz[t21] = t22
+t23 = 1
+t24 = 0
+t25 = 2
+t26 = t23 * t25
+t27 = t26 + t24
+t28 = 4
+t29 = t27 * t28
+t30 = 3
+matriz[t29] = t30
+t31 = 1
+t32 = 1
+t33 = 2
+t34 = t31 * t33
+t35 = t34 + t32
+t36 = 4
+t37 = t35 * t36
+t38 = 4
+matriz[t37] = t38
+output "Leyendo matriz con bucle:"
+output "\n"
+t39 = 0
+i = t39
+e0:
+t40 = i
+t41 = 2
+t42 = t40 < t41
+if !(t42) goto e1
+t43 = 0
+j = t43
+e2:
+t44 = j
+t45 = 2
+t46 = t44 < t45
+if !(t46) goto e3
+t47 = i
+t48 = j
+t49 = 2
+t50 = t47 * t49
+t51 = t50 + t48
+t52 = 4
+t53 = t51 * t52
+t54 = matriz[t53]
+valor = t54
+t55 = valor
+output t55
+output "\n"
+t56 = j
+t57 = 1
+t58 = t56 + t57
+j = t58
+goto e2
+e3:
+t59 = i
+t60 = 1
+t61 = t59 + t60
+i = t61
+goto e0
+e1:
+output "Operacion: matriz[0,0] + matriz[1,1]:"
+output "\n"
+t62 = 0
+t63 = 0
+t64 = 2
+t65 = t62 * t64
+t66 = t65 + t63
+t67 = 4
+t68 = t66 * t67
+t69 = matriz[t68]
+a = t69
+t70 = 1
+t71 = 1
+t72 = 2
+t73 = t70 * t72
+t74 = t73 + t71
+t75 = 4
+t76 = t74 * t75
+t77 = matriz[t76]
+b = t77
+t78 = a
+t79 = b
+t80 = t78 + t79
+suma = t80
+t81 = suma
+output t81
+output "\n"
+output "Test completado"
+output "\n"
+end:

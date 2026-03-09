@@ -1,0 +1,47 @@
+===== OPTIMIZACIONES REALIZADAS =====
+
+Archivo: .\programas\prueba_division_cero\prueba_division_cero.txt
+Fecha: 2026-02-11T06:55:39.708414400
+
+--- ESTADÍSTICAS DE CÓDIGO INTERMEDIO ---
+
+Instrucciones originales: 11
+Instrucciones optimizadas: 11
+Instrucciones eliminadas: 0
+Reducción: 0,00%
+
+--- ESTADÍSTICAS DE ENSAMBLADOR ---
+
+Archivo original (.x68): 1474 bytes
+Archivo optimizado (_optimizado.x68): 1129 bytes
+Bytes reducidos: 345 bytes
+Reducción en ensamblador: 23,41%
+
+--- CÓDIGO OPTIMIZADO ---
+
+main:
+a = 10
+b = 0
+c = 5
+t5 = a / c
+resultado = t5
+output resultado
+output "\n"
+t9 = a / b
+resultado = t9
+output resultado
+
+--- CAMBIOS REALIZADOS POR EL OPTIMIZADOR ---
+
+Asignación diferida:
+  - Línea 1: t0 eliminado y sustituido por 10
+  - Línea 2: t1 eliminado y sustituido por 0
+  - Línea 3: t2 eliminado y sustituido por 5
+  - Línea 4: t3 eliminado y sustituido por a
+  - Línea 4: t4 eliminado y sustituido por c
+  - Línea 6: t6 eliminado y sustituido por resultado
+  - Línea 8: t7 eliminado y sustituido por a
+  - Línea 8: t8 eliminado y sustituido por b
+  - Línea 10: t10 eliminado y sustituido por resultado
+Eliminación de etiquetas muertas:
+  - Línea 11: Se ha eliminado la etiqueta end

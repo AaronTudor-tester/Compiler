@@ -1,0 +1,39 @@
+===== OPTIMIZACIONES REALIZADAS =====
+
+Archivo: programas\test_input_bool\test_input_bool.txt
+Fecha: 2026-02-08T12:20:25.200956400
+
+--- ESTADÍSTICAS DE CÓDIGO INTERMEDIO ---
+
+Instrucciones originales: 11
+Instrucciones optimizadas: 11
+Instrucciones eliminadas: 0
+Reducción: 0,00%
+
+--- ESTADÍSTICAS DE ENSAMBLADOR ---
+
+Archivo original (.x68): 2450 bytes
+Archivo optimizado (_optimizado.x68): 2408 bytes
+Bytes reducidos: 42 bytes
+Reducción en ensamblador: 1,71%
+
+--- CÓDIGO OPTIMIZADO ---
+
+main:
+output "=== TEST: Lectura de booleanos ==="
+output "\n"
+output "Introduce un valor booleano (cierto/mentira):"
+output "\n"
+input usuario
+output "Has introducido: "
+output usuario
+output "\n"
+output "Test completado"
+output "\n"
+
+--- CAMBIOS REALIZADOS POR EL OPTIMIZADOR ---
+
+Asignación diferida:
+  - Línea 7: t0 eliminado y sustituido por usuario
+Eliminación de etiquetas muertas:
+  - Línea 11: Se ha eliminado la etiqueta end

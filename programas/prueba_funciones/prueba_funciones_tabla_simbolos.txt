@@ -1,0 +1,14 @@
+===== TABLA DE SÍMBOLOS =====
+
+VARIABLE: Simbolo{nombre='a', tipo=INT, valor=2, linea=3, inicializada=true}
+VARIABLE: Simbolo{nombre='b', tipo=INT, valor=3, linea=5, inicializada=true}
+FUNCION: Simbolo{nombre='suma2', tipoRetorno=INT, parametros=[INT], linea=5}
+FUNCION: Simbolo{nombre='funcVoid', tipoRetorno=VOID, parametros=[], linea=14}
+FUNCION: Simbolo{nombre='suma', tipoRetorno=INT, parametros=[], linea=18}
+FUNCION: Simbolo{nombre='sumaNormal', tipoRetorno=INT, parametros=[INT, INT], linea=28}
+  VARIABLE: Simbolo{nombre='x', tipo=INT, valor=9, linea=5, inicializada=true}
+  VARIABLE: Simbolo{nombre='resultado', tipo=INT, valor=null, linea=20, inicializada=true}
+  VARIABLE: Simbolo{nombre='a1', tipo=INT, valor=null, linea=28, inicializada=true}
+  VARIABLE: Simbolo{nombre='b1', tipo=INT, valor=null, linea=28, inicializada=true}
+  VARIABLE: Simbolo{nombre='www', tipo=FLOAT, valor=null, linea=34, inicializada=true}
+  VARIABLE: Simbolo{nombre='y', tipo=INT, valor=3, linea=41, inicializada=true}

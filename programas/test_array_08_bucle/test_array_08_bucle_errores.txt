@@ -1,0 +1,8 @@
+===== RESULTADO DE LA COMPILACION =====
+
+Archivo: programas\test_array_08_bucle\test_array_08_bucle.txt
+Fecha: 2026-02-03T12:25:32.227108900
+
+? No se detectaron errores.
+
+Compilacion exitosa.

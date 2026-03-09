@@ -1,0 +1,14 @@
+// Test: comprobación de elemento no inicializado (debe fallar en compilación)
+
+principal {
+    lista de numero arr de longitud 4.
+    arr posicion (0) es 10.
+    arr posicion (1) es 20.
+    // arr posicion (2) no inicializada
+    arr posicion (3) es 40.
+
+    // Lectura de posición no inicializada 
+    numero x es arr posicion (2).
+
+   
+}

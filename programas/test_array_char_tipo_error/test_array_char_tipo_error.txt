@@ -1,0 +1,12 @@
+// Test: array de caracteres y asignación de tipo incorrecto
+principal {
+    lista de letra arr de longitud 3.
+    arr posicion (0) es 'a'.
+    arr posicion (1) es 'b'.
+    arr posicion (2) es 'c'.
+
+    // Aquí intentamos asignar un entero a una posición de un array de letras
+    arr posicion (1) es 5.
+
+    escribeN "Fin".
+}

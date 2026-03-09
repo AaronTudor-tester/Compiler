@@ -1,0 +1,79 @@
+===== OPTIMIZACIONES REALIZADAS =====
+
+Archivo: .\programas\prueba_break\prueba_break.txt
+Fecha: 2026-02-11T08:45:26.383094600
+
+--- ESTADÍSTICAS DE CÓDIGO INTERMEDIO ---
+
+Instrucciones originales: 34
+Instrucciones optimizadas: 34
+Instrucciones eliminadas: 0
+Reducción: 0,00%
+
+--- ESTADÍSTICAS DE ENSAMBLADOR ---
+
+Archivo original (.x68): 2630 bytes
+Archivo optimizado (_optimizado.x68): 2031 bytes
+Bytes reducidos: 599 bytes
+Reducción en ensamblador: 22,78%
+
+--- CÓDIGO OPTIMIZADO ---
+
+main:
+i = 1
+e0:
+t3 = i <= 5
+if !(t3) goto e1
+output "ITERAMOS"
+output "\n"
+t6 = i > 2
+if !(t6) goto e2
+goto e1
+e2:
+t9 = i + 1
+i = t9
+goto e0
+e1:
+output "hola"
+output "\n"
+i = 1
+e4:
+t13 = i <= 5
+if !(t13) goto e5
+output "otro bucle"
+output " "
+goto e5
+t16 = i + 1
+i = t16
+goto e4
+e5:
+t19 = 1 == 1
+if !(t19) goto e6
+goto end
+e6:
+output "adios"
+end:
+
+--- CAMBIOS REALIZADOS POR EL OPTIMIZADOR ---
+
+Asignación diferida:
+  - Línea 1: t0 eliminado y sustituido por 1
+  - Línea 3: t1 eliminado y sustituido por i
+  - Línea 3: t2 eliminado y sustituido por 5
+  - Línea 7: t4 eliminado y sustituido por i
+  - Línea 7: t5 eliminado y sustituido por 2
+  - Línea 13: t7 eliminado y sustituido por i
+  - Línea 13: t8 eliminado y sustituido por 1
+  - Línea 19: t10 eliminado y sustituido por 1
+  - Línea 21: t11 eliminado y sustituido por i
+  - Línea 21: t12 eliminado y sustituido por 5
+  - Línea 26: t14 eliminado y sustituido por i
+  - Línea 26: t15 eliminado y sustituido por 1
+  - Línea 30: t17 eliminado y sustituido por 1
+  - Línea 30: t18 eliminado y sustituido por 1
+Ramificaciones adyacentes:
+  - Línea 10: Salto innecesario a e3 eliminado
+  - Línea 32: Salto innecesario a e7 eliminado
+Eliminación de etiquetas muertas:
+  - Línea 11: Se ha eliminado la etiqueta e3
+  - Línea 33: Se ha eliminado la etiqueta e7

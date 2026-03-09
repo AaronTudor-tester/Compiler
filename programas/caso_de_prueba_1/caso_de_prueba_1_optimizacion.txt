@@ -1,0 +1,74 @@
+===== OPTIMIZACIONES REALIZADAS =====
+
+Archivo: .\programas\caso_de_prueba_1\caso_de_prueba_1.txt
+Fecha: 2026-02-11T23:13:49.001740500
+
+--- ESTADÍSTICAS DE CÓDIGO INTERMEDIO ---
+
+Instrucciones originales: 30
+Instrucciones optimizadas: 30
+Instrucciones eliminadas: 0
+Reducción: 0,00%
+
+--- ESTADÍSTICAS DE ENSAMBLADOR ---
+
+Archivo original (.x68): 3291 bytes
+Archivo optimizado (_optimizado.x68): 2610 bytes
+Bytes reducidos: 681 bytes
+Reducción en ensamblador: 20,69%
+
+--- CÓDIGO OPTIMIZADO ---
+
+main:
+output "=== CASO 1: OPERACIONES BASICAS ==="
+output "\n"
+a = 10
+b = 5
+t4 = a + b
+suma = t4
+output "Suma: "
+output suma
+output "\n"
+t8 = a - b
+resta = t8
+output "Resta: "
+output resta
+output "\n"
+t12 = a * b
+multiplicacion = t12
+output "Multiplicación: "
+output multiplicacion
+output "\n"
+t16 = a / b
+division = t16
+output "División: "
+output division
+output "\n"
+t20 = a % b
+modulo = t20
+output "Módulo: "
+output modulo
+output "\n"
+
+--- CAMBIOS REALIZADOS POR EL OPTIMIZADOR ---
+
+Asignación diferida:
+  - Línea 3: t0 eliminado y sustituido por 10
+  - Línea 4: t1 eliminado y sustituido por 5
+  - Línea 5: t2 eliminado y sustituido por a
+  - Línea 5: t3 eliminado y sustituido por b
+  - Línea 8: t5 eliminado y sustituido por suma
+  - Línea 10: t6 eliminado y sustituido por a
+  - Línea 10: t7 eliminado y sustituido por b
+  - Línea 13: t9 eliminado y sustituido por resta
+  - Línea 15: t10 eliminado y sustituido por a
+  - Línea 15: t11 eliminado y sustituido por b
+  - Línea 18: t13 eliminado y sustituido por multiplicacion
+  - Línea 20: t14 eliminado y sustituido por a
+  - Línea 20: t15 eliminado y sustituido por b
+  - Línea 23: t17 eliminado y sustituido por division
+  - Línea 25: t18 eliminado y sustituido por a
+  - Línea 25: t19 eliminado y sustituido por b
+  - Línea 28: t21 eliminado y sustituido por modulo
+Eliminación de etiquetas muertas:
+  - Línea 30: Se ha eliminado la etiqueta end

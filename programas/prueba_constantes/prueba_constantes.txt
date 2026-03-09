@@ -1,0 +1,9 @@
+principal {
+    constante numero PI es 314.
+    constante numero PI2 es PI.
+    numero x es 10.
+    constante decimal AA es x.
+
+    escribeN x.
+    escribe PI.
+}

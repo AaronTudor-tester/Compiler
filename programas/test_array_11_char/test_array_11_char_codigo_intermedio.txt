@@ -1,0 +1,76 @@
+===== CÓDIGO INTERMEDIO =====
+
+main:
+output "=== TEST: Arrays de char ==="
+output "\n"
+t0 = 5
+t1 = 2
+t2 = t0 * t1
+
+t3 = 97
+t4 = 0
+t5 = 2
+t6 = t4 * t5
+vocales[t6] = t3
+t7 = 101
+t8 = 1
+t9 = 2
+t10 = t8 * t9
+vocales[t10] = t7
+t11 = 105
+t12 = 2
+t13 = 2
+t14 = t12 * t13
+vocales[t14] = t11
+t15 = 111
+t16 = 3
+t17 = 2
+t18 = t16 * t17
+vocales[t18] = t15
+t19 = 117
+t20 = 4
+t21 = 2
+t22 = t20 * t21
+vocales[t22] = t19
+output "Mostrando vocales:"
+output "\n"
+t23 = 0
+t24 = 2
+t25 = t23 * t24
+t27 = 5
+t26 = t27
+t28 = vocales[t25]
+primera = t28
+t29 = primera
+output t29
+output "\n"
+t30 = 2
+t31 = 2
+t32 = t30 * t31
+t34 = 5
+t33 = t34
+t35 = vocales[t32]
+tercera = t35
+t36 = tercera
+output t36
+output "\n"
+output "Modificando posicion 1:"
+output "\n"
+t37 = 1
+t38 = 2
+t39 = t37 * t38
+t40 = 69
+vocales[t39] = t40
+t41 = 1
+t42 = 2
+t43 = t41 * t42
+t45 = 5
+t44 = t45
+t46 = vocales[t43]
+nueva = t46
+t47 = nueva
+output t47
+output "\n"
+output "Test completado"
+output "\n"
+end:

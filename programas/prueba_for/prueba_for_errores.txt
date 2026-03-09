@@ -1,0 +1,8 @@
+===== RESULTADO DE LA COMPILACION =====
+
+Archivo: programas\prueba_for\prueba_for.txt
+Fecha: 2026-02-03T14:57:38.162938500
+
+? No se detectaron errores.
+
+Compilacion exitosa.

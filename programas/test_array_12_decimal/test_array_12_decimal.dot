@@ -1,0 +1,65 @@
+strict digraph {
+32	[label="Programa"];
+32->1
+32->6
+32->8
+32->11
+32->13
+32->16
+32->18
+32->20
+32->23
+32->27
+32->29
+32->31
+1	[label="print"];
+1->0
+0	[label="=== TEST: Arrays de decimal ===",shape=plaintext];
+6	[label="array: precios[3](FLOAT)"];
+6->2
+6->3
+6->4
+2	[label="10.5",shape=plaintext];
+3	[label="20.99",shape=plaintext];
+4	[label="15.75",shape=plaintext];
+8	[label="print"];
+8->7
+7	[label="Mostrando precios:",shape=plaintext];
+11	[label="=(p1)"]
+11->10
+10	[label="Acceso Array\n(precios)"]
+10->9
+9	[label="0",shape=plaintext];
+13	[label="print"];
+13->12
+12	[label="p1",shape=plaintext];
+16	[label="=(p2)"]
+16->15
+15	[label="Acceso Array\n(precios)"]
+15->14
+14	[label="1",shape=plaintext];
+18	[label="print"];
+18->17
+17	[label="p2",shape=plaintext];
+20	[label="print"];
+20->19
+19	[label="Suma de precios[0] + precios[2]:",shape=plaintext];
+23	[label="=(p3)"]
+23->22
+22	[label="Acceso Array\n(precios)"]
+22->21
+21	[label="2",shape=plaintext];
+27	[label="=(total)"]
+27->26
+26	[label="SUMA"];
+26->24
+26->25
+24	[label="p1",shape=plaintext];
+25	[label="p3",shape=plaintext];
+29	[label="print"];
+29->28
+28	[label="total",shape=plaintext];
+31	[label="print"];
+31->30
+30	[label="Test completado",shape=plaintext];
+}

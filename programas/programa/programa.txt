@@ -1,0 +1,85 @@
+principal  {
+
+decimal x es 10.
+numero y es 20.
+decimal z es 5.5.
+
+numero w.
+
+para numero i es 1, repite si i es menor o igual que 5, i incrementa {
+    escribeN "ITERAMOS".
+}
+
+numero crement es 0.
+numero incr es 1.
+crement es incrementa incr.
+crement es incr incrementa.
+
+escribe crement.
+	
+
+
+decimal asignaIncremento es x incrementa mas 5.0.
+si asignaIncremento mas 0.5 es menor que incrementa asignaIncremento {
+escribeN "incrementado".
+}
+
+numero a es 3 mas 10 menos y.
+escribeN a.
+
+w es 10 multiplicado y.
+
+escribeN z mas 1.5. 
+
+frase hola2 es "Hola mundo".
+
+escribeN hola2.
+
+numero edad.
+lee edad. // Input por consola
+
+si edad es mayor que 17 {
+    escribeN "Eres mayor de edad".
+} sino {
+    escribeN "Eres menor de edad".
+}
+
+numero j es 0.
+
+mientras j es menor o igual que 5 {
+	escribeN j.
+	incrementa j. // Puede ser ++j o j++
+}
+
+numero n es 5.
+
+repite {
+    escribeN n.
+    decrementa n.
+} mientras que n es diferente de 0.
+
+numero opcion es 2.
+
+segun (opcion) {
+    si es 1: escribeN "uno". salir.
+    si es 2: escribeN "dos". salir.
+    si es 3: escribeN "tres". salir.
+	sino: escribeN "Opción no válida".
+}
+
+
+para numero i es 0, repite si i es menor que 5, i incrementa {
+	numero pruebaaaa es 1.
+}
+
+pregunta llueve es cierto.
+pregunta paraguas es mentira.
+
+si llueve y ademas no paraguas { 
+	escribeN "Me voy a mojar".
+} sino {
+	escribeN "Todo bien".
+}
+
+
+}

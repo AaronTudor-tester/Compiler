@@ -1,0 +1,36 @@
+# Makefile (ejecutar con 'make')
+JAVACUP = java -jar lib/JavaCUP/java-cup-11b.jar
+JFLEX = java -jar lib/JFlex/jflex-full-1.8.2.jar
+JAVAC = javac
+JAVA = java
+
+SRC_DIR = src
+BUILD_DIR = build/classes
+CP = $(BUILD_DIR);lib/JavaCUP/*;lib/JFlex/*
+
+# Rutas
+CUP_FILE = $(SRC_DIR)/compiler/sintactic/sintactic_natural.cup
+JFLEX_FILE = $(SRC_DIR)/compiler/lexic/lexic_natural.flex
+
+all: parser scanner compile #run
+
+parser:
+	$(JAVACUP) -parser Parser -destdir $(SRC_DIR)/compiler/sintactic $(CUP_FILE)
+
+scanner:
+	$(JFLEX) -d $(SRC_DIR)/compiler/lexic $(JFLEX_FILE)
+
+compile:
+	$(JAVAC) -cp "lib/JavaCUP/*;lib/JFlex/*;$(BUILD_DIR)" -d $(BUILD_DIR) -encoding UTF-8 $(SRC_DIR)/compiler/sintactic/Symbols/*.java $(SRC_DIR)/compiler/codigo_intermedio/*.java $(SRC_DIR)/compiler/codigo_ensamblador/*.java
+	$(JAVAC) -cp "$(CP)" -d $(BUILD_DIR) -encoding UTF-8 $(SRC_DIR)/compiler/lexic/*.java $(SRC_DIR)/compiler/sintactic/*.java $(SRC_DIR)/lenguaje/*.java
+
+run:
+	$(JAVA) -cp "$(CP)" lenguaje.LenguajeNatural $(FILE)
+
+clean:
+	del /f $(SRC_DIR)\compiler\sintactic\Parser.java
+	del /f $(SRC_DIR)\compiler\sintactic\ParserSym.java
+	del /f $(SRC_DIR)\compiler\sintactic\sym.java
+	del /f $(SRC_DIR)\compiler\lexic\Scanner.java
+
+.PHONY: all parser scanner compile run clean

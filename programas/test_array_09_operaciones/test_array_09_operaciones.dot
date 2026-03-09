@@ -1,0 +1,69 @@
+strict digraph {
+34	[label="Programa"];
+34->1
+34->6
+34->9
+34->12
+34->16
+34->18
+34->20
+34->23
+34->27
+34->29
+34->31
+34->33
+1	[label="print"];
+1->0
+0	[label="=== TEST: Operaciones con array ===",shape=plaintext];
+6	[label="array: numeros[3](INT)"];
+6->2
+6->3
+6->4
+2	[label="10",shape=plaintext];
+3	[label="20",shape=plaintext];
+4	[label="30",shape=plaintext];
+9	[label="=(a)"]
+9->8
+8	[label="Acceso Array\n(numeros)"]
+8->7
+7	[label="0",shape=plaintext];
+12	[label="=(b)"]
+12->11
+11	[label="Acceso Array\n(numeros)"]
+11->10
+10	[label="1",shape=plaintext];
+16	[label="=(suma)"]
+16->15
+15	[label="SUMA"];
+15->13
+15->14
+13	[label="a",shape=plaintext];
+14	[label="b",shape=plaintext];
+18	[label="print"];
+18->17
+17	[label="10 + 20 = ",shape=plaintext];
+20	[label="print"];
+20->19
+19	[label="suma",shape=plaintext];
+23	[label="=(c)"]
+23->22
+22	[label="Acceso Array\n(numeros)"]
+22->21
+21	[label="2",shape=plaintext];
+27	[label="=(producto)"]
+27->26
+26	[label="PROD"];
+26->24
+26->25
+24	[label="b",shape=plaintext];
+25	[label="c",shape=plaintext];
+29	[label="print"];
+29->28
+28	[label="20 * 30 = ",shape=plaintext];
+31	[label="print"];
+31->30
+30	[label="producto",shape=plaintext];
+33	[label="print"];
+33->32
+32	[label="Test completado",shape=plaintext];
+}

@@ -1,0 +1,261 @@
+strict digraph {
+129	[label="Programa"];
+129->7
+129->42
+129->44
+129->46
+129->48
+129->50
+129->52
+129->54
+129->58
+129->60
+129->62
+129->69
+129->71
+129->73
+129->75
+129->86
+129->88
+129->90
+129->92
+129->94
+129->101
+129->108
+129->114
+129->116
+129->118
+129->122
+129->124
+129->126
+129->128
+7	[label="func: suma"];
+7->0
+7->1
+7->6
+0	[label="decl: n1 (INT)"];
+1	[label="decl: n2 (INT)"];
+6	[label="Bloque"];
+6->5
+5	[label="return"];
+5->4
+4	[label="SUMA"];
+4->2
+4->3
+2	[label="n1",shape=plaintext];
+3	[label="n2",shape=plaintext];
+42	[label="func: contarPares"];
+42->8
+42->9
+42->41
+8	[label="decl: inicio (INT)"];
+9	[label="decl: fin (INT)"];
+41	[label="Bloque"];
+41->11
+41->13
+41->15
+41->38
+41->40
+11	[label="=(contador)"]
+11->10
+10	[label="0",shape=plaintext];
+13	[label="=(i)"]
+13->12
+12	[label="inicio",shape=plaintext];
+15	[label="=(limite)"]
+15->14
+14	[label="fin",shape=plaintext];
+38	[label="while"];
+38->18
+38->37
+18	[label="MENOR"];
+18->16
+18->17
+16	[label="i",shape=plaintext];
+17	[label="limite",shape=plaintext];
+37	[label="Bloque"];
+37->34
+37->36
+34	[label="if"];
+34->21
+34->33
+21	[label="DIST"];
+21->19
+21->20
+19	[label="i",shape=plaintext];
+20	[label="0",shape=plaintext];
+33	[label="Bloque"];
+33->25
+33->32
+25	[label="=(residuo)"]
+25->24
+24	[label="MOD"];
+24->22
+24->23
+22	[label="i",shape=plaintext];
+23	[label="2",shape=plaintext];
+32	[label="if"];
+32->28
+32->31
+28	[label="IGUAL"];
+28->26
+28->27
+26	[label="residuo",shape=plaintext];
+27	[label="0",shape=plaintext];
+31	[label="Bloque"];
+31->30
+30	[label="INCR"];
+30->29
+29	[label="contador",shape=plaintext];
+36	[label="INCR"];
+36->35
+35	[label="i",shape=plaintext];
+40	[label="return"];
+40->39
+39	[label="contador",shape=plaintext];
+44	[label="print"];
+44->43
+43	[label="PRUEBA COMPLETA",shape=plaintext];
+46	[label="print"];
+46->45
+45	[label="\n",shape=plaintext];
+48	[label="print"];
+48->47
+47	[label="TEST 1: Variables",shape=plaintext];
+50	[label="=(x)"]
+50->49
+49	[label="10",shape=plaintext];
+52	[label="=(y)"]
+52->51
+51	[label="5",shape=plaintext];
+54	[label="print"];
+54->53
+53	[label="x+y= ",shape=plaintext];
+58	[label="print"];
+58->57
+57	[label="call: suma"];
+57->55
+57->56
+55	[label="x",shape=plaintext];
+56	[label="y",shape=plaintext];
+60	[label="print"];
+60->59
+59	[label="\n",shape=plaintext];
+62	[label="print"];
+62->61
+61	[label="TEST 2: Condicionales",shape=plaintext];
+69	[label="if"];
+69->65
+69->68
+65	[label="MAYOR"];
+65->63
+65->64
+63	[label="x",shape=plaintext];
+64	[label="y",shape=plaintext];
+68	[label="Bloque"];
+68->67
+67	[label="print"];
+67->66
+66	[label="10>5: SI",shape=plaintext];
+71	[label="print"];
+71->70
+70	[label="\n",shape=plaintext];
+73	[label="print"];
+73->72
+72	[label="TEST 3: While (1 a 3)",shape=plaintext];
+75	[label="=(c)"]
+75->74
+74	[label="1",shape=plaintext];
+86	[label="while"];
+86->78
+86->85
+78	[label="MEIGUAL"];
+78->76
+78->77
+76	[label="c",shape=plaintext];
+77	[label="3",shape=plaintext];
+85	[label="Bloque"];
+85->80
+85->82
+85->84
+80	[label="print"];
+80->79
+79	[label="c",shape=plaintext];
+82	[label="print"];
+82->81
+81	[label=" ",shape=plaintext];
+84	[label="INCR"];
+84->83
+83	[label="c",shape=plaintext];
+88	[label="print"];
+88->87
+87	[label="\n",shape=plaintext];
+90	[label="print"];
+90->89
+89	[label="TEST 4: Logica",shape=plaintext];
+92	[label="=(a)"]
+92->91
+91	[label="true",shape=plaintext];
+94	[label="=(b)"]
+94->93
+93	[label="false",shape=plaintext];
+101	[label="if"];
+101->97
+101->100
+97	[label="AND"];
+97->95
+97->96
+95	[label="a",shape=plaintext];
+96	[label="a",shape=plaintext];
+100	[label="Bloque"];
+100->99
+99	[label="print"];
+99->98
+98	[label="AND: SI",shape=plaintext];
+108	[label="if"];
+108->104
+108->107
+104	[label="OR"];
+104->102
+104->103
+102	[label="a",shape=plaintext];
+103	[label="b",shape=plaintext];
+107	[label="Bloque"];
+107->106
+106	[label="print"];
+106->105
+105	[label="OR: SI",shape=plaintext];
+114	[label="if"];
+114->110
+114->113
+110	[label="NOT"];
+110->109
+109	[label="b",shape=plaintext];
+113	[label="Bloque"];
+113->112
+112	[label="print"];
+112->111
+111	[label="NOT: SI",shape=plaintext];
+116	[label="print"];
+116->115
+115	[label="\n",shape=plaintext];
+118	[label="print"];
+118->117
+117	[label="TEST 5: Pares(1-11)= ",shape=plaintext];
+122	[label="=(pares)"]
+122->121
+121	[label="call: contarPares"];
+121->119
+121->120
+119	[label="1",shape=plaintext];
+120	[label="11",shape=plaintext];
+124	[label="print"];
+124->123
+123	[label="pares",shape=plaintext];
+126	[label="print"];
+126->125
+125	[label="\n",shape=plaintext];
+128	[label="print"];
+128->127
+127	[label="FIN",shape=plaintext];
+}

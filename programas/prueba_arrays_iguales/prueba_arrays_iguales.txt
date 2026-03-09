@@ -1,0 +1,46 @@
+
+
+principal {
+
+    numero filas es 2.
+    numero columnas es 3.
+
+    lista de lista de numero A de longitud 2, 3.
+    lista de lista de numero B es [[1,2,3],[4,5,6]].
+
+    A posicion (0,0) es 1.
+    A posicion (0,1) es 2.
+    A posicion (0,2) es 3.
+    A posicion (1,0) es 4.
+    A posicion (1,1) es 5.
+    A posicion (1,2) es 6.
+
+    numero igual es 1.
+
+    para numero i es 0, repite si i es menor que filas, incrementa i {
+        para numero j es 0, repite si j es menor que columnas, incrementa j {
+
+            numero vaA es A posicion (i, j).
+            numero vaB es B posicion (i, j).
+
+            si vaA es igual que vaB {
+                // seguimos
+            }
+            si no vaA es igual que vaB {
+                igual es 0.
+                salir.  
+            }
+        }
+
+        si igual es igual que 0 {
+            salir.
+        }
+    }
+
+    si igual es igual que 1 {
+        escribe "Las matrices son IGUALES.".
+    }
+    si igual es igual que 0 {
+        escribe "Las matrices son DISTINTAS.".
+    }
+}

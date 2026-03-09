@@ -1,0 +1,261 @@
+strict digraph {
+129	[label="Programa"];
+129->1
+129->3
+129->5
+129->9
+129->11
+129->13
+129->17
+129->19
+129->21
+129->25
+129->27
+129->29
+129->33
+129->35
+129->37
+129->39
+129->43
+129->45
+129->47
+129->49
+129->51
+129->53
+129->55
+129->57
+129->74
+129->76
+129->78
+129->80
+129->82
+129->109
+129->111
+129->113
+129->128
+1	[label="=(x)"]
+1->0
+0	[label="2.0",shape=plaintext];
+3	[label="print"];
+3->2
+2	[label="x",shape=plaintext];
+5	[label="print"];
+5->4
+4	[label="\n",shape=plaintext];
+9	[label="=(x)"]
+9->8
+8	[label="SUMA"];
+8->7
+8->6
+7	[label="x",shape=plaintext];
+6	[label="3.0",shape=plaintext];
+11	[label="print"];
+11->10
+10	[label="x",shape=plaintext];
+13	[label="print"];
+13->12
+12	[label="\n",shape=plaintext];
+17	[label="=(x)"]
+17->16
+16	[label="RESTA"];
+16->15
+16->14
+15	[label="x",shape=plaintext];
+14	[label="2.0",shape=plaintext];
+19	[label="print"];
+19->18
+18	[label="x",shape=plaintext];
+21	[label="print"];
+21->20
+20	[label="\n",shape=plaintext];
+25	[label="=(x)"]
+25->24
+24	[label="PROD"];
+24->23
+24->22
+23	[label="x",shape=plaintext];
+22	[label="4.0",shape=plaintext];
+27	[label="print"];
+27->26
+26	[label="x",shape=plaintext];
+29	[label="print"];
+29->28
+28	[label="\n",shape=plaintext];
+33	[label="=(x)"]
+33->32
+32	[label="DIV"];
+32->31
+32->30
+31	[label="x",shape=plaintext];
+30	[label="3.0",shape=plaintext];
+35	[label="print"];
+35->34
+34	[label="x",shape=plaintext];
+37	[label="print"];
+37->36
+36	[label="\n",shape=plaintext];
+39	[label="DECR"];
+39->38
+38	[label="x",shape=plaintext];
+43	[label="=(x)"]
+43->42
+42	[label="MOD"];
+42->41
+42->40
+41	[label="x",shape=plaintext];
+40	[label="2.0",shape=plaintext];
+45	[label="print"];
+45->44
+44	[label="x",shape=plaintext];
+47	[label="print"];
+47->46
+46	[label="\n",shape=plaintext];
+49	[label="=(x)"]
+49->48
+48	[label="1.0",shape=plaintext];
+51	[label="print"];
+51->50
+50	[label="x es: ",shape=plaintext];
+53	[label="print"];
+53->52
+52	[label="x",shape=plaintext];
+55	[label="print"];
+55->54
+54	[label="\n",shape=plaintext];
+57	[label="print"];
+57->56
+56	[label="x es: ",shape=plaintext];
+74	[label="=(x)"]
+74->73
+73	[label="SUMA"];
+73->72
+73->71
+72	[label="x",shape=plaintext];
+71	[label="RESTA"];
+71->68
+71->70
+68	[label="SUMA"];
+68->66
+68->67
+66	[label="SUMA"];
+66->63
+66->65
+63	[label="SUMA"];
+63->61
+63->62
+61	[label="RESTA"];
+61->58
+61->60
+58	[label="5",shape=plaintext];
+60	[label="INCR"];
+60->59
+59	[label="x",shape=plaintext];
+62	[label="2",shape=plaintext];
+65	[label="DECR"];
+65->64
+64	[label="x",shape=plaintext];
+67	[label="1",shape=plaintext];
+70	[label="INCR"];
+70->69
+69	[label="x",shape=plaintext];
+76	[label="print"];
+76->75
+75	[label="x",shape=plaintext];
+78	[label="print"];
+78->77
+77	[label="\n",shape=plaintext];
+80	[label="print"];
+80->79
+79	[label="BUCLES:",shape=plaintext];
+82	[label="print"];
+82->81
+81	[label="\n",shape=plaintext];
+109	[label="for"];
+109->84
+109->87
+109->91
+109->108
+84	[label="=(i)"]
+84->83
+83	[label="1.0",shape=plaintext];
+87	[label="MEIGUAL"];
+87->85
+87->86
+85	[label="i",shape=plaintext];
+86	[label="5.0",shape=plaintext];
+91	[label="=(x)"]
+91->90
+90	[label="SUMA"];
+90->88
+90->89
+88	[label="i",shape=plaintext];
+89	[label="0.5",shape=plaintext];
+108	[label="Bloque"];
+108->93
+108->95
+108->97
+108->99
+108->101
+108->103
+108->107
+93	[label="print"];
+93->92
+92	[label="ITERAMOS",shape=plaintext];
+95	[label="print"];
+95->94
+94	[label="\n",shape=plaintext];
+97	[label="print"];
+97->96
+96	[label="x",shape=plaintext];
+99	[label="print"];
+99->98
+98	[label="\n",shape=plaintext];
+101	[label="print"];
+101->100
+100	[label="i",shape=plaintext];
+103	[label="print"];
+103->102
+102	[label="\n",shape=plaintext];
+107	[label="=(i)"]
+107->106
+106	[label="SUMA"];
+106->105
+106->104
+105	[label="i",shape=plaintext];
+104	[label="1",shape=plaintext];
+111	[label="print"];
+111->110
+110	[label="hola",shape=plaintext];
+113	[label="print"];
+113->112
+112	[label="\n",shape=plaintext];
+128	[label="for"];
+128->115
+128->118
+128->122
+128->127
+115	[label="=(i)"]
+115->114
+114	[label="1.0",shape=plaintext];
+118	[label="MEIGUAL"];
+118->116
+118->117
+116	[label="i",shape=plaintext];
+117	[label="5",shape=plaintext];
+122	[label="=(i)"]
+122->121
+121	[label="SUMA"];
+121->120
+121->119
+120	[label="i",shape=plaintext];
+119	[label="1",shape=plaintext];
+127	[label="Bloque"];
+127->124
+127->126
+124	[label="print"];
+124->123
+123	[label="otro bucle",shape=plaintext];
+126	[label="print"];
+126->125
+125	[label="\n",shape=plaintext];
+}

@@ -1,0 +1,66 @@
+===== CODIGO INTERMEDIO (3-ADDRESS CODE) =====
+
+main:
+output "=== TEST: Operaciones con array ==="
+output "\n"
+t0 = 3
+t1 = 4
+t2 = t0 * t1
+
+t3 = 10
+t4 = 0
+t5 = 4
+t6 = t4 * t5
+numeros[t6] = t3
+t7 = 20
+t8 = 1
+t9 = 4
+t10 = t8 * t9
+numeros[t10] = t7
+t11 = 30
+t12 = 2
+t13 = 4
+t14 = t12 * t13
+numeros[t14] = t11
+t15 = 0
+t16 = 4
+t17 = t15 * t16
+t19 = 3
+t18 = t19
+t20 = numeros[t17]
+a = t20
+t21 = 1
+t22 = 4
+t23 = t21 * t22
+t25 = 3
+t24 = t25
+t26 = numeros[t23]
+b = t26
+t27 = a
+t28 = b
+t29 = t27 + t28
+suma = t29
+output "10 + 20 = "
+output "\n"
+t30 = suma
+output t30
+output "\n"
+t31 = 2
+t32 = 4
+t33 = t31 * t32
+t35 = 3
+t34 = t35
+t36 = numeros[t33]
+c = t36
+t37 = b
+t38 = c
+t39 = t37 * t38
+producto = t39
+output "20 * 30 = "
+output "\n"
+t40 = producto
+output t40
+output "\n"
+output "Test completado"
+output "\n"
+end:

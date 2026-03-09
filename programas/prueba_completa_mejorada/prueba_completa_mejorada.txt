@@ -1,0 +1,80 @@
+// Programa que prueba múltiples características
+
+numero sumaDosNumeros(numero a, numero b) {
+    devuelve a mas b.
+}
+
+numero multiplicar(numero x, numero y) {
+    devuelve x multiplicado y.
+}
+
+principal {
+    escribeN "=== PROGRAMA COMPLETO DE PRUEBAS ===".
+  
+    
+    // Prueba 1: Variables y funciones
+    escribeN "PRUEBA 1: Funciones".
+    numero num1 es 5.
+    numero num2 es 3.
+    numero suma es sumaDosNumeros(num1, num2).
+    escribe "5 + 3 = ".
+    escribeN suma.
+  
+    // Prueba 2: IF simple
+    escribeN "PRUEBA 2: IF".
+    si suma es mayor que 7 {
+        escribeN "Suma es mayor que 7".
+    } sino {
+        escribeN "Suma no es mayor que 7".
+    }
+    
+    
+    // Prueba 3: WHILE
+    escribeN "PRUEBA 3: WHILE - Cuenta del 1 al 5".
+    numero contador es 1.
+    mientras contador es menor o igual que 5 {
+        escribe contador.
+        escribe " ".
+        contador es contador mas 1.
+    }
+
+    
+    // Prueba 4: SWITCH
+    escribeN "PRUEBA 4: SWITCH - Menu".
+    numero opcion es 2.
+    segun opcion {
+        si es 1 : escribe "Elegiste opcion 1".
+        si es 2 : escribe "Elegiste opcion 2".
+        si es 3 : escribe "Elegiste opcion 3".
+    }
+    escribe "\n".
+    
+    // Prueba 5: REPEAT
+    escribeN "PRUEBA 5: REPEAT - Numeros impares hasta 9".
+    numero num es 1.
+    repite {
+        escribe num.
+        num es num mas 2.
+        escribe " ".
+    } mientras que num es menor o igual que 9.
+ 
+    
+    // Prueba 6: NOT
+    escribeN "PRUEBA 6: Operador NOT".
+    pregunta esVerdadero es cierto.
+    si no esVerdadero {
+        escribeN "NO es verdadero".
+    } sino {
+        escribeN "SI es verdadero".
+    }
+    
+    
+    // Prueba 7: Multiplicación via función
+    escribeN "PRUEBA 7: Funcion multiplicar".
+    numero resultado es multiplicar(4, 6).
+    escribe "4 * 6 = ".
+    escribeN resultado.
+   
+    
+    escribe "FIN DEL PROGRAMA".
+}

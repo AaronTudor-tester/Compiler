@@ -1,0 +1,575 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 11/02/2026 8:52:45
+
+00001000                             1              ORG $1000
+00001000                             2  START:
+00001000  4FF9 00005000              3              LEA STACKPTR, A7
+00001006  4EF9 00001084              4              JMP main
+0000100C                             5  
+0000100C                             6  ; ===== RUTINAS AUXILIARES =====
+0000100C                             7  PRINT_SIGNED:
+0000100C  4A41                       8              TST.W D1
+0000100E  6A00 0010                  9              BPL PRINT_UNSIGNED
+00001012  103C 000E                 10              MOVE.B #14, D0
+00001016  43F9 0000150D             11              LEA MINUS_SIGN, A1
+0000101C  4E4F                      12              TRAP #15
+0000101E  4441                      13              NEG.W D1
+00001020                            14  PRINT_UNSIGNED:
+00001020  103C 0003                 15              MOVE.B #3, D0
+00001024  4E4F                      16              TRAP #15
+00001026  4E75                      17              RTS
+00001028                            18  
+00001028                            19  sumaDosNumeros:
+00001028                            20              ; ; param a : INT
+00001028                            21              ; ; param b : INT
+00001028                            22              ; t0 = a
+00001028  33F9 000016FC 000016CC    23              MOVE.W a, t0
+00001032                            24              ; t1 = b
+00001032  33F9 000016FE 000016CE    25              MOVE.W b, t1
+0000103C                            26              ; t2 = t0 + t1
+0000103C  3039 000016CC             27              MOVE.W t0, D0
+00001042  D079 000016CE             28              ADD.W t1, D0
+00001048  33C0 000016D0             29              MOVE.W D0, t2
+0000104E                            30              ; return t2
+0000104E  3039 000016D0             31              MOVE.W t2, D0
+00001054  4E75                      32              RTS
+00001056                            33  multiplicar:
+00001056                            34              ; ; param x : INT
+00001056                            35              ; ; param y : INT
+00001056                            36              ; t3 = x
+00001056  33F9 00001706 000016D2    37              MOVE.W x, t3
+00001060                            38              ; t4 = y
+00001060  33F9 00001708 000016D4    39              MOVE.W y, t4
+0000106A                            40              ; t5 = t3 * t4
+0000106A  3039 000016D2             41              MOVE.W t3, D0
+00001070  C1F9 000016D4             42              MULS t4, D0
+00001076  33C0 000016D8             43              MOVE.W D0, t5
+0000107C                            44              ; return t5
+0000107C  3039 000016D8             45              MOVE.W t5, D0
+00001082  4E75                      46              RTS
+00001084                            47  main:
+00001084                            48              ; output "=== PROGRAMA COMPLETO DE PRUEBAS ==="
+00001084  43F9 00001691             49              LEA str0, A1
+0000108A  103C 000E                 50              MOVE.B #14, D0
+0000108E  4E4F                      51              TRAP #15
+00001090                            52              ; output "\n"
+00001090  43F9 0000150A             53              LEA NEWLINE, A1
+00001096  103C 000E                 54              MOVE.B #14, D0
+0000109A  4E4F                      55              TRAP #15
+0000109C                            56              ; output "PRUEBA 1: Funciones"
+0000109C  43F9 000015A4             57              LEA str1, A1
+000010A2  103C 000E                 58              MOVE.B #14, D0
+000010A6  4E4F                      59              TRAP #15
+000010A8                            60              ; output "\n"
+000010A8  43F9 0000150A             61              LEA NEWLINE, A1
+000010AE  103C 000E                 62              MOVE.B #14, D0
+000010B2  4E4F                      63              TRAP #15
+000010B4                            64              ; t6 = 5
+000010B4  33FC 0005 000016DA        65              MOVE.W #5, t6
+000010BC                            66              ; num1 = t6
+000010BC  33F9 000016DA 000016F2    67              MOVE.W t6, num1
+000010C6                            68              ; t7 = 3
+000010C6  33FC 0003 000016DC        69              MOVE.W #3, t7
+000010CE                            70              ; num2 = t7
+000010CE  33F9 000016DC 000016FA    71              MOVE.W t7, num2
+000010D8                            72              ; param_s num1  
+000010D8                            73              ; param_s num2  
+000010D8                            74              ; t8 = call sumaDosNumeros
+000010D8  33F9 000016F2 000016FC    75              MOVE.W num1, a
+000010E2  33F9 000016FA 000016FE    76              MOVE.W num2, b
+000010EC  4EB8 1028                 77              JSR sumaDosNumeros
+000010F0  33C0 000016DE             78              MOVE.W D0, t8
+000010F6                            79              ; suma = t8
+000010F6  33F9 000016DE 000016D6    80              MOVE.W t8, suma
+00001100                            81              ; output "5 + 3 = "
+00001100  43F9 000015BA             82              LEA str2, A1
+00001106  103C 000E                 83              MOVE.B #14, D0
+0000110A  4E4F                      84              TRAP #15
+0000110C                            85              ; t9 = suma
+0000110C  33F9 000016D6 000016E0    86              MOVE.W suma, t9
+00001116                            87              ; output t9
+00001116  3239 000016E0             88              MOVE.W t9, D1
+0000111C  4EB8 100C                 89              JSR PRINT_SIGNED
+00001120                            90              ; output "\n"
+00001120  43F9 0000150A             91              LEA NEWLINE, A1
+00001126  103C 000E                 92              MOVE.B #14, D0
+0000112A  4E4F                      93              TRAP #15
+0000112C                            94              ; output "PRUEBA 2: IF"
+0000112C  43F9 0000157E             95              LEA str3, A1
+00001132  103C 000E                 96              MOVE.B #14, D0
+00001136  4E4F                      97              TRAP #15
+00001138                            98              ; output "\n"
+00001138  43F9 0000150A             99              LEA NEWLINE, A1
+0000113E  103C 000E                100              MOVE.B #14, D0
+00001142  4E4F                     101              TRAP #15
+00001144                           102              ; t10 = suma
+00001144  33F9 000016D6 00001530   103              MOVE.W suma, t10
+0000114E                           104              ; t11 = 7
+0000114E  33FC 0007 0000158E       105              MOVE.W #7, t11
+00001156                           106              ; t12 = t10 > t11
+00001156  33FC 0000 0000158C       107              MOVE.W #0, t12
+0000115E  3039 00001530            108              MOVE.W t10, D0
+00001164  B079 0000158E            109              CMP.W t11, D0
+0000116A  6E00 0008                110              BGT t12_true
+0000116E  4EF9 0000117C            111              JMP t12_false
+00001174                           112  t12_true:
+00001174  33FC 0001 0000158C       113              MOVE.W #1, t12
+0000117C                           114  t12_false:
+0000117C                           115              ; if !(t12) goto e0
+0000117C  3039 0000158C            116              MOVE.W t12, D0
+00001182  B07C 0000                117              CMP.W #0, D0
+00001186  6700 0020                118              BEQ e0
+0000118A                           119              ; output "Suma es mayor que 7"
+0000118A  43F9 00001590            120              LEA str4, A1
+00001190  103C 000E                121              MOVE.B #14, D0
+00001194  4E4F                     122              TRAP #15
+00001196                           123              ; output "\n"
+00001196  43F9 0000150A            124              LEA NEWLINE, A1
+0000119C  103C 000E                125              MOVE.B #14, D0
+000011A0  4E4F                     126              TRAP #15
+000011A2                           127              ; goto e1
+000011A2  4EF9 000011C0            128              JMP e1
+000011A8                           129  e0:
+000011A8                           130              ; output "Suma no es mayor que 7"
+000011A8  43F9 00001532            131              LEA str5, A1
+000011AE  103C 000E                132              MOVE.B #14, D0
+000011B2  4E4F                     133              TRAP #15
+000011B4                           134              ; output "\n"
+000011B4  43F9 0000150A            135              LEA NEWLINE, A1
+000011BA  103C 000E                136              MOVE.B #14, D0
+000011BE  4E4F                     137              TRAP #15
+000011C0                           138  e1:
+000011C0                           139              ; output "PRUEBA 3: WHILE - Cuenta del 1 al 5"
+000011C0  43F9 0000155A            140              LEA str6, A1
+000011C6  103C 000E                141              MOVE.B #14, D0
+000011CA  4E4F                     142              TRAP #15
+000011CC                           143              ; output "\n"
+000011CC  43F9 0000150A            144              LEA NEWLINE, A1
+000011D2  103C 000E                145              MOVE.B #14, D0
+000011D6  4E4F                     146              TRAP #15
+000011D8                           147              ; t13 = 1
+000011D8  33FC 0001 000015C4       148              MOVE.W #1, t13
+000011E0                           149              ; contador = t13
+000011E0  33F9 000015C4 000016EA   150              MOVE.W t13, contador
+000011EA                           151  e2:
+000011EA                           152              ; t14 = contador
+000011EA  33F9 000016EA 000015B8   153              MOVE.W contador, t14
+000011F4                           154              ; t15 = 5
+000011F4  33FC 0005 000015F4       155              MOVE.W #5, t15
+000011FC                           156              ; t16 = t14 <= t15
+000011FC  33FC 0000 000015C6       157              MOVE.W #0, t16
+00001204  3039 000015B8            158              MOVE.W t14, D0
+0000120A  B079 000015F4            159              CMP.W t15, D0
+00001210  6F00 0008                160              BLE t16_true
+00001214  4EF9 00001222            161              JMP t16_false
+0000121A                           162  t16_true:
+0000121A  33FC 0001 000015C6       163              MOVE.W #1, t16
+00001222                           164  t16_false:
+00001222                           165              ; if !(t16) goto e3
+00001222  3039 000015C6            166              MOVE.W t16, D0
+00001228  B07C 0000                167              CMP.W #0, D0
+0000122C  6700 0054                168              BEQ e3
+00001230                           169              ; t17 = contador
+00001230  33F9 000016EA 00001622   170              MOVE.W contador, t17
+0000123A                           171              ; output t17
+0000123A  3239 00001622            172              MOVE.W t17, D1
+00001240  4EB8 100C                173              JSR PRINT_SIGNED
+00001244                           174              ; output " "
+00001244  43F9 00001516            175              LEA str7, A1
+0000124A  103C 000E                176              MOVE.B #14, D0
+0000124E  4E4F                     177              TRAP #15
+00001250                           178              ; t18 = contador
+00001250  33F9 000016EA 0000160E   179              MOVE.W contador, t18
+0000125A                           180              ; t19 = 1
+0000125A  33FC 0001 00001654       181              MOVE.W #1, t19
+00001262                           182              ; t20 = t18 + t19
+00001262  3039 0000160E            183              MOVE.W t18, D0
+00001268  D079 00001654            184              ADD.W t19, D0
+0000126E  33C0 000016B8            185              MOVE.W D0, t20
+00001274                           186              ; contador = t20
+00001274  33F9 000016B8 000016EA   187              MOVE.W t20, contador
+0000127E                           188              ; goto e2
+0000127E  4EF8 11EA                189              JMP e2
+00001282                           190  e3:
+00001282                           191              ; output "PRUEBA 4: SWITCH - Menu"
+00001282  43F9 00001518            192              LEA str8, A1
+00001288  103C 000E                193              MOVE.B #14, D0
+0000128C  4E4F                     194              TRAP #15
+0000128E                           195              ; output "\n"
+0000128E  43F9 0000150A            196              LEA NEWLINE, A1
+00001294  103C 000E                197              MOVE.B #14, D0
+00001298  4E4F                     198              TRAP #15
+0000129A                           199              ; t21 = 2
+0000129A  33FC 0002 000016B6       200              MOVE.W #2, t21
+000012A2                           201              ; opcion = t21
+000012A2  33F9 000016B6 00001700   202              MOVE.W t21, opcion
+000012AC                           203              ; t22 = opcion
+000012AC  33F9 00001700 000016BC   204              MOVE.W opcion, t22
+000012B6                           205              ; t23 = 1
+000012B6  33FC 0001 000016BA       206              MOVE.W #1, t23
+000012BE                           207              ; if t22 != t23 goto e5
+000012BE  3039 000016BC            208              MOVE.W t22, D0
+000012C4  B079 000016BA            209              CMP.W t23, D0
+000012CA  6600 000E                210              BNE e5
+000012CE                           211              ; output "Elegiste opcion 1"
+000012CE  43F9 0000165F            212              LEA str9, A1
+000012D4  103C 000E                213              MOVE.B #14, D0
+000012D8  4E4F                     214              TRAP #15
+000012DA                           215  e5:
+000012DA                           216              ; t24 = 2
+000012DA  33FC 0002 000016C0       217              MOVE.W #2, t24
+000012E2                           218              ; if t22 != t24 goto e6
+000012E2  3039 000016BC            219              MOVE.W t22, D0
+000012E8  B079 000016C0            220              CMP.W t24, D0
+000012EE  6600 000E                221              BNE e6
+000012F2                           222              ; output "Elegiste opcion 2"
+000012F2  43F9 00001610            223              LEA str10, A1
+000012F8  103C 000E                224              MOVE.B #14, D0
+000012FC  4E4F                     225              TRAP #15
+000012FE                           226  e6:
+000012FE                           227              ; t25 = 3
+000012FE  33FC 0003 000016BE       228              MOVE.W #3, t25
+00001306                           229              ; if t22 != t25 goto e4
+00001306  3039 000016BC            230              MOVE.W t22, D0
+0000130C  B079 000016BE            231              CMP.W t25, D0
+00001312  6600 000E                232              BNE e4
+00001316                           233              ; output "Elegiste opcion 3"
+00001316  43F9 00001624            234              LEA str11, A1
+0000131C  103C 000E                235              MOVE.B #14, D0
+00001320  4E4F                     236              TRAP #15
+00001322                           237  e4:
+00001322                           238              ; output "\n"
+00001322  43F9 0000150A            239              LEA NEWLINE, A1
+00001328  103C 000E                240              MOVE.B #14, D0
+0000132C  4E4F                     241              TRAP #15
+0000132E                           242              ; output "PRUEBA 5: REPEAT - Numeros impares hasta 9"
+0000132E  43F9 000015C8            243              LEA str12, A1
+00001334  103C 000E                244              MOVE.B #14, D0
+00001338  4E4F                     245              TRAP #15
+0000133A                           246              ; output "\n"
+0000133A  43F9 0000150A            247              LEA NEWLINE, A1
+00001340  103C 000E                248              MOVE.B #14, D0
+00001344  4E4F                     249              TRAP #15
+00001346                           250              ; t26 = 1
+00001346  33FC 0001 000016C6       251              MOVE.W #1, t26
+0000134E                           252              ; num = t26
+0000134E  33F9 000016C6 00001514   253              MOVE.W t26, num
+00001358                           254  e7:
+00001358                           255              ; t27 = num
+00001358  33F9 00001514 000016C2   256              MOVE.W num, t27
+00001362                           257              ; output t27
+00001362  3239 000016C2            258              MOVE.W t27, D1
+00001368  4EB8 100C                259              JSR PRINT_SIGNED
+0000136C                           260              ; t28 = num
+0000136C  33F9 00001514 000016CA   261              MOVE.W num, t28
+00001376                           262              ; t29 = 2
+00001376  33FC 0002 000016C8       263              MOVE.W #2, t29
+0000137E                           264              ; t30 = t28 + t29
+0000137E  3039 000016CA            265              MOVE.W t28, D0
+00001384  D079 000016C8            266              ADD.W t29, D0
+0000138A  33C0 000016E2            267              MOVE.W D0, t30
+00001390                           268              ; num = t30
+00001390  33F9 000016E2 00001514   269              MOVE.W t30, num
+0000139A                           270              ; output " "
+0000139A  43F9 00001516            271              LEA str7, A1
+000013A0  103C 000E                272              MOVE.B #14, D0
+000013A4  4E4F                     273              TRAP #15
+000013A6                           274              ; t31 = num
+000013A6  33F9 00001514 000016E6   275              MOVE.W num, t31
+000013B0                           276              ; t32 = 9
+000013B0  33FC 0009 000016E4       277              MOVE.W #9, t32
+000013B8                           278              ; t33 = t31 <= t32
+000013B8  33FC 0000 000016EC       279              MOVE.W #0, t33
+000013C0  3039 000016E6            280              MOVE.W t31, D0
+000013C6  B079 000016E4            281              CMP.W t32, D0
+000013CC  6F00 0008                282              BLE t33_true
+000013D0  4EF9 000013DE            283              JMP t33_false
+000013D6                           284  t33_true:
+000013D6  33FC 0001 000016EC       285              MOVE.W #1, t33
+000013DE                           286  t33_false:
+000013DE                           287              ; if t33 goto e7
+000013DE  3039 000016EC            288              MOVE.W t33, D0
+000013E4  B07C 0000                289              CMP.W #0, D0
+000013E8  6600 FF6E                290              BNE e7
+000013EC                           291  e8:
+000013EC                           292              ; output "PRUEBA 6: Operador NOT"
+000013EC  43F9 000015F6            293              LEA str13, A1
+000013F2  103C 000E                294              MOVE.B #14, D0
+000013F6  4E4F                     295              TRAP #15
+000013F8                           296              ; output "\n"
+000013F8  43F9 0000150A            297              LEA NEWLINE, A1
+000013FE  103C 000E                298              MOVE.B #14, D0
+00001402  4E4F                     299              TRAP #15
+00001404                           300              ; t34 = true
+00001404  33FC 0001 000016E8       301              MOVE.W #1, t34
+0000140C                           302              ; esVerdadero = t34
+0000140C  33F9 000016E8 00001704   303              MOVE.W t34, esVerdadero
+00001416                           304              ; t35 = ! esVerdadero
+00001416  3039 00001704            305              MOVE.W esVerdadero, D0
+0000141C  B07C 0000                306              CMP.W #0, D0
+00001420  6700 0010                307              BEQ t35_not_true
+00001424  33FC 0000 000016F0       308              MOVE.W #0, t35
+0000142C  4EF9 0000143A            309              JMP t35_not_end
+00001432                           310  t35_not_true:
+00001432  33FC 0001 000016F0       311              MOVE.W #1, t35
+0000143A                           312  t35_not_end:
+0000143A                           313              ; if !(t35) goto e9
+0000143A  3039 000016F0            314              MOVE.W t35, D0
+00001440  B07C 0000                315              CMP.W #0, D0
+00001444  6700 0020                316              BEQ e9
+00001448                           317              ; output "NO es verdadero"
+00001448  43F9 00001671            318              LEA str14, A1
+0000144E  103C 000E                319              MOVE.B #14, D0
+00001452  4E4F                     320              TRAP #15
+00001454                           321              ; output "\n"
+00001454  43F9 0000150A            322              LEA NEWLINE, A1
+0000145A  103C 000E                323              MOVE.B #14, D0
+0000145E  4E4F                     324              TRAP #15
+00001460                           325              ; goto e10
+00001460  4EF9 0000147E            326              JMP e10
+00001466                           327  e9:
+00001466                           328              ; output "SI es verdadero"
+00001466  43F9 00001681            329              LEA str15, A1
+0000146C  103C 000E                330              MOVE.B #14, D0
+00001470  4E4F                     331              TRAP #15
+00001472                           332              ; output "\n"
+00001472  43F9 0000150A            333              LEA NEWLINE, A1
+00001478  103C 000E                334              MOVE.B #14, D0
+0000147C  4E4F                     335              TRAP #15
+0000147E                           336  e10:
+0000147E                           337              ; output "PRUEBA 7: Funcion multiplicar"
+0000147E  43F9 00001636            338              LEA str16, A1
+00001484  103C 000E                339              MOVE.B #14, D0
+00001488  4E4F                     340              TRAP #15
+0000148A                           341              ; output "\n"
+0000148A  43F9 0000150A            342              LEA NEWLINE, A1
+00001490  103C 000E                343              MOVE.B #14, D0
+00001494  4E4F                     344              TRAP #15
+00001496                           345              ; t36 = 4
+00001496  33FC 0004 000016EE       346              MOVE.W #4, t36
+0000149E                           347              ; t37 = 6
+0000149E  33FC 0006 000016F6       348              MOVE.W #6, t37
+000014A6                           349              ; param_s t36  
+000014A6                           350              ; param_s t37  
+000014A6                           351              ; t38 = call multiplicar
+000014A6  33F9 000016EE 00001706   352              MOVE.W t36, x
+000014B0  33F9 000016F6 00001708   353              MOVE.W t37, y
+000014BA  4EB8 1056                354              JSR multiplicar
+000014BE  33C0 000016F4            355              MOVE.W D0, t38
+000014C4                           356              ; resultado = t38
+000014C4  33F9 000016F4 00001702   357              MOVE.W t38, resultado
+000014CE                           358              ; output "4 * 6 = "
+000014CE  43F9 00001656            359              LEA str17, A1
+000014D4  103C 000E                360              MOVE.B #14, D0
+000014D8  4E4F                     361              TRAP #15
+000014DA                           362              ; t39 = resultado
+000014DA  33F9 00001702 000016F8   363              MOVE.W resultado, t39
+000014E4                           364              ; output t39
+000014E4  3239 000016F8            365              MOVE.W t39, D1
+000014EA  4EB8 100C                366              JSR PRINT_SIGNED
+000014EE                           367              ; output "\n"
+000014EE  43F9 0000150A            368              LEA NEWLINE, A1
+000014F4  103C 000E                369              MOVE.B #14, D0
+000014F8  4E4F                     370              TRAP #15
+000014FA                           371              ; output "FIN DEL PROGRAMA"
+000014FA  43F9 00001549            372              LEA str18, A1
+00001500  103C 000E                373              MOVE.B #14, D0
+00001504  4E4F                     374              TRAP #15
+00001506                           375  end:
+00001506  6000 0202                376              BRA HALT
+0000150A                           377  
+0000150A                           378              ; DATA SECTION
+0000150A= 0D 0A 00                 379  NEWLINE:    DC.B 13,10,0
+0000150D= 2D 00                    380  MINUS_SIGN: DC.B '-',0
+00001510= 00008000                 381  HEAP_PTR:   DC.L $8000
+00001514                           382  num:        DS.W 1
+00001516= 20 00                    383  str7:       DC.B ' ',0
+00001518= 50 52 55 45 42 41 ...    384  str8:       DC.B 'PRUEBA 4: SWITCH - Menu',0
+00001530                           385  t10:        DS.W 1
+00001532= 53 75 6D 61 20 6E ...    386  str5:       DC.B 'Suma no es mayor que 7',0
+00001549= 46 49 4E 20 44 45 ...    387  str18:      DC.B 'FIN DEL PROGRAMA',0
+0000155A= 50 52 55 45 42 41 ...    388  str6:       DC.B 'PRUEBA 3: WHILE - Cuenta del 1 al 5',0
+0000157E= 50 52 55 45 42 41 ...    389  str3:       DC.B 'PRUEBA 2: IF',0
+0000158C                           390  t12:        DS.W 1
+0000158E                           391  t11:        DS.W 1
+00001590= 53 75 6D 61 20 65 ...    392  str4:       DC.B 'Suma es mayor que 7',0
+000015A4= 50 52 55 45 42 41 ...    393  str1:       DC.B 'PRUEBA 1: Funciones',0
+000015B8                           394  t14:        DS.W 1
+000015BA= 35 20 2B 20 33 20 ...    395  str2:       DC.B '5 + 3 = ',0
+000015C4                           396  t13:        DS.W 1
+000015C6                           397  t16:        DS.W 1
+000015C8= 50 52 55 45 42 41 ...    398  str12:      DC.B 'PRUEBA 5: REPEAT - Numeros impares hasta 9',0
+000015F4                           399  t15:        DS.W 1
+000015F6= 50 52 55 45 42 41 ...    400  str13:      DC.B 'PRUEBA 6: Operador NOT',0
+0000160E                           401  t18:        DS.W 1
+00001610= 45 6C 65 67 69 73 ...    402  str10:      DC.B 'Elegiste opcion 2',0
+00001622                           403  t17:        DS.W 1
+00001624= 45 6C 65 67 69 73 ...    404  str11:      DC.B 'Elegiste opcion 3',0
+00001636= 50 52 55 45 42 41 ...    405  str16:      DC.B 'PRUEBA 7: Funcion multiplicar',0
+00001654                           406  t19:        DS.W 1
+00001656= 34 20 2A 20 36 20 ...    407  str17:      DC.B '4 * 6 = ',0
+0000165F= 45 6C 65 67 69 73 ...    408  str9:       DC.B 'Elegiste opcion 1',0
+00001671= 4E 4F 20 65 73 20 ...    409  str14:      DC.B 'NO es verdadero',0
+00001681= 53 49 20 65 73 20 ...    410  str15:      DC.B 'SI es verdadero',0
+00001691= 3D 3D 3D 20 50 52 ...    411  str0:       DC.B '=== PROGRAMA COMPLETO DE PRUEBAS ===',0
+000016B6                           412  t21:        DS.W 1
+000016B8                           413  t20:        DS.W 1
+000016BA                           414  t23:        DS.W 1
+000016BC                           415  t22:        DS.W 1
+000016BE                           416  t25:        DS.W 1
+000016C0                           417  t24:        DS.W 1
+000016C2                           418  t27:        DS.W 1
+000016C4                           419  true:       DS.W 1
+000016C6                           420  t26:        DS.W 1
+000016C8                           421  t29:        DS.W 1
+000016CA                           422  t28:        DS.W 1
+000016CC                           423  t0:         DS.W 1
+000016CE                           424  t1:         DS.W 1
+000016D0                           425  t2:         DS.W 1
+000016D2                           426  t3:         DS.W 1
+000016D4                           427  t4:         DS.W 1
+000016D6                           428  suma:       DS.W 1
+000016D8                           429  t5:         DS.W 1
+000016DA                           430  t6:         DS.W 1
+000016DC                           431  t7:         DS.W 1
+000016DE                           432  t8:         DS.W 1
+000016E0                           433  t9:         DS.W 1
+000016E2                           434  t30:        DS.W 1
+000016E4                           435  t32:        DS.W 1
+000016E6                           436  t31:        DS.W 1
+000016E8                           437  t34:        DS.W 1
+000016EA                           438  contador:   DS.W 1
+000016EC                           439  t33:        DS.W 1
+000016EE                           440  t36:        DS.W 1
+000016F0                           441  t35:        DS.W 1
+000016F2                           442  num1:       DS.W 1
+000016F4                           443  t38:        DS.W 1
+000016F6                           444  t37:        DS.W 1
+000016F8                           445  t39:        DS.W 1
+000016FA                           446  num2:       DS.W 1
+000016FC                           447  a:          DS.W 1
+000016FE                           448  b:          DS.W 1
+00001700                           449  opcion:     DS.W 1
+00001702                           450  resultado:  DS.W 1
+00001704                           451  esVerdadero:DS.W 1
+00001706                           452  x:          DS.W 1
+00001708                           453  y:          DS.W 1
+0000170A                           454  
+0000170A                           455  HALT:
+0000170A  FFFF FFFF                456              SIMHALT
+0000170E                           457  
+00005000                           458              ORG $5000
+00005000                           459  STACKPTR:
+00005000                           460              END START
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+A                   16FC
+B                   16FE
+CONTADOR            16EA
+E0                  11A8
+E1                  11C0
+E10                 147E
+E2                  11EA
+E3                  1282
+E4                  1322
+E5                  12DA
+E6                  12FE
+E7                  1358
+E8                  13EC
+E9                  1466
+END                 1506
+ESVERDADERO         1704
+HALT                170A
+HEAP_PTR            1510
+MAIN                1084
+MINUS_SIGN          150D
+MULTIPLICAR         1056
+NEWLINE             150A
+NUM                 1514
+NUM1                16F2
+NUM2                16FA
+OPCION              1700
+PRINT_SIGNED        100C
+PRINT_UNSIGNED      1020
+RESULTADO           1702
+STACKPTR            5000
+START               1000
+STR0                1691
+STR1                15A4
+STR10               1610
+STR11               1624
+STR12               15C8
+STR13               15F6
+STR14               1671
+STR15               1681
+STR16               1636
+STR17               1656
+STR18               1549
+STR2                15BA
+STR3                157E
+STR4                1590
+STR5                1532
+STR6                155A
+STR7                1516
+STR8                1518
+STR9                165F
+SUMA                16D6
+SUMADOSNUMEROS      1028
+T0                  16CC
+T1                  16CE
+T10                 1530
+T11                 158E
+T12                 158C
+T12_FALSE           117C
+T12_TRUE            1174
+T13                 15C4
+T14                 15B8
+T15                 15F4
+T16                 15C6
+T16_FALSE           1222
+T16_TRUE            121A
+T17                 1622
+T18                 160E
+T19                 1654
+T2                  16D0
+T20                 16B8
+T21                 16B6
+T22                 16BC
+T23                 16BA
+T24                 16C0
+T25                 16BE
+T26                 16C6
+T27                 16C2
+T28                 16CA
+T29                 16C8
+T3                  16D2
+T30                 16E2
+T31                 16E6
+T32                 16E4
+T33                 16EC
+T33_FALSE           13DE
+T33_TRUE            13D6
+T34                 16E8
+T35                 16F0
+T35_NOT_END         143A
+T35_NOT_TRUE        1432
+T36                 16EE
+T37                 16F6
+T38                 16F4
+T39                 16F8
+T4                  16D4
+T5                  16D8
+T6                  16DA
+T7                  16DC
+T8                  16DE
+T9                  16E0
+TRUE                16C4
+X                   1706
+Y                   1708

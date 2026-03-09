@@ -1,0 +1,15 @@
+principal {
+
+numero x es 2.
+
+pregunta a es x mas 4 es mayor que 5 ? si si cierto sino mentira.
+
+escribeN x.
+escribeN a.
+si a {
+    escribe "hola".
+}
+
+}
+
+//Tener en cuenta que 1 es cierto y 0 falso

@@ -1,0 +1,9 @@
+===== TABLA DE SÍMBOLOS =====
+
+  CONSTANTE: Simbolo{nombre='x', tipo=CHAR, valor=z, linea=3, inicializada=true}
+  CONSTANTE: Simbolo{nombre='y', tipo=CHAR, valor=7, linea=5, inicializada=true}
+  VARIABLE: Simbolo{nombre='a', tipo=CHAR, valor=x, linea=9, inicializada=true}
+  VARIABLE: Simbolo{nombre='b', tipo=CHAR, valor=y, linea=10, inicializada=true}
+  VARIABLE: Simbolo{nombre='c', tipo=CHAR, valor=5, linea=12, inicializada=true}
+  VARIABLE: Simbolo{nombre='aa', tipo=STRING, valor="aasd asd", linea=19, inicializada=true}
+  VARIABLE: Simbolo{nombre='ab', tipo=STRING, valor="ggg wwww", linea=21, inicializada=true}

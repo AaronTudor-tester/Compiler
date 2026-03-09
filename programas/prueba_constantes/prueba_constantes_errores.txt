@@ -1,0 +1,8 @@
+===== RESULTADO DE LA COMPILACION =====
+
+Archivo: programas\prueba_constantes\prueba_constantes.txt
+Fecha: 2026-02-02T12:49:54.249991500
+
+? No se detectaron errores.
+
+Compilacion exitosa.

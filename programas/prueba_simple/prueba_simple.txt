@@ -1,0 +1,6 @@
+principal {
+    escribeN 10.
+    escribeN "Hola".
+    escribeN 20.
+    escribeN "Mundo".
+}

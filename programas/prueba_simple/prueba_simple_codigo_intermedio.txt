@@ -1,0 +1,14 @@
+===== CÓDIGO INTERMEDIO =====
+
+main:
+t0 = 10
+output t0
+output "\n"
+output "Hola"
+output "\n"
+t1 = 20
+output t1
+output "\n"
+output "Mundo"
+output "\n"
+end:

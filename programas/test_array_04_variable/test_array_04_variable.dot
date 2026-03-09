@@ -1,0 +1,37 @@
+strict digraph {
+18	[label="Programa"];
+18->1
+18->8
+18->10
+18->12
+18->15
+18->17
+1	[label="print"];
+1->0
+0	[label="=== TEST: Indice con variable ===",shape=plaintext];
+8	[label="array: vector[5](INT)"];
+8->2
+8->3
+8->4
+8->5
+8->6
+2	[label="10",shape=plaintext];
+3	[label="20",shape=plaintext];
+4	[label="30",shape=plaintext];
+5	[label="40",shape=plaintext];
+6	[label="50",shape=plaintext];
+10	[label="=(indice)"]
+10->9
+9	[label="2",shape=plaintext];
+12	[label="print"];
+12->11
+11	[label="Leyendo posicion con variable (indice=2):",shape=plaintext];
+15	[label="print"];
+15->14
+14	[label="Acceso Array\n(vector)"]
+14->13
+13	[label="indice",shape=plaintext];
+17	[label="print"];
+17->16
+16	[label="Test completado",shape=plaintext];
+}

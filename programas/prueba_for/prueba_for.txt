@@ -1,0 +1,17 @@
+principal {
+
+    escribeN "=== PRUEBA FOR CON DECIMALES ===".
+    
+
+    // FOR de 1.0 a 3.0 con incremento 0.5 (solo 5 iteraciones)
+    para decimal i es 1.0, repite si i es menor o igual que 3.0, i es i mas 0.5 {
+        escribe "i=".
+        escribeN i.
+        escribe " Doble=".
+        decimal y es i multiplicado 2.0.
+        escribeN y.
+       
+    }
+
+    escribe "FIN PRUEBA FOR".
+}

@@ -1,0 +1,20 @@
+===== TABLA DE SÍMBOLOS =====
+
+  VARIABLE: Simbolo{nombre='x', tipo=FLOAT, valor=10, linea=4, inicializada=true}
+  VARIABLE: Simbolo{nombre='y', tipo=INT, valor=20, linea=5, inicializada=true}
+  VARIABLE: Simbolo{nombre='z', tipo=FLOAT, valor=5.5, linea=7, inicializada=true}
+  VARIABLE: Simbolo{nombre='w', tipo=INT, valor=null, linea=9, inicializada=true}
+  VARIABLE: Simbolo{nombre='crement', tipo=INT, valor=0, linea=14, inicializada=true}
+  VARIABLE: Simbolo{nombre='incr', tipo=INT, valor=1, linea=15, inicializada=true}
+  VARIABLE: Simbolo{nombre='asignaIncremento', tipo=FLOAT, valor=null, linea=23, inicializada=true}
+  VARIABLE: Simbolo{nombre='a', tipo=INT, valor=null, linea=28, inicializada=true}
+  VARIABLE: Simbolo{nombre='hola2', tipo=STRING, valor="Hola mundo", linea=36, inicializada=true}
+  VARIABLE: Simbolo{nombre='edad', tipo=INT, valor=null, linea=39, inicializada=true}
+  VARIABLE: Simbolo{nombre='j', tipo=INT, valor=0, linea=49, inicializada=true}
+  VARIABLE: Simbolo{nombre='n', tipo=INT, valor=5, linea=56, inicializada=true}
+  VARIABLE: Simbolo{nombre='opcion', tipo=INT, valor=2, linea=63, inicializada=true}
+  VARIABLE: Simbolo{nombre='llueve', tipo=BOOL, valor=true, linea=76, inicializada=true}
+  VARIABLE: Simbolo{nombre='paraguas', tipo=BOOL, valor=false, linea=78, inicializada=true}
+    VARIABLE: Simbolo{nombre='i', tipo=INT, valor=1, linea=9, inicializada=true}
+    VARIABLE: Simbolo{nombre='i', tipo=INT, valor=0, linea=71, inicializada=true}
+    VARIABLE: Simbolo{nombre='pruebaaaa', tipo=INT, valor=1, linea=73, inicializada=true}

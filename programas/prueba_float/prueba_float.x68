@@ -1,0 +1,139 @@
+	ORG $1000
+START:
+	LEA STACKPTR, A7
+	JMP main
+
+; ===== RUTINAS AUXILIARES =====
+PRINT_SIGNED:
+	TST.W D1
+	BPL PRINT_UNSIGNED
+	MOVE.B #14, D0
+	LEA MINUS_SIGN, A1
+	TRAP #15
+	NEG.W D1
+PRINT_UNSIGNED:
+	MOVE.B #3, D0
+	TRAP #15
+	RTS
+
+PRINT_DECIMAL_2:
+	MOVE.L D1, D3
+	TST.L D3
+	BPL .PD2_POSITIVE
+	MOVE.B #14, D0
+	LEA MINUS_SIGN, A1
+	TRAP #15
+	NEG.L D3
+.PD2_POSITIVE:
+	MOVE.L D3, D2
+	MOVE.W #100, D4
+	DIVS D4, D2
+	MOVE.L D2, D5
+	MOVE.W #100, D4
+	MOVE.L D5, D6
+	CLR.L D0
+	MOVE.W D4, D0
+	MULS D0, D6
+	SUB.L D6, D3
+	CLR.L D1
+	MOVE.W D2, D1
+	MOVE.B #3, D0
+	TRAP #15
+	LEA DECIMAL_POINT, A1
+	MOVE.B #14, D0
+	TRAP #15
+	CLR.L D0
+	MOVE.W D3, D0
+	CMP.W #10, D0
+	BGE .PD2_SKIP_ZERO
+	LEA ZERO_CHAR, A1
+	MOVE.B #14, D0
+	TRAP #15
+.PD2_SKIP_ZERO:
+	CLR.L D1
+	MOVE.W D3, D1
+	MOVE.B #3, D0
+	TRAP #15
+	RTS
+
+sumaDosDecimales:
+	; ; param a : FLOAT
+	; ; param b : FLOAT
+	; t0 = a
+	MOVE.W a, t0
+	; t1 = b
+	MOVE.W b, t1
+	; t2 = t0 + t1
+	MOVE.W t0, D0
+	ADD.W t1, D0
+	MOVE.W D0, t2
+	; return t2
+	MOVE.W t2, D0
+	RTS
+main:
+	; output "=== PRUEBA FLOAT ==="
+	LEA str0, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; t3 = 3.5
+	MOVE.W #350, t3
+	; x = t3
+	MOVE.W t3, x
+	; t4 = 2.25
+	MOVE.W #225, t4
+	; y = t4
+	MOVE.W t4, y
+	; param_s x  
+	; param_s y  
+	; t5 = call sumaDosDecimales
+	MOVE.W x, a
+	MOVE.W y, b
+	JSR sumaDosDecimales
+	MOVE.W D0, t5
+	; z = t5
+	MOVE.W t5, z
+	; output "Resultado esperado ~5.75"
+	LEA str1, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; output "\n"
+	LEA NEWLINE, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; t6 = z
+	MOVE.W z, t6
+	; output t6
+	CLR.L D1
+	MOVE.W t6, D1
+	EXT.L D1
+	JSR PRINT_DECIMAL_2
+end:
+	BRA HALT
+
+	; DATA SECTION
+NEWLINE:	DC.B 13,10,0
+MINUS_SIGN:	DC.B '-',0
+DECIMAL_POINT:	DC.B '.',0
+ZERO_CHAR:	DC.B '0',0
+HEAP_PTR:	DC.L $8000
+t4:	DS.W 1
+a:	DS.W 1
+t5:	DS.W 1
+b:	DS.W 1
+t6:	DS.W 1
+str0:	DC.B '=== PRUEBA FLOAT ===',0
+str1:	DC.B 'Resultado esperado ~5.75',0
+x:	DS.W 1
+y:	DS.W 1
+z:	DS.W 1
+t0:	DS.W 1
+t1:	DS.W 1
+t2:	DS.W 1
+t3:	DS.W 1
+
+HALT:
+	SIMHALT
+
+	ORG $5000
+STACKPTR:
+	END START

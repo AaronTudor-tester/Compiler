@@ -1,0 +1,204 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 08/02/2026 12:20:44
+
+00001000                             1      ORG $1000
+00001000                             2  START:
+00001000  4FF9 00005000              3      LEA STACKPTR, A7
+00001006  4EF9 000010F8              4      JMP main
+0000100C                             5  
+0000100C                             6  ; ===== RUTINAS AUXILIARES =====
+0000100C                             7  PRINT_SIGNED:
+0000100C  4A41                       8      TST.W D1
+0000100E  6A00 0010                  9      BPL PRINT_UNSIGNED
+00001012  103C 000E                 10      MOVE.B #14, D0
+00001016  43F9 0000117D             11      LEA MINUS_SIGN, A1
+0000101C  4E4F                      12      TRAP #15
+0000101E  4441                      13      NEG.W D1
+00001020                            14  PRINT_UNSIGNED:
+00001020  103C 0003                 15      MOVE.B #3, D0
+00001024  4E4F                      16      TRAP #15
+00001026  4E75                      17      RTS
+00001028                            18  
+00001028                            19  PRINT_BOOL:
+00001028  4A41                      20      TST.W D1
+0000102A  6700 000C                 21      BEQ .PRINT_MENTIRA
+0000102E  43F9 0000117F             22      LEA STR_CIERTO, A1
+00001034  6000 0008                 23      BRA .PRINT_BOOL_STR
+00001038                            24  .PRINT_MENTIRA:
+00001038  43F9 00001186             25      LEA STR_MENTIRA, A1
+0000103E                            26  .PRINT_BOOL_STR:
+0000103E  103C 000E                 27      MOVE.B #14, D0
+00001042  4E4F                      28      TRAP #15
+00001044  4E75                      29      RTS
+00001046                            30  
+00001046                            31  READ_BOOL:
+00001046                            32  .RB_RETRY:
+00001046  43F9 000011C2             33      LEA INPUT_BUFFER, A1
+0000104C  103C 0002                 34      MOVE.B #2, D0
+00001050  4E4F                      35      TRAP #15
+00001052  43F9 000011C2             36      LEA INPUT_BUFFER, A1
+00001058  45F9 0000117F             37      LEA STR_CIERTO, A2
+0000105E  4EB9 0000109C             38      JSR STRING_COMPARE
+00001064  4A40                      39      TST.W D0
+00001066  6700 0028                 40      BEQ .RB_TRUE
+0000106A  43F9 000011C2             41      LEA INPUT_BUFFER, A1
+00001070  45F9 00001186             42      LEA STR_MENTIRA, A2
+00001076  4EB9 0000109C             43      JSR STRING_COMPARE
+0000107C  4A40                      44      TST.W D0
+0000107E  6700 0016                 45      BEQ .RB_FALSE
+00001082  43F9 0000118E             46      LEA ERROR_BOOL_MSG, A1
+00001088  103C 000E                 47      MOVE.B #14, D0
+0000108C  4E4F                      48      TRAP #15
+0000108E  60B6                      49      BRA .RB_RETRY
+00001090                            50  .RB_TRUE:
+00001090  323C 0001                 51      MOVE.W #1, D1
+00001094  4E75                      52      RTS
+00001096                            53  .RB_FALSE:
+00001096  323C 0000                 54      MOVE.W #0, D1
+0000109A  4E75                      55      RTS
+0000109C                            56  
+0000109C                            57  STRING_COMPARE:
+0000109C                            58  .SC_LOOP:
+0000109C  1419                      59      MOVE.B (A1)+, D2
+0000109E  161A                      60      MOVE.B (A2)+, D3
+000010A0  B43C 0041                 61      CMP.B #'A', D2
+000010A4  6D00 000E                 62      BLT .SC_SKIP1
+000010A8  B43C 005A                 63      CMP.B #'Z', D2
+000010AC  6E00 0006                 64      BGT .SC_SKIP1
+000010B0  0602 0020                 65      ADD.B #32, D2
+000010B4                            66  .SC_SKIP1:
+000010B4  B63C 0041                 67      CMP.B #'A', D3
+000010B8  6D00 000E                 68      BLT .SC_SKIP2
+000010BC  B63C 005A                 69      CMP.B #'Z', D3
+000010C0  6E00 0006                 70      BGT .SC_SKIP2
+000010C4  0603 0020                 71      ADD.B #32, D3
+000010C8                            72  .SC_SKIP2:
+000010C8  B43C 000A                 73      CMP.B #10, D2
+000010CC  6700 000E                 74      BEQ .SC_END_D2
+000010D0  B43C 000D                 75      CMP.B #13, D2
+000010D4  6700 0006                 76      BEQ .SC_END_D2
+000010D8  6000 0004                 77      BRA .SC_CONT
+000010DC                            78  .SC_END_D2:
+000010DC  4202                      79      CLR.B D2
+000010DE                            80  .SC_CONT:
+000010DE  B602                      81      CMP.B D2, D3
+000010E0  6600 0010                 82      BNE .SC_DIFFERENT
+000010E4  4A02                      83      TST.B D2
+000010E6  6700 0004                 84      BEQ .SC_EQUAL
+000010EA  60B0                      85      BRA .SC_LOOP
+000010EC                            86  .SC_EQUAL:
+000010EC  303C 0000                 87      MOVE.W #0, D0
+000010F0  4E75                      88      RTS
+000010F2                            89  .SC_DIFFERENT:
+000010F2  303C 0001                 90      MOVE.W #1, D0
+000010F6  4E75                      91      RTS
+000010F8                            92  
+000010F8                            93  main:
+000010F8                            94      ; output "=== TEST: Lectura de booleanos ==="
+000010F8  43F9 00001266             95      LEA str0, A1
+000010FE  103C 000E                 96      MOVE.B #14, D0
+00001102  4E4F                      97      TRAP #15
+00001104                            98      ; output "\n"
+00001104  43F9 0000117A             99      LEA NEWLINE, A1
+0000110A  103C 000E                100      MOVE.B #14, D0
+0000110E  4E4F                     101      TRAP #15
+00001110                           102      ; output "Introduce un valor booleano (cierto/mentira):"
+00001110  43F9 00001226            103      LEA str1, A1
+00001116  103C 000E                104      MOVE.B #14, D0
+0000111A  4E4F                     105      TRAP #15
+0000111C                           106      ; output "\n"
+0000111C  43F9 0000117A            107      LEA NEWLINE, A1
+00001122  103C 000E                108      MOVE.B #14, D0
+00001126  4E4F                     109      TRAP #15
+00001128                           110      ; input usuario
+00001128  4EB8 1046                111      JSR READ_BOOL
+0000112C  33C1 0000128A            112      MOVE.W D1, usuario
+00001132                           113      ; output "Has introducido: "
+00001132  43F9 00001254            114      LEA str2, A1
+00001138  103C 000E                115      MOVE.B #14, D0
+0000113C  4E4F                     116      TRAP #15
+0000113E                           117      ; t0 = usuario
+0000113E  33F9 0000128A 0000128C   118      MOVE.W usuario, t0
+00001148                           119      ; output t0
+00001148  3239 0000128C            120      MOVE.W t0, D1
+0000114E  4EB8 1028                121      JSR PRINT_BOOL
+00001152                           122      ; output "\n"
+00001152  43F9 0000117A            123      LEA NEWLINE, A1
+00001158  103C 000E                124      MOVE.B #14, D0
+0000115C  4E4F                     125      TRAP #15
+0000115E                           126      ; output "Test completado"
+0000115E  43F9 00001216            127      LEA str3, A1
+00001164  103C 000E                128      MOVE.B #14, D0
+00001168  4E4F                     129      TRAP #15
+0000116A                           130      ; output "\n"
+0000116A  43F9 0000117A            131      LEA NEWLINE, A1
+00001170  103C 000E                132      MOVE.B #14, D0
+00001174  4E4F                     133      TRAP #15
+00001176                           134  end:
+00001176  6000 0116                135      BRA HALT
+0000117A                           136  
+0000117A                           137      ; DATA SECTION
+0000117A= 0D 0A 00                 138  NEWLINE:    DC.B 13,10,0
+0000117D= 2D 00                    139  MINUS_SIGN: DC.B '-',0
+0000117F= 63 69 65 72 74 6F 00     140  STR_CIERTO: DC.B 'cierto',0
+00001186= 6D 65 6E 74 69 72 ...    141  STR_MENTIRA:    DC.B 'mentira',0
+0000118E= 45 52 52 4F 52 3A ...    142  ERROR_BOOL_MSG: DC.B 'ERROR: Entrada invalida. Ingrese cierto o mentira: ',0
+000011C2                           143  INPUT_BUFFER:   DS.B 80
+00001212= 00008000                 144  HEAP_PTR:   DC.L $8000
+00001216= 54 65 73 74 20 63 ...    145  str3:   DC.B 'Test completado',0
+00001226= 49 6E 74 72 6F 64 ...    146  str1:   DC.B 'Introduce un valor booleano (cierto/mentira):',0
+00001254= 48 61 73 20 69 6E ...    147  str2:   DC.B 'Has introducido: ',0
+00001266= 3D 3D 3D 20 54 45 ...    148  str0:   DC.B '=== TEST: Lectura de booleanos ===',0
+0000128A                           149  usuario:    DS.W 1
+0000128C                           150  t0: DS.W 1
+0000128E                           151  
+0000128E                           152  HALT:
+0000128E  FFFF FFFF                153      SIMHALT
+00001292                           154  
+00005000                           155      ORG $5000
+00005000                           156  STACKPTR:
+00005000                           157      END START
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+END                 1176
+ERROR_BOOL_MSG      118E
+HALT                128E
+HEAP_PTR            1212
+INPUT_BUFFER        11C2
+MAIN                10F8
+MINUS_SIGN          117D
+NEWLINE             117A
+PRINT_BOOL          1028
+PRINT_BOOL:PRINT_BOOL_STR  103E
+PRINT_BOOL:PRINT_MENTIRA  1038
+PRINT_SIGNED        100C
+PRINT_UNSIGNED      1020
+READ_BOOL           1046
+READ_BOOL:RB_FALSE  1096
+READ_BOOL:RB_RETRY  1046
+READ_BOOL:RB_TRUE   1090
+STACKPTR            5000
+START               1000
+STR0                1266
+STR1                1226
+STR2                1254
+STR3                1216
+STRING_COMPARE      109C
+STRING_COMPARE:SC_CONT  10DE
+STRING_COMPARE:SC_DIFFERENT  10F2
+STRING_COMPARE:SC_END_D2  10DC
+STRING_COMPARE:SC_EQUAL  10EC
+STRING_COMPARE:SC_LOOP  109C
+STRING_COMPARE:SC_SKIP1  10B4
+STRING_COMPARE:SC_SKIP2  10C8
+STR_CIERTO          117F
+STR_MENTIRA         1186
+T0                  128C
+USUARIO             128A

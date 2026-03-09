@@ -1,0 +1,18 @@
+// TEST ARRAY 10: Array con bucle while
+// Objetivo: Verificar recorrido de arrays con bucle while
+
+principal {
+    escribeN "=== TEST: Array con while ===".
+    
+    lista de numero vector es [5, 10, 15, 20, 25].
+    numero i es 0.
+    
+    escribeN "Recorriendo array con while:".
+    mientras (i es menor que 5) {
+        numero valor es vector posicion (i).
+        escribeN valor.
+        i es i mas 1.
+    }
+    
+    escribeN "Test completado".
+}

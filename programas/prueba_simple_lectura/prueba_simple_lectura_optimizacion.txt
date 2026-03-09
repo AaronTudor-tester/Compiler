@@ -1,0 +1,35 @@
+===== OPTIMIZACIONES REALIZADAS =====
+
+Archivo: programas\prueba_simple_lectura\prueba_simple_lectura.txt
+Fecha: 2026-02-08T12:21:45.910515300
+
+--- ESTADÍSTICAS DE CÓDIGO INTERMEDIO ---
+
+Instrucciones originales: 7
+Instrucciones optimizadas: 7
+Instrucciones eliminadas: 0
+Reducción: 0,00%
+
+--- ESTADÍSTICAS DE ENSAMBLADOR ---
+
+Archivo original (.x68): 1631 bytes
+Archivo optimizado (_optimizado.x68): 1589 bytes
+Bytes reducidos: 42 bytes
+Reducción en ensamblador: 2,58%
+
+--- CÓDIGO OPTIMIZADO ---
+
+main:
+output "Ingresa numero:"
+output "\n"
+input x
+output "Ingresaste:"
+output "\n"
+output x
+
+--- CAMBIOS REALIZADOS POR EL OPTIMIZADOR ---
+
+Asignación diferida:
+  - Línea 6: t0 eliminado y sustituido por x
+Eliminación de etiquetas muertas:
+  - Línea 7: Se ha eliminado la etiqueta end

@@ -1,0 +1,8 @@
+===== RESULTADO DE LA COMPILACIÓN =====
+
+Archivo: programas\prueba_simple_lectura\prueba_simple_lectura.txt
+Fecha: 2026-02-07T16:45:43.062955600
+
+No se han detectado errores.
+
+Compilado con éxito.

@@ -1,0 +1,8 @@
+===== ERRORES DETECTADOS EN LA COMPILACIÓN =====
+
+Archivo: .\programas\test_wrong_type\test_wrong_type.txt
+Fecha: 2026-02-11T09:23:02.988990100
+
+1 error(es) encontrado(s):
+
+1. [Línea 7, Columna 1] ERROR SEMANTICO: El return debe ser de tipo INT pero es STRING

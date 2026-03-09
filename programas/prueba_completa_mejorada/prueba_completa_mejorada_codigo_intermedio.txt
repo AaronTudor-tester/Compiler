@@ -1,0 +1,126 @@
+===== CÓDIGO INTERMEDIO =====
+
+sumaDosNumeros:
+; param a : INT
+; param b : INT
+t0 = a
+t1 = b
+t2 = t0 + t1
+return t2
+multiplicar:
+; param x : INT
+; param y : INT
+t3 = x
+t4 = y
+t5 = t3 * t4
+return t5
+main:
+output "=== PROGRAMA COMPLETO DE PRUEBAS ==="
+output "\n"
+output "PRUEBA 1: Funciones"
+output "\n"
+t6 = 5
+num1 = t6
+t7 = 3
+num2 = t7
+param_s num1  
+param_s num2  
+t8 = call sumaDosNumeros
+suma = t8
+output "5 + 3 = "
+t9 = suma
+output t9
+output "\n"
+output "PRUEBA 2: IF"
+output "\n"
+t10 = suma
+t11 = 7
+t12 = t10 > t11
+if !(t12) goto e0
+output "Suma es mayor que 7"
+output "\n"
+goto e1
+e0:
+output "Suma no es mayor que 7"
+output "\n"
+e1:
+output "PRUEBA 3: WHILE - Cuenta del 1 al 5"
+output "\n"
+t13 = 1
+contador = t13
+e2:
+t14 = contador
+t15 = 5
+t16 = t14 <= t15
+if !(t16) goto e3
+t17 = contador
+output t17
+output " "
+t18 = contador
+t19 = 1
+t20 = t18 + t19
+contador = t20
+goto e2
+e3:
+output "PRUEBA 4: SWITCH - Menu"
+output "\n"
+t21 = 2
+opcion = t21
+t22 = opcion
+t23 = 1
+if t22 != t23 goto e5
+output "Elegiste opcion 1"
+e5:
+t24 = 2
+if t22 != t24 goto e6
+output "Elegiste opcion 2"
+e6:
+t25 = 3
+if t22 != t25 goto e4
+output "Elegiste opcion 3"
+e4:
+output "\n"
+output "PRUEBA 5: REPEAT - Numeros impares hasta 9"
+output "\n"
+t26 = 1
+num = t26
+e7:
+t27 = num
+output t27
+t28 = num
+t29 = 2
+t30 = t28 + t29
+num = t30
+output " "
+t31 = num
+t32 = 9
+t33 = t31 <= t32
+if t33 goto e7
+e8:
+output "PRUEBA 6: Operador NOT"
+output "\n"
+t34 = true
+esVerdadero = t34
+t35 = ! esVerdadero
+if !(t35) goto e9
+output "NO es verdadero"
+output "\n"
+goto e10
+e9:
+output "SI es verdadero"
+output "\n"
+e10:
+output "PRUEBA 7: Funcion multiplicar"
+output "\n"
+t36 = 4
+t37 = 6
+param_s t36  
+param_s t37  
+t38 = call multiplicar
+resultado = t38
+output "4 * 6 = "
+t39 = resultado
+output t39
+output "\n"
+output "FIN DEL PROGRAMA"
+end:

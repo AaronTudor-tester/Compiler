@@ -1,0 +1,8 @@
+===== ERRORES DETECTADOS EN LA COMPILACIÓN =====
+
+Archivo: .\programas\test_array_char_tipo_error\test_array_char_tipo_error.txt
+Fecha: 2026-02-11T20:36:00.926416900
+
+1 error(es) encontrado(s):
+
+1. [Línea 9, Columna 26] ERROR SEMANTICO: Tipos incompatibles en asignación de array. El array es de tipo CHAR pero se intenta asignar un valor de tipo INT

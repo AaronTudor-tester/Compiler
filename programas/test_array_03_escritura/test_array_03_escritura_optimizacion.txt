@@ -1,0 +1,77 @@
+===== OPTIMIZACIONES REALIZADAS =====
+
+Archivo: programas\test_array_03_escritura\test_array_03_escritura.txt
+Fecha: 2026-02-03T12:21:20.207288400
+
+--- ESTADISTICAS DE CODIGO INTERMEDIO ---
+
+Instrucciones originales: 18
+Instrucciones optimizadas: 17
+Instrucciones eliminadas: 1
+Reduccion: 5,56%
+
+--- ESTADISTICAS DE ENSAMBLADOR ---
+
+Archivo original (.x68): 6017 bytes
+Archivo optimizado (_optimizado.x68): 4448 bytes
+Bytes reducidos: 1569 bytes
+Reduccion en ensamblador: 26,08%
+
+--- CODIGO OPTIMIZADO ---
+
+main:
+output "=== TEST: Escritura en array ==="
+output "\n"
+vector[0] = 10
+vector[4] = 20
+vector[8] = 30
+output "Valor original en posicion 1: "
+t18 = vector[4]
+output t18
+output "\n"
+vector[4] = 99
+output "Valor modificado en posicion 1: "
+t26 = vector[4]
+output t26
+output "\n"
+output "Test completado"
+output "\n"
+
+--- CAMBIOS REALIZADOS POR EL OPTIMIZADOR ---
+
+Asignación diferida:
+  - Línea 3: t0 eliminado y sustituido por 3
+  - Línea 3: t1 eliminado y sustituido por 4
+  - Línea 5: t3 eliminado y sustituido por 10
+  - Línea 5: t4 eliminado y sustituido por 0
+  - Línea 5: t5 eliminado y sustituido por 4
+  - Línea 7: t7 eliminado y sustituido por 20
+  - Línea 7: t8 eliminado y sustituido por 1
+  - Línea 7: t9 eliminado y sustituido por 4
+  - Línea 9: t11 eliminado y sustituido por 30
+  - Línea 9: t12 eliminado y sustituido por 2
+  - Línea 9: t13 eliminado y sustituido por 4
+  - Línea 12: t15 eliminado y sustituido por 1
+  - Línea 12: t16 eliminado y sustituido por 4
+  - Línea 16: t19 eliminado y sustituido por 1
+  - Línea 16: t20 eliminado y sustituido por 4
+  - Línea 17: t22 eliminado y sustituido por 99
+  - Línea 19: t23 eliminado y sustituido por 1
+  - Línea 19: t24 eliminado y sustituido por 4
+  - Línea 3: t2 eliminado y sustituido por 12
+  - Línea 4: t6 eliminado y sustituido por 0
+  - Línea 5: t10 eliminado y sustituido por 4
+  - Línea 6: t14 eliminado y sustituido por 8
+  - Línea 8: t17 eliminado y sustituido por 4
+  - Línea 11: t21 eliminado y sustituido por 4
+  - Línea 13: t25 eliminado y sustituido por 4
+Eliminación de etiquetas muertas:
+  - Línea 25: Se ha eliminado la etiqueta end
+Cálculo de constantes:
+  - Línea 3: t2 = 3 * 4 -> t2 = 12
+  - Línea 5: t6 = 0 * 4 -> t6 = 0
+  - Línea 7: t10 = 1 * 4 -> t10 = 4
+  - Línea 9: t14 = 2 * 4 -> t14 = 8
+  - Línea 12: t17 = 1 * 4 -> t17 = 4
+  - Línea 16: t21 = 1 * 4 -> t21 = 4
+  - Línea 19: t25 = 1 * 4 -> t25 = 4

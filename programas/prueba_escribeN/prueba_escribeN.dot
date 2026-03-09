@@ -1,0 +1,39 @@
+strict digraph {
+18	[label="Programa"];
+18->1
+18->3
+18->5
+18->7
+18->9
+18->11
+18->13
+18->15
+18->17
+1	[label="print"];
+1->0
+0	[label="Hola",shape=plaintext];
+3	[label="print"];
+3->2
+2	[label=" mundo",shape=plaintext];
+5	[label="print"];
+5->4
+4	[label=" sin salto de linea",shape=plaintext];
+7	[label="print"];
+7->6
+6	[label="Con salto de linea",shape=plaintext];
+9	[label="print"];
+9->8
+8	[label="Segunda linea",shape=plaintext];
+11	[label="=(x)"]
+11->10
+10	[label="42",shape=plaintext];
+13	[label="print"];
+13->12
+12	[label="El valor es: ",shape=plaintext];
+15	[label="print"];
+15->14
+14	[label="x",shape=plaintext];
+17	[label="print"];
+17->16
+16	[label="Final del programa",shape=plaintext];
+}

@@ -1,0 +1,24 @@
+===== CÓDIGO INTERMEDIO =====
+
+sumaDosDecimales:
+; param a : FLOAT
+; param b : FLOAT
+t0 = a
+t1 = b
+t2 = t0 + t1
+return t2
+main:
+output "=== PRUEBA FLOAT ==="
+t3 = 3.5
+x = t3
+t4 = 2.25
+y = t4
+param_s x  
+param_s y  
+t5 = call sumaDosDecimales
+z = t5
+output "Resultado esperado ~5.75"
+output "\n"
+t6 = z
+output t6
+end:

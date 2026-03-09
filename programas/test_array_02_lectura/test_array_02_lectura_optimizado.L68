@@ -1,0 +1,213 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 11/02/2026 20:31:26
+
+00001000                             1              ORG $1000
+00001000                             2  START:
+00001000  4FF9 00005000              3              LEA STACKPTR, A7
+00001006  4EF9 00001058              4              JMP main
+0000100C                             5  
+0000100C                             6  ; ===== RUTINAS AUXILIARES =====
+0000100C                             7  PRINT_SIGNED:
+0000100C  4A41                       8              TST.W D1
+0000100E  6A00 0010                  9              BPL PRINT_UNSIGNED
+00001012  103C 000E                 10              MOVE.B #14, D0
+00001016  43F9 000011C1             11              LEA MINUS_SIGN, A1
+0000101C  4E4F                      12              TRAP #15
+0000101E  4441                      13              NEG.W D1
+00001020                            14  PRINT_UNSIGNED:
+00001020  103C 0003                 15              MOVE.B #3, D0
+00001024  4E4F                      16              TRAP #15
+00001026  4E75                      17              RTS
+00001028                            18  
+00001028                            19  
+00001028                            20  ARRAY_INDEX_OUT_OF_BOUNDS:
+00001028                            21              ; Indice fuera de rango - mostrar mensaje y detener la simulacion
+00001028  43F9 000011C3             22              LEA ERROR_INDEX_MSG, A1
+0000102E  103C 000E                 23              MOVE.B #14, D0
+00001032  4E4F                      24              TRAP #15
+00001034  FFFF FFFF                 25              SIMHALT
+00001038                            26  
+00001038                            27  UNINITIALIZED_ACCESS:
+00001038                            28              ; Acceso a posicion no inicializada - mostrar mensaje y detener la simulacion
+00001038  43F9 000011E2             29              LEA ERROR_UNINIT_MSG, A1
+0000103E  103C 000E                 30              MOVE.B #14, D0
+00001042  4E4F                      31              TRAP #15
+00001044  FFFF FFFF                 32              SIMHALT
+00001048                            33  
+00001048                            34  ALLOC_SIZE_INVALID:
+00001048                            35              ; Tamaño de array inválido en tiempo de ejecución - mostrar mensaje y detener
+00001048  43F9 0000120D             36              LEA ERROR_ALLOC_MSG, A1
+0000104E  103C 000E                 37              MOVE.B #14, D0
+00001052  4E4F                      38              TRAP #15
+00001054  FFFF FFFF                 39              SIMHALT
+00001058                            40  main:
+00001058                            41              ; output "=== TEST: Lectura de array ==="
+00001058  43F9 00001278             42              LEA str0, A1
+0000105E  103C 000E                 43              MOVE.B #14, D0
+00001062  4E4F                      44              TRAP #15
+00001064                            45              ; output "\n"
+00001064  43F9 000011BE             46              LEA NEWLINE, A1
+0000106A  103C 000E                 47              MOVE.B #14, D0
+0000106E  4E4F                      48              TRAP #15
+00001070                            49              ; 
+00001070  2039 00001238             50              MOVE.L HEAP_PTR, D0
+00001076  23C0 0000129A             51              MOVE.L D0, vector
+0000107C  720C                      52              MOVE.L #12, D1
+0000107E  B2BC 00000001             53              CMP.L #1, D1
+00001084  6DC2                      54              BLT ALLOC_SIZE_INVALID
+00001086  0680 0000000C             55              ADD.L #12, D0
+0000108C  23C0 00001238             56              MOVE.L D0, HEAP_PTR
+00001092  4A81                      57              TST.L D1
+00001094  6700 0010                 58              BEQ INIT_vector_LOOP_END
+00001098  2079 0000129A             59              MOVE.L vector, A0
+0000109E                            60  INIT_vector_LOOP:
+0000109E  78FF                      61              MOVE.L #-1, D4
+000010A0  20C4                      62              MOVE.L D4, (A0)+
+000010A2  5981                      63              SUBQ.L #4, D1
+000010A4  6EF8                      64              BGT INIT_vector_LOOP
+000010A6                            65  INIT_vector_LOOP_END:
+000010A6                            66              ; vector[0] = 10
+000010A6  2079 0000129A             67              MOVEA.L vector, A0
+000010AC  7000                      68              MOVE.L #0, D0
+000010AE  4A80                      69              TST.L D0
+000010B0  6B00 FF76                 70              BMI ARRAY_INDEX_OUT_OF_BOUNDS
+000010B4  720A                      71              MOVE.L #10, D1
+000010B6  2181 0800                 72              MOVE.L D1, 0(A0, D0.L)
+000010BA                            73              ; vector[4] = 20
+000010BA  2079 0000129A             74              MOVEA.L vector, A0
+000010C0  7004                      75              MOVE.L #4, D0
+000010C2  4A80                      76              TST.L D0
+000010C4  6B00 FF62                 77              BMI ARRAY_INDEX_OUT_OF_BOUNDS
+000010C8  7214                      78              MOVE.L #20, D1
+000010CA  2181 0800                 79              MOVE.L D1, 0(A0, D0.L)
+000010CE                            80              ; vector[8] = 30
+000010CE  2079 0000129A             81              MOVEA.L vector, A0
+000010D4  7008                      82              MOVE.L #8, D0
+000010D6  4A80                      83              TST.L D0
+000010D8  6B00 FF4E                 84              BMI ARRAY_INDEX_OUT_OF_BOUNDS
+000010DC  721E                      85              MOVE.L #30, D1
+000010DE  2181 0800                 86              MOVE.L D1, 0(A0, D0.L)
+000010E2                            87              ; output "Leyendo posicion 0:"
+000010E2  43F9 0000124E             88              LEA str1, A1
+000010E8  103C 000E                 89              MOVE.B #14, D0
+000010EC  4E4F                      90              TRAP #15
+000010EE                            91              ; t18 = 3
+000010EE  33FC 0003 0000129E        92              MOVE.W #3, t18
+000010F6                            93              ; t20 = vector[0]
+000010F6  2079 0000129A             94              MOVEA.L vector, A0
+000010FC  7000                      95              MOVE.L #0, D0
+000010FE  4A80                      96              TST.L D0
+00001100  6B00 FF26                 97              BMI ARRAY_INDEX_OUT_OF_BOUNDS
+00001104  3439 0000129E             98              MOVE.W t18, D2
+0000110A  48C2                      99              EXT.L D2
+0000110C  363C 0004                100              MOVE.W #4, D3
+00001110  C5C3                     101              MULS D3, D2
+00001112  B082                     102              CMP.L D2, D0
+00001114  6C00 FF12                103              BGE ARRAY_INDEX_OUT_OF_BOUNDS
+00001118  2230 0800                104              MOVE.L 0(A0, D0.L), D1
+0000111C  B2BC FFFFFFFF            105              CMP.L #-1, D1
+00001122  6700 FF14                106              BEQ UNINITIALIZED_ACCESS
+00001126  33C1 0000123C            107              MOVE.W D1, t20
+0000112C                           108              ; output t20
+0000112C  3239 0000123C            109              MOVE.W t20, D1
+00001132  4EB8 100C                110              JSR PRINT_SIGNED
+00001136                           111              ; output "\n"
+00001136  43F9 000011BE            112              LEA NEWLINE, A1
+0000113C  103C 000E                113              MOVE.B #14, D0
+00001140  4E4F                     114              TRAP #15
+00001142                           115              ; output "Leyendo posicion 1:"
+00001142  43F9 00001262            116              LEA str2, A1
+00001148  103C 000E                117              MOVE.B #14, D0
+0000114C  4E4F                     118              TRAP #15
+0000114E                           119              ; t24 = 3
+0000114E  33FC 0003 00001276       120              MOVE.W #3, t24
+00001156                           121              ; t26 = vector[4]
+00001156  2079 0000129A            122              MOVEA.L vector, A0
+0000115C  7004                     123              MOVE.L #4, D0
+0000115E  4A80                     124              TST.L D0
+00001160  6B00 FEC6                125              BMI ARRAY_INDEX_OUT_OF_BOUNDS
+00001164  3439 00001276            126              MOVE.W t24, D2
+0000116A  48C2                     127              EXT.L D2
+0000116C  363C 0004                128              MOVE.W #4, D3
+00001170  C5C3                     129              MULS D3, D2
+00001172  B082                     130              CMP.L D2, D0
+00001174  6C00 FEB2                131              BGE ARRAY_INDEX_OUT_OF_BOUNDS
+00001178  2230 0800                132              MOVE.L 0(A0, D0.L), D1
+0000117C  B2BC FFFFFFFF            133              CMP.L #-1, D1
+00001182  6700 FEB4                134              BEQ UNINITIALIZED_ACCESS
+00001186  33C1 00001298            135              MOVE.W D1, t26
+0000118C                           136              ; output t26
+0000118C  3239 00001298            137              MOVE.W t26, D1
+00001192  4EB8 100C                138              JSR PRINT_SIGNED
+00001196                           139              ; output "\n"
+00001196  43F9 000011BE            140              LEA NEWLINE, A1
+0000119C  103C 000E                141              MOVE.B #14, D0
+000011A0  4E4F                     142              TRAP #15
+000011A2                           143              ; output "Test completado"
+000011A2  43F9 0000123E            144              LEA str3, A1
+000011A8  103C 000E                145              MOVE.B #14, D0
+000011AC  4E4F                     146              TRAP #15
+000011AE                           147              ; output "\n"
+000011AE  43F9 000011BE            148              LEA NEWLINE, A1
+000011B4  103C 000E                149              MOVE.B #14, D0
+000011B8  4E4F                     150              TRAP #15
+000011BA  6000 00E4                151              BRA HALT
+000011BE                           152  
+000011BE                           153              ; DATA SECTION
+000011BE= 0D 0A 00                 154  NEWLINE:    DC.B 13,10,0
+000011C1= 2D 00                    155  MINUS_SIGN: DC.B '-',0
+000011C3= 45 52 52 4F 52 3A ...    156  ERROR_INDEX_MSG:    DC.B 'ERROR: Indice fuera de rango',13,10,0
+000011E2= 45 52 52 4F 52 3A ...    157  ERROR_UNINIT_MSG:   DC.B 'ERROR: Acceso a posicion no inicializada',13,10,0
+0000120D= 45 52 52 4F 52 3A ...    158  ERROR_ALLOC_MSG:    DC.B 'ERROR: Tamaño de array inválido (<= 0)',13,10,0
+00001238= 00008000                 159  HEAP_PTR:   DC.L $8000
+0000123C                           160  t20:        DS.W 1
+0000123E= 54 65 73 74 20 63 ...    161  str3:       DC.B 'Test completado',0
+0000124E= 4C 65 79 65 6E 64 ...    162  str1:       DC.B 'Leyendo posicion 0:',0
+00001262= 4C 65 79 65 6E 64 ...    163  str2:       DC.B 'Leyendo posicion 1:',0
+00001276                           164  t24:        DS.W 1
+00001278= 3D 3D 3D 20 54 45 ...    165  str0:       DC.B '=== TEST: Lectura de array ===',0
+00001298                           166  t26:        DS.W 1
+0000129A                           167  vector:     DS.L 1
+0000129E                           168  t18:        DS.W 1
+000012A0                           169  
+000012A0                           170  HALT:
+000012A0  FFFF FFFF                171              SIMHALT
+000012A4                           172  
+00005000                           173              ORG $5000
+00005000                           174  STACKPTR:
+00005000                           175              END START
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+ALLOC_SIZE_INVALID  1048
+ARRAY_INDEX_OUT_OF_BOUNDS  1028
+ERROR_ALLOC_MSG     120D
+ERROR_INDEX_MSG     11C3
+ERROR_UNINIT_MSG    11E2
+HALT                12A0
+HEAP_PTR            1238
+INIT_VECTOR_LOOP    109E
+INIT_VECTOR_LOOP_END  10A6
+MAIN                1058
+MINUS_SIGN          11C1
+NEWLINE             11BE
+PRINT_SIGNED        100C
+PRINT_UNSIGNED      1020
+STACKPTR            5000
+START               1000
+STR0                1278
+STR1                124E
+STR2                1262
+STR3                123E
+T18                 129E
+T20                 123C
+T24                 1276
+T26                 1298
+UNINITIALIZED_ACCESS  1038
+VECTOR              129A

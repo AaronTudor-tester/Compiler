@@ -1,0 +1,6 @@
+===== TABLA DE SÍMBOLOS =====
+
+  VARIABLE: Simbolo{nombre='flags', tipo=BOOL, valor=null, linea=9, inicializada=true}
+  VARIABLE: Simbolo{nombre='f1', tipo=BOOL, valor=null, linea=17, inicializada=true}
+  VARIABLE: Simbolo{nombre='f2', tipo=BOOL, valor=null, linea=20, inicializada=true}
+  VARIABLE: Simbolo{nombre='f3', tipo=BOOL, valor=null, linea=25, inicializada=true}

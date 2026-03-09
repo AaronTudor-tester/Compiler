@@ -1,0 +1,1061 @@
+===== OPTIMIZACIONES REALIZADAS =====
+
+Archivo: .\programas\test_array_3d_funcion\test_array_3d_funcion.txt
+Fecha: 2026-02-11T20:32:47.013509300
+
+--- ESTADÍSTICAS DE CÓDIGO INTERMEDIO ---
+
+Instrucciones originales: 177
+Instrucciones optimizadas: 176
+Instrucciones eliminadas: 1
+Reducción: 0,56%
+
+--- ESTADÍSTICAS DE ENSAMBLADOR ---
+
+Archivo original (.x68): 54686 bytes
+Archivo optimizado (_optimizado.x68): 18598 bytes
+Bytes reducidos: 36088 bytes
+Reducción en ensamblador: 65,99%
+
+--- CÓDIGO OPTIMIZADO ---
+
+sumarCubo:
+; param cubo : INT_ARRAY_3
+i = 0
+e0:
+t3 = i < 2
+if !(t3) goto e1
+j = 0
+e2:
+t7 = j < 3
+if !(t7) goto e3
+k = 0
+e4:
+t11 = k < 2
+if !(t11) goto e5
+t15 = i * 3
+t16 = t15 + j
+t19 = t16 * 2
+t20 = t19 + k
+t22 = t20 * 4
+t26 = i * 3
+t27 = t26 + j
+t30 = t27 * 2
+t31 = t30 + k
+t33 = t31 * 4
+t34 = 12
+t40 = cubo[t33]
+t42 = t40 + 1
+cubo[t22] = t42
+t45 = k + 1
+k = t45
+goto e4
+e5:
+t48 = j + 1
+j = t48
+goto e2
+e3:
+t51 = i + 1
+i = t51
+goto e0
+e1:
+return null
+main:
+miCubo[0] = 1
+miCubo[4] = 2
+miCubo[8] = 3
+miCubo[12] = 4
+miCubo[16] = 5
+miCubo[20] = 6
+miCubo[24] = 7
+miCubo[28] = 8
+miCubo[32] = 9
+miCubo[36] = 10
+miCubo[40] = 11
+miCubo[44] = 12
+miCubo[0] = 1
+miCubo[4] = 2
+miCubo[8] = 3
+miCubo[12] = 4
+miCubo[16] = 5
+miCubo[20] = 6
+miCubo[24] = 7
+miCubo[28] = 8
+miCubo[32] = 9
+miCubo[36] = 10
+miCubo[40] = 11
+miCubo[44] = 12
+output "Cubo 3D original:"
+output "\n"
+output "Capa 0:"
+output "\n"
+t258 = 12
+t264 = miCubo[0]
+output t264
+output "\n"
+t276 = 12
+t282 = miCubo[4]
+output t282
+output "\n"
+t294 = 12
+t300 = miCubo[8]
+output t300
+output "\n"
+t312 = 12
+t318 = miCubo[12]
+output t318
+output "\n"
+t330 = 12
+t336 = miCubo[16]
+output t336
+output "\n"
+t348 = 12
+t354 = miCubo[20]
+output t354
+output "\n"
+output "Capa 1:"
+output "\n"
+t366 = 12
+t372 = miCubo[24]
+output t372
+output "\n"
+t384 = 12
+t390 = miCubo[28]
+output t390
+output "\n"
+t402 = 12
+t408 = miCubo[32]
+output t408
+output "\n"
+t420 = 12
+t426 = miCubo[36]
+output t426
+output "\n"
+t438 = 12
+t444 = miCubo[40]
+output t444
+output "\n"
+t456 = 12
+t462 = miCubo[44]
+output t462
+output "\n"
+param_s miCubo  
+call sumarCubo  
+output "Cubo 3D tras sumar 1:"
+output "\n"
+output "Capa 0:"
+output "\n"
+t474 = 12
+t480 = miCubo[0]
+output t480
+output "\n"
+t492 = 12
+t498 = miCubo[4]
+output t498
+output "\n"
+t510 = 12
+t516 = miCubo[8]
+output t516
+output "\n"
+t528 = 12
+t534 = miCubo[12]
+output t534
+output "\n"
+t546 = 12
+t552 = miCubo[16]
+output t552
+output "\n"
+t564 = 12
+t570 = miCubo[20]
+output t570
+output "\n"
+output "Capa 1:"
+output "\n"
+t582 = 12
+t588 = miCubo[24]
+output t588
+output "\n"
+t600 = 12
+t606 = miCubo[28]
+output t606
+output "\n"
+t618 = 12
+t624 = miCubo[32]
+output t624
+output "\n"
+t636 = 12
+t642 = miCubo[36]
+output t642
+output "\n"
+t654 = 12
+t660 = miCubo[40]
+output t660
+output "\n"
+t672 = 12
+t678 = miCubo[44]
+output t678
+output "\n"
+
+--- CAMBIOS REALIZADOS POR EL OPTIMIZADOR ---
+
+Asignación diferida:
+  - Línea 2: t0 eliminado y sustituido por 0
+  - Línea 4: t1 eliminado y sustituido por i
+  - Línea 4: t2 eliminado y sustituido por 2
+  - Línea 6: t4 eliminado y sustituido por 0
+  - Línea 8: t5 eliminado y sustituido por j
+  - Línea 8: t6 eliminado y sustituido por 3
+  - Línea 10: t8 eliminado y sustituido por 0
+  - Línea 12: t9 eliminado y sustituido por k
+  - Línea 12: t10 eliminado y sustituido por 2
+  - Línea 14: t12 eliminado y sustituido por i
+  - Línea 14: t13 eliminado y sustituido por j
+  - Línea 14: t14 eliminado y sustituido por 3
+  - Línea 16: t17 eliminado y sustituido por k
+  - Línea 16: t18 eliminado y sustituido por 2
+  - Línea 18: t21 eliminado y sustituido por 4
+  - Línea 19: t23 eliminado y sustituido por i
+  - Línea 19: t24 eliminado y sustituido por j
+  - Línea 19: t25 eliminado y sustituido por 3
+  - Línea 21: t28 eliminado y sustituido por k
+  - Línea 21: t29 eliminado y sustituido por 2
+  - Línea 23: t32 eliminado y sustituido por 4
+  - Línea 24: t35 eliminado y sustituido por 2
+  - Línea 24: t36 eliminado y sustituido por 3
+  - Línea 25: t38 eliminado y sustituido por 2
+  - Línea 28: t41 eliminado y sustituido por 1
+  - Línea 30: t43 eliminado y sustituido por k
+  - Línea 30: t44 eliminado y sustituido por 1
+  - Línea 34: t46 eliminado y sustituido por j
+  - Línea 34: t47 eliminado y sustituido por 1
+  - Línea 38: t49 eliminado y sustituido por i
+  - Línea 38: t50 eliminado y sustituido por 1
+  - Línea 44: t52 eliminado y sustituido por 12
+  - Línea 44: t53 eliminado y sustituido por 4
+  - Línea 46: t55 eliminado y sustituido por 1
+  - Línea 46: t56 eliminado y sustituido por 0
+  - Línea 46: t57 eliminado y sustituido por 4
+  - Línea 48: t59 eliminado y sustituido por 2
+  - Línea 48: t60 eliminado y sustituido por 1
+  - Línea 48: t61 eliminado y sustituido por 4
+  - Línea 50: t63 eliminado y sustituido por 3
+  - Línea 50: t64 eliminado y sustituido por 2
+  - Línea 50: t65 eliminado y sustituido por 4
+  - Línea 52: t67 eliminado y sustituido por 4
+  - Línea 52: t68 eliminado y sustituido por 3
+  - Línea 52: t69 eliminado y sustituido por 4
+  - Línea 54: t71 eliminado y sustituido por 5
+  - Línea 54: t72 eliminado y sustituido por 4
+  - Línea 54: t73 eliminado y sustituido por 4
+  - Línea 56: t75 eliminado y sustituido por 6
+  - Línea 56: t76 eliminado y sustituido por 5
+  - Línea 56: t77 eliminado y sustituido por 4
+  - Línea 58: t79 eliminado y sustituido por 7
+  - Línea 58: t80 eliminado y sustituido por 6
+  - Línea 58: t81 eliminado y sustituido por 4
+  - Línea 60: t83 eliminado y sustituido por 8
+  - Línea 60: t84 eliminado y sustituido por 7
+  - Línea 60: t85 eliminado y sustituido por 4
+  - Línea 62: t87 eliminado y sustituido por 9
+  - Línea 62: t88 eliminado y sustituido por 8
+  - Línea 62: t89 eliminado y sustituido por 4
+  - Línea 64: t91 eliminado y sustituido por 10
+  - Línea 64: t92 eliminado y sustituido por 9
+  - Línea 64: t93 eliminado y sustituido por 4
+  - Línea 66: t95 eliminado y sustituido por 11
+  - Línea 66: t96 eliminado y sustituido por 10
+  - Línea 66: t97 eliminado y sustituido por 4
+  - Línea 68: t99 eliminado y sustituido por 12
+  - Línea 68: t100 eliminado y sustituido por 11
+  - Línea 68: t101 eliminado y sustituido por 4
+  - Línea 70: t103 eliminado y sustituido por 0
+  - Línea 78: t112 eliminado y sustituido por 4
+  - Línea 79: t114 eliminado y sustituido por 1
+  - Línea 80: t115 eliminado y sustituido por 0
+  - Línea 88: t124 eliminado y sustituido por 4
+  - Línea 89: t126 eliminado y sustituido por 2
+  - Línea 90: t127 eliminado y sustituido por 0
+  - Línea 98: t136 eliminado y sustituido por 4
+  - Línea 99: t138 eliminado y sustituido por 3
+  - Línea 100: t139 eliminado y sustituido por 0
+  - Línea 108: t148 eliminado y sustituido por 4
+  - Línea 109: t150 eliminado y sustituido por 4
+  - Línea 110: t151 eliminado y sustituido por 0
+  - Línea 118: t160 eliminado y sustituido por 4
+  - Línea 119: t162 eliminado y sustituido por 5
+  - Línea 120: t163 eliminado y sustituido por 0
+  - Línea 128: t172 eliminado y sustituido por 4
+  - Línea 129: t174 eliminado y sustituido por 6
+  - Línea 130: t175 eliminado y sustituido por 1
+  - Línea 138: t184 eliminado y sustituido por 4
+  - Línea 139: t186 eliminado y sustituido por 7
+  - Línea 140: t187 eliminado y sustituido por 1
+  - Línea 148: t196 eliminado y sustituido por 4
+  - Línea 149: t198 eliminado y sustituido por 8
+  - Línea 150: t199 eliminado y sustituido por 1
+  - Línea 158: t208 eliminado y sustituido por 4
+  - Línea 159: t210 eliminado y sustituido por 9
+  - Línea 160: t211 eliminado y sustituido por 1
+  - Línea 168: t220 eliminado y sustituido por 4
+  - Línea 169: t222 eliminado y sustituido por 10
+  - Línea 170: t223 eliminado y sustituido por 1
+  - Línea 178: t232 eliminado y sustituido por 4
+  - Línea 179: t234 eliminado y sustituido por 11
+  - Línea 180: t235 eliminado y sustituido por 1
+  - Línea 188: t244 eliminado y sustituido por 4
+  - Línea 189: t246 eliminado y sustituido por 12
+  - Línea 194: t247 eliminado y sustituido por 0
+  - Línea 202: t256 eliminado y sustituido por 4
+  - Línea 203: t259 eliminado y sustituido por 2
+  - Línea 203: t260 eliminado y sustituido por 3
+  - Línea 204: t262 eliminado y sustituido por 2
+  - Línea 209: t265 eliminado y sustituido por 0
+  - Línea 217: t274 eliminado y sustituido por 4
+  - Línea 218: t277 eliminado y sustituido por 2
+  - Línea 218: t278 eliminado y sustituido por 3
+  - Línea 219: t280 eliminado y sustituido por 2
+  - Línea 224: t283 eliminado y sustituido por 0
+  - Línea 232: t292 eliminado y sustituido por 4
+  - Línea 233: t295 eliminado y sustituido por 2
+  - Línea 233: t296 eliminado y sustituido por 3
+  - Línea 234: t298 eliminado y sustituido por 2
+  - Línea 239: t301 eliminado y sustituido por 0
+  - Línea 247: t310 eliminado y sustituido por 4
+  - Línea 248: t313 eliminado y sustituido por 2
+  - Línea 248: t314 eliminado y sustituido por 3
+  - Línea 249: t316 eliminado y sustituido por 2
+  - Línea 254: t319 eliminado y sustituido por 0
+  - Línea 262: t328 eliminado y sustituido por 4
+  - Línea 263: t331 eliminado y sustituido por 2
+  - Línea 263: t332 eliminado y sustituido por 3
+  - Línea 264: t334 eliminado y sustituido por 2
+  - Línea 269: t337 eliminado y sustituido por 0
+  - Línea 277: t346 eliminado y sustituido por 4
+  - Línea 278: t349 eliminado y sustituido por 2
+  - Línea 278: t350 eliminado y sustituido por 3
+  - Línea 279: t352 eliminado y sustituido por 2
+  - Línea 286: t355 eliminado y sustituido por 1
+  - Línea 294: t364 eliminado y sustituido por 4
+  - Línea 295: t367 eliminado y sustituido por 2
+  - Línea 295: t368 eliminado y sustituido por 3
+  - Línea 296: t370 eliminado y sustituido por 2
+  - Línea 301: t373 eliminado y sustituido por 1
+  - Línea 309: t382 eliminado y sustituido por 4
+  - Línea 310: t385 eliminado y sustituido por 2
+  - Línea 310: t386 eliminado y sustituido por 3
+  - Línea 311: t388 eliminado y sustituido por 2
+  - Línea 316: t391 eliminado y sustituido por 1
+  - Línea 324: t400 eliminado y sustituido por 4
+  - Línea 325: t403 eliminado y sustituido por 2
+  - Línea 325: t404 eliminado y sustituido por 3
+  - Línea 326: t406 eliminado y sustituido por 2
+  - Línea 331: t409 eliminado y sustituido por 1
+  - Línea 339: t418 eliminado y sustituido por 4
+  - Línea 340: t421 eliminado y sustituido por 2
+  - Línea 340: t422 eliminado y sustituido por 3
+  - Línea 341: t424 eliminado y sustituido por 2
+  - Línea 346: t427 eliminado y sustituido por 1
+  - Línea 354: t436 eliminado y sustituido por 4
+  - Línea 355: t439 eliminado y sustituido por 2
+  - Línea 355: t440 eliminado y sustituido por 3
+  - Línea 356: t442 eliminado y sustituido por 2
+  - Línea 361: t445 eliminado y sustituido por 1
+  - Línea 369: t454 eliminado y sustituido por 4
+  - Línea 370: t457 eliminado y sustituido por 2
+  - Línea 370: t458 eliminado y sustituido por 3
+  - Línea 371: t460 eliminado y sustituido por 2
+  - Línea 382: t463 eliminado y sustituido por 0
+  - Línea 390: t472 eliminado y sustituido por 4
+  - Línea 391: t475 eliminado y sustituido por 2
+  - Línea 391: t476 eliminado y sustituido por 3
+  - Línea 392: t478 eliminado y sustituido por 2
+  - Línea 397: t481 eliminado y sustituido por 0
+  - Línea 405: t490 eliminado y sustituido por 4
+  - Línea 406: t493 eliminado y sustituido por 2
+  - Línea 406: t494 eliminado y sustituido por 3
+  - Línea 407: t496 eliminado y sustituido por 2
+  - Línea 412: t499 eliminado y sustituido por 0
+  - Línea 420: t508 eliminado y sustituido por 4
+  - Línea 421: t511 eliminado y sustituido por 2
+  - Línea 421: t512 eliminado y sustituido por 3
+  - Línea 422: t514 eliminado y sustituido por 2
+  - Línea 427: t517 eliminado y sustituido por 0
+  - Línea 435: t526 eliminado y sustituido por 4
+  - Línea 436: t529 eliminado y sustituido por 2
+  - Línea 436: t530 eliminado y sustituido por 3
+  - Línea 437: t532 eliminado y sustituido por 2
+  - Línea 442: t535 eliminado y sustituido por 0
+  - Línea 450: t544 eliminado y sustituido por 4
+  - Línea 451: t547 eliminado y sustituido por 2
+  - Línea 451: t548 eliminado y sustituido por 3
+  - Línea 452: t550 eliminado y sustituido por 2
+  - Línea 457: t553 eliminado y sustituido por 0
+  - Línea 465: t562 eliminado y sustituido por 4
+  - Línea 466: t565 eliminado y sustituido por 2
+  - Línea 466: t566 eliminado y sustituido por 3
+  - Línea 467: t568 eliminado y sustituido por 2
+  - Línea 474: t571 eliminado y sustituido por 1
+  - Línea 482: t580 eliminado y sustituido por 4
+  - Línea 483: t583 eliminado y sustituido por 2
+  - Línea 483: t584 eliminado y sustituido por 3
+  - Línea 484: t586 eliminado y sustituido por 2
+  - Línea 489: t589 eliminado y sustituido por 1
+  - Línea 497: t598 eliminado y sustituido por 4
+  - Línea 498: t601 eliminado y sustituido por 2
+  - Línea 498: t602 eliminado y sustituido por 3
+  - Línea 499: t604 eliminado y sustituido por 2
+  - Línea 504: t607 eliminado y sustituido por 1
+  - Línea 512: t616 eliminado y sustituido por 4
+  - Línea 513: t619 eliminado y sustituido por 2
+  - Línea 513: t620 eliminado y sustituido por 3
+  - Línea 514: t622 eliminado y sustituido por 2
+  - Línea 519: t625 eliminado y sustituido por 1
+  - Línea 527: t634 eliminado y sustituido por 4
+  - Línea 528: t637 eliminado y sustituido por 2
+  - Línea 528: t638 eliminado y sustituido por 3
+  - Línea 529: t640 eliminado y sustituido por 2
+  - Línea 534: t643 eliminado y sustituido por 1
+  - Línea 542: t652 eliminado y sustituido por 4
+  - Línea 543: t655 eliminado y sustituido por 2
+  - Línea 543: t656 eliminado y sustituido por 3
+  - Línea 544: t658 eliminado y sustituido por 2
+  - Línea 549: t661 eliminado y sustituido por 1
+  - Línea 557: t670 eliminado y sustituido por 4
+  - Línea 558: t673 eliminado y sustituido por 2
+  - Línea 558: t674 eliminado y sustituido por 3
+  - Línea 559: t676 eliminado y sustituido por 2
+  - Línea 24: t37 eliminado y sustituido por 6
+  - Línea 43: t54 eliminado y sustituido por 48
+  - Línea 44: t58 eliminado y sustituido por 0
+  - Línea 45: t62 eliminado y sustituido por 4
+  - Línea 46: t66 eliminado y sustituido por 8
+  - Línea 47: t70 eliminado y sustituido por 12
+  - Línea 48: t74 eliminado y sustituido por 16
+  - Línea 49: t78 eliminado y sustituido por 20
+  - Línea 50: t82 eliminado y sustituido por 24
+  - Línea 51: t86 eliminado y sustituido por 28
+  - Línea 52: t90 eliminado y sustituido por 32
+  - Línea 53: t94 eliminado y sustituido por 36
+  - Línea 54: t98 eliminado y sustituido por 40
+  - Línea 55: t102 eliminado y sustituido por 44
+  - Línea 56: t106 eliminado y sustituido por 0
+  - Línea 56: t107 eliminado y sustituido por 0
+  - Línea 57: t111 eliminado y sustituido por t110
+  - Línea 59: t118 eliminado y sustituido por 0
+  - Línea 59: t119 eliminado y sustituido por 0
+  - Línea 63: t130 eliminado y sustituido por 0
+  - Línea 65: t135 eliminado y sustituido por t134
+  - Línea 67: t142 eliminado y sustituido por 0
+  - Línea 72: t154 eliminado y sustituido por 0
+  - Línea 74: t159 eliminado y sustituido por t158
+  - Línea 76: t166 eliminado y sustituido por 0
+  - Línea 81: t178 eliminado y sustituido por 3
+  - Línea 81: t179 eliminado y sustituido por 3
+  - Línea 82: t183 eliminado y sustituido por t182
+  - Línea 84: t190 eliminado y sustituido por 3
+  - Línea 84: t191 eliminado y sustituido por 3
+  - Línea 88: t202 eliminado y sustituido por 3
+  - Línea 90: t207 eliminado y sustituido por t206
+  - Línea 92: t214 eliminado y sustituido por 3
+  - Línea 97: t226 eliminado y sustituido por 3
+  - Línea 99: t231 eliminado y sustituido por t230
+  - Línea 101: t238 eliminado y sustituido por 3
+  - Línea 110: t250 eliminado y sustituido por 0
+  - Línea 110: t251 eliminado y sustituido por 0
+  - Línea 111: t255 eliminado y sustituido por t254
+  - Línea 112: t261 eliminado y sustituido por 6
+  - Línea 117: t268 eliminado y sustituido por 0
+  - Línea 117: t269 eliminado y sustituido por 0
+  - Línea 120: t279 eliminado y sustituido por 6
+  - Línea 125: t286 eliminado y sustituido por 0
+  - Línea 127: t291 eliminado y sustituido por t290
+  - Línea 128: t297 eliminado y sustituido por 6
+  - Línea 133: t304 eliminado y sustituido por 0
+  - Línea 137: t315 eliminado y sustituido por 6
+  - Línea 142: t322 eliminado y sustituido por 0
+  - Línea 144: t327 eliminado y sustituido por t326
+  - Línea 145: t333 eliminado y sustituido por 6
+  - Línea 150: t340 eliminado y sustituido por 0
+  - Línea 154: t351 eliminado y sustituido por 6
+  - Línea 161: t358 eliminado y sustituido por 3
+  - Línea 161: t359 eliminado y sustituido por 3
+  - Línea 162: t363 eliminado y sustituido por t362
+  - Línea 163: t369 eliminado y sustituido por 6
+  - Línea 168: t376 eliminado y sustituido por 3
+  - Línea 168: t377 eliminado y sustituido por 3
+  - Línea 171: t387 eliminado y sustituido por 6
+  - Línea 176: t394 eliminado y sustituido por 3
+  - Línea 178: t399 eliminado y sustituido por t398
+  - Línea 179: t405 eliminado y sustituido por 6
+  - Línea 184: t412 eliminado y sustituido por 3
+  - Línea 188: t423 eliminado y sustituido por 6
+  - Línea 193: t430 eliminado y sustituido por 3
+  - Línea 195: t435 eliminado y sustituido por t434
+  - Línea 196: t441 eliminado y sustituido por 6
+  - Línea 201: t448 eliminado y sustituido por 3
+  - Línea 205: t459 eliminado y sustituido por 6
+  - Línea 216: t466 eliminado y sustituido por 0
+  - Línea 216: t467 eliminado y sustituido por 0
+  - Línea 217: t471 eliminado y sustituido por t470
+  - Línea 218: t477 eliminado y sustituido por 6
+  - Línea 223: t484 eliminado y sustituido por 0
+  - Línea 223: t485 eliminado y sustituido por 0
+  - Línea 226: t495 eliminado y sustituido por 6
+  - Línea 231: t502 eliminado y sustituido por 0
+  - Línea 233: t507 eliminado y sustituido por t506
+  - Línea 234: t513 eliminado y sustituido por 6
+  - Línea 239: t520 eliminado y sustituido por 0
+  - Línea 243: t531 eliminado y sustituido por 6
+  - Línea 248: t538 eliminado y sustituido por 0
+  - Línea 250: t543 eliminado y sustituido por t542
+  - Línea 251: t549 eliminado y sustituido por 6
+  - Línea 256: t556 eliminado y sustituido por 0
+  - Línea 260: t567 eliminado y sustituido por 6
+  - Línea 267: t574 eliminado y sustituido por 3
+  - Línea 267: t575 eliminado y sustituido por 3
+  - Línea 268: t579 eliminado y sustituido por t578
+  - Línea 269: t585 eliminado y sustituido por 6
+  - Línea 274: t592 eliminado y sustituido por 3
+  - Línea 274: t593 eliminado y sustituido por 3
+  - Línea 277: t603 eliminado y sustituido por 6
+  - Línea 282: t610 eliminado y sustituido por 3
+  - Línea 284: t615 eliminado y sustituido por t614
+  - Línea 285: t621 eliminado y sustituido por 6
+  - Línea 290: t628 eliminado y sustituido por 3
+  - Línea 294: t639 eliminado y sustituido por 6
+  - Línea 299: t646 eliminado y sustituido por 3
+  - Línea 301: t651 eliminado y sustituido por t650
+  - Línea 302: t657 eliminado y sustituido por 6
+  - Línea 307: t664 eliminado y sustituido por 3
+  - Línea 311: t675 eliminado y sustituido por 6
+  - Línea 24: t39 eliminado y sustituido por 12
+  - Línea 55: t110 eliminado y sustituido por 0
+  - Línea 57: t122 eliminado y sustituido por 0
+  - Línea 60: t131 eliminado y sustituido por 1
+  - Línea 63: t143 eliminado y sustituido por 1
+  - Línea 67: t155 eliminado y sustituido por 2
+  - Línea 70: t167 eliminado y sustituido por 2
+  - Línea 74: t182 eliminado y sustituido por 6
+  - Línea 76: t194 eliminado y sustituido por 6
+  - Línea 79: t203 eliminado y sustituido por 4
+  - Línea 82: t215 eliminado y sustituido por 4
+  - Línea 86: t227 eliminado y sustituido por 5
+  - Línea 89: t239 eliminado y sustituido por 5
+  - Línea 97: t254 eliminado y sustituido por 0
+  - Línea 98: t263 eliminado y sustituido por 12
+  - Línea 102: t272 eliminado y sustituido por 0
+  - Línea 104: t281 eliminado y sustituido por 12
+  - Línea 108: t287 eliminado y sustituido por 1
+  - Línea 110: t299 eliminado y sustituido por 12
+  - Línea 114: t305 eliminado y sustituido por 1
+  - Línea 117: t317 eliminado y sustituido por 12
+  - Línea 121: t323 eliminado y sustituido por 2
+  - Línea 123: t335 eliminado y sustituido por 12
+  - Línea 127: t341 eliminado y sustituido por 2
+  - Línea 130: t353 eliminado y sustituido por 12
+  - Línea 136: t362 eliminado y sustituido por 6
+  - Línea 137: t371 eliminado y sustituido por 12
+  - Línea 141: t380 eliminado y sustituido por 6
+  - Línea 143: t389 eliminado y sustituido por 12
+  - Línea 147: t395 eliminado y sustituido por 4
+  - Línea 149: t407 eliminado y sustituido por 12
+  - Línea 153: t413 eliminado y sustituido por 4
+  - Línea 156: t425 eliminado y sustituido por 12
+  - Línea 160: t431 eliminado y sustituido por 5
+  - Línea 162: t443 eliminado y sustituido por 12
+  - Línea 166: t449 eliminado y sustituido por 5
+  - Línea 169: t461 eliminado y sustituido por 12
+  - Línea 179: t470 eliminado y sustituido por 0
+  - Línea 180: t479 eliminado y sustituido por 12
+  - Línea 184: t488 eliminado y sustituido por 0
+  - Línea 186: t497 eliminado y sustituido por 12
+  - Línea 190: t503 eliminado y sustituido por 1
+  - Línea 192: t515 eliminado y sustituido por 12
+  - Línea 196: t521 eliminado y sustituido por 1
+  - Línea 199: t533 eliminado y sustituido por 12
+  - Línea 203: t539 eliminado y sustituido por 2
+  - Línea 205: t551 eliminado y sustituido por 12
+  - Línea 209: t557 eliminado y sustituido por 2
+  - Línea 212: t569 eliminado y sustituido por 12
+  - Línea 218: t578 eliminado y sustituido por 6
+  - Línea 219: t587 eliminado y sustituido por 12
+  - Línea 223: t596 eliminado y sustituido por 6
+  - Línea 225: t605 eliminado y sustituido por 12
+  - Línea 229: t611 eliminado y sustituido por 4
+  - Línea 231: t623 eliminado y sustituido por 12
+  - Línea 235: t629 eliminado y sustituido por 4
+  - Línea 238: t641 eliminado y sustituido por 12
+  - Línea 242: t647 eliminado y sustituido por 5
+  - Línea 244: t659 eliminado y sustituido por 12
+  - Línea 248: t665 eliminado y sustituido por 5
+  - Línea 251: t677 eliminado y sustituido por 12
+  - Línea 55: t113 eliminado y sustituido por 0
+  - Línea 56: t123 eliminado y sustituido por 1
+  - Línea 58: t134 eliminado y sustituido por 2
+  - Línea 60: t146 eliminado y sustituido por 2
+  - Línea 63: t158 eliminado y sustituido por 4
+  - Línea 65: t170 eliminado y sustituido por 4
+  - Línea 68: t185 eliminado y sustituido por 24
+  - Línea 69: t195 eliminado y sustituido por 7
+  - Línea 71: t206 eliminado y sustituido por 8
+  - Línea 73: t218 eliminado y sustituido por 8
+  - Línea 76: t230 eliminado y sustituido por 10
+  - Línea 78: t242 eliminado y sustituido por 10
+  - Línea 85: t257 eliminado y sustituido por 0
+  - Línea 89: t273 eliminado y sustituido por 1
+  - Línea 94: t290 eliminado y sustituido por 2
+  - Línea 99: t308 eliminado y sustituido por 2
+  - Línea 105: t326 eliminado y sustituido por 4
+  - Línea 110: t344 eliminado y sustituido por 4
+  - Línea 118: t365 eliminado y sustituido por 24
+  - Línea 122: t381 eliminado y sustituido por 7
+  - Línea 127: t398 eliminado y sustituido por 8
+  - Línea 132: t416 eliminado y sustituido por 8
+  - Línea 138: t434 eliminado y sustituido por 10
+  - Línea 143: t452 eliminado y sustituido por 10
+  - Línea 155: t473 eliminado y sustituido por 0
+  - Línea 159: t489 eliminado y sustituido por 1
+  - Línea 164: t506 eliminado y sustituido por 2
+  - Línea 169: t524 eliminado y sustituido por 2
+  - Línea 175: t542 eliminado y sustituido por 4
+  - Línea 180: t560 eliminado y sustituido por 4
+  - Línea 188: t581 eliminado y sustituido por 24
+  - Línea 192: t597 eliminado y sustituido por 7
+  - Línea 197: t614 eliminado y sustituido por 8
+  - Línea 202: t632 eliminado y sustituido por 8
+  - Línea 208: t650 eliminado y sustituido por 10
+  - Línea 213: t668 eliminado y sustituido por 10
+  - Línea 56: t125 eliminado y sustituido por 4
+  - Línea 57: t137 eliminado y sustituido por 8
+  - Línea 58: t147 eliminado y sustituido por 3
+  - Línea 60: t161 eliminado y sustituido por 16
+  - Línea 61: t171 eliminado y sustituido por 5
+  - Línea 64: t197 eliminado y sustituido por 28
+  - Línea 65: t209 eliminado y sustituido por 32
+  - Línea 66: t219 eliminado y sustituido por 9
+  - Línea 68: t233 eliminado y sustituido por 40
+  - Línea 69: t243 eliminado y sustituido por 11
+  - Línea 79: t275 eliminado y sustituido por 4
+  - Línea 83: t293 eliminado y sustituido por 8
+  - Línea 87: t309 eliminado y sustituido por 3
+  - Línea 92: t329 eliminado y sustituido por 16
+  - Línea 96: t345 eliminado y sustituido por 5
+  - Línea 107: t383 eliminado y sustituido por 28
+  - Línea 111: t401 eliminado y sustituido por 32
+  - Línea 115: t417 eliminado y sustituido por 9
+  - Línea 120: t437 eliminado y sustituido por 40
+  - Línea 124: t453 eliminado y sustituido por 11
+  - Línea 139: t491 eliminado y sustituido por 4
+  - Línea 143: t509 eliminado y sustituido por 8
+  - Línea 147: t525 eliminado y sustituido por 3
+  - Línea 152: t545 eliminado y sustituido por 16
+  - Línea 156: t561 eliminado y sustituido por 5
+  - Línea 167: t599 eliminado y sustituido por 28
+  - Línea 171: t617 eliminado y sustituido por 32
+  - Línea 175: t633 eliminado y sustituido por 9
+  - Línea 180: t653 eliminado y sustituido por 40
+  - Línea 184: t669 eliminado y sustituido por 11
+  - Línea 58: t149 eliminado y sustituido por 12
+  - Línea 60: t173 eliminado y sustituido por 20
+  - Línea 64: t221 eliminado y sustituido por 36
+  - Línea 66: t245 eliminado y sustituido por 44
+  - Línea 83: t311 eliminado y sustituido por 12
+  - Línea 91: t347 eliminado y sustituido por 20
+  - Línea 109: t419 eliminado y sustituido por 36
+  - Línea 117: t455 eliminado y sustituido por 44
+  - Línea 139: t527 eliminado y sustituido por 12
+  - Línea 147: t563 eliminado y sustituido por 20
+  - Línea 165: t635 eliminado y sustituido por 36
+  - Línea 173: t671 eliminado y sustituido por 44
+Simplificación algebraica:
+  - Línea 73: t107 = t106
+  - Línea 77: t111 = t110
+  - Línea 83: t119 = t118
+  - Línea 97: t135 = t134
+  - Línea 117: t159 = t158
+  - Línea 133: t179 = t178
+  - Línea 137: t183 = t182
+  - Línea 143: t191 = t190
+  - Línea 157: t207 = t206
+  - Línea 177: t231 = t230
+  - Línea 197: t251 = t250
+  - Línea 201: t255 = t254
+  - Línea 212: t269 = t268
+  - Línea 231: t291 = t290
+  - Línea 261: t327 = t326
+  - Línea 289: t359 = t358
+  - Línea 293: t363 = t362
+  - Línea 304: t377 = t376
+  - Línea 323: t399 = t398
+  - Línea 353: t435 = t434
+  - Línea 385: t467 = t466
+  - Línea 389: t471 = t470
+  - Línea 400: t485 = t484
+  - Línea 419: t507 = t506
+  - Línea 449: t543 = t542
+  - Línea 477: t575 = t574
+  - Línea 481: t579 = t578
+  - Línea 492: t593 = t592
+  - Línea 511: t615 = t614
+  - Línea 541: t651 = t650
+Eliminación de etiquetas muertas:
+  - Línea 564: Se ha eliminado la etiqueta end
+Eliminación de código muerto:
+  - Línea 70: Se eliminó t104
+  - Línea 71: Se eliminó t105
+  - Línea 74: Se eliminó t108
+  - Línea 75: Se eliminó t109
+  - Línea 80: Se eliminó t116
+  - Línea 81: Se eliminó t117
+  - Línea 84: Se eliminó t120
+  - Línea 85: Se eliminó t121
+  - Línea 90: Se eliminó t128
+  - Línea 91: Se eliminó t129
+  - Línea 94: Se eliminó t132
+  - Línea 95: Se eliminó t133
+  - Línea 100: Se eliminó t140
+  - Línea 101: Se eliminó t141
+  - Línea 104: Se eliminó t144
+  - Línea 105: Se eliminó t145
+  - Línea 110: Se eliminó t152
+  - Línea 111: Se eliminó t153
+  - Línea 114: Se eliminó t156
+  - Línea 115: Se eliminó t157
+  - Línea 120: Se eliminó t164
+  - Línea 121: Se eliminó t165
+  - Línea 124: Se eliminó t168
+  - Línea 125: Se eliminó t169
+  - Línea 130: Se eliminó t176
+  - Línea 131: Se eliminó t177
+  - Línea 134: Se eliminó t180
+  - Línea 135: Se eliminó t181
+  - Línea 140: Se eliminó t188
+  - Línea 141: Se eliminó t189
+  - Línea 144: Se eliminó t192
+  - Línea 145: Se eliminó t193
+  - Línea 150: Se eliminó t200
+  - Línea 151: Se eliminó t201
+  - Línea 154: Se eliminó t204
+  - Línea 155: Se eliminó t205
+  - Línea 160: Se eliminó t212
+  - Línea 161: Se eliminó t213
+  - Línea 164: Se eliminó t216
+  - Línea 165: Se eliminó t217
+  - Línea 170: Se eliminó t224
+  - Línea 171: Se eliminó t225
+  - Línea 174: Se eliminó t228
+  - Línea 175: Se eliminó t229
+  - Línea 180: Se eliminó t236
+  - Línea 181: Se eliminó t237
+  - Línea 184: Se eliminó t240
+  - Línea 185: Se eliminó t241
+  - Línea 194: Se eliminó t248
+  - Línea 195: Se eliminó t249
+  - Línea 198: Se eliminó t252
+  - Línea 199: Se eliminó t253
+  - Línea 209: Se eliminó t266
+  - Línea 210: Se eliminó t267
+  - Línea 213: Se eliminó t270
+  - Línea 214: Se eliminó t271
+  - Línea 224: Se eliminó t284
+  - Línea 225: Se eliminó t285
+  - Línea 228: Se eliminó t288
+  - Línea 229: Se eliminó t289
+  - Línea 239: Se eliminó t302
+  - Línea 240: Se eliminó t303
+  - Línea 243: Se eliminó t306
+  - Línea 244: Se eliminó t307
+  - Línea 254: Se eliminó t320
+  - Línea 255: Se eliminó t321
+  - Línea 258: Se eliminó t324
+  - Línea 259: Se eliminó t325
+  - Línea 269: Se eliminó t338
+  - Línea 270: Se eliminó t339
+  - Línea 273: Se eliminó t342
+  - Línea 274: Se eliminó t343
+  - Línea 286: Se eliminó t356
+  - Línea 287: Se eliminó t357
+  - Línea 290: Se eliminó t360
+  - Línea 291: Se eliminó t361
+  - Línea 301: Se eliminó t374
+  - Línea 302: Se eliminó t375
+  - Línea 305: Se eliminó t378
+  - Línea 306: Se eliminó t379
+  - Línea 316: Se eliminó t392
+  - Línea 317: Se eliminó t393
+  - Línea 320: Se eliminó t396
+  - Línea 321: Se eliminó t397
+  - Línea 331: Se eliminó t410
+  - Línea 332: Se eliminó t411
+  - Línea 335: Se eliminó t414
+  - Línea 336: Se eliminó t415
+  - Línea 346: Se eliminó t428
+  - Línea 347: Se eliminó t429
+  - Línea 350: Se eliminó t432
+  - Línea 351: Se eliminó t433
+  - Línea 361: Se eliminó t446
+  - Línea 362: Se eliminó t447
+  - Línea 365: Se eliminó t450
+  - Línea 366: Se eliminó t451
+  - Línea 382: Se eliminó t464
+  - Línea 383: Se eliminó t465
+  - Línea 386: Se eliminó t468
+  - Línea 387: Se eliminó t469
+  - Línea 397: Se eliminó t482
+  - Línea 398: Se eliminó t483
+  - Línea 401: Se eliminó t486
+  - Línea 402: Se eliminó t487
+  - Línea 412: Se eliminó t500
+  - Línea 413: Se eliminó t501
+  - Línea 416: Se eliminó t504
+  - Línea 417: Se eliminó t505
+  - Línea 427: Se eliminó t518
+  - Línea 428: Se eliminó t519
+  - Línea 431: Se eliminó t522
+  - Línea 432: Se eliminó t523
+  - Línea 442: Se eliminó t536
+  - Línea 443: Se eliminó t537
+  - Línea 446: Se eliminó t540
+  - Línea 447: Se eliminó t541
+  - Línea 457: Se eliminó t554
+  - Línea 458: Se eliminó t555
+  - Línea 461: Se eliminó t558
+  - Línea 462: Se eliminó t559
+  - Línea 474: Se eliminó t572
+  - Línea 475: Se eliminó t573
+  - Línea 478: Se eliminó t576
+  - Línea 479: Se eliminó t577
+  - Línea 489: Se eliminó t590
+  - Línea 490: Se eliminó t591
+  - Línea 493: Se eliminó t594
+  - Línea 494: Se eliminó t595
+  - Línea 504: Se eliminó t608
+  - Línea 505: Se eliminó t609
+  - Línea 508: Se eliminó t612
+  - Línea 509: Se eliminó t613
+  - Línea 519: Se eliminó t626
+  - Línea 520: Se eliminó t627
+  - Línea 523: Se eliminó t630
+  - Línea 524: Se eliminó t631
+  - Línea 534: Se eliminó t644
+  - Línea 535: Se eliminó t645
+  - Línea 538: Se eliminó t648
+  - Línea 539: Se eliminó t649
+  - Línea 549: Se eliminó t662
+  - Línea 550: Se eliminó t663
+  - Línea 553: Se eliminó t666
+  - Línea 554: Se eliminó t667
+Cálculo de constantes:
+  - Línea 24: t37 = 2 * 3 -> t37 = 6
+  - Línea 44: t54 = 12 * 4 -> t54 = 48
+  - Línea 46: t58 = 0 * 4 -> t58 = 0
+  - Línea 48: t62 = 1 * 4 -> t62 = 4
+  - Línea 50: t66 = 2 * 4 -> t66 = 8
+  - Línea 52: t70 = 3 * 4 -> t70 = 12
+  - Línea 54: t74 = 4 * 4 -> t74 = 16
+  - Línea 56: t78 = 5 * 4 -> t78 = 20
+  - Línea 58: t82 = 6 * 4 -> t82 = 24
+  - Línea 60: t86 = 7 * 4 -> t86 = 28
+  - Línea 62: t90 = 8 * 4 -> t90 = 32
+  - Línea 64: t94 = 9 * 4 -> t94 = 36
+  - Línea 66: t98 = 10 * 4 -> t98 = 40
+  - Línea 68: t102 = 11 * 4 -> t102 = 44
+  - Línea 70: t106 = 0 * 3 -> t106 = 0
+  - Línea 76: t118 = 0 * 3 -> t118 = 0
+  - Línea 82: t130 = 0 * 3 -> t130 = 0
+  - Línea 88: t142 = 0 * 3 -> t142 = 0
+  - Línea 94: t154 = 0 * 3 -> t154 = 0
+  - Línea 100: t166 = 0 * 3 -> t166 = 0
+  - Línea 106: t178 = 1 * 3 -> t178 = 3
+  - Línea 112: t190 = 1 * 3 -> t190 = 3
+  - Línea 118: t202 = 1 * 3 -> t202 = 3
+  - Línea 124: t214 = 1 * 3 -> t214 = 3
+  - Línea 130: t226 = 1 * 3 -> t226 = 3
+  - Línea 136: t238 = 1 * 3 -> t238 = 3
+  - Línea 146: t250 = 0 * 3 -> t250 = 0
+  - Línea 151: t261 = 2 * 3 -> t261 = 6
+  - Línea 157: t268 = 0 * 3 -> t268 = 0
+  - Línea 162: t279 = 2 * 3 -> t279 = 6
+  - Línea 168: t286 = 0 * 3 -> t286 = 0
+  - Línea 173: t297 = 2 * 3 -> t297 = 6
+  - Línea 179: t304 = 0 * 3 -> t304 = 0
+  - Línea 184: t315 = 2 * 3 -> t315 = 6
+  - Línea 190: t322 = 0 * 3 -> t322 = 0
+  - Línea 195: t333 = 2 * 3 -> t333 = 6
+  - Línea 201: t340 = 0 * 3 -> t340 = 0
+  - Línea 206: t351 = 2 * 3 -> t351 = 6
+  - Línea 214: t358 = 1 * 3 -> t358 = 3
+  - Línea 219: t369 = 2 * 3 -> t369 = 6
+  - Línea 225: t376 = 1 * 3 -> t376 = 3
+  - Línea 230: t387 = 2 * 3 -> t387 = 6
+  - Línea 236: t394 = 1 * 3 -> t394 = 3
+  - Línea 241: t405 = 2 * 3 -> t405 = 6
+  - Línea 247: t412 = 1 * 3 -> t412 = 3
+  - Línea 252: t423 = 2 * 3 -> t423 = 6
+  - Línea 258: t430 = 1 * 3 -> t430 = 3
+  - Línea 263: t441 = 2 * 3 -> t441 = 6
+  - Línea 269: t448 = 1 * 3 -> t448 = 3
+  - Línea 274: t459 = 2 * 3 -> t459 = 6
+  - Línea 286: t466 = 0 * 3 -> t466 = 0
+  - Línea 291: t477 = 2 * 3 -> t477 = 6
+  - Línea 297: t484 = 0 * 3 -> t484 = 0
+  - Línea 302: t495 = 2 * 3 -> t495 = 6
+  - Línea 308: t502 = 0 * 3 -> t502 = 0
+  - Línea 313: t513 = 2 * 3 -> t513 = 6
+  - Línea 319: t520 = 0 * 3 -> t520 = 0
+  - Línea 324: t531 = 2 * 3 -> t531 = 6
+  - Línea 330: t538 = 0 * 3 -> t538 = 0
+  - Línea 335: t549 = 2 * 3 -> t549 = 6
+  - Línea 341: t556 = 0 * 3 -> t556 = 0
+  - Línea 346: t567 = 2 * 3 -> t567 = 6
+  - Línea 354: t574 = 1 * 3 -> t574 = 3
+  - Línea 359: t585 = 2 * 3 -> t585 = 6
+  - Línea 365: t592 = 1 * 3 -> t592 = 3
+  - Línea 370: t603 = 2 * 3 -> t603 = 6
+  - Línea 376: t610 = 1 * 3 -> t610 = 3
+  - Línea 381: t621 = 2 * 3 -> t621 = 6
+  - Línea 387: t628 = 1 * 3 -> t628 = 3
+  - Línea 392: t639 = 2 * 3 -> t639 = 6
+  - Línea 398: t646 = 1 * 3 -> t646 = 3
+  - Línea 403: t657 = 2 * 3 -> t657 = 6
+  - Línea 409: t664 = 1 * 3 -> t664 = 3
+  - Línea 414: t675 = 2 * 3 -> t675 = 6
+  - Línea 24: t39 = 6 * 2 -> t39 = 12
+  - Línea 56: t110 = 0 * 2 -> t110 = 0
+  - Línea 59: t122 = 0 * 2 -> t122 = 0
+  - Línea 63: t131 = 0 + 1 -> t131 = 1
+  - Línea 67: t143 = 0 + 1 -> t143 = 1
+  - Línea 72: t155 = 0 + 2 -> t155 = 2
+  - Línea 76: t167 = 0 + 2 -> t167 = 2
+  - Línea 81: t182 = 3 * 2 -> t182 = 6
+  - Línea 84: t194 = 3 * 2 -> t194 = 6
+  - Línea 88: t203 = 3 + 1 -> t203 = 4
+  - Línea 92: t215 = 3 + 1 -> t215 = 4
+  - Línea 97: t227 = 3 + 2 -> t227 = 5
+  - Línea 101: t239 = 3 + 2 -> t239 = 5
+  - Línea 110: t254 = 0 * 2 -> t254 = 0
+  - Línea 112: t263 = 6 * 2 -> t263 = 12
+  - Línea 117: t272 = 0 * 2 -> t272 = 0
+  - Línea 120: t281 = 6 * 2 -> t281 = 12
+  - Línea 125: t287 = 0 + 1 -> t287 = 1
+  - Línea 128: t299 = 6 * 2 -> t299 = 12
+  - Línea 133: t305 = 0 + 1 -> t305 = 1
+  - Línea 137: t317 = 6 * 2 -> t317 = 12
+  - Línea 142: t323 = 0 + 2 -> t323 = 2
+  - Línea 145: t335 = 6 * 2 -> t335 = 12
+  - Línea 150: t341 = 0 + 2 -> t341 = 2
+  - Línea 154: t353 = 6 * 2 -> t353 = 12
+  - Línea 161: t362 = 3 * 2 -> t362 = 6
+  - Línea 163: t371 = 6 * 2 -> t371 = 12
+  - Línea 168: t380 = 3 * 2 -> t380 = 6
+  - Línea 171: t389 = 6 * 2 -> t389 = 12
+  - Línea 176: t395 = 3 + 1 -> t395 = 4
+  - Línea 179: t407 = 6 * 2 -> t407 = 12
+  - Línea 184: t413 = 3 + 1 -> t413 = 4
+  - Línea 188: t425 = 6 * 2 -> t425 = 12
+  - Línea 193: t431 = 3 + 2 -> t431 = 5
+  - Línea 196: t443 = 6 * 2 -> t443 = 12
+  - Línea 201: t449 = 3 + 2 -> t449 = 5
+  - Línea 205: t461 = 6 * 2 -> t461 = 12
+  - Línea 216: t470 = 0 * 2 -> t470 = 0
+  - Línea 218: t479 = 6 * 2 -> t479 = 12
+  - Línea 223: t488 = 0 * 2 -> t488 = 0
+  - Línea 226: t497 = 6 * 2 -> t497 = 12
+  - Línea 231: t503 = 0 + 1 -> t503 = 1
+  - Línea 234: t515 = 6 * 2 -> t515 = 12
+  - Línea 239: t521 = 0 + 1 -> t521 = 1
+  - Línea 243: t533 = 6 * 2 -> t533 = 12
+  - Línea 248: t539 = 0 + 2 -> t539 = 2
+  - Línea 251: t551 = 6 * 2 -> t551 = 12
+  - Línea 256: t557 = 0 + 2 -> t557 = 2
+  - Línea 260: t569 = 6 * 2 -> t569 = 12
+  - Línea 267: t578 = 3 * 2 -> t578 = 6
+  - Línea 269: t587 = 6 * 2 -> t587 = 12
+  - Línea 274: t596 = 3 * 2 -> t596 = 6
+  - Línea 277: t605 = 6 * 2 -> t605 = 12
+  - Línea 282: t611 = 3 + 1 -> t611 = 4
+  - Línea 285: t623 = 6 * 2 -> t623 = 12
+  - Línea 290: t629 = 3 + 1 -> t629 = 4
+  - Línea 294: t641 = 6 * 2 -> t641 = 12
+  - Línea 299: t647 = 3 + 2 -> t647 = 5
+  - Línea 302: t659 = 6 * 2 -> t659 = 12
+  - Línea 307: t665 = 3 + 2 -> t665 = 5
+  - Línea 311: t677 = 6 * 2 -> t677 = 12
+  - Línea 55: t113 = 0 * 4 -> t113 = 0
+  - Línea 57: t123 = 0 + 1 -> t123 = 1
+  - Línea 60: t134 = 1 * 2 -> t134 = 2
+  - Línea 63: t146 = 1 * 2 -> t146 = 2
+  - Línea 67: t158 = 2 * 2 -> t158 = 4
+  - Línea 70: t170 = 2 * 2 -> t170 = 4
+  - Línea 74: t185 = 6 * 4 -> t185 = 24
+  - Línea 76: t195 = 6 + 1 -> t195 = 7
+  - Línea 79: t206 = 4 * 2 -> t206 = 8
+  - Línea 82: t218 = 4 * 2 -> t218 = 8
+  - Línea 86: t230 = 5 * 2 -> t230 = 10
+  - Línea 89: t242 = 5 * 2 -> t242 = 10
+  - Línea 97: t257 = 0 * 4 -> t257 = 0
+  - Línea 102: t273 = 0 + 1 -> t273 = 1
+  - Línea 108: t290 = 1 * 2 -> t290 = 2
+  - Línea 114: t308 = 1 * 2 -> t308 = 2
+  - Línea 121: t326 = 2 * 2 -> t326 = 4
+  - Línea 127: t344 = 2 * 2 -> t344 = 4
+  - Línea 136: t365 = 6 * 4 -> t365 = 24
+  - Línea 141: t381 = 6 + 1 -> t381 = 7
+  - Línea 147: t398 = 4 * 2 -> t398 = 8
+  - Línea 153: t416 = 4 * 2 -> t416 = 8
+  - Línea 160: t434 = 5 * 2 -> t434 = 10
+  - Línea 166: t452 = 5 * 2 -> t452 = 10
+  - Línea 179: t473 = 0 * 4 -> t473 = 0
+  - Línea 184: t489 = 0 + 1 -> t489 = 1
+  - Línea 190: t506 = 1 * 2 -> t506 = 2
+  - Línea 196: t524 = 1 * 2 -> t524 = 2
+  - Línea 203: t542 = 2 * 2 -> t542 = 4
+  - Línea 209: t560 = 2 * 2 -> t560 = 4
+  - Línea 218: t581 = 6 * 4 -> t581 = 24
+  - Línea 223: t597 = 6 + 1 -> t597 = 7
+  - Línea 229: t614 = 4 * 2 -> t614 = 8
+  - Línea 235: t632 = 4 * 2 -> t632 = 8
+  - Línea 242: t650 = 5 * 2 -> t650 = 10
+  - Línea 248: t668 = 5 * 2 -> t668 = 10
+  - Línea 56: t125 = 1 * 4 -> t125 = 4
+  - Línea 58: t137 = 2 * 4 -> t137 = 8
+  - Línea 60: t147 = 2 + 1 -> t147 = 3
+  - Línea 63: t161 = 4 * 4 -> t161 = 16
+  - Línea 65: t171 = 4 + 1 -> t171 = 5
+  - Línea 69: t197 = 7 * 4 -> t197 = 28
+  - Línea 71: t209 = 8 * 4 -> t209 = 32
+  - Línea 73: t219 = 8 + 1 -> t219 = 9
+  - Línea 76: t233 = 10 * 4 -> t233 = 40
+  - Línea 78: t243 = 10 + 1 -> t243 = 11
+  - Línea 89: t275 = 1 * 4 -> t275 = 4
+  - Línea 94: t293 = 2 * 4 -> t293 = 8
+  - Línea 99: t309 = 2 + 1 -> t309 = 3
+  - Línea 105: t329 = 4 * 4 -> t329 = 16
+  - Línea 110: t345 = 4 + 1 -> t345 = 5
+  - Línea 122: t383 = 7 * 4 -> t383 = 28
+  - Línea 127: t401 = 8 * 4 -> t401 = 32
+  - Línea 132: t417 = 8 + 1 -> t417 = 9
+  - Línea 138: t437 = 10 * 4 -> t437 = 40
+  - Línea 143: t453 = 10 + 1 -> t453 = 11
+  - Línea 159: t491 = 1 * 4 -> t491 = 4
+  - Línea 164: t509 = 2 * 4 -> t509 = 8
+  - Línea 169: t525 = 2 + 1 -> t525 = 3
+  - Línea 175: t545 = 4 * 4 -> t545 = 16
+  - Línea 180: t561 = 4 + 1 -> t561 = 5
+  - Línea 192: t599 = 7 * 4 -> t599 = 28
+  - Línea 197: t617 = 8 * 4 -> t617 = 32
+  - Línea 202: t633 = 8 + 1 -> t633 = 9
+  - Línea 208: t653 = 10 * 4 -> t653 = 40
+  - Línea 213: t669 = 10 + 1 -> t669 = 11
+  - Línea 58: t149 = 3 * 4 -> t149 = 12
+  - Línea 61: t173 = 5 * 4 -> t173 = 20
+  - Línea 66: t221 = 9 * 4 -> t221 = 36
+  - Línea 69: t245 = 11 * 4 -> t245 = 44
+  - Línea 87: t311 = 3 * 4 -> t311 = 12
+  - Línea 96: t347 = 5 * 4 -> t347 = 20
+  - Línea 115: t419 = 9 * 4 -> t419 = 36
+  - Línea 124: t455 = 11 * 4 -> t455 = 44
+  - Línea 147: t527 = 3 * 4 -> t527 = 12
+  - Línea 156: t563 = 5 * 4 -> t563 = 20
+  - Línea 175: t635 = 9 * 4 -> t635 = 36
+  - Línea 184: t671 = 11 * 4 -> t671 = 44

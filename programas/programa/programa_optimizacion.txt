@@ -1,0 +1,189 @@
+===== OPTIMIZACIONES REALIZADAS =====
+
+Archivo: .\programas\programa\programa.txt
+Fecha: 2026-02-11T11:20:31.406509800
+
+--- ESTADÍSTICAS DE CÓDIGO INTERMEDIO ---
+
+Instrucciones originales: 111
+Instrucciones optimizadas: 111
+Instrucciones eliminadas: 0
+Reducción: 0,00%
+
+--- ESTADÍSTICAS DE ENSAMBLADOR ---
+
+Archivo original (.x68): 9832 bytes
+Archivo optimizado (_optimizado.x68): 7961 bytes
+Bytes reducidos: 1871 bytes
+Reducción en ensamblador: 19,03%
+
+--- CÓDIGO OPTIMIZADO ---
+
+main:
+x = 10.0
+y = 20
+z = 5.5
+i = 1
+e0:
+t6 = i <= 5
+if !(t6) goto e1
+output "ITERAMOS"
+output "\n"
+i = i + 1
+goto e0
+e1:
+crement = 0
+incr = 1
+incr = incr + 1
+crement = incr
+t10 = incr
+incr = incr + 1
+crement = t10
+output crement
+t12 = x
+x = x + 1.0
+t14 = t12 + 5.0
+asignaIncremento = t14
+t17 = asignaIncremento + 0.5
+asignaIncremento = asignaIncremento + 1.0
+t18 = t17 < asignaIncremento
+if !(t18) goto e2
+output "incrementado"
+output "\n"
+e2:
+t23 = 13 - y
+a = t23
+output a
+output "\n"
+t27 = 10 * y
+t30 = z + 1.5
+output t30
+output "\n"
+hola2 = "Hola mundo"
+output hola2
+output "\n"
+input edad
+t34 = edad > 17
+if !(t34) goto e4
+output "Eres mayor de edad"
+output "\n"
+goto e5
+e4:
+output "Eres menor de edad"
+output "\n"
+e5:
+j = 0
+e6:
+t38 = j <= 5
+if !(t38) goto e7
+output j
+output "\n"
+j = j + 1
+goto e6
+e7:
+n = 5
+e8:
+output n
+output "\n"
+n = n - 1
+t44 = n != 0
+if t44 goto e8
+opcion = 2
+t46 = opcion
+t47 = 1
+if t46 != t47 goto e11
+output "uno"
+output "\n"
+goto e10
+e11:
+t48 = 2
+if t46 != t48 goto e12
+output "dos"
+output "\n"
+goto e10
+e12:
+t49 = 3
+if t46 != t49 goto e13
+output "tres"
+output "\n"
+goto e10
+e13:
+output "Opción no válida"
+output "\n"
+e10:
+i = 0
+e14:
+t53 = i < 5
+if !(t53) goto e15
+i = i + 1
+goto e14
+e15:
+llueve = true
+paraguas = false
+t59 = ! paraguas
+t60 = llueve && t59
+if !(t60) goto e16
+output "Me voy a mojar"
+output "\n"
+goto e17
+e16:
+output "Todo bien"
+output "\n"
+e17:
+
+--- CAMBIOS REALIZADOS POR EL OPTIMIZADOR ---
+
+Asignación diferida:
+  - Línea 1: t0 eliminado y sustituido por 10.0
+  - Línea 2: t1 eliminado y sustituido por 20
+  - Línea 3: t2 eliminado y sustituido por 5.5
+  - Línea 4: t3 eliminado y sustituido por 1
+  - Línea 6: t4 eliminado y sustituido por i
+  - Línea 6: t5 eliminado y sustituido por 5
+  - Línea 14: t8 eliminado y sustituido por 0
+  - Línea 15: t9 eliminado y sustituido por 1
+  - Línea 21: t11 eliminado y sustituido por crement
+  - Línea 24: t13 eliminado y sustituido por 5.0
+  - Línea 26: t15 eliminado y sustituido por asignaIncremento
+  - Línea 26: t16 eliminado y sustituido por 0.5
+  - Línea 35: t19 eliminado y sustituido por 3
+  - Línea 35: t20 eliminado y sustituido por 10
+  - Línea 36: t22 eliminado y sustituido por y
+  - Línea 38: t24 eliminado y sustituido por a
+  - Línea 40: t25 eliminado y sustituido por 10
+  - Línea 40: t26 eliminado y sustituido por y
+  - Línea 42: t28 eliminado y sustituido por z
+  - Línea 42: t29 eliminado y sustituido por 1.5
+  - Línea 46: t31 eliminado y sustituido por hola2
+  - Línea 49: t32 eliminado y sustituido por edad
+  - Línea 49: t33 eliminado y sustituido por 17
+  - Línea 58: t35 eliminado y sustituido por 0
+  - Línea 60: t36 eliminado y sustituido por j
+  - Línea 60: t37 eliminado y sustituido por 5
+  - Línea 62: t39 eliminado y sustituido por j
+  - Línea 67: t40 eliminado y sustituido por 5
+  - Línea 69: t41 eliminado y sustituido por n
+  - Línea 72: t42 eliminado y sustituido por n
+  - Línea 72: t43 eliminado y sustituido por 0
+  - Línea 75: t45 eliminado y sustituido por 2
+  - Línea 98: t50 eliminado y sustituido por 0
+  - Línea 100: t51 eliminado y sustituido por i
+  - Línea 100: t52 eliminado y sustituido por 5
+  - Línea 102: t54 eliminado y sustituido por 1
+  - Línea 107: t56 eliminado y sustituido por true
+  - Línea 108: t57 eliminado y sustituido por false
+  - Línea 109: t58 eliminado y sustituido por llueve
+  - Línea 32: t21 eliminado y sustituido por 13
+Ramificaciones adyacentes:
+  - Línea 32: Salto innecesario a e3 eliminado
+Eliminación de etiquetas muertas:
+  - Línea 33: Se ha eliminado la etiqueta e3
+  - Línea 73: Se ha eliminado la etiqueta e9
+  - Línea 118: Se ha eliminado la etiqueta end
+Eliminación de código muerto:
+  - Línea 10: Se eliminó t7
+  - Línea 39: Se eliminó w
+  - Línea 99: Se eliminó pruebaaaa
+  - Línea 100: Se eliminó t55
+Cálculo de constantes:
+  - Línea 32: t21 = 3 + 10 -> t21 = 13

@@ -1,0 +1,150 @@
+00001000 Starting Address
+Assembler used: EASy68K Editor/Assembler v5.16.01
+Created On: 08/02/2026 12:21:58
+
+00001000                             1      ORG $1000
+00001000                             2  START:
+00001000  4FF9 00005000              3      LEA STACKPTR, A7
+00001006  4EF9 000010B8              4      JMP main
+0000100C                             5  
+0000100C                             6  ; ===== RUTINAS AUXILIARES =====
+0000100C                             7  PRINT_SIGNED:
+0000100C  4A41                       8      TST.W D1
+0000100E  6A00 0010                  9      BPL PRINT_UNSIGNED
+00001012  103C 000E                 10      MOVE.B #14, D0
+00001016  43F9 0000110D             11      LEA MINUS_SIGN, A1
+0000101C  4E4F                      12      TRAP #15
+0000101E  4441                      13      NEG.W D1
+00001020                            14  PRINT_UNSIGNED:
+00001020  103C 0003                 15      MOVE.B #3, D0
+00001024  4E4F                      16      TRAP #15
+00001026  4E75                      17      RTS
+00001028                            18  
+00001028                            19  READ_NUM_VALID:
+00001028                            20  .RNV_RETRY:
+00001028  43F9 00001143             21      LEA INPUT_BUFFER, A1
+0000102E  103C 0002                 22      MOVE.B #2, D0
+00001032  4E4F                      23      TRAP #15
+00001034  43F9 00001143             24      LEA INPUT_BUFFER, A1
+0000103A  4242                      25      CLR.W D2
+0000103C  4283                      26      CLR.L D3
+0000103E  4284                      27      CLR.L D4
+00001040  1A11                      28      MOVE.B (A1), D5
+00001042  BA3C 0000                 29      CMP.B #0, D5
+00001046  6700 0060                 30      BEQ .RNV_ERR
+0000104A  BA3C 002D                 31      CMP.B #'-', D5
+0000104E  6600 0008                 32      BNE .RNV_CHK
+00001052  343C 0001                 33      MOVE.W #1, D2
+00001056  5289                      34      ADDA.L #1, A1
+00001058                            35  .RNV_CHK:
+00001058                            36  .RNV_LOOP:
+00001058  1A19                      37      MOVE.B (A1)+, D5
+0000105A  BA3C 0000                 38      CMP.B #0, D5
+0000105E  6700 0036                 39      BEQ .RNV_VALID
+00001062  BA3C 000A                 40      CMP.B #10, D5
+00001066  6700 002E                 41      BEQ .RNV_VALID
+0000106A  BA3C 000D                 42      CMP.B #13, D5
+0000106E  6700 0026                 43      BEQ .RNV_VALID
+00001072  BA3C 0030                 44      CMP.B #'0', D5
+00001076  6D00 0030                 45      BLT .RNV_ERR
+0000107A  BA3C 0039                 46      CMP.B #'9', D5
+0000107E  6E00 0028                 47      BGT .RNV_ERR
+00001082  5284                      48      ADD.L #1, D4
+00001084  0405 0030                 49      SUB.B #'0', D5
+00001088  2C03                      50      MOVE.L D3, D6
+0000108A  C7FC 000A                 51      MULS #10, D3
+0000108E  4885                      52      EXT.W D5
+00001090  48C5                      53      EXT.L D5
+00001092  D685                      54      ADD.L D5, D3
+00001094  60C2                      55      BRA .RNV_LOOP
+00001096                            56  .RNV_VALID:
+00001096  4A84                      57      TST.L D4
+00001098  6700 000E                 58      BEQ .RNV_ERR
+0000109C  3203                      59      MOVE.W D3, D1
+0000109E  4A42                      60      TST.W D2
+000010A0  6700 0004                 61      BEQ .RNV_END
+000010A4  4441                      62      NEG.W D1
+000010A6                            63  .RNV_END:
+000010A6  4E75                      64      RTS
+000010A8                            65  .RNV_ERR:
+000010A8  43F9 0000110F             66      LEA ERROR_INPUT_MSG, A1
+000010AE  103C 000E                 67      MOVE.B #14, D0
+000010B2  4E4F                      68      TRAP #15
+000010B4  6000 FF72                 69      BRA .RNV_RETRY
+000010B8                            70  
+000010B8                            71  main:
+000010B8                            72      ; output "Ingresa numero:"
+000010B8  43F9 000011A6             73      LEA str0, A1
+000010BE  103C 000E                 74      MOVE.B #14, D0
+000010C2  4E4F                      75      TRAP #15
+000010C4                            76      ; output "\n"
+000010C4  43F9 0000110A             77      LEA NEWLINE, A1
+000010CA  103C 000E                 78      MOVE.B #14, D0
+000010CE  4E4F                      79      TRAP #15
+000010D0                            80      ; input x
+000010D0  4EB8 1028                 81      JSR READ_NUM_VALID
+000010D4  33C1 000011A4             82      MOVE.W D1, x
+000010DA                            83      ; output "Ingresaste:"
+000010DA  43F9 00001198             84      LEA str1, A1
+000010E0  103C 000E                 85      MOVE.B #14, D0
+000010E4  4E4F                      86      TRAP #15
+000010E6                            87      ; output "\n"
+000010E6  43F9 0000110A             88      LEA NEWLINE, A1
+000010EC  103C 000E                 89      MOVE.B #14, D0
+000010F0  4E4F                      90      TRAP #15
+000010F2                            91      ; t0 = x
+000010F2  33F9 000011A4 000011B6    92      MOVE.W x, t0
+000010FC                            93      ; output t0
+000010FC  3239 000011B6             94      MOVE.W t0, D1
+00001102  4EB8 100C                 95      JSR PRINT_SIGNED
+00001106                            96  end:
+00001106  6000 00B0                 97      BRA HALT
+0000110A                            98  
+0000110A                            99      ; DATA SECTION
+0000110A= 0D 0A 00                 100  NEWLINE:    DC.B 13,10,0
+0000110D= 2D 00                    101  MINUS_SIGN: DC.B '-',0
+0000110F= 45 52 52 4F 52 3A ...    102  ERROR_INPUT_MSG:    DC.B 'ERROR: Entrada invalida. Ingrese un numero valido: ',0
+00001143                           103  INPUT_BUFFER:   DS.B 80
+00001194= 00008000                 104  HEAP_PTR:   DC.L $8000
+00001198= 49 6E 67 72 65 73 ...    105  str1:   DC.B 'Ingresaste:',0
+000011A4                           106  x:  DS.W 1
+000011A6= 49 6E 67 72 65 73 ...    107  str0:   DC.B 'Ingresa numero:',0
+000011B6                           108  t0: DS.W 1
+000011B8                           109  
+000011B8                           110  HALT:
+000011B8  FFFF FFFF                111      SIMHALT
+000011BC                           112  
+00005000                           113      ORG $5000
+00005000                           114  STACKPTR:
+00005000                           115      END START
+
+No errors detected
+No warnings generated
+
+
+SYMBOL TABLE INFORMATION
+Symbol-name         Value
+-------------------------
+END                 1106
+ERROR_INPUT_MSG     110F
+HALT                11B8
+HEAP_PTR            1194
+INPUT_BUFFER        1143
+MAIN                10B8
+MINUS_SIGN          110D
+NEWLINE             110A
+PRINT_SIGNED        100C
+PRINT_UNSIGNED      1020
+READ_NUM_VALID      1028
+READ_NUM_VALID:RNV_CHK  1058
+READ_NUM_VALID:RNV_END  10A6
+READ_NUM_VALID:RNV_ERR  10A8
+READ_NUM_VALID:RNV_LOOP  1058
+READ_NUM_VALID:RNV_RETRY  1028
+READ_NUM_VALID:RNV_VALID  1096
+STACKPTR            5000
+START               1000
+STR0                11A6
+STR1                1198
+T0                  11B6
+X                   11A4

@@ -1,0 +1,8 @@
+===== RESULTADO DE LA COMPILACION =====
+
+Archivo: programas\test_array_03_escritura\test_array_03_escritura.txt
+Fecha: 2026-02-03T12:21:20.127325
+
+? No se detectaron errores.
+
+Compilacion exitosa.

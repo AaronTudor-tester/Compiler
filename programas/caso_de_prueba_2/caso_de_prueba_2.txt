@@ -1,0 +1,38 @@
+// CASO DE PRUEBA 2: BUCLES Y CONDICIONALES
+// Demuestra:
+// - Bucle for
+// - Condicionales
+// - Operadores lógicos
+
+principal {
+    escribeN "=== CASO 2: BUCLES Y CONDICIONALES ===".
+    
+    escribeN "Numeros del 1 al 10:".
+    para numero i es 1, repite si i es menor o igual que 10, incrementa i {
+        escribe i.
+        escribe " ".
+    }
+    escribe "\n".
+    
+    escribeN "Numeros pares del 1 al 10:".
+    para numero j es 1, repite si j es menor o igual que 10, incrementa j {
+        si j resto 2 es igual que 0 {
+            escribe j.
+            escribe " ".
+        }
+    }
+    escribe "\n".
+    
+    escribeN "Numeros impares del 1 al 10:".
+    para numero k es 1, repite si k es menor o igual que 10, incrementa k {
+        si k resto 2 es diferente de 0 {
+            escribe k.
+            escribe " ".
+        }
+    }
+}
+
+// FUNCIONAMIENTO:
+// 1. Primer bucle imprime números del 1 al 10
+// 2. Segundo bucle imprime solo pares: 2, 4, 6, 8, 10
+// 3. Tercer bucle imprime solo impares: 1, 3, 5, 7, 9

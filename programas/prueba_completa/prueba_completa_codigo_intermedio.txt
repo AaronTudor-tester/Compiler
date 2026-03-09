@@ -1,0 +1,95 @@
+===== CÓDIGO INTERMEDIO =====
+
+suma:
+; param a : INT
+; param b : INT
+t0 = a
+t1 = b
+t2 = t0 + t1
+return t2
+main:
+output "=== TEST 1: Operaciones Basicas ==="
+output "\n"
+t3 = 10
+x = t3
+t4 = 5
+y = t4
+output "x + y = "
+param_s x  
+param_s y  
+t5 = call suma
+output t5
+output "\n"
+output "=== TEST 2: Condicionales ==="
+output "\n"
+t6 = x
+t7 = y
+t8 = t6 > t7
+if !(t8) goto e0
+output "10 es mayor que 5"
+output "\n"
+goto e1
+e0:
+output "10 no es mayor que 5"
+output "\n"
+e1:
+output "=== TEST 3: While ==="
+output "\n"
+t9 = 0
+contador = t9
+e2:
+t10 = contador
+t11 = 3
+t12 = t10 < t11
+if !(t12) goto e3
+output "Iteracion: "
+t13 = contador
+output t13
+output "\n"
+contador = contador + 1
+goto e2
+e3:
+output "=== TEST 4: Operaciones Unarias ==="
+output "\n"
+t14 = 15
+z = t14
+output "z = "
+t15 = z
+output t15
+output "\n"
+output "Negacion de z = "
+t16 = NEG z
+negZ = t16
+t17 = negZ
+output t17
+output "\n"
+output "=== TEST 5: Strings ==="
+output "\n"
+output "Hola Mundo"
+output "\n"
+output "Compilador funcionando!"
+output "\n"
+output "=== TEST 6: Comparaciones ==="
+output "\n"
+t18 = 10
+t19 = 10
+t20 = t18 == t19
+if !(t20) goto e4
+output "10 igual a 10: VERDADERO"
+output "\n"
+goto e5
+e4:
+e5:
+t21 = 5
+t22 = 8
+t23 = t21 > t22
+if !(t23) goto e6
+output "5 > 8: VERDADERO"
+output "\n"
+goto e7
+e6:
+output "5 > 8: FALSO"
+output "\n"
+e7:
+output "=== FIN DE PRUEBAS ==="
+end:

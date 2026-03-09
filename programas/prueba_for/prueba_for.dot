@@ -1,0 +1,57 @@
+strict digraph {
+27	[label="Programa"];
+27->1
+27->24
+27->26
+1	[label="print"];
+1->0
+0	[label="=== PRUEBA FOR CON DECIMALES ===",shape=plaintext];
+24	[label="for"];
+24->3
+24->6
+24->10
+24->23
+3	[label="=(i)"]
+3->2
+2	[label="1.0",shape=plaintext];
+6	[label="MEIGUAL"];
+6->4
+6->5
+4	[label="i",shape=plaintext];
+5	[label="3.0",shape=plaintext];
+10	[label="=(i)"]
+10->9
+9	[label="SUMA"];
+9->7
+9->8
+7	[label="i",shape=plaintext];
+8	[label="0.5",shape=plaintext];
+23	[label="Bloque"];
+23->12
+23->14
+23->16
+23->20
+23->22
+12	[label="print"];
+12->11
+11	[label="i=",shape=plaintext];
+14	[label="print"];
+14->13
+13	[label="i",shape=plaintext];
+16	[label="print"];
+16->15
+15	[label=" Doble=",shape=plaintext];
+20	[label="=(y)"]
+20->19
+19	[label="PROD"];
+19->17
+19->18
+17	[label="i",shape=plaintext];
+18	[label="2.0",shape=plaintext];
+22	[label="print"];
+22->21
+21	[label="y",shape=plaintext];
+26	[label="print"];
+26->25
+25	[label="FIN PRUEBA FOR",shape=plaintext];
+}

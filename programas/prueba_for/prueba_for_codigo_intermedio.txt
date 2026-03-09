@@ -1,0 +1,32 @@
+===== CÓDIGO INTERMEDIO =====
+
+main:
+output "=== PRUEBA FOR CON DECIMALES ==="
+output "\n"
+t0 = 1.0
+i = t0
+e0:
+t1 = i
+t2 = 3.0
+t3 = t1 <= t2
+if !(t3) goto e1
+output "i="
+t4 = i
+output t4
+output "\n"
+output " Doble="
+t5 = i
+t6 = 2.0
+t7 = t5 * t6
+y = t7
+t8 = y
+output t8
+output "\n"
+t9 = i
+t10 = 0.5
+t11 = t9 + t10
+i = t11
+goto e0
+e1:
+output "FIN PRUEBA FOR"
+end:

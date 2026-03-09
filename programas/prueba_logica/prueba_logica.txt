@@ -1,0 +1,61 @@
+// Prueba de operadores lógicos AND, OR, NOT
+
+principal {
+    escribeN "=== PRUEBA DE OPERADORES LOGICOS ===".
+    
+    numero x es 5.
+    numero y es 10.
+    numero z es 15.
+    
+    // TEST 1: AND (y ademas)
+    escribeN "TEST 1: AND (y ademas)".
+    si x es menor que y y ademas y es menor que z {
+        escribeN "5 < 10 AND 10 < 15: VERDADERO".
+    } sino {
+        escribeN "5 < 10 AND 10 < 15: FALSO".
+    }
+    
+    
+    si x es mayor que y y ademas y es menor que z {
+        escribeN "5 > 10 AND 10 < 15: VERDADERO".
+    } sino {
+        escribeN "5 > 10 AND 10 < 15: FALSO".
+    }
+    
+    // TEST 2: OR (o bien)
+    
+    escribeN "TEST 2: OR (o bien)".
+    si x es mayor que y o bien y es menor que z {
+        escribeN "5 > 10 OR 10 < 15: VERDADERO".
+    } sino {
+        escribeN "5 > 10 OR 10 < 15: FALSO".
+    }
+    
+    
+    si x es mayor que y o bien y es mayor que z {
+        escribeN "5 > 10 OR 10 > 15: VERDADERO".
+    } sino {
+        escribeN "5 > 10 OR 10 > 15: FALSO".
+    }
+    
+    // TEST 3: NOT (no) - con variables booleanas
+    
+    escribeN "TEST 3: NOT (no)".
+    pregunta verd es cierto.
+    pregunta fals es mentira.
+    
+    si no verd {
+        escribeN "NOT(true): VERDADERO".
+    } sino {
+        escribeN "NOT(true): FALSO".
+    }
+    
+  
+    si no fals {
+        escribeN "NOT(false): VERDADERO".
+    } sino {
+        escribeN "NOT(false): FALSO".
+    }
+    
+    escribe "FIN".
+}

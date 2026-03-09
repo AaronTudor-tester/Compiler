@@ -1,0 +1,8 @@
+===== RESULTADO DE LA COMPILACION =====
+
+Archivo: programas/prueba_escribeN/prueba_escribeN.txt
+Fecha: 2026-02-02T14:37:28.589288300
+
+? No se detectaron errores.
+
+Compilacion exitosa.

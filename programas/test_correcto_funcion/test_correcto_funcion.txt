@@ -1,0 +1,12 @@
+numero suma(numero a, numero b) {
+    devuelve a mas b.
+}
+
+vacio saludo() {
+    escribeN "Hola mundo".
+}
+
+principal {
+    escribeN suma(2, 3).
+    saludo().
+}

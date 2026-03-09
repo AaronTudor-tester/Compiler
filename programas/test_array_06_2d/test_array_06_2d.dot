@@ -1,0 +1,149 @@
+strict digraph {
+75	[label="Programa"];
+75->1
+75->4
+75->6
+75->11
+75->16
+75->21
+75->26
+75->28
+75->30
+75->56
+75->58
+75->62
+75->66
+75->70
+75->72
+75->74
+1	[label="print"];
+1->0
+0	[label="=== TEST: Array 2D completo ===",shape=plaintext];
+4	[label="array: matriz[0](INT)"];
+6	[label="print"];
+6->5
+5	[label="Inicializando matriz 2x2:",shape=plaintext];
+11	[label="[] =\n(Asign. Array)"]
+11->9
+11->10
+9	[label="Acceso Array\n(matriz)"]
+9->7
+9->8
+7	[label="0",shape=plaintext];
+8	[label="0",shape=plaintext];
+10	[label="1",shape=plaintext];
+16	[label="[] =\n(Asign. Array)"]
+16->14
+16->15
+14	[label="Acceso Array\n(matriz)"]
+14->12
+14->13
+12	[label="0",shape=plaintext];
+13	[label="1",shape=plaintext];
+15	[label="2",shape=plaintext];
+21	[label="[] =\n(Asign. Array)"]
+21->19
+21->20
+19	[label="Acceso Array\n(matriz)"]
+19->17
+19->18
+17	[label="1",shape=plaintext];
+18	[label="0",shape=plaintext];
+20	[label="3",shape=plaintext];
+26	[label="[] =\n(Asign. Array)"]
+26->24
+26->25
+24	[label="Acceso Array\n(matriz)"]
+24->22
+24->23
+22	[label="1",shape=plaintext];
+23	[label="1",shape=plaintext];
+25	[label="4",shape=plaintext];
+28	[label="print"];
+28->27
+27	[label="Leyendo matriz con bucle:",shape=plaintext];
+30	[label="=(i)"]
+30->29
+29	[label="0",shape=plaintext];
+56	[label="while"];
+56->33
+56->55
+33	[label="MENOR"];
+33->31
+33->32
+31	[label="i",shape=plaintext];
+32	[label="2",shape=plaintext];
+55	[label="Bloque"];
+55->35
+55->50
+55->54
+35	[label="=(j)"]
+35->34
+34	[label="0",shape=plaintext];
+50	[label="while"];
+50->38
+50->49
+38	[label="MENOR"];
+38->36
+38->37
+36	[label="j",shape=plaintext];
+37	[label="2",shape=plaintext];
+49	[label="Bloque"];
+49->42
+49->44
+49->48
+42	[label="=(valor)"]
+42->41
+41	[label="Acceso Array\n(matriz)"]
+41->39
+41->40
+39	[label="i",shape=plaintext];
+40	[label="j",shape=plaintext];
+44	[label="print"];
+44->43
+43	[label="valor",shape=plaintext];
+48	[label="=(j)"]
+48->47
+47	[label="SUMA"];
+47->45
+47->46
+45	[label="j",shape=plaintext];
+46	[label="1",shape=plaintext];
+54	[label="=(i)"]
+54->53
+53	[label="SUMA"];
+53->51
+53->52
+51	[label="i",shape=plaintext];
+52	[label="1",shape=plaintext];
+58	[label="print"];
+58->57
+57	[label="Operacion: matriz[0,0] + matriz[1,1]:",shape=plaintext];
+62	[label="=(a)"]
+62->61
+61	[label="Acceso Array\n(matriz)"]
+61->59
+61->60
+59	[label="0",shape=plaintext];
+60	[label="0",shape=plaintext];
+66	[label="=(b)"]
+66->65
+65	[label="Acceso Array\n(matriz)"]
+65->63
+65->64
+63	[label="1",shape=plaintext];
+64	[label="1",shape=plaintext];
+70	[label="=(suma)"]
+70->69
+69	[label="SUMA"];
+69->67
+69->68
+67	[label="a",shape=plaintext];
+68	[label="b",shape=plaintext];
+72	[label="print"];
+72->71
+71	[label="suma",shape=plaintext];
+74	[label="print"];
+74->73
+73	[label="Test completado",shape=plaintext];
+}

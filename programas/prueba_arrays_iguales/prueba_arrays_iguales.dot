@@ -1,0 +1,211 @@
+strict digraph {
+108	[label="Programa"];
+108->1
+108->3
+108->6
+108->15
+108->20
+108->25
+108->30
+108->35
+108->40
+108->45
+108->47
+108->93
+108->100
+108->107
+1	[label="=(filas)"]
+1->0
+0	[label="2",shape=plaintext];
+3	[label="=(columnas)"]
+3->2
+2	[label="3",shape=plaintext];
+6	[label="array: A[0](INT)"];
+15	[label="array: B[6](INT)"];
+15->7
+15->8
+15->9
+15->10
+15->11
+15->12
+7	[label="1",shape=plaintext];
+8	[label="2",shape=plaintext];
+9	[label="3",shape=plaintext];
+10	[label="4",shape=plaintext];
+11	[label="5",shape=plaintext];
+12	[label="6",shape=plaintext];
+20	[label="[] =\n(Asign. Array)"]
+20->18
+20->19
+18	[label="Acceso Array\n(A)"]
+18->16
+18->17
+16	[label="0",shape=plaintext];
+17	[label="0",shape=plaintext];
+19	[label="1",shape=plaintext];
+25	[label="[] =\n(Asign. Array)"]
+25->23
+25->24
+23	[label="Acceso Array\n(A)"]
+23->21
+23->22
+21	[label="0",shape=plaintext];
+22	[label="1",shape=plaintext];
+24	[label="2",shape=plaintext];
+30	[label="[] =\n(Asign. Array)"]
+30->28
+30->29
+28	[label="Acceso Array\n(A)"]
+28->26
+28->27
+26	[label="0",shape=plaintext];
+27	[label="2",shape=plaintext];
+29	[label="3",shape=plaintext];
+35	[label="[] =\n(Asign. Array)"]
+35->33
+35->34
+33	[label="Acceso Array\n(A)"]
+33->31
+33->32
+31	[label="1",shape=plaintext];
+32	[label="0",shape=plaintext];
+34	[label="4",shape=plaintext];
+40	[label="[] =\n(Asign. Array)"]
+40->38
+40->39
+38	[label="Acceso Array\n(A)"]
+38->36
+38->37
+36	[label="1",shape=plaintext];
+37	[label="1",shape=plaintext];
+39	[label="5",shape=plaintext];
+45	[label="[] =\n(Asign. Array)"]
+45->43
+45->44
+43	[label="Acceso Array\n(A)"]
+43->41
+43->42
+41	[label="1",shape=plaintext];
+42	[label="2",shape=plaintext];
+44	[label="6",shape=plaintext];
+47	[label="=(igual)"]
+47->46
+46	[label="1",shape=plaintext];
+93	[label="for"];
+93->49
+93->52
+93->54
+93->92
+49	[label="=(i)"]
+49->48
+48	[label="0",shape=plaintext];
+52	[label="MENOR"];
+52->50
+52->51
+50	[label="i",shape=plaintext];
+51	[label="filas",shape=plaintext];
+54	[label="INCR"];
+54->53
+53	[label="i",shape=plaintext];
+92	[label="Bloque"];
+92->85
+92->91
+85	[label="for"];
+85->56
+85->59
+85->61
+85->84
+56	[label="=(j)"]
+56->55
+55	[label="0",shape=plaintext];
+59	[label="MENOR"];
+59->57
+59->58
+57	[label="j",shape=plaintext];
+58	[label="columnas",shape=plaintext];
+61	[label="INCR"];
+61->60
+60	[label="j",shape=plaintext];
+84	[label="Bloque"];
+84->65
+84->69
+84->74
+84->83
+65	[label="=(vaA)"]
+65->64
+64	[label="Acceso Array\n(A)"]
+64->62
+64->63
+62	[label="i",shape=plaintext];
+63	[label="j",shape=plaintext];
+69	[label="=(vaB)"]
+69->68
+68	[label="Acceso Array\n(B)"]
+68->66
+68->67
+66	[label="i",shape=plaintext];
+67	[label="j",shape=plaintext];
+74	[label="if"];
+74->72
+74->73
+72	[label="IGUAL"];
+72->70
+72->71
+70	[label="vaA",shape=plaintext];
+71	[label="vaB",shape=plaintext];
+73	[label="Bloque"];
+83	[label="if"];
+83->78
+83->82
+78	[label="NOT"];
+78->77
+77	[label="IGUAL"];
+77->75
+77->76
+75	[label="vaA",shape=plaintext];
+76	[label="vaB",shape=plaintext];
+82	[label="Bloque"];
+82->80
+82->81
+80	[label="=(igual)"]
+80->79
+79	[label="0",shape=plaintext];
+81	[label="break",shape=plaintext];
+91	[label="if"];
+91->88
+91->90
+88	[label="IGUAL"];
+88->86
+88->87
+86	[label="igual",shape=plaintext];
+87	[label="0",shape=plaintext];
+90	[label="Bloque"];
+90->89
+89	[label="break",shape=plaintext];
+100	[label="if"];
+100->96
+100->99
+96	[label="IGUAL"];
+96->94
+96->95
+94	[label="igual",shape=plaintext];
+95	[label="1",shape=plaintext];
+99	[label="Bloque"];
+99->98
+98	[label="print"];
+98->97
+97	[label="Las matrices son IGUALES.",shape=plaintext];
+107	[label="if"];
+107->103
+107->106
+103	[label="IGUAL"];
+103->101
+103->102
+101	[label="igual",shape=plaintext];
+102	[label="0",shape=plaintext];
+106	[label="Bloque"];
+106->105
+105	[label="print"];
+105->104
+104	[label="Las matrices son DISTINTAS.",shape=plaintext];
+}

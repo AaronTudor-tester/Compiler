@@ -1,0 +1,153 @@
+	ORG $1000
+START:
+	LEA STACKPTR, A7
+	JMP main
+
+; ===== RUTINAS AUXILIARES =====
+PRINT_SIGNED:
+	TST.W D1
+	BPL PRINT_UNSIGNED
+	MOVE.B #14, D0
+	LEA MINUS_SIGN, A1
+	TRAP #15
+	NEG.W D1
+PRINT_UNSIGNED:
+	MOVE.B #3, D0
+	TRAP #15
+	RTS
+
+PRINT_DECIMAL_2:
+	MOVE.L D1, D3
+	TST.L D3
+	BPL .PD2_POSITIVE
+	MOVE.B #14, D0
+	LEA MINUS_SIGN, A1
+	TRAP #15
+	NEG.L D3
+.PD2_POSITIVE:
+	MOVE.L D3, D2
+	MOVE.W #100, D4
+	DIVS D4, D2
+	MOVE.L D2, D5
+	MOVE.W #100, D4
+	MOVE.L D5, D6
+	CLR.L D0
+	MOVE.W D4, D0
+	MULS D0, D6
+	SUB.L D6, D3
+	CLR.L D1
+	MOVE.W D2, D1
+	MOVE.B #3, D0
+	TRAP #15
+	LEA DECIMAL_POINT, A1
+	MOVE.B #14, D0
+	TRAP #15
+	CLR.L D0
+	MOVE.W D3, D0
+	CMP.W #10, D0
+	BGE .PD2_SKIP_ZERO
+	LEA ZERO_CHAR, A1
+	MOVE.B #14, D0
+	TRAP #15
+.PD2_SKIP_ZERO:
+	CLR.L D1
+	MOVE.W D3, D1
+	MOVE.B #3, D0
+	TRAP #15
+	RTS
+
+suma:
+	; ; param a : INT
+	; t2 = a + 1
+	MOVE.W a, D0
+	ADD.W #1, D0
+	MOVE.W D0, t2
+	; a = t2
+	MOVE.W t2, a
+	; return a
+	MOVE.W a, D0
+	RTS
+main:
+	; output 1.0628571428571423
+	CLR.L D1
+	MOVE.L #106, D1
+	JSR PRINT_DECIMAL_2
+	; output "\n"
+	LEA NEWLINE, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; sum = 3
+	MOVE.W #3, sum
+	; param_s sum  
+	; t12 = call suma
+	JSR suma
+	MOVE.W D0, t12
+	; sum = t12
+	MOVE.W t12, sum
+	; output sum
+	MOVE.W sum, D1
+	JSR PRINT_SIGNED
+	; output "\n"
+	LEA NEWLINE, A1
+	MOVE.B #14, D0
+	TRAP #15
+	; t16 = 4.3 > 3
+	MOVE.W #0, t16
+	MOVE.W #430, D0
+	CMP.W #3, D0
+	BGT t16_true
+	JMP t16_false
+t16_true:
+	MOVE.W #1, t16
+t16_false:
+	; t19 = a > 0
+	MOVE.W #0, t19
+	MOVE.W a, D0
+	CMP.W #0, D0
+	BGT t19_true
+	JMP t19_false
+t19_true:
+	MOVE.W #1, t19
+t19_false:
+	; t20 = t16 && t19
+	MOVE.W #0, t20
+	MOVE.W t16, D0
+	CMP.W #0, D0
+	BEQ t20_false
+	MOVE.W t19, D0
+	CMP.W #0, D0
+	BEQ t20_false
+	MOVE.W #1, t20
+t20_false:
+	; if !(t20) goto e0
+	MOVE.W t20, D0
+	CMP.W #0, D0
+	BEQ e0
+	; output "hola"
+	LEA str0, A1
+	MOVE.B #14, D0
+	TRAP #15
+e0:
+	BRA HALT
+
+	; DATA SECTION
+NEWLINE:	DC.B 13,10,0
+MINUS_SIGN:	DC.B '-',0
+DECIMAL_POINT:	DC.B '.',0
+ZERO_CHAR:	DC.B '0',0
+HEAP_PTR:	DC.L $8000
+a:	DS.W 1
+t20:	DS.W 1
+t12:	DS.W 1
+t16:	DS.W 1
+str0:	DC.B 'hola',0
+sum:	DS.W 1
+t19:	DS.W 1
+t2:	DS.W 1
+
+HALT:
+	SIMHALT
+
+	ORG $5000
+STACKPTR:
+	END START

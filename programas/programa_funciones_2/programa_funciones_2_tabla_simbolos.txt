@@ -1,0 +1,5 @@
+===== TABLA DE SÍMBOLOS =====
+
+VARIABLE: Simbolo{nombre='a', tipo=INT, valor=null, linea=2, inicializada=true}
+FUNCION: Simbolo{nombre='suma', tipoRetorno=INT, parametros=[INT], linea=2}
+  VARIABLE: Simbolo{nombre='sum', tipo=INT, valor=3, linea=11, inicializada=true}

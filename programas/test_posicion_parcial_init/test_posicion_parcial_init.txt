@@ -1,0 +1,12 @@
+principal {
+    numero idx.
+    escribeN "Introduce indice (0..3):".
+    lee idx.
+
+    lista de numero arr de longitud 4.
+    arr posicion (0) es 10.
+    arr posicion (1) es 20.
+    arr posicion (3) es 40.
+
+    escribe arr posicion (idx).
+}

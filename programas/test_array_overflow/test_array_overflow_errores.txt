@@ -1,0 +1,9 @@
+===== ERRORES DETECTADOS EN LA COMPILACIÓN =====
+
+Archivo: programas\test_array_overflow\test_array_overflow.txt
+Fecha: 2026-02-11T11:44:33.286144500
+
+2 error(es) encontrado(s):
+
+1. [Línea 8, Columna 5] ERROR SEMANTICO: Las dimensiones del array esperadas [1], no coinciden con las dimensiones declaradas[2]
+2. [Línea 8, Columna 5] ERROR SEMANTICO: Tamaño total del array demasiado grande para 'giant' (producto de dimensiones = 100000)

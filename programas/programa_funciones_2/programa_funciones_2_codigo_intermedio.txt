@@ -1,0 +1,41 @@
+===== CÓDIGO INTERMEDIO =====
+
+suma:
+; param a : INT
+t0 = a
+t1 = 1
+t2 = t0 + t1
+a = t2
+t3 = a
+return t3
+main:
+t4 = 4.12
+t5 = 3.0
+t6 = t4 * t5
+t7 = 1.75
+t8 = t6 / t7
+t9 = 2.0
+t10 = t8 % t9
+output t10
+output "\n"
+t11 = 3
+sum = t11
+param_s sum  
+t12 = call suma
+sum = t12
+t13 = sum
+output t13
+output "\n"
+t14 = 4.3
+t15 = 3
+t16 = t14 > t15
+t17 = a
+t18 = 0
+t19 = t17 > t18
+t20 = t16 && t19
+if !(t20) goto e0
+output "hola"
+goto e1
+e0:
+e1:
+end:

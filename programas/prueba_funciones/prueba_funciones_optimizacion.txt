@@ -1,0 +1,137 @@
+===== OPTIMIZACIONES REALIZADAS =====
+
+Archivo: .\programas\prueba_funciones\prueba_funciones.txt
+Fecha: 2026-02-11T19:30:57.273296400
+
+--- ESTADÍSTICAS DE CÓDIGO INTERMEDIO ---
+
+Instrucciones originales: 68
+Instrucciones optimizadas: 68
+Instrucciones eliminadas: 0
+Reducción: 0,00%
+
+--- ESTADÍSTICAS DE ENSAMBLADOR ---
+
+Archivo original (.x68): 5736 bytes
+Archivo optimizado (_optimizado.x68): 4264 bytes
+Bytes reducidos: 1472 bytes
+Reducción en ensamblador: 25,66%
+
+--- CÓDIGO OPTIMIZADO ---
+
+a = 2
+b = 3
+suma2:
+; param x : INT
+t4 = x < 100
+if !(t4) goto e0
+output x
+output "\n"
+t8 = x + 37
+param_s t8  
+t9 = call suma2
+return t9
+e0:
+x = 9
+t12 = NEG 1
+t14 = t12 + x
+return t14
+funcVoid:
+output "hola"
+output "\n"
+return null
+suma:
+t17 = a + 2
+a = t17
+t20 = a + b
+resultado = t20
+t23 = a < 100
+if !(t23) goto e2
+param_s 23  
+t25 = call suma2
+t28 = a + 1
+param_s t28  
+t29 = call suma2
+t30 = t25 + t29
+t32 = t30 + 3
+return t32
+e2:
+return resultado
+sumaNormal:
+; param a1 : INT
+; param b1 : INT
+t36 = a1 + b1
+return t36
+main:
+www = 4.3
+output www
+t41 = call suma
+output t41
+output "\n"
+b = 3
+t43 = call suma
+t44 = call suma
+t45 = t43 + t44
+param_s 1  
+t47 = call suma2
+t48 = t45 + t47
+output t48
+output "\n"
+call funcVoid  
+param_s 200  
+t51 = call suma2
+output t51
+output "\n"
+param_s 2  
+param_s 3  
+t54 = call sumaNormal
+output t54
+output "\n"
+
+--- CAMBIOS REALIZADOS POR EL OPTIMIZADOR ---
+
+Asignación diferida:
+  - Línea 0: t0 eliminado y sustituido por 2
+  - Línea 1: t1 eliminado y sustituido por 3
+  - Línea 4: t2 eliminado y sustituido por x
+  - Línea 4: t3 eliminado y sustituido por 100
+  - Línea 6: t5 eliminado y sustituido por x
+  - Línea 8: t6 eliminado y sustituido por x
+  - Línea 8: t7 eliminado y sustituido por 37
+  - Línea 15: t10 eliminado y sustituido por 9
+  - Línea 16: t11 eliminado y sustituido por 1
+  - Línea 17: t13 eliminado y sustituido por x
+  - Línea 24: t15 eliminado y sustituido por a
+  - Línea 24: t16 eliminado y sustituido por 2
+  - Línea 26: t18 eliminado y sustituido por a
+  - Línea 26: t19 eliminado y sustituido por b
+  - Línea 28: t21 eliminado y sustituido por a
+  - Línea 28: t22 eliminado y sustituido por 100
+  - Línea 30: t24 eliminado y sustituido por 23
+  - Línea 32: t26 eliminado y sustituido por a
+  - Línea 32: t27 eliminado y sustituido por 1
+  - Línea 36: t31 eliminado y sustituido por 3
+  - Línea 41: t33 eliminado y sustituido por resultado
+  - Línea 45: t34 eliminado y sustituido por a1
+  - Línea 45: t35 eliminado y sustituido por b1
+  - Línea 48: t37 eliminado y sustituido por 2.0
+  - Línea 48: t38 eliminado y sustituido por 2.3
+  - Línea 50: t40 eliminado y sustituido por www
+  - Línea 54: t42 eliminado y sustituido por 3
+  - Línea 58: t46 eliminado y sustituido por 1
+  - Línea 64: t49 eliminado y sustituido por 3
+  - Línea 65: t50 eliminado y sustituido por 200
+  - Línea 69: t52 eliminado y sustituido por 2
+  - Línea 69: t53 eliminado y sustituido por 3
+  - Línea 44: t39 eliminado y sustituido por 4.3
+Ramificaciones adyacentes:
+  - Línea 12: Salto innecesario a e1 eliminado
+  - Línea 37: Salto innecesario a e3 eliminado
+Eliminación de etiquetas muertas:
+  - Línea 13: Se ha eliminado la etiqueta e1
+  - Línea 38: Se ha eliminado la etiqueta e3
+  - Línea 72: Se ha eliminado la etiqueta end
+Eliminación de código muerto:
+  - Línea 60: Se eliminó y
+Cálculo de constantes:
+  - Línea 44: t39 = 2.0 + 2.3 -> t39 = 4.3

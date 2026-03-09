@@ -1,0 +1,70 @@
+===== OPTIMIZACIONES REALIZADAS =====
+
+Archivo: .\programas\programa_funciones_2\programa_funciones_2.txt
+Fecha: 2026-02-11T08:41:52.735055700
+
+--- ESTADÍSTICAS DE CÓDIGO INTERMEDIO ---
+
+Instrucciones originales: 20
+Instrucciones optimizadas: 20
+Instrucciones eliminadas: 0
+Reducción: 0,00%
+
+--- ESTADÍSTICAS DE ENSAMBLADOR ---
+
+Archivo original (.x68): 3290 bytes
+Archivo optimizado (_optimizado.x68): 2101 bytes
+Bytes reducidos: 1189 bytes
+Reducción en ensamblador: 36,14%
+
+--- CÓDIGO OPTIMIZADO ---
+
+suma:
+; param a : INT
+t2 = a + 1
+a = t2
+return a
+main:
+output 1.0628571428571423
+output "\n"
+sum = 3
+param_s sum  
+t12 = call suma
+sum = t12
+output sum
+output "\n"
+t16 = 4.3 > 3
+t19 = a > 0
+t20 = t16 && t19
+if !(t20) goto e0
+output "hola"
+e0:
+
+--- CAMBIOS REALIZADOS POR EL OPTIMIZADOR ---
+
+Asignación diferida:
+  - Línea 2: t0 eliminado y sustituido por a
+  - Línea 2: t1 eliminado y sustituido por 1
+  - Línea 4: t3 eliminado y sustituido por a
+  - Línea 6: t4 eliminado y sustituido por 4.12
+  - Línea 6: t5 eliminado y sustituido por 3.0
+  - Línea 7: t7 eliminado y sustituido por 1.75
+  - Línea 8: t9 eliminado y sustituido por 2.0
+  - Línea 11: t11 eliminado y sustituido por 3
+  - Línea 15: t13 eliminado y sustituido por sum
+  - Línea 17: t14 eliminado y sustituido por 4.3
+  - Línea 17: t15 eliminado y sustituido por 3
+  - Línea 18: t17 eliminado y sustituido por a
+  - Línea 18: t18 eliminado y sustituido por 0
+  - Línea 6: t6 eliminado y sustituido por 12.36
+  - Línea 6: t8 eliminado y sustituido por 7.062857142857142
+  - Línea 6: t10 eliminado y sustituido por 1.0628571428571423
+Ramificaciones adyacentes:
+  - Línea 22: Salto innecesario a e1 eliminado
+Eliminación de etiquetas muertas:
+  - Línea 23: Se ha eliminado la etiqueta e1
+  - Línea 24: Se ha eliminado la etiqueta end
+Cálculo de constantes:
+  - Línea 6: t6 = 4.12 * 3.0 -> t6 = 12.36
+  - Línea 6: t8 = 12.36 / 1.75 -> t8 = 7.062857142857142
+  - Línea 6: t10 = 7.062857142857142 % 2.0 -> t10 = 1.0628571428571423
